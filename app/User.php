@@ -29,6 +29,6 @@ class User extends Authenticatable
 
     public function group()
     {
-        return $this->hasOne('App\Group');
+        return $this->hasOne('App\Group','id','group_id');
     }
 }

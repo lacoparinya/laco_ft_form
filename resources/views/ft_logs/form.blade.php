@@ -5,7 +5,7 @@
 </div>
 <div class="form-group {{ $errors->has('process_time') ? 'has-error' : ''}}">
     <label for="process_time" class="control-label">{{ 'Process Time' }}</label>
-    <input class="form-control" name="process_time" type="time" id="process_time" value="{{ $ft_log->process_time or \Carbon\Carbon::now()->format('H:i:s') }}" >
+    <input class="form-control" name="process_time" type="time" id="process_time" value="{{ $process_time_format or \Carbon\Carbon::now()->format('H:i:s') }}" >
     {!! $errors->first('process_time', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group {{ $errors->has('product_id') ? 'has-error' : ''}}">

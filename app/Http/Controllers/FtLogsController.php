@@ -91,7 +91,9 @@ class FtLogsController extends Controller
         $shiftlist = Shift::pluck('name', 'id');
         $unitlist = Unit::pluck('name', 'id');
 
-        return view('ft_logs.edit', compact('ft_log','productlist', 'shiftlist', 'unitlist'));
+        $process_time_format = date('H:i:s', strtotime($ft_log->process_time)); 
+
+        return view('ft_logs.edit', compact('ft_log','productlist', 'shiftlist', 'unitlist', 'process_time_format'));
     }
 
     /**
