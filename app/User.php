@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+use Auth;
+
 class User extends Authenticatable
 {
     use Notifiable;
@@ -15,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-       'email', 'password', 'fname', 'lname', 'laconame', 'group_id',
+       'email', 'password', 'fname', 'lname', 'laconame', 'group_id','username'
     ];
 
     /**
@@ -30,5 +32,11 @@ class User extends Authenticatable
     public function group()
     {
         return $this->hasOne('App\Group','id','group_id');
+    }
+
+    public function getGroupnameAttribute()
+    {
+        $group = User::find(Auth::user()->id)->group;
+        return $group->name;
     }
 }

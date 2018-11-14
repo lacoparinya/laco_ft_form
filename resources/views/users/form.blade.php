@@ -3,6 +3,16 @@
     <input class="form-control" name="email" type="email" id="email" value="{{ $user->email or ''}}" >
     {!! $errors->first('email', '<p class="help-block">:message</p>') !!}
 </div>
+<div class="form-group {{ $errors->has('username') ? 'has-error' : ''}}">
+    <label for="username" class="control-label">{{ 'Username' }}</label>
+    <input class="form-control" name="username" type="text" id="username" value="{{ $user->username or ''}}" >
+    {!! $errors->first('username', '<p class="help-block">:message</p>') !!}
+</div>
+<div class="form-group {{ $errors->has('group_id') ? 'has-error' : ''}}">
+    <label for="group_id" class="control-label">{{ 'Group' }}</label>
+        {!! Form::select('group_id', $grouplist,$user->group_id, ['class' => 'form-control']) !!}
+        {!! $errors->first('group_id', '<p class="help-block">:message</p>') !!}
+</div>
 <div class="form-group {{ $errors->has('password') ? 'has-error' : ''}}">
     <label for="password" class="control-label">{{ 'Password' }}</label>
     <input class="form-control" name="password" type="password" id="password" >

@@ -26,7 +26,12 @@
                                     <tr>
                                         <th>ID</th><td>{{ $user->id }}</td>
                                     </tr>
-                                    <tr><th> Email </th><td> {{ $user->email }} </td></tr><tr><th> Password </th><td> {{ $user->password }} </td></tr><tr><th> Fname </th><td> {{ $user->fname }} </td></tr>
+                                    <tr><th> Email </th><td> {{ $user->email }} </td></tr>
+                                    <tr><th> First name </th><td> {{ $user->fname }} </td></tr>
+                                    <tr><th> Last name </th><td> {{ $user->lname }} </td></tr>
+                                    <tr><th> Laconame </th><td> {{ $user->laconame }} </td></tr>
+                                    <tr><th> Username </th><td> {{ $user->username }} </td></tr>
+                                    <tr><th> Group </th><td> {{ $user->group->name }} </td></tr>
                                 </tbody>
                             </table>
                         </div>

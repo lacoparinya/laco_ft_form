@@ -39,6 +39,7 @@
                                         <th rowspan=2>PST</th>
                                         <th rowspan=2>คัด</th>
                                         <th colspan=3>Line</th>
+                                        <th rowspan=2>หมายเหตุ</th>
                                         <th rowspan=2>Actions</th>
                                     </tr>
                                     <tr>

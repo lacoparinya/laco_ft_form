@@ -3,9 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            @include('admin.sidebar')
-
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">ft_log {{ $ft_log->id }}</div>
                     <div class="card-body">
@@ -26,8 +24,47 @@
                                 <tbody>
                                     <tr>
                                         <th>ID</th><td>{{ $ft_log->id }}</td>
+                                    
+                                        <th> Process Date </th><td> {{ $ft_log->process_date }} </td>
                                     </tr>
-                                    <tr><th> Process Date </th><td> {{ $ft_log->process_date }} </td></tr><tr><th> Process Time </th><td> {{ $ft_log->process_time }} </td></tr><tr><th> Product Id </th><td> {{ $ft_log->product_id }} </td></tr>
+                                    <tr>
+                                        <th> Process Time </th><td> {{ date('H:i',strtotime($ft_log->process_time)) }} </td>
+                                    
+                                        <th> Product </th><td> {{ $ft_log->product->name }} </td>
+                                    </tr>
+                                    <tr>
+                                        <th> Shift </th><td> {{ $ft_log->shift->name }} </td>
+                                   
+                                        <th> Input (kg) </th><td>{{ $ft_log->input_kg }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th> Output (kg) </th><td>{{ $ft_log->output_kg }}</td>
+                                   
+                                        <th> Sum (kg) </th><td>{{ $ft_log->sum_kg }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th> Yeild (%) </th><td>{{ $ft_log->yeild_percent }}</td>
+                                    
+                                        <th> PK </th><td>{{ $ft_log->num_pk }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th> PF </th><td>{{ $ft_log->num_pf }}</td>
+                                    
+                                        <th> PST </th><td>{{ $ft_log->num_pst }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th> คัด </th><td>{{ $ft_log->num_classify }}</td>
+                                    
+                                        <th> Line A </th><td>{{ $ft_log->line_a }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th> Line B </th><td>{{ $ft_log->line_b }}</td>
+                                    
+                                        <th> Line คัด </th><td>{{ $ft_log->line_classify }} {{$ft_log->classifyunit->name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th> หมายเหตุ </th><td>{{ $ft_log->note }}</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>

@@ -6,10 +6,15 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\User;
+use App\Group;
 use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
+        public function __construct()
+        {
+            $this->middleware('admin');
+        }
     /**
      * Display a listing of the resource.
      *
@@ -36,7 +41,8 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        $grouplist = Group::pluck('name','id');   
+        return view('users.create',compact('grouplist'));
     }
 
     /**
@@ -50,6 +56,8 @@ class UsersController extends Controller
     {
         
         $requestData = $request->all();
+
+        $requestData['password'] = bcrypt($requestData['password']);
 
         User::create($requestData);
 
@@ -65,9 +73,9 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        $users = User::findOrFail($id);
+        $user = User::findOrFail($id);
 
-        return view('users.show', compact(''));
+        return view('users.show', compact('user'));
     }
 
     /**
@@ -79,9 +87,9 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        $users = User::findOrFail($id);
-
-        return view('users.edit', compact('users'));
+        $user = User::findOrFail($id);
+        $grouplist = Group::pluck('name', 'id');  
+        return view('users.edit', compact('user', 'grouplist'));
     }
 
     /**
@@ -97,8 +105,13 @@ class UsersController extends Controller
         
         $requestData = $request->all();
 
-        $users = User::findOrFail($id);
-        $users->update($requestData);
+        $user = User::findOrFail($id);
+
+        $requestData['password'] = bcrypt($requestData['password']);
+
+        $user->update($requestData);
+
+
 
         return redirect('users')->with('flash_message', ' updated!');
     }
