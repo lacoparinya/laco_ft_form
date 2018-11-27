@@ -17,14 +17,11 @@
                                 <input type="text" class="form-control" name="search" placeholder="Search..." value="{{ request('search') }}">
                                 <span class="input-group-append">
                                     <button class="btn btn-secondary" type="submit">
-                                        <i class="fa fa-search"></i>
+                                        <i class="glyphicon glyphicon-search"></i>
                                     </button>
                                 </span>
                             </div>
                         </form>
-
-                        <br/>
-                        <br/>
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
@@ -39,6 +36,8 @@
                                         <th rowspan=2>PST</th>
                                         <th rowspan=2>คัด</th>
                                         <th colspan=3>Line</th>
+                                        <th rowspan=2>Ref SAP</th>
+                                        <th rowspan=2>Grade</th>
                                         <th rowspan=2>หมายเหตุ</th>
                                         <th rowspan=2>Actions</th>
                                     </tr>
@@ -63,7 +62,7 @@
                                         <td>{{ $item->input_kg }}</td>
                                         <td>{{ $item->output_kg }}</td>
                                         <td>{{ $item->sum_kg }}</td>
-                                        <td>{{ $item->yeild_percent }}</td>
+                                        <td>{{ round($item->yeild_percent,2) }}</td>
                                         <td>{{ $item->num_pk }}</td>
                                         <td>{{ $item->num_pf }}</td>
                                         <td>{{ $item->num_pst }}</td>
@@ -71,6 +70,8 @@
                                         <td>{{ $item->line_a }}</td>
                                         <td>{{ $item->line_b }}</td>
                                         <td>{{ $item->line_classify }} {{$item->classifyunit->name}}</td>
+                                        <td>{{ $item->ref_note }}</td>
+                                        <td>{{ $item->grade }}</td>
                                         <td>{{ $item->note }}</td>
                                         <td>
                                             <a href="{{ url('/ft_logs/' . $item->id) }}" title="View ft_log"><button class="btn btn-info btn-sm"><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i></button></a>

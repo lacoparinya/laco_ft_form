@@ -109,5 +109,6 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/ftlog.js?var=3') }}"></script>
 </body>
 </html>
