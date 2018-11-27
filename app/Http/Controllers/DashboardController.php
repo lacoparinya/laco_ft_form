@@ -40,4 +40,22 @@ class DashboardController extends Controller
             ->get();
         return view('dashboards.chart', compact('rawdata', 'current_date'));
     }
+
+    public function timechart($selecteddate)
+    {
+        $current_date = $selecteddate;
+        $rawdata = DB::table('ft_logs')
+            ->join('products', 'products.id', '=', 'ft_logs.product_id')
+            ->select(DB::raw('ft_logs.process_date,
+                        ft_logs.process_time,
+                        ft_logs.product_id,
+                        products.name,
+                        ft_logs.num_classify,
+                        ft_logs.input_kg,
+                        ft_logs.output_kg'))
+            ->where('ft_logs.process_date', $selecteddate)
+            ->orderBy(DB::raw('ft_logs.process_date,ft_logs.process_time'))
+            ->get();
+        return view('dashboards.charttime', compact('rawdata', 'current_date'));
+    }
 }

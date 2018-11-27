@@ -74,7 +74,11 @@
                                         <td>{{ $item->grade }}</td>
                                         <td>{{ $item->note }}</td>
                                         <td>
+                                            <a href="{{ url('/chart/' . $item->process_date) }}" title="สรุปรายวัน"><button class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-stats" aria-hidden="true"></i></button></a>
+                                            <a href="{{ url('/charttime/' . $item->process_date) }}" title="สรุปรายชม."><button class="btn btn-info btn-sm"><i class="glyphicon glyphicon-stats" aria-hidden="true"></i></button></a>
+                                            
                                             <a href="{{ url('/ft_logs/' . $item->id) }}" title="View ft_log"><button class="btn btn-info btn-sm"><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i></button></a>
+                                            
                                             <a href="{{ url('/ft_logs/' . $item->id . '/edit') }}" title="Edit ft_log"><button class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-pencil" aria-hidden="true"></i></button></a>
 
                                             <form method="POST" action="{{ url('/ft_logs' . '/' . $item->id) }}" accept-charset="UTF-8" style="display:inline">

@@ -31,3 +31,4 @@ Route::get('/reports/range', 'ReportsController@range');
 Route::post('/reports/reportAction', 'ReportsController@reportAction');
 Route::get('/dashboard', 'DashboardController@home');
 Route::get('/chart/{selecteddate}', 'DashboardController@datechart');
+Route::get('/charttime/{selecteddate}', 'DashboardController@timechart');
