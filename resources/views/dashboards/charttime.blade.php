@@ -41,7 +41,13 @@
         ]);
 
         var options = {
+          chartArea: {
+       top: 45,
+       right: 110,
+       height: '50%' 
+    },
           title : 'อัตราการผลิตวันที่ {{ $current_date }}',
+           legend: { position: 'top', maxLines: 3 },
           vAxis: {title: 'ปริมาณสินค้า (kg)'},
           hAxis: {title: 'เวลา-สินค้า'},
           seriesType: 'bars',
@@ -62,7 +68,13 @@
         ]);
 
         var options = {
+          chartArea: {
+       top: 45,
+       right: 110,
+       height: '50%' 
+    },
           title : 'Yeild การผลิตวันที่ {{ $current_date }}',
+           legend: { position: 'top', maxLines: 3 },
           vAxis: {title: 'Yeild %'},
           hAxis: {title: 'เวลา-สินค้า'},
           seriesType: 'bars',
@@ -92,7 +104,13 @@
         ]);
 
         var options = {
+          chartArea: {
+       top: 45,
+       right: 110,
+       height: '50%' 
+    },
           title : 'ประสิทธิภาพ การผลิตวันที่ {{ $current_date }}',
+           legend: { position: 'top', maxLines: 3 },
           vAxis: {title: 'ปริมาณที่คัดได้ (kg) / คนคัด / ชม.'},
           hAxis: {title: 'เวลา-สินค้า'},
           seriesType: 'bars',

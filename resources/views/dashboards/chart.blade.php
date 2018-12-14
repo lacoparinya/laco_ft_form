@@ -8,10 +8,10 @@
 
                 <div class="panel-body">
                     <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                     <div id="chart_div" style=" height: 500px;"></div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                     <div id="chart_div2" style=" height: 500px;"></div>
                     </div>
                     </div>
@@ -38,6 +38,7 @@
 
         var options = {
           title : 'อัตราการผลิตวันที่ {{ $current_date }}',
+           legend: { position: 'top', maxLines: 3 },
           vAxis: {title: 'ปริมาณสินค้า (kg)'},
           hAxis: {title: 'สินค้า'},
           seriesType: 'bars',
@@ -59,6 +60,7 @@
 
         var options = {
           title : 'Yeild การผลิตวันที่ {{ $current_date }}',
+           legend: { position: 'top', maxLines: 3 },
           vAxis: {title: 'Yeild (%)'},
           hAxis: {title: 'สินค้า'},
           seriesType: 'bars',

@@ -6,50 +6,49 @@
 
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Ft_logs</div>
+                    <div class="card-header"><h3>งานคัด <a href="{{ url('/ft_logs/create') }}" class="btn btn-success btn-sm" title="เพิ่มข้อมูล">
+                                    <i class="fa fa-plus" aria-hidden="true"></i> เพิ่มข้อมูล
+                                </a></h3></div>
                     <div class="card-body">
-                        <a href="{{ url('/ft_logs/create') }}" class="btn btn-success btn-sm" title="Add New ft_log">
-                            <i class="fa fa-plus" aria-hidden="true"></i> Add New
-                        </a>
-
-                        <form method="GET" action="{{ url('/ft_logs') }}" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="search" placeholder="Search..." value="{{ request('search') }}">
-                                <span class="input-group-append">
-                                    <button class="btn btn-secondary" type="submit">
-                                        <i class="glyphicon glyphicon-search"></i>
-                                    </button>
-                                </span>
-                            </div>
-                        </form>
+                        
+                                <form method="GET" action="{{ url('/ft_logs') }}" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+                                <div class="row">
+                            <div class="col-md-3">
+                                    <div class="input-group col-md-12">
+                                        <input type="text" class="form-control" name="serch" placeholder="Search..." value="{{ request('search') }}">
+                                            
+                                    </div>
+                        </div>
+                        <div class="col-md-9">
+                                    <div class="input-group"> <button class="btn btn-secondary" type="submit">
+                                                <i class="glyphicon glyphicon-search"></i>
+                                            </button>
+                                       
+                                    </div>
+                                    </div>
+                        </div>
+                                </form>
+                            
+                        
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
                                     <tr>
                                         <th colspan=2>Process</th>
-                                        <th rowspan=2>Shift</th>
-                                        <th rowspan=2>Product</th>
+                                        <th rowspan=2>กะ</th>
+                                        <th rowspan=2>คัดผลิตภัณท์</th>
                                         <th colspan=3>(kg)</th>
                                         <th rowspan=2>Yeild (%)</th>
-                                        <th rowspan=2>PK</th>
-                                        <th rowspan=2>PF</th>
-                                        <th rowspan=2>PST</th>
-                                        <th rowspan=2>คัด</th>
-                                        <th colspan=3>Line</th>
-                                        <th rowspan=2>Ref SAP</th>
-                                        <th rowspan=2>Grade</th>
+                                        <th rowspan=2>เกรด</th>
                                         <th rowspan=2>หมายเหตุ</th>
-                                        <th rowspan=2>Actions</th>
+                                        <th rowspan=2></th>
                                     </tr>
                                     <tr>
-                                        <th>Date</th>
-                                        <th>Time</th>
+                                        <th>วันที่</th>
+                                        <th>เวลา</th>
                                         <th>Input</th>
                                         <th>Output</th>
-                                        <th>Sum</th>
-                                        <th>A</th>
-                                        <th>B</th>
-                                        <th>คัด</th>
+                                        <th>รวม</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -63,14 +62,6 @@
                                         <td>{{ $item->output_kg }}</td>
                                         <td>{{ $item->sum_kg }}</td>
                                         <td>{{ round($item->yeild_percent,2) }}</td>
-                                        <td>{{ $item->num_pk }}</td>
-                                        <td>{{ $item->num_pf }}</td>
-                                        <td>{{ $item->num_pst }}</td>
-                                        <td>{{ $item->num_classify }}</td>
-                                        <td>{{ $item->line_a }}</td>
-                                        <td>{{ $item->line_b }}</td>
-                                        <td>{{ $item->line_classify }} {{$item->classifyunit->name}}</td>
-                                        <td>{{ $item->ref_note }}</td>
                                         <td>{{ $item->grade }}</td>
                                         <td>{{ $item->note }}</td>
                                         <td>

@@ -18,6 +18,18 @@ $(document).ready(function () {
     $('#num_pst').change(function () {
         sumclassify();
     });
+
+    $('#line_a').change(function () {
+        calLine();
+    });
+
+    $('#line_b').change(function () {
+        calLine();
+    });
+
+    $('#line_classify_unit').change(function () {
+        calLine();
+    });
 });
 
 function calpercent(){
@@ -46,4 +58,26 @@ function sumclassify(){
     }
 
     $('#num_classify').val(sum);
+}
+
+function calLine(){
+    var line_a = $('#line_a').val();
+    var line_b = $('#line_b').val();
+    var line_classify_unit = $('#line_classify_unit').val();
+    var totalLine = 0;
+    if (line_classify_unit == '1'){
+        $('#line_classify').attr('readonly', 'readonly');
+        if (line_a > 0) {
+            totalLine = parseInt(totalLine) + parseInt(line_a);
+        }
+        if (line_b > 0) {
+            totalLine = parseInt(totalLine) + parseInt(line_b);
+        }
+
+        $('#line_classify').val(totalLine);
+        
+    }else{
+        $('#line_classify').removeAttr('readonly');
+        $('#line_classify').val('');
+    }
 }

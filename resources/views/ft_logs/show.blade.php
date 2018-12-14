@@ -5,11 +5,9 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">ft_log {{ $ft_log->id }}</div>
+                    <div class="card-header"><h3>แก้ไขข้อมูล #{{ $ft_log->id }} <a href="{{ url('/ft_logs') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
+                        <a href="{{ url('/ft_logs/' . $ft_log->id . '/edit') }}" title="Edit ft_log"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a></h3></div>
                     <div class="card-body">
-
-                        <a href="{{ url('/ft_logs') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
-                        <a href="{{ url('/ft_logs/' . $ft_log->id . '/edit') }}" title="Edit ft_log"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
 
                         <form method="POST" action="{{ url('ft_logs' . '/' . $ft_log->id) }}" accept-charset="UTF-8" style="display:inline">
                             {{ method_field('DELETE') }}
@@ -25,22 +23,22 @@
                                     <tr>
                                         <th>ID</th><td>{{ $ft_log->id }}</td>
                                     
-                                        <th> Process Date </th><td> {{ $ft_log->process_date }} </td>
+                                        <th>วันที่ผลิต</th><td> {{ $ft_log->process_date }} </td>
                                     </tr>
                                     <tr>
-                                        <th> Process Time </th><td> {{ date('H:i',strtotime($ft_log->process_time)) }} </td>
+                                        <th>เวลาที่ผลิต</th><td> {{ date('H:i',strtotime($ft_log->process_time)) }} </td>
                                     
-                                        <th> Product </th><td> {{ $ft_log->product->name }} </td>
+                                        <th>คัดผลิตภัณท์</th><td> {{ $ft_log->product->name }} </td>
                                     </tr>
                                     <tr>
-                                        <th> Shift </th><td> {{ $ft_log->shift->name }} </td>
+                                        <th>กะ</th><td> {{ $ft_log->shift->name }} </td>
                                    
                                         <th> Input (kg) </th><td>{{ $ft_log->input_kg }}</td>
                                     </tr>
                                     <tr>
                                         <th> Output (kg) </th><td>{{ $ft_log->output_kg }}</td>
                                    
-                                        <th> Sum (kg) </th><td>{{ $ft_log->sum_kg }}</td>
+                                        <th> สะสม (kg) </th><td>{{ $ft_log->sum_kg }}</td>
                                     </tr>
                                     <tr>
                                         <th> Yeild (%) </th><td>{{ $ft_log->yeild_percent }}</td>
@@ -63,7 +61,7 @@
                                         <th> Line คัด </th><td>{{ $ft_log->line_classify }} {{$ft_log->classifyunit->name}}</td>
                                     </tr>
                                     <tr>
-                                        <th> หมายเหตุ </th><td>{{ $ft_log->note }}</td>
+                                        <th> หมายเหตุ </th><td>{{ $ft_log->note }}</td><th>  </th><td></td>
                                     </tr>
                                 </tbody>
                             </table>

@@ -21,7 +21,7 @@
     {!! $errors->first('shift_id', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group col-md-4 {{ $errors->has('product_id') ? 'has-error' : ''}}">
-    <label for="product_id" class="control-label">{{ 'คัดผลิตภัณฑ์' }}</label>
+    <label for="product_id" class="control-label">{{ 'คัดผลิตภัณท์' }}</label>
     <select name="product_id" class="form-control" id="product_id" >
     @foreach ($productlist as $optionKey => $optionValue)
         <option value="{{ $optionKey }}" {{ (isset($ft_log->product_id) && $ft_log->product_id == $optionKey) ? 'selected' : ''}}>{{ $optionValue }}</option>
@@ -72,16 +72,16 @@
 <div class="row">
 <div class="form-group col-md-4 {{ $errors->has('num_classify') ? 'has-error' : ''}}">
     <label for="num_classify" class="control-label">{{ 'จำนวนคน' }}</label>
-    <input class="form-control" name="num_classify" type="number" readonly id="num_classify" valuจำนวนคนe="{{ $ft_log->num_classify or ''}}" >
+    <input class="form-control" name="num_classify" type="number" readonly id="num_classify" value="{{ $ft_log->num_classify or ''}}" >
     {!! $errors->first('num_classify', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group col-md-4 {{ $errors->has('line_a') ? 'has-error' : ''}}">
-    <label for="line_a" class="control-label">{{ 'เปิดไลน์ฝั่งA' }}</label>
+    <label for="line_a" class="control-label">{{ 'เปิดไลน์ฝั่ง A' }}</label>
     <input required class="form-control" name="line_a" type="number" id="line_a" value="{{ $ft_log->line_a or ''}}" >
     {!! $errors->first('line_a', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group col-md-4 {{ $errors->has('line_b') ? 'has-error' : ''}}">
-    <label for="line_b" class="control-label">{{ 'เปิดไลน์ฝั่งB' }}</label>
+    <label for="line_b" class="control-label">{{ 'เปิดไลน์ฝั่ง B' }}</label>
     <input required class="form-control" name="line_b" type="number" id="line_b" value="{{ $ft_log->line_b or ''}}" >
     {!! $errors->first('line_b', '<p class="help-block">:message</p>') !!}
 </div>
@@ -89,11 +89,11 @@
 <div class="row">
 <div class="form-group col-md-4 {{ $errors->has('line_classify') ? 'has-error' : ''}}">
     <label for="line_classify" class="control-label">{{ 'เปิดไลน์คัด' }}</label>
-    <input required class="form-control" name="line_classify" type="number" id="line_classify" value="{{ $ft_log->line_classify or ''}}" >
+    <input required class="form-control" name="line_classify" type="number" readonly id="line_classify" value="{{ $ft_log->line_classify or ''}}" >
     {!! $errors->first('line_classify', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group col-md-4 {{ $errors->has('line_classify_unit') ? 'has-error' : ''}}">
-    <label for="line_classify_unit" class="control-label">{{ 'Line Classify Unit' }}</label>
+    <label for="line_classify_unit" class="control-label">{{ '&nbsp;' }}</label>
     <select name="line_classify_unit" class="form-control" id="line_classify_unit" >
     @foreach ($unitlist as $optionKey => $optionValue)
         <option value="{{ $optionKey }}" {{ (isset($ft_log->line_classify_unit) && $ft_log->line_classify_unit == $optionKey) ? 'selected' : ''}}>{{ $optionValue }}</option>
@@ -102,7 +102,7 @@
     {!! $errors->first('line_classify_unit', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group col-md-4 {{ $errors->has('grade') ? 'has-error' : ''}}">
-    <label for="grade" class="control-label">{{ 'Grade' }}</label>
+    <label for="grade" class="control-label">{{ 'เกรด' }}</label>
     <select name="grade" class="form-control" id="shift_id" >
     @foreach ($gradelist as $optionKey => $optionValue)
         <option value="{{ $optionKey }}" {{ (isset($ft_log->grade) && $ft_log->grade == $optionKey) ? 'selected' : ''}}>{{ $optionValue }}</option>
