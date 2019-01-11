@@ -34,9 +34,9 @@
       function drawVisualization() {
         // Some raw data (not necessarily accurate)
         var data = google.visualization.arrayToDataTable([
-          ['Time-Product','Input (kg)', 'Output (kg)' ],
+          ['Time-Product', 'Output (kg)' ],
           @foreach ($rawdata as $item)
-            ['{{ date('H:i',strtotime($item->process_time)) }} - {{ $item->name }}',  {{ $item->input_kg }},  {{ $item->output_kg }},  ],
+            ['{{ date('H:i',strtotime($item->process_time)) }} - {{ $item->name }}',  {{ $item->output_kg }},  ],
           @endforeach
         ]);
 
@@ -89,7 +89,7 @@
       function drawVisualization3() {
         // Some raw data (not necessarily accurate)
         var data = google.visualization.arrayToDataTable([
-          ['Time-Product','จำนวนคนคัด','ประสิทธิภาพ' ],
+          ['Time-Product','จำนวนคนคัด','ประสิทธิภาพ (kg/hr)' ],
           @foreach ($rawdata as $item)
             @if( date('H:i',strtotime($item->process_time)) == '05:30' || date('H:i',strtotime($item->process_time)) == '09:00')
             ['{{ date('H:i',strtotime($item->process_time)) }} - {{ $item->name }}', {{ $item->num_classify }}, {{ round(($item->output_kg/$item->num_classify)/1.5,2) }},  ],

@@ -30,16 +30,16 @@
       function drawVisualization() {
         // Some raw data (not necessarily accurate)
         var data = google.visualization.arrayToDataTable([
-          ['Product', 'Input (kg)', 'Output (kg)', ],
+          ['Product', 'Output (kg)', ],
           @foreach ($rawdata as $item)
-            ['{{ $item->name }}',  {{ $item->suminput }},      {{ $item->sumoutput }},              ],
+            ['{{ $item->name }}',   {{ $item->sumoutput }},              ],
           @endforeach
         ]);
 
         var options = {
           title : 'อัตราการผลิตวันที่ {{ $current_date }}',
            legend: { position: 'top', maxLines: 3 },
-          vAxis: {title: 'ปริมาณสินค้า (kg)'},
+          vAxis: {title: 'ปริมาณการผลิต (kg)'},
           hAxis: {title: 'สินค้า'},
           seriesType: 'bars',
           series: {5: {type: 'line'}}
