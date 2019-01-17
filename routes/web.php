@@ -23,6 +23,7 @@ Route::resource('shifts', 'ShiftsController');
 Route::resource('units', 'UnitsController');
 Route::resource('ft_masters', 'FtMastersController');
 Route::resource('ft_logs', 'FtLogsController');
+Route::resource('std-processs', 'StdProcesssController');
 Route::get('/import', 'AutoImportController@test');
 Route::get('/reports/daily', 'ReportsController@daily');
 Route::get('/reports/range', 'ReportsController@range');
