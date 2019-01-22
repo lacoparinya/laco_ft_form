@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Timeslot;
+use App\Shift;
 use Illuminate\Http\Request;
 
 class TimeslotsController extends Controller
@@ -21,9 +22,9 @@ class TimeslotsController extends Controller
         $perPage = 25;
 
         if (!empty($keyword)) {
-            $timeslots = Timeslot::latest()->paginate($perPage);
+            $timeslots = Timeslot::orderBy('seq', 'asc')->paginate($perPage);
         } else {
-            $timeslots = Timeslot::latest()->paginate($perPage);
+            $timeslots = Timeslot::orderBy('seq', 'asc')->paginate($perPage);
         }
 
         return view('timeslots.index', compact('timeslots'));
@@ -36,7 +37,8 @@ class TimeslotsController extends Controller
      */
     public function create()
     {
-        return view('timeslots.create');
+        $shiftlist = Shift::pluck('name', 'id');
+        return view('timeslots.create',compact('shiftlist'));
     }
 
     /**
@@ -79,9 +81,10 @@ class TimeslotsController extends Controller
      */
     public function edit($id)
     {
+        $shiftlist = Shift::pluck('name', 'id');
         $timeslot = Timeslot::findOrFail($id);
 
-        return view('timeslots.edit', compact('timeslot'));
+        return view('timeslots.edit', compact('timeslot', 'shiftlist'));
     }
 
     /**

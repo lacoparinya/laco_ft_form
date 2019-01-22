@@ -62,10 +62,23 @@
                                     <a href="{{route('products.index')}}">Product</a>
                                     </li>
                                     <li>
+                                    <a href="{{route('std-processs.index')}}">Std Productivity</a>
+                                    </li>
+                                     <li>
+                                    <a href="{{route('timeslots.index')}}">Timeslot</a>
+                                    </li>
+                                    <li>
                                     <a href="{{route('units.index')}}">Unit</a>
                                     </li>
                                     <li>
                                     <a href="{{route('ft_logs.index')}}">FT Logs</a>
+                                    </li>
+                                    <li><hr/></li>
+                                    <li>
+                                    <a href="{{route('reports.daily')}}">Daily Report</a>
+                                    </li>
+                                    <li>
+                                    <a href="{{route('reports.range')}}">Range Report</a>
                                     </li>
                                     <li>
                                         <a href="{{ route('logout') }}"
@@ -83,6 +96,13 @@
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
                                     <a href="{{route('ft_logs.index')}}">FT Logs</a>
+                                    </li>
+                                    <li><hr/></li>
+                                    <li>
+                                    <a href="{{route('reports.daily')}}">Daily Report</a>
+                                    </li>
+                                    <li>
+                                    <a href="{{route('reports.range')}}">Range Report</a>
                                     </li>
                                     <li>
                                         <a href="{{ route('logout') }}"

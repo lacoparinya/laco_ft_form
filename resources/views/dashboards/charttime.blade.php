@@ -34,28 +34,79 @@
       function drawVisualization() {
         // Some raw data (not necessarily accurate)
         var data = google.visualization.arrayToDataTable([
-          ['Time-Product', 'Output (kg)' ],
+          ['Time-Product', 'Output (kg)','Productivity (Output/MH)' ],
           @foreach ($rawdata as $item)
-            ['{{ date('H:i',strtotime($item->process_time)) }} - {{ $item->name }}',  {{ $item->output_kg }},  ],
+            ['{{ $item->tname }} - {{ $item->name }}',  {{ $item->output_kg }}, {{ round(($item->output_kg/$item->num_classify)/$item->tgap,2) }}, ],
           @endforeach
         ]);
 
         var options = {
-          chartArea: {
+          displayAnnotations: true,
+            chartArea: {
        top: 45,
        right: 110,
        height: '50%' 
     },
+    annotations: {
+        alwaysOutside : false
+    },
           title : 'อัตราการผลิตวันที่ {{ $current_date }}',
-           legend: { position: 'top', maxLines: 3 },
-          vAxis: {title: 'ปริมาณสินค้า (kg)'},
+          legend: { position: 'top', maxLines: 3 },
+          vAxes: {
+            0: {
+              title: 'ปริมาณสินค้า (kg)'
+              }, 
+            1: {
+              title: 'Productivity',
+              format: '###.00'
+              }
+          },
           hAxis: {title: 'เวลา-สินค้า'},
           seriesType: 'bars',
-          series: {5: {type: 'line'}}
+          series: {
+            0: {
+            
+        targetAxisIndex: 0
+      },
+
+            1: {
+            type: 'line',
+            targetAxisIndex:1,
+            }
+          },
+          
         };
 
-        var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
+        var view = new google.visualization.DataView(data);
+
+        view.setColumns([
+    0,
+    1,
+    {
+      calc: "stringify",
+      sourceColumn: 1,
+      type: "string",
+      role: "annotation"
+    },
+    2,
+    {
+      calc: "stringify",
+      sourceColumn: 2,
+      type: "string",
+      role: "annotation",
+      pointShape: 'square',
+      pointsVisible: true
+    }]);
+
+var container = document.getElementById('chart_div');
+        var chart = new google.visualization.ComboChart(container);
+
+        google.visualization.events.addListener(chart, 'ready', function () {
+        container.innerHTML = '<img src="' + chart.getImageURI() + '">';
+        //console.log(chart_div.innerHTML);
+      });
+
+        chart.draw(view, options);
       }
 
       function drawVisualization2() {
@@ -63,7 +114,7 @@
         var data = google.visualization.arrayToDataTable([
           ['Time-Product','Yeild %' ],
           @foreach ($rawdata as $item)
-            ['{{ date('H:i',strtotime($item->process_time)) }} - {{ $item->name }}',  {{ round(($item->output_kg*100/$item->input_kg),2) }},  ],
+            ['{{ $item->tname }} - {{ $item->name }}',  {{ round(($item->output_kg*100/$item->input_kg),2) }},  ],
           @endforeach
         ]);
 
@@ -91,15 +142,7 @@
         var data = google.visualization.arrayToDataTable([
           ['Time-Product','จำนวนคนคัด','ประสิทธิภาพ (kg/hr)' ],
           @foreach ($rawdata as $item)
-            @if( date('H:i',strtotime($item->process_time)) == '05:30' || date('H:i',strtotime($item->process_time)) == '09:00')
-            ['{{ date('H:i',strtotime($item->process_time)) }} - {{ $item->name }}', {{ $item->num_classify }}, {{ round(($item->output_kg/$item->num_classify)/1.5,2) }},  ],
-            @else
-             @if( date('H:i',strtotime($item->process_time)) == '16:30')
-             ['{{ date('H:i',strtotime($item->process_time)) }} - {{ $item->name }}', {{ $item->num_classify }}, {{ round(($item->output_kg/$item->num_classify)/0.5,2) }},  ],
-            @else
-            ['{{ date('H:i',strtotime($item->process_time)) }} - {{ $item->name }}', {{ $item->num_classify }}, {{ round(($item->output_kg/$item->num_classify),2) }},  ],
-              @endif
-            @endif
+            ['{{ $item->tname }} - {{ $item->name }}', {{ $item->num_classify }}, {{ round(($item->output_kg/$item->num_classify)/$item->tgap,2) }},  ],
           @endforeach
         ]);
 

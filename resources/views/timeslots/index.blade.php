@@ -3,9 +3,8 @@
 @section('content')
     <div class="container">
         <div class="row">
-            @include('admin.sidebar')
 
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">Timeslots</div>
                     <div class="card-body">
@@ -34,6 +33,7 @@
                                         <th>Name</th>
                                         <th>Gap</th>
                                         <th>Seq</th>
+                                        <th>Shift</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -44,6 +44,7 @@
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->gap }}</td>
                                         <td>{{ $item->seq }}</td>
+                                        <td>{{ $item->shift->name }}</td>
                                         <td>
                                             <a href="{{ url('/timeslots/' . $item->id) }}" title="View Timeslot"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
                                             <a href="{{ url('/timeslots/' . $item->id . '/edit') }}" title="Edit Timeslot"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>

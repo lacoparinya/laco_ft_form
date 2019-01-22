@@ -30,6 +30,29 @@ $(document).ready(function () {
     $('#line_classify_unit').change(function () {
         calLine();
     });
+
+    $('.dynamic').change(function () {
+        if ($(this).val() != '') {
+            var select = $(this).attr("id");
+            var value = $(this).val();
+            var dependent = $(this).data('dependent');
+            var _token = $('input[name="_token"]').val();
+            $.ajax({
+                url: '/ft_form/dynamic-list/shiftfetch',
+                method: "POST",
+                data: {
+                    select: select,
+                    value: value,
+                    _token: _token,
+                    dependent: dependent
+                },
+                success: function (result) {
+                    $('#' + dependent).val(result);
+                }
+            })
+        }
+    });
+
 });
 
 function calpercent(){

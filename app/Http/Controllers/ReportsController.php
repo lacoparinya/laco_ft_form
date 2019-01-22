@@ -18,7 +18,7 @@ class ReportsController extends Controller
         
         if($requestData['action_type'] == 'daily')
         {
-            $data = FtLog::where('process_date', $requestData['process_date'])->orderBy('process_time')->get();
+            $data = FtLog::where('process_date', $requestData['process_date'])->orderBy('timeslot_id')->get();
 
             $filename = "ft_report_" . date('ymdHi');
 
@@ -28,7 +28,7 @@ class ReportsController extends Controller
                 });
             })->export('xlsx');
         }elseif($requestData ['action_type'] == 'range'){
-            $data = FtLog::whereBetween('process_date', [$requestData['from_date'], $requestData['to_date']])->orderBy('process_time')->get();
+            $data = FtLog::whereBetween('process_date', [$requestData['from_date'], $requestData['to_date']])->orderBy('timeslot_id')->get();
 
             $filename = "ft_report_" . date('ymdHi');
 

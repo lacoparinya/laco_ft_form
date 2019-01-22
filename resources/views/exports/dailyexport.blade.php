@@ -46,6 +46,8 @@
                 <th>Input/kg.</th>
                 <th>Output/kg.</th>
                 <th>คัดได้สะสม</th>
+                <th>STD Productivity</th>
+                <th>Productivity</th>
                 <th>% yield</th>
                 <th>PK</th>
                 <th>PF</th>
@@ -63,13 +65,15 @@
             @foreach($data as $item)
                     <tr>
                         <td>{{ $item->process_date }}</td>
-                        <td>{{ \Carbon\Carbon::parse($item->process_time)->format('H:i') }}</td>
+                        <td>{{ $item->timeslot->name }}</td>
                         <td>{{ $item->shift->name }}</td>
                         <td>{{ $item->product->name }}</td>
                         <td>{{ $item->input_kg }}</td>
                         <td>{{ $item->output_kg }}</td>
                         <td>{{ $item->sum_kg }}</td>
                         <td>{{ $item->yeild_percent }}</td>
+                        <td>{{ $item->stdprocess->std_rate }}</td>
+                        <td>{{ round(($item->output_kg/$item->num_classify)/$item->timeslot->gap,2)  }}</td>
                         <td>{{ $item->num_pk }}</td>
                         <td>{{ $item->num_pf }}</td>
                         <td>{{ $item->num_pst }}</td>

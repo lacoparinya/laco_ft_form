@@ -14,6 +14,15 @@
     <input class="form-control" name="seq" type="text" id="seq" value="{{ $timeslot->seq or ''}}" >
     {!! $errors->first('seq', '<p class="help-block">:message</p>') !!}
 </div>
+<div class="form-group {{ $errors->has('shift_id') ? 'has-error' : ''}}">
+    <label for="shift_id" class="control-label">{{ 'Product Id' }}</label>
+    <select name="shift_id" class="form-control" id="shift_id" >
+    @foreach ($shiftlist as $optionKey => $optionValue)
+        <option value="{{ $optionKey }}" {{ (isset($timeslot->shift_id) && $timeslot->shift_id == $optionKey) ? 'selected' : ''}}>{{ $optionValue }}</option>
+    @endforeach
+</select>
+    {!! $errors->first('shift_id', '<p class="help-block">:message</p>') !!}
+</div>
 <div class="form-group">
     <input class="btn btn-primary" type="submit" value="{{ $formMode === 'edit' ? 'Update' : 'Create' }}">
 </div>

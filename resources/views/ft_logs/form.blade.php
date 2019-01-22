@@ -4,11 +4,17 @@
     <input class="form-control" name="process_date" type="date" id="process_date" value="{{ $ft_log->process_date or \Carbon\Carbon::now()->format('Y-m-d') }}" >
     {!! $errors->first('process_date', '<p class="help-block">:message</p>') !!}
 </div>
-<div class="form-group col-md-6 {{ $errors->has('process_time') ? 'has-error' : ''}}">
-    <label for="process_time" class="control-label">{{ 'เวลา' }}</label>
-    <input class="form-control" name="process_time" type="time" id="process_time" value="{{ $process_time_format or \Carbon\Carbon::now()->format('H:i:s') }}" >
-    {!! $errors->first('process_time', '<p class="help-block">:message</p>') !!}
+<div class="form-group col-md-4 {{ $errors->has('timeslot_id') ? 'has-error' : ''}}">
+    <label for="timeslot_id" class="control-label">{{ 'เวลา' }}</label>
+    <select name="timeslot_id" class="form-control dynamic" id="timeslot_id" data-dependent = 'shift_id'>
+    @foreach ($timeslotlist as $optionKey => $optionValue)
+        <option value="{{ $optionKey }}" {{ (isset($ft_log->timeslot_id) && $ft_log->timeslot_id == $optionKey) ? 'selected' : ''}}>{{ $optionValue }}</option>
+    @endforeach
+</select>
+    {!! $errors->first('timeslot_id', '<p class="help-block">:message</p>') !!}
 </div>
+
+
 </div>
 <div class="row">
 <div class="form-group col-md-4 {{ $errors->has('shift_id') ? 'has-error' : ''}}">

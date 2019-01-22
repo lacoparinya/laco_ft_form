@@ -26,7 +26,7 @@
                                         <th>วันที่ผลิต</th><td> {{ $ft_log->process_date }} </td>
                                     </tr>
                                     <tr>
-                                        <th>เวลาที่ผลิต</th><td> {{ date('H:i',strtotime($ft_log->process_time)) }} </td>
+                                        <th>เวลาที่ผลิต</th><td> {{  $ft_log->timeslot->name }} </td>
                                     
                                         <th>คัดผลิตภัณท์</th><td> {{ $ft_log->product->name }} </td>
                                     </tr>

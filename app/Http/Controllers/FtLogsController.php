@@ -9,6 +9,8 @@ use App\FtLog;
 use App\Product;
 use App\Shift;
 use App\Unit;
+use App\Timeslot;
+use App\StdProcess;
 use Illuminate\Http\Request;
 
 class FtLogsController extends Controller
@@ -46,14 +48,16 @@ class FtLogsController extends Controller
         $productlist = Product::pluck('name', 'id');
         $shiftlist = Shift::pluck('name', 'id');
         $unitlist = Unit::pluck('name', 'id');
+        $timeslotlist = Timeslot::pluck('name', 'id');
         $gradelist = array(
+            '-' => '-',
             'A' => 'A',
             'B' => 'B',
             'C' => 'C',
             'D' => 'D',
             'DEF' => 'DEF',
         );
-        return view('ft_logs.create',compact('productlist', 'shiftlist', 'unitlist', 'gradelist'));
+        return view('ft_logs.create',compact('productlist', 'shiftlist', 'unitlist', 'gradelist', 'timeslotlist'));
     }
 
     /**
@@ -72,7 +76,8 @@ class FtLogsController extends Controller
             'process_date' => 'required',
             'product_id' => 'required',
             'shift_id' => 'required',
-            'process_time' => 'required',
+            'timeslot_id' => 'required',
+            'std_process_id' => 'required',
             'input_kg' => 'required',
             'output_kg' => 'required',
             'sum_kg' => 'required',
@@ -84,6 +89,10 @@ class FtLogsController extends Controller
             'ref_note' => 'required',
             'grade' => 'required']
         );
+
+        $stdData = StdProcess::where('product_id', $requestData['product_id'])->where('status', true)->first();
+
+        $requestData['std_process_id'] = $stdData->id;
 
         FtLog::create($requestData);
 
@@ -122,6 +131,7 @@ class FtLogsController extends Controller
         $productlist = Product::pluck('name', 'id');
         $shiftlist = Shift::pluck('name', 'id');
         $unitlist = Unit::pluck('name', 'id');
+        $timeslotlist = Timeslot::pluck('name', 'id');
         $gradelist = array(
             'A' => 'A',
             'B' => 'B',
@@ -131,7 +141,7 @@ class FtLogsController extends Controller
         );
         $process_time_format = date('H:i:s', strtotime($ft_log->process_time)); 
 
-        return view('ft_logs.edit', compact('ft_log','productlist', 'shiftlist', 'unitlist', 'process_time_format', 'gradelist'));
+        return view('ft_logs.edit', compact('ft_log','productlist', 'shiftlist', 'unitlist', 'process_time_format', 'gradelist', 'timeslotlist'));
     }
 
     /**
@@ -151,7 +161,7 @@ class FtLogsController extends Controller
             'process_date' => 'required',
             'product_id' => 'required',
             'shift_id' => 'required',
-            'process_time' => 'required',
+            'timeslot_id' => 'required',
             'input_kg' => 'required',
             'output_kg' => 'required',
             'sum_kg' => 'required',
@@ -163,6 +173,10 @@ class FtLogsController extends Controller
             'ref_note' => 'required',
             'grade' => 'required'
         ]);
+
+        $stdData = StdProcess::where('product_id', $requestData['product_id'])->where('status', true)->first();
+
+        $requestData['std_process_id'] = $stdData->id;
 
         $ft_log = FtLog::findOrFail($id);
         $ft_log->update($requestData);
