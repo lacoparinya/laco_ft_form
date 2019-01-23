@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Product;
+use App\ProductGroup;
 use Illuminate\Http\Request;
 
 class ProductsController extends Controller
@@ -25,7 +26,7 @@ class ProductsController extends Controller
         $perPage = 25;
 
         if (!empty($keyword)) {
-            $products = Product::latest()->paginate($perPage);
+            $products = Product::where('name', 'like', '%' . $keyword . '%')->orWhere('desc', 'like', '%' . $keyword . '%')->paginate($perPage);
         } else {
             $products = Product::latest()->paginate($perPage);
         }
@@ -40,7 +41,8 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        return view('products.create');
+        $productgrouplist = ProductGroup::pluck('name', 'id');
+        return view('products.create',compact('productgrouplist'));
     }
 
     /**
@@ -84,8 +86,9 @@ class ProductsController extends Controller
     public function edit($id)
     {
         $product = Product::findOrFail($id);
+        $productgrouplist = ProductGroup::pluck('name', 'id');
 
-        return view('products.edit', compact('product'));
+        return view('products.edit', compact('product', 'productgrouplist'));
     }
 
     /**

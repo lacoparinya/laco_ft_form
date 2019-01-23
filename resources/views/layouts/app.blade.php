@@ -62,6 +62,9 @@
                                     <a href="{{route('products.index')}}">Product</a>
                                     </li>
                                     <li>
+                                    <a href="{{route('product-groups.index')}}">Product Group</a>
+                                    </li>
+                                    <li>
                                     <a href="{{route('std-processs.index')}}">Std Productivity</a>
                                     </li>
                                      <li>

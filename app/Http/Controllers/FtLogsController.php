@@ -90,7 +90,9 @@ class FtLogsController extends Controller
             'grade' => 'required']
         );
 
-        $stdData = StdProcess::where('product_id', $requestData['product_id'])->where('status', true)->first();
+        $productGroup = Product::findOrFail($requestData['product_id']);
+
+        $stdData = StdProcess::where('product_id', $productGroup->product_group_id)->where('status', true)->first();
 
         $requestData['std_process_id'] = $stdData->id;
 
@@ -174,7 +176,9 @@ class FtLogsController extends Controller
             'grade' => 'required'
         ]);
 
-        $stdData = StdProcess::where('product_id', $requestData['product_id'])->where('status', true)->first();
+        $productGroup = Product::findOrFail($requestData['product_id']);
+
+        $stdData = StdProcess::where('product_id', $productGroup->product_group_id)->where('status', true)->first();
 
         $requestData['std_process_id'] = $stdData->id;
 

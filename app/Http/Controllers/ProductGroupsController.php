@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\StdProcess;
 use App\ProductGroup;
 use Illuminate\Http\Request;
 
-class StdProcesssController extends Controller
+class ProductGroupsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,12 +21,12 @@ class StdProcesssController extends Controller
         $perPage = 25;
 
         if (!empty($keyword)) {
-            $stdprocesss = StdProcess::latest()->paginate($perPage);
+            $productgroups = ProductGroup::where('name','like' , '%'.$keyword.'%')->orWhere('desc', 'like', '%' . $keyword . '%')->paginate($perPage);
         } else {
-            $stdprocesss = StdProcess::latest()->paginate($perPage);
+            $productgroups = ProductGroup::latest()->paginate($perPage);
         }
 
-        return view('std-processs.index', compact('stdprocesss'));
+        return view('product-groups.index', compact('productgroups'));
     }
 
     /**
@@ -37,8 +36,7 @@ class StdProcesssController extends Controller
      */
     public function create()
     {
-        $productlist = ProductGroup::pluck('name', 'id');
-        return view('std-processs.create', compact('productlist'));
+        return view('product-groups.create');
     }
 
     /**
@@ -53,9 +51,9 @@ class StdProcesssController extends Controller
         
         $requestData = $request->all();
 
-        StdProcess::create($requestData);
+        ProductGroup::create($requestData);
 
-        return redirect('std-processs')->with('flash_message', ' added!');
+        return redirect('product-groups')->with('flash_message', ' added!');
     }
 
     /**
@@ -67,9 +65,9 @@ class StdProcesssController extends Controller
      */
     public function show($id)
     {
-        $stdprocess = StdProcess::findOrFail($id);
+        $productgroup = ProductGroup::findOrFail($id);
 
-        return view('std-processs.show', compact('stdprocess'));
+        return view('product-groups.show', compact('productgroup'));
     }
 
     /**
@@ -81,10 +79,9 @@ class StdProcesssController extends Controller
      */
     public function edit($id)
     {
-        $productlist = ProductGroup::pluck('name', 'id');
-        $stdprocess = StdProcess::findOrFail($id);
+        $productgroup = ProductGroup::findOrFail($id);
 
-        return view('std-processs.edit', compact('stdprocess', 'productlist'));
+        return view('product-groups.edit', compact('productgroup'));
     }
 
     /**
@@ -100,10 +97,10 @@ class StdProcesssController extends Controller
         
         $requestData = $request->all();
 
-        $stdprocess = StdProcess::findOrFail($id);
-        $stdprocess->update($requestData);
+        $productgroup = ProductGroup::findOrFail($id);
+        $productgroup->update($requestData);
 
-        return redirect('std-processs')->with('flash_message', ' updated!');
+        return redirect('product-groups')->with('flash_message', ' updated!');
     }
 
     /**
@@ -115,8 +112,8 @@ class StdProcesssController extends Controller
      */
     public function destroy($id)
     {
-        StdProcess::destroy($id);
+        ProductGroup::destroy($id);
 
-        return redirect('std-processs')->with('flash_message', ' deleted!');
+        return redirect('product-groups')->with('flash_message', ' deleted!');
     }
 }
