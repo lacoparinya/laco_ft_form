@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\FtLog;
 use App\StdProcess;
+use App\Product;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -68,7 +69,12 @@ class DashboardController extends Controller
     public function timechartandproduct($selecteddate,$product_id)
     {
         $current_date = $selecteddate;
-        $stdprocess = StdProcess::where('product_id', $product_id)->first();
+
+        $productGroup = Product::findOrFail($product_id);
+
+        $stdprocess = StdProcess::where('product_id', $productGroup->product_group_id)->where('status', true)->first();
+
+       // $stdprocess = StdProcess::where('product_id', $product_id)->first();
 
         $rawdata = DB::table('ft_logs')
             ->join('products', 'products.id', '=', 'ft_logs.product_id')
