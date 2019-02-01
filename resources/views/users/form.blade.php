@@ -8,23 +8,30 @@
     <input class="form-control" name="username" type="text" id="username" value="{{ $user->username or ''}}" >
     {!! $errors->first('username', '<p class="help-block">:message</p>') !!}
 </div>
+
 <div class="form-group {{ $errors->has('group_id') ? 'has-error' : ''}}">
     <label for="group_id" class="control-label">{{ 'Group' }}</label>
-        {!! Form::select('group_id', $grouplist,$user->group_id, ['class' => 'form-control']) !!}
-        {!! $errors->first('group_id', '<p class="help-block">:message</p>') !!}
+    <select name="group_id" class="form-control dynamic" id="group_id">
+    @foreach ($grouplist as $optionKey => $optionValue)
+        <option value="{{ $optionKey }}" {{ (isset($user->group_id) && $user->group_id == $optionKey) ? 'selected' : ''}}>{{ $optionValue }}</option>
+    @endforeach
+</select>
+    {!! $errors->first('group_id', '<p class="help-block">:message</p>') !!}
 </div>
+
+
 <div class="form-group {{ $errors->has('password') ? 'has-error' : ''}}">
     <label for="password" class="control-label">{{ 'Password' }}</label>
     <input class="form-control" name="password" type="password" id="password" >
     {!! $errors->first('password', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group {{ $errors->has('fname') ? 'has-error' : ''}}">
-    <label for="fname" class="control-label">{{ 'Fname' }}</label>
+    <label for="fname" class="control-label">{{ 'First Name' }}</label>
     <input class="form-control" name="fname" type="text" id="fname" value="{{ $user->fname or ''}}" >
     {!! $errors->first('fname', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group {{ $errors->has('lname') ? 'has-error' : ''}}">
-    <label for="lname" class="control-label">{{ 'Lname' }}</label>
+    <label for="lname" class="control-label">{{ 'Last Name' }}</label>
     <input class="form-control" name="lname" type="text" id="lname" value="{{ $user->lname or ''}}" >
     {!! $errors->first('lname', '<p class="help-block">:message</p>') !!}
 </div>

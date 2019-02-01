@@ -71,9 +71,9 @@
                         <td>{{ $item->input_kg }}</td>
                         <td>{{ $item->output_kg }}</td>
                         <td>{{ $item->sum_kg }}</td>
-                        <td>{{ $item->yeild_percent }}</td>
                         <td>{{ $item->stdprocess->std_rate }}</td>
                         <td>{{ round(($item->output_kg/$item->num_classify)/$item->timeslot->gap,2)  }}</td>
+                        <td>{{ $item->yeild_percent }}</td>
                         <td>{{ $item->num_pk }}</td>
                         <td>{{ $item->num_pf }}</td>
                         <td>{{ $item->num_pst }}</td>
