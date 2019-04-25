@@ -47,7 +47,9 @@ $(document).ready(function () {
                     dependent: dependent
                 },
                 success: function (result) {
-                    $('#' + dependent).val(result);
+                    var jresult = JSON.parse(result);
+                    $('#' + dependent).val(jresult.value);
+                    $('#' + dependent + '_show').val(jresult.label);
                 }
             })
         }

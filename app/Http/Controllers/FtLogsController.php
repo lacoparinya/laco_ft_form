@@ -72,31 +72,36 @@ class FtLogsController extends Controller
         
         $requestData = $request->all();
 
-        $this->validate($request, [
-            'process_date' => 'required',
-            'product_id' => 'required',
-            'shift_id' => 'required',
-            'timeslot_id' => 'required',
-            'std_process_id' => 'required',
-            'input_kg' => 'required',
-            'output_kg' => 'required',
-            'sum_kg' => 'required',
-            'num_pk' => 'required',
-            'num_pf' => 'required',
-            'num_pst' => 'required',
-            'line_a' => 'required',
-            'line_b' => 'required',
-            'ref_note' => 'required',
-            'grade' => 'required']
-        );
-
         $productGroup = Product::findOrFail($requestData['product_id']);
 
         $stdData = StdProcess::where('product_id', $productGroup->product_group_id)->where('status', true)->first();
 
         $requestData['std_process_id'] = $stdData->id;
 
-        FtLog::create($requestData);
+
+/*
+        $this->validate(
+            $request,
+            [
+                'process_date' => 'required',
+                'product_id' => 'required',
+                'shift_id' => 'required',
+                'timeslot_id' => 'required',
+                'std_process_id' => 'required',
+                'input_kg' => 'required',
+                'output_kg' => 'required',
+                'sum_kg' => 'required',
+                'num_pk' => 'required',
+                'num_pf' => 'required',
+                'num_pst' => 'required',
+                'line_a' => 'required',
+                'line_b' => 'required',
+                'ref_note' => 'required',
+                'grade' => 'required'
+            ]
+        );
+*/
+        $result = FtLog::create($requestData);
 
         $this->recal($requestData['process_date']);
 

@@ -6,7 +6,8 @@
 </div>
 <div class="form-group col-md-4 {{ $errors->has('timeslot_id') ? 'has-error' : ''}}">
     <label for="timeslot_id" class="control-label">{{ 'เวลา' }}</label>
-    <select name="timeslot_id" class="form-control dynamic" id="timeslot_id" data-dependent = 'shift_id'>
+    <select name="timeslot_id" class="form-control dynamic" id="timeslot_id" data-dependent = 'shift_id' required>
+        <option value="">-</option>
     @foreach ($timeslotlist as $optionKey => $optionValue)
         <option value="{{ $optionKey }}" {{ (isset($ft_log->timeslot_id) && $ft_log->timeslot_id == $optionKey) ? 'selected' : ''}}>{{ $optionValue }}</option>
     @endforeach
@@ -19,11 +20,8 @@
 <div class="row">
 <div class="form-group col-md-4 {{ $errors->has('shift_id') ? 'has-error' : ''}}">
     <label for="shift_id" class="control-label">{{ 'กะ' }}</label>
-    <select name="shift_id" class="form-control" id="shift_id" >
-    @foreach ($shiftlist as $optionKey => $optionValue)
-        <option value="{{ $optionKey }}" {{ (isset($ft_log->shift_id) && $ft_log->shift_id == $optionKey) ? 'selected' : ''}}>{{ $optionValue }}</option>
-    @endforeach
-</select>
+    <input type="hidden" name="shift_id" id="shift_id" value="{{  $ft_log->shift_id or '' }}" />
+    <input class="form-control" name="shift_id_show" type="text" readonly id="shift_id_show" value="{{ $ft_log->shift->name or ''}}" >
     {!! $errors->first('shift_id', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group col-md-4 {{ $errors->has('product_id') ? 'has-error' : ''}}">
@@ -49,7 +47,7 @@
 </div>
 <div class="form-group col-md-4 {{ $errors->has('sum_kg') ? 'has-error' : ''}}">
     <label for="sum_kg" class="control-label">{{ 'คัดได้สะสม' }}</label>
-    <input required class="form-control" name="sum_kg" type="number" id="sum_kg" value="{{ $ft_log->sum_kg or ''}}" >
+    <input required class="form-control" name="sum_kg" type="number" id="sum_kg" value="{{ $ft_log->sum_kg or '0'}}" >
     {!! $errors->first('sum_kg', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group col-md-4 {{ $errors->has('yeild_percent') ? 'has-error' : ''}}">

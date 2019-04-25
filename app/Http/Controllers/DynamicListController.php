@@ -17,7 +17,8 @@ class DynamicListController extends Controller
         $timeslot = Timeslot::find($value);
 
        
-        $output = $timeslot->shift_id;
-        echo $output;
+        $output['value'] = $timeslot->shift_id;
+        $output['label'] = $timeslot->shift->name;
+        echo json_encode($output);
     }
 }
