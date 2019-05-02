@@ -9,7 +9,7 @@
                 <div class="panel-body">
                     <div class="row">
                     <div class="col-md-12">
-                    <div id="chart_div" style=" height: 500px;"></div>
+                    <div id="chart_div" style=" height: 600px;"></div>
                     </div>
                     <div class="col-md-12">
                       <table class='table'>
@@ -34,8 +34,8 @@
                           <td>{{ $item->tname }}</td>
                           <td>{{ $item->shname }}</td>
                           <td>{{ $item->name }}</td>
-                          <td>{{ $item->input_kg }}/{{ $item->output_kg }}</td>
-                          <td>{{ $item->sum_kg }}</td>
+                          <td>{{ number_format($item->input_kg,0,".",",") }}/{{ number_format($item->output_kg,0,".",",") }}</td>
+                          <td>{{ number_format($item->sum_kg,0,".",",") }}</td>
                           <td>{{ $item->num_pk }}/{{ $item->num_pf }}/{{ $item->num_pst }}</td>
                           <td>{{ $item->num_classify }}</td>
                           <td>{{ $item->line_a }}/{{ $item->line_b }}</td>
@@ -68,12 +68,21 @@
           @endforeach
         ]);
 
+        var max1 = {{ $rawdata2[0]->inmax }} ;
+        var max2 = 
+        @if ($rawdata2[0]->maxstd > $rawdata2[0]->maxstp) 
+          {{ $rawdata2[0]->maxstd }}
+        @else 
+          {{ $rawdata2[0]->maxstp }}
+        @endif
+        ;
+
         var options = {
           displayAnnotations: true,
             chartArea: {
-       top: 45,
+       top: 85,
        right: 110,
-       height: '50%' 
+       height: '65%' 
     },
     annotations: {
         alwaysOutside : false
@@ -82,11 +91,17 @@
           legend: { position: 'top', maxLines: 3 },
           vAxes: {
             0: {
-              title: 'ปริมาณสินค้า (kg)'
+              title: 'ปริมาณสินค้า (kg)',
+              viewWindow: {
+            max : max1 + 1500,
+          }
               }, 
             1: {
               title: 'Productivity',
-              format: '###.00'
+              format: '###.00',
+              viewWindow: {
+            max : max2 + 20,
+          }
               }
           },
           hAxis: {title: 'เวลา'},

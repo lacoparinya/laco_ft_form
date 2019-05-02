@@ -30,9 +30,9 @@
       function drawVisualization() {
         // Some raw data (not necessarily accurate)
         var data = google.visualization.arrayToDataTable([
-          ['Product', 'Output (kg)', ],
+          ['Product', 'Output (kg)', { role: 'annotation' }, ],
           @foreach ($rawdata as $item)
-            ['{{ $item->name }}',   {{ $item->sumoutput }},              ],
+            ['{{ $item->name }}',   {{ $item->sumoutput }},   {{ $item->sumoutput }},              ],
           @endforeach
         ]);
 
@@ -45,16 +45,25 @@
           series: {5: {type: 'line'}}
         };
 
-        var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+        //var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+       // chart.draw(data, options);
+        var container = document.getElementById('chart_div');
+        var chart = new google.visualization.ComboChart(container);
+
+        google.visualization.events.addListener(chart, 'ready', function () {
+        container.innerHTML = '<img src="' + chart.getImageURI() + '">';
+        //console.log(chart_div.innerHTML);
+      });
+
         chart.draw(data, options);
       }
 
       function drawVisualization2() {
         // Some raw data (not necessarily accurate)
         var data = google.visualization.arrayToDataTable([
-          ['Product', 'Yeild (%)', ],
+          ['Product', 'Yeild (%)',{ role: 'annotation' }, ],
           @foreach ($rawdata as $item)
-            ['{{ $item->name }}',  {{ round($item->yeilds,2) }},         ],
+            ['{{ $item->name }}',  {{ round($item->yeilds,2) }},   {{ round($item->yeilds,2) }},      ],
           @endforeach
         ]);
 
@@ -67,7 +76,14 @@
           series: {5: {type: 'line'}}
         };
 
-        var chart = new google.visualization.ComboChart(document.getElementById('chart_div2'));
+        var container = document.getElementById('chart_div2');
+        var chart = new google.visualization.ComboChart(container);
+
+        google.visualization.events.addListener(chart, 'ready', function () {
+        container.innerHTML = '<img src="' + chart.getImageURI() + '">';
+        //console.log(chart_div.innerHTML);
+      });
+
         chart.draw(data, options);
       }
     </script>

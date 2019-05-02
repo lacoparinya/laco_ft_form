@@ -58,10 +58,10 @@
                                         <td>{{ $item->timeslot->name }}</td>
                                         <td>{{ $item->shift->name }}</td>
                                         <td>{{ $item->product->name }}</td>
-                                        <td>{{ $item->input_kg }}</td>
-                                        <td>{{ $item->output_kg }}</td>
-                                        <td>{{ $item->sum_kg }}</td>
-                                        <td>{{ round($item->yeild_percent,2) }}</td>
+                                        <td>{{ number_format($item->input_kg,0,".",",") }}</td>
+                                        <td>{{ number_format($item->output_kg,0,".",",") }}</td>
+                                        <td>{{ number_format($item->sum_kg,0,".",",") }}</td>
+                                        <td>{{ number_format(round($item->yeild_percent,2),2,".",",")  }}</td>
                                         <td>{{ $item->grade }}</td>
                                         <td>{{ $item->note }}</td>
                                         <td>
