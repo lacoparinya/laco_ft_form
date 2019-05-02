@@ -37,7 +37,8 @@
                                         <th colspan=2>Process</th>
                                         <th rowspan=2>กะ</th>
                                         <th rowspan=2>คัดผลิตภัณท์</th>
-                                        <th colspan=3>(kg)</th>
+                                        <th colspan=2>(kg)</th>
+                                        <th colspan=2>รวม(kg)</th>
                                         <th rowspan=2>Yeild (%)</th>
                                         <th rowspan=2>เกรด</th>
                                         <th rowspan=2>หมายเหตุ</th>
@@ -48,7 +49,8 @@
                                         <th>เวลา</th>
                                         <th>Input</th>
                                         <th>Output</th>
-                                        <th>รวม</th>
+                                        <th>Input</th>
+                                        <th>Output</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -60,6 +62,7 @@
                                         <td>{{ $item->product->name }}</td>
                                         <td>{{ number_format($item->input_kg,0,".",",") }}</td>
                                         <td>{{ number_format($item->output_kg,0,".",",") }}</td>
+                                        <td>{{ number_format($item->sum_in_kg,0,".",",") }}</td>
                                         <td>{{ number_format($item->sum_kg,0,".",",") }}</td>
                                         <td>{{ number_format(round($item->yeild_percent,2),2,".",",")  }}</td>
                                         <td>{{ $item->grade }}</td>
@@ -68,7 +71,7 @@
                                             <a href="{{ url('/chart/' . $item->process_date) }}" title="สรุปรายวัน"><button class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-stats" aria-hidden="true"></i></button></a>
                                             <a href="{{ url('/charttime/' . $item->process_date) }}" title="สรุปรายชม."><button class="btn btn-info btn-sm"><i class="glyphicon glyphicon-stats" aria-hidden="true"></i></button></a>
                                             <a href="{{ url('/charttimeproduct/' . $item->process_date .'/'. $item->product_id) }}" title="สรุปรายชม.ต่อสินค้า"><button class="btn btn-success btn-sm"><i class="glyphicon glyphicon-stats" aria-hidden="true"></i></button></a>
-                                            
+                                            <br/>
                                             <a href="{{ url('/ft_logs/' . $item->id) }}" title="View ft_log"><button class="btn btn-warning btn-sm"><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i></button></a>
                                             
                                             <a href="{{ url('/ft_logs/' . $item->id . '/edit') }}" title="Edit ft_log"><button class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-pencil" aria-hidden="true"></i></button></a>

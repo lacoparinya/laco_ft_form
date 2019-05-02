@@ -215,19 +215,21 @@ class FtLogsController extends Controller
     private function recal($date){
         $data = FtLog::where('process_date', $date)->orderBy('process_time')->get();
         $prevCode = "";
-        $sum = 0;
+        $sum = array();
+        $sumin = array();
         foreach ($data as $key => $value) {
-            if($prevCode == $value->product_id){
-                $sum = $sum + $value->output_kg;
+            if(isset($sum[$value->product_id])){
+                $sum[$value->product_id] = $sum[$value->product_id] + $value->output_kg;
+                $sumin[$value->product_id] = $sum[$value->product_id] + $value->input_kg;
             }else{
-                $sum = $value->output_kg;
+                $sum[$value->product_id] = $value->output_kg;
+                $sumin[$value->product_id] = $value->input_kg;
             }
             $ft_log = FtLog::find($value->id);
 
-            $ft_log->sum_kg = $sum;
+            $ft_log->sum_kg = $sum[$value->product_id];
+            $ft_log->sum_in_kg = $sumin[$value->product_id];
             $ft_log->save();
-
-            $prevCode = $value->product_id;
         }
     }
 }

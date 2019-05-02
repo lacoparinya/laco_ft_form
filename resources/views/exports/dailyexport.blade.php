@@ -45,6 +45,7 @@
                 <th>คัดผลิตภัณฑ์</th>
                 <th>Input/kg.</th>
                 <th>Output/kg.</th>
+                <th>inputสะสม</th>
                 <th>คัดได้สะสม</th>
                 <th>STD Productivity</th>
                 <th>Productivity</th>
@@ -70,6 +71,7 @@
                         <td>{{ $item->product->name }}</td>
                         <td>{{ $item->input_kg }}</td>
                         <td>{{ $item->output_kg }}</td>
+                        <td>{{ $item->sum_in_kg }}</td>
                         <td>{{ $item->sum_kg }}</td>
                         <td>{{ $item->stdprocess->std_rate }}</td>
                         <td>{{ round(($item->output_kg/$item->num_classify)/$item->timeslot->gap,2)  }}</td>
