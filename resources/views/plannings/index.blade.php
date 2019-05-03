@@ -3,9 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            @include('admin.sidebar')
-
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">Plannings</div>
                     <div class="card-body">
@@ -30,14 +28,22 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>#</th><th>Actions</th>
+                                        <th>#</th>
+                                        <th>วันที่</th>
+                                        <th>ส่วนงาน</th>
+                                        <th>แผนคน</th>
+                                        <th>แผนจำนวน</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($plannings as $item)
                                     <tr>
                                         <td>{{ $loop->iteration or $item->id }}</td>
-                                        
+                                        <td>{{ $item->plan_date }}</td>
+                                        <td>{{ $item->job->name }}</td>
+                                        <td>{{ $item->target_man }}</td>
+                                        <td>{{ $item->target_value }}</td>
                                         <td>
                                             <a href="{{ url('/plannings/' . $item->id) }}" title="View Planning"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
                                             <a href="{{ url('/plannings/' . $item->id . '/edit') }}" title="Edit Planning"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
