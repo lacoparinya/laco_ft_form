@@ -85,6 +85,9 @@
                                     <a href="{{route('units.index')}}">Unit</a>
                                     </li>
                                     <li>
+                                    <a href="{{ url('/main') }}">Main</a>
+                                    </li>
+                                    <li>
                                     <a href="{{route('ft_logs.index')}}">FT Logs</a>
                                     </li>
                                     <li><hr/></li>
@@ -108,6 +111,9 @@
                                 </ul>
                                 @else
                                 <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                    <a href="{{ url('/main') }}">Main</a>
+                                    </li>
                                     <li>
                                     <a href="{{route('ft_logs.index')}}">FT Logs</a>
                                     </li>

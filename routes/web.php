@@ -37,3 +37,5 @@ Route::get('/chart/{selecteddate}', 'DashboardController@datechart');
 Route::get('/charttime/{selecteddate}', 'DashboardController@timechart');
 Route::get('/charttimeproduct/{selecteddate}/{product_id}', 'DashboardController@timechartandproduct');
 Route::post('dynamic-list/shiftfetch', 'DynamicListController@shiftfetch')->name('dynamic-list.fetch');
+Route::get('/summary/{date}', 'DashboardController@summary');
+Route::get('/main', 'DashboardController@main');

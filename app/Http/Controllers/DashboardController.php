@@ -139,4 +139,54 @@ class DashboardController extends Controller
 
         return view('dashboards.charttimeproduct', compact('rawdata', 'rawdata2', 'current_date', 'stdprocess'));
     }
+
+    public function summary($date){
+
+        $rawdata = DB::table('ft_logs')
+            ->join('plannings', function ($join) {
+                $join->on('plannings.job_id', '=', 'ft_logs.job_id')
+                ->on( 'plannings.plan_date', '=', 'ft_logs.process_date');
+            })
+            ->join('jobs', 'jobs.id', '=', 'ft_logs.job_id')
+            ->join('timeslots', 'timeslots.id', '=', 'ft_logs.timeslot_id')
+            ->select(
+                DB::raw('jobs.name,
+                        ft_logs.process_date,
+                        floor(sum(ft_logs.num_classify)/sum(timeslots.gap)) as man_act,
+                        plannings.target_man as man_target,
+                        floor(sum(ft_logs.output_kg)/sum(timeslots.gap)) as value_act,
+                        floor(plannings.target_value*(sum(ft_logs.num_classify)/sum(timeslots.gap) / plannings.target_man)) as value_cal,
+                        plannings.target_value as value_target,
+                        sum(ft_logs.output_kg) as sum_act,
+                        round(sum(timeslots.gap)*(plannings.target_value*(sum(ft_logs.num_classify)/sum(timeslots.gap) / plannings.target_man)),0) as sum_cal,
+                        plannings.target_value*sum(timeslots.gap) as sum_target,
+                        round(sum(timeslots.gap)*(plannings.target_value*(sum(ft_logs.num_classify)/sum(timeslots.gap) / plannings.target_man)),0) - 
+                        plannings.target_value*sum(timeslots.gap) as gap,
+                        plannings.note,
+                        sum(timeslots.gap) as sum_hr')
+            )
+            ->where('ft_logs.process_date', $date)
+            ->groupBy(DB::raw('jobs.name,ft_logs.process_date,plannings.target_man,plannings.target_value,plannings.note'))
+            ->get();
+        return view('dashboards.summary', compact('rawdata'));
+    }
+
+    public function main()
+    {
+        $current_date = date('Y-m-d');
+        $rawdata = DB::table('ft_logs')
+            ->join('products', 'products.id', '=', 'ft_logs.product_id')
+            ->join('timeslots', 'timeslots.id', '=', 'ft_logs.timeslot_id')
+            ->select(DB::raw('ft_logs.process_date,ft_logs.product_id,
+                        products.name,
+                        sum(ft_logs.input_kg) as suminput,
+                        sum(ft_logs.output_kg) as sumoutput,
+                        sum(ft_logs.output_kg)*100/sum(ft_logs.input_kg) as yeilds'))
+            ->groupBy(DB::raw('ft_logs.process_date,ft_logs.product_id,
+                        products.name'))
+            ->orderBy(DB::raw('ft_logs.process_date DESC,
+                        products.name'))
+            ->get();
+        return view('dashboards.main', compact('rawdata', 'current_date'));
+    }
 }
