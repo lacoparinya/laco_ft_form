@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\FtLog;
 use App\StdProcess;
 use App\Product;
+use App\Planning;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -141,6 +142,16 @@ class DashboardController extends Controller
     }
 
     public function summary($date){
+
+        $chk = Planning::where('plan_date',$date)->first();
+
+        if(empty($chk)){
+            $tmp['job_id'] = 1;
+            $tmp['plan_date'] = $date;
+            $tmp['target_man'] = 1;
+            $tmp['target_value'] = 1;
+            Planning::create( $tmp);
+        }
 
         $rawdata = DB::table('ft_logs')
             ->join('plannings', function ($join) {
