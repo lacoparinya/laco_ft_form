@@ -16,6 +16,12 @@ class PlanningsController extends Controller
      *
      * @return \Illuminate\View\View
      */
+
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
+
     public function index(Request $request)
     {
         $keyword = $request->get('search');

@@ -70,6 +70,34 @@
                                     </li>
                                 </ul>
                                 @else
+                                @if ( App\User::find(Auth::user()->id)->group->name == 'user_pack' )
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                    <a href="{{ url('/main') }}">Main</a>
+                                    </li>
+                                    <li>
+                                    <a href="{{route('ft-log-packs.index')}}">FT Pack Logs</a>
+                                    </li>
+                                    <li><hr/></li>
+                                    <li>
+                                    <a href="{{route('reports.dailypack')}}">Daily Report</a>
+                                    </li>
+                                    <li>
+                                    <a href="{{route('reports.rangepack')}}">Range Report</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                            Logout
+                                        </a>
+
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                        </form>
+                                    </li>
+                                </ul>
+                                @else
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
                                     <a href="{{ url('/main') }}">Main</a>
@@ -96,6 +124,7 @@
                                         </form>
                                     </li>
                                 </ul>
+                                @endif
                                 @endif
                             </li>
                         @endif

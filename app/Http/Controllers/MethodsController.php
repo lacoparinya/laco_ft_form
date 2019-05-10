@@ -5,34 +5,29 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Method;
 use App\Job;
 use Illuminate\Http\Request;
 
-class JobsController extends Controller
+class MethodsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\View\View
      */
-
-    public function __construct()
-    {
-        $this->middleware('admin');
-    }
-
     public function index(Request $request)
     {
         $keyword = $request->get('search');
         $perPage = 25;
 
         if (!empty($keyword)) {
-            $jobs = Job::latest()->paginate($perPage);
+            $methods = Method::latest()->paginate($perPage);
         } else {
-            $jobs = Job::latest()->paginate($perPage);
+            $methods = Method::latest()->paginate($perPage);
         }
 
-        return view( 'jobs.index', compact( 'jobs'));
+        return view( 'methods.index', compact( 'methods'));
     }
 
     /**
@@ -42,7 +37,8 @@ class JobsController extends Controller
      */
     public function create()
     {
-        return view( 'jobs.create');
+        $joblist = Job::pluck('name', 'id');
+        return view( 'methods.create',compact('joblist'));
     }
 
     /**
@@ -57,9 +53,9 @@ class JobsController extends Controller
         
         $requestData = $request->all();
         
-        Job::create($requestData);
+        Method::create($requestData);
 
-        return redirect( 'jobs')->with('flash_message', ' added!');
+        return redirect( 'methods')->with('flash_message', ' added!');
     }
 
     /**
@@ -71,9 +67,9 @@ class JobsController extends Controller
      */
     public function show($id)
     {
-        $job = Job::findOrFail($id);
+        $method = Method::findOrFail($id);
 
-        return view('jobs.show', compact( 'job'));
+        return view( 'methods.show', compact( 'method'));
     }
 
     /**
@@ -85,9 +81,10 @@ class JobsController extends Controller
      */
     public function edit($id)
     {
-        $job = Job::findOrFail($id);
+        $method = Method::findOrFail($id);
+        $joblist = Job::pluck('name', 'id');
 
-        return view( 'jobs.edit', compact('job'));
+        return view( 'methods.edit', compact( 'method', 'joblist'));
     }
 
     /**
@@ -103,10 +100,10 @@ class JobsController extends Controller
         
         $requestData = $request->all();
 
-        $job = Job::findOrFail($id);
-        $job->update($requestData);
+        $method = Method::findOrFail($id);
+        $method->update($requestData);
 
-        return redirect( 'jobs')->with('flash_message', ' updated!');
+        return redirect( 'methods')->with('flash_message', ' updated!');
     }
 
     /**
@@ -118,8 +115,8 @@ class JobsController extends Controller
      */
     public function destroy($id)
     {
-        Job::destroy($id);
+        Method::destroy($id);
 
-        return redirect( 'jobs')->with('flash_message', ' deleted!');
+        return redirect( 'methods')->with('flash_message', ' deleted!');
     }
 }

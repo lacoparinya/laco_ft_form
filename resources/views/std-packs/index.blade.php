@@ -3,16 +3,15 @@
 @section('content')
     <div class="container">
         <div class="row">
-
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Users</div>
+                    <div class="card-header">Stdpacks</div>
                     <div class="card-body">
-                        <a href="{{ url('/users/create') }}" class="btn btn-success btn-sm" title="Add New user">
+                        <a href="{{ url('/std-packs/create') }}" class="btn btn-success btn-sm" title="Add New StdPack">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New
                         </a>
 
-                        <form method="GET" action="{{ url('/users') }}" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
+                        <form method="GET" action="{{ url('/std-packs') }}" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
                             <div class="input-group">
                                 <input type="text" class="form-control" name="search" placeholder="Search..." value="{{ request('search') }}">
                                 <span class="input-group-append">
@@ -29,31 +28,35 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>#</th><th>Email</th><th>Name</th><th>Username</th><th>Group</th><th>Actions</th>
+                                        <th>#</th>
+                                        <th>วิธี</th>
+                                        <th>Std Rate</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($users as $item)
+                                @foreach($stdpacks as $item)
                                     <tr>
                                         <td>{{ $loop->iteration or $item->id }}</td>
-                                        <td>{{ $item->email }}</td><td>{{ $item->fname }} {{ $item->lname }}</td>
-                                        <td>{{ $item->username }}</td>
-                                        <td>{{ $item->group->name }}</td>
+                                        <td>{{ $item->method->name }}</td>
+                                        <td>{{ number_format($item->std_rate,2,".",",") }}</td>
+                                        <td>{{ $item->status }}</td>
                                         <td>
-                                            <a href="{{ url('/users/' . $item->id) }}" title="View user"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
-                                            <a href="{{ url('/users/' . $item->id . '/edit') }}" title="Edit user"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
+                                            <a href="{{ url('/std-packs/' . $item->id) }}" title="View StdPack"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
+                                            <a href="{{ url('/std-packs/' . $item->id . '/edit') }}" title="Edit StdPack"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
 
-                                            <form method="POST" action="{{ url('/users' . '/' . $item->id) }}" accept-charset="UTF-8" style="display:inline">
+                                            <form method="POST" action="{{ url('/std-packs' . '/' . $item->id) }}" accept-charset="UTF-8" style="display:inline">
                                                 {{ method_field('DELETE') }}
                                                 {{ csrf_field() }}
-                                                <button type="submit" class="btn btn-danger btn-sm" title="Delete user" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+                                                <button type="submit" class="btn btn-danger btn-sm" title="Delete StdPack" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
                                             </form>
                                         </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
                             </table>
-                            <div class="pagination-wrapper"> {!! $users->appends(['search' => Request::get('search')])->render() !!} </div>
+                            <div class="pagination-wrapper"> {!! $stdpacks->appends(['search' => Request::get('search')])->render() !!} </div>
                         </div>
 
                     </div>

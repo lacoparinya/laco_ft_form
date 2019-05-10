@@ -5,34 +5,29 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Job;
+use App\StdPack;
+use App\Method;
 use Illuminate\Http\Request;
 
-class JobsController extends Controller
+class StdPacksController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\View\View
      */
-
-    public function __construct()
-    {
-        $this->middleware('admin');
-    }
-
     public function index(Request $request)
     {
         $keyword = $request->get('search');
         $perPage = 25;
 
         if (!empty($keyword)) {
-            $jobs = Job::latest()->paginate($perPage);
+            $stdpacks = StdPack::latest()->paginate($perPage);
         } else {
-            $jobs = Job::latest()->paginate($perPage);
+            $stdpacks = StdPack::latest()->paginate($perPage);
         }
 
-        return view( 'jobs.index', compact( 'jobs'));
+        return view( 'std-packs.index', compact( 'stdpacks'));
     }
 
     /**
@@ -42,7 +37,8 @@ class JobsController extends Controller
      */
     public function create()
     {
-        return view( 'jobs.create');
+        $methodlist = Method::pluck('name', 'id');
+        return view( 'std-packs.create',compact( 'methodlist'));
     }
 
     /**
@@ -56,10 +52,10 @@ class JobsController extends Controller
     {
         
         $requestData = $request->all();
-        
-        Job::create($requestData);
 
-        return redirect( 'jobs')->with('flash_message', ' added!');
+        StdPack::create($requestData);
+
+        return redirect( 'std-packs')->with('flash_message', ' added!');
     }
 
     /**
@@ -71,9 +67,9 @@ class JobsController extends Controller
      */
     public function show($id)
     {
-        $job = Job::findOrFail($id);
+        $stdpack = StdPack::findOrFail($id);
 
-        return view('jobs.show', compact( 'job'));
+        return view( 'std-packs.show', compact( 'stdpack'));
     }
 
     /**
@@ -85,9 +81,9 @@ class JobsController extends Controller
      */
     public function edit($id)
     {
-        $job = Job::findOrFail($id);
-
-        return view( 'jobs.edit', compact('job'));
+        $stdpack = StdPack::findOrFail($id);
+        $methodlist = Method::pluck('name', 'id');
+        return view( 'std-packs.edit', compact( 'stdpack', 'methodlist'));
     }
 
     /**
@@ -103,10 +99,10 @@ class JobsController extends Controller
         
         $requestData = $request->all();
 
-        $job = Job::findOrFail($id);
-        $job->update($requestData);
+        $stdpack = StdPack::findOrFail($id);
+        $stdpack->update($requestData);
 
-        return redirect( 'jobs')->with('flash_message', ' updated!');
+        return redirect( 'std-packs')->with('flash_message', ' updated!');
     }
 
     /**
@@ -118,8 +114,8 @@ class JobsController extends Controller
      */
     public function destroy($id)
     {
-        Job::destroy($id);
+        StdPack::destroy($id);
 
-        return redirect( 'jobs')->with('flash_message', ' deleted!');
+        return redirect( 'std-packs')->with('flash_message', ' deleted!');
     }
 }

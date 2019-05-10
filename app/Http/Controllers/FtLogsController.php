@@ -12,6 +12,7 @@ use App\Unit;
 use App\Timeslot;
 use App\StdProcess;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FtLogsController extends Controller
 {
@@ -26,6 +27,12 @@ class FtLogsController extends Controller
      */
     public function index(Request $request)
     {
+        $user = Auth::user();
+        if($user->group->name == 'user_pack'){
+            return redirect('ft-log-packs');
+        }
+        
+
         $keyword = $request->get('search');
         $perPage = 25;
 
@@ -233,3 +240,4 @@ class FtLogsController extends Controller
         }
     }
 }
+
