@@ -18,10 +18,13 @@ class CreateFtLogsTable extends Migration
             $table->date('process_date');
             $table->integer('product_id');
             $table->integer('shift_id');
+            $table->integer('timeslot_id');
+            $table->integer('time_seq');
             $table->time('process_time');
             $table->float('input_kg');
             $table->float('output_kg');
             $table->float('sum_kg');
+            $table->float('sum_in_kg');
             $table->float('yeild_percent');
             $table->integer('num_pk');
             $table->integer('num_pf');
@@ -31,6 +34,8 @@ class CreateFtLogsTable extends Migration
             $table->integer('line_b');
             $table->integer('line_classify');
             $table->integer('line_classify_unit');
+            $table->string('grade',20);
+            $table->string('ref_note', 255);
             $table->text('note');
             $table->timestamps();
         });

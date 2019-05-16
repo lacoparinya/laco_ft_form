@@ -10,7 +10,7 @@
                     <div class="card-body">
                         <a href="{{ url('/ft_logs') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
                 
-                        <form method="POST" action="{{ url('/reports/reportPackAction') }}" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
+                        <form method="POST" action="{{ url('/reports/reportAction') }}" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <div class="row">
                             <div class="form-group col-md-6 {{ $errors->has('from_date') ? 'has-error' : ''}}">

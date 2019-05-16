@@ -45,10 +45,20 @@
                                     <a href="{{ route('plannings.index') }}">Planning</a>
                                     </li>
                                     <li>
+                                    <a href="{{ route('methods.index') }}">Methods</a>
+                                    </li>
+                                    <li>
+                                    <a href="{{route('std-packs.index')}}">Std Pack</a>
+                                    </li>
+                                    <li><hr/></li>
+                                    <li>
                                     <a href="{{ url('/main') }}">Main</a>
                                     </li>
                                     <li>
                                     <a href="{{route('ft_logs.index')}}">FT Logs</a>
+                                    </li>
+                                    <li>
+                                    <a href="{{route('ft-log-packs.index')}}">FT Pack Logs</a>
                                     </li>
                                     <li><hr/></li>
                                     <li>

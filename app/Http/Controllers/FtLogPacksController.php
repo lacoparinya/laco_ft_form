@@ -25,10 +25,22 @@ class FtLogPacksController extends Controller
         $perPage = 25;
 
         if (!empty($keyword)) {
-            $ftlogpacks = FtLogPack::latest()->paginate($perPage);
+            $products = Product::where('name', 'like', '%' . $keyword . '%')->pluck('id')->toArray();
+            if (empty($products)) {
+                $ftlogpacks = FtLogPack::where('note', 'like', '%' . $keyword . '%')
+                    ->orderBy('process_date', 'DESC')
+                    ->orderBy('timeslot_id', 'DESC')
+                    ->paginate($perPage);
+            } else {
+                $ftlogpacks = FtLogPack::where('note', 'like', '%' . $keyword . '%')
+                    ->orWhereIn('product_id', $products)
+                    ->orderBy('process_date', 'DESC')
+                    ->orderBy('timeslot_id', 'DESC')
+                    ->paginate($perPage);
+            }
         } else {
-            $ftlogpacks = FtLogPack::latest()->paginate($perPage);
-        }
+            $ftlogpacks = FtLogPack::orderBy('process_date', 'DESC')->orderBy('timeslot_id', 'DESC')->paginate($perPage);
+        } 
 
         return view( 'ft-log-packs.index', compact( 'ftlogpacks'));
     }
@@ -95,6 +107,10 @@ class FtLogPacksController extends Controller
             }
 
         }
+
+        $timeSlotObj = Timeslot::findOrFail($requestData['timeslot_id']);
+
+        $requestData['time_seq'] = $timeSlotObj->seq;
 
        // var_dump($requestData);
         FtLogPack::create($requestData);
@@ -181,6 +197,9 @@ class FtLogPacksController extends Controller
             }
         }
 
+        $timeSlotObj = Timeslot::findOrFail($requestData['timeslot_id']);
+
+        $requestData['time_seq'] = $timeSlotObj->seq;
 
         $ftlogpack = FtLogPack::findOrFail($id);
         $ftlogpack->update($requestData);

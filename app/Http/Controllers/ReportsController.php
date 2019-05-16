@@ -24,7 +24,7 @@ class ReportsController extends Controller
         
         if($requestData['action_type'] == 'daily')
         {
-            $data = FtLog::where('process_date', $requestData['process_date'])->orderBy('timeslot_id')->get();
+            $data = FtLog::where('process_date', $requestData['process_date'])->orderBy('time_seq')->get();
 
             $filename = "ft_report_" . date('ymdHi');
 
@@ -34,7 +34,7 @@ class ReportsController extends Controller
                 });
             })->export('xlsx');
         }elseif($requestData ['action_type'] == 'range'){
-            $data = FtLog::whereBetween('process_date', [$requestData['from_date'], $requestData['to_date']])->orderBy('timeslot_id')->get();
+            $data = FtLog::whereBetween('process_date', [$requestData['from_date'], $requestData['to_date']])->orderBy('process_date')->orderBy('time_seq')->get();
 
             $filename = "ft_report_" . date('ymdHi');
 
@@ -51,7 +51,7 @@ class ReportsController extends Controller
         $requestData = $request->all();
 
         if ($requestData['action_type'] == 'daily') {
-            $data = FtLogPack::where('process_date', $requestData['process_date'])->orderBy('timeslot_id')->get();
+            $data = FtLogPack::where('process_date', $requestData['process_date'])->orderBy( 'time_seq')->get();
 
             $filename = "ft_report_" . date('ymdHi');
 
@@ -61,7 +61,7 @@ class ReportsController extends Controller
                 });
             })->export('xlsx');
         } elseif ($requestData['action_type'] == 'range') {
-            $data = FtLogPack::whereBetween('process_date', [$requestData['from_date'], $requestData['to_date']])->orderBy('timeslot_id')->get();
+            $data = FtLogPack::whereBetween('process_date', [$requestData['from_date'], $requestData['to_date']])->orderBy('process_date')->orderBy( 'time_seq')->get();
 
             $filename = "ft_report_" . date('ymdHi');
 
@@ -71,6 +71,11 @@ class ReportsController extends Controller
                 });
             })->export('xlsx');
         }
+    }
+
+    public function range()
+    {
+        return view('reports.range');
     }
 
     public function rangepack()

@@ -12,7 +12,21 @@
                         
 
                         <form method="GET" action="{{ url('/ft-log-packs') }}" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
-                            
+                            <div class="row">
+                            <div class="col-md-3">
+                                    <div class="input-group col-md-12">
+                                        <input type="text" class="form-control" name="search" placeholder="Search..." value="{{ request('search') }}">
+                                            
+                                    </div>
+                        </div>
+                        <div class="col-md-9">
+                                    <div class="input-group"> <button class="btn btn-secondary" type="submit">
+                                                <i class="glyphicon glyphicon-search"></i>
+                                            </button>
+                                       
+                                    </div>
+                                    </div>
+                        </div>
                         </form>
 
                         <div class="table-responsive">

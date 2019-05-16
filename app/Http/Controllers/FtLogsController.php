@@ -37,11 +37,22 @@ class FtLogsController extends Controller
         $perPage = 25;
 
         if (!empty($keyword)) {
-            $ft_logs = FtLog::orderBy('process_date', 'DESC')->orderBy('process_time', 'DESC')->paginate($perPage);
+            $products = Product::where('name', 'like', '%' . $keyword . '%')->pluck('id')->toArray();
+            if(empty($products)){
+                $ft_logs = FtLog::where('note', 'like', '%' . $keyword . '%')
+                    ->orderBy('process_date', 'DESC')
+                    ->orderBy('timeslot_id', 'DESC')
+                    ->paginate($perPage);
+            }else{
+                $ft_logs = FtLog::where('note', 'like', '%' . $keyword . '%')
+                    ->orWhereIn('product_id',$products)
+                    ->orderBy('process_date', 'DESC')
+                    ->orderBy('timeslot_id', 'DESC')
+                    ->paginate($perPage);
+            }
         } else {
-            $ft_logs = FtLog::orderBy('process_date', 'DESC')->orderBy('process_time', 'DESC')->paginate($perPage);
+            $ft_logs = FtLog::orderBy('process_date', 'DESC')->orderBy( 'timeslot_id', 'DESC')->paginate($perPage);
         }
-
         return view('ft_logs.index', compact('ft_logs'));
     }
 
@@ -85,7 +96,9 @@ class FtLogsController extends Controller
 
         $requestData['std_process_id'] = $stdData->id;
 
+        $timeSlotObj = Timeslot::findOrFail($requestData['timeslot_id']);
 
+        $requestData['time_seq'] = $timeSlotObj->seq;
 /*
         $this->validate(
             $request,
@@ -193,6 +206,10 @@ class FtLogsController extends Controller
         $stdData = StdProcess::where('product_id', $productGroup->product_group_id)->where('status', true)->first();
 
         $requestData['std_process_id'] = $stdData->id;
+
+        $timeSlotObj = Timeslot::findOrFail($requestData['timeslot_id']);
+
+        $requestData['time_seq'] = $timeSlotObj->seq;
 
         $ft_log = FtLog::findOrFail($id);
         $ft_log->update($requestData);
