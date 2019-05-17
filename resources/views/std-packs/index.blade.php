@@ -30,6 +30,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>วิธี</th>
+                                        <th>บรรจุ</th>
                                         <th>Std Rate</th>
                                         <th>Status</th>
                                         <th>Actions</th>
@@ -40,6 +41,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration or $item->id }}</td>
                                         <td>{{ $item->method->name }}</td>
+                                        <td>{{ $item->package->name or '' }}</td>
                                         <td>{{ number_format($item->std_rate,2,".",",") }}</td>
                                         <td>{{ $item->status }}</td>
                                         <td>

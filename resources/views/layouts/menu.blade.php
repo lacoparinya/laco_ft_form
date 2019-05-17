@@ -52,20 +52,26 @@
                                     </li>
                                     <li><hr/></li>
                                     <li>
-                                    <a href="{{ url('/main') }}">Main</a>
+                                    <a href="{{ url('/main') }}">Main Select</a>
                                     </li>
                                     <li>
-                                    <a href="{{route('ft_logs.index')}}">FT Logs</a>
+                                    <a href="{{route('ft_logs.index')}}">FT Select Logs</a>
                                     </li>
                                     <li>
                                     <a href="{{route('ft-log-packs.index')}}">FT Pack Logs</a>
                                     </li>
                                     <li><hr/></li>
                                     <li>
-                                    <a href="{{route('reports.daily')}}">Daily Report</a>
+                                    <a href="{{route('reports.daily')}}">Select Daily Report</a>
                                     </li>
                                     <li>
-                                    <a href="{{route('reports.range')}}">Range Report</a>
+                                    <a href="{{route('reports.range')}}">Select Range Report</a>
+                                    </li>
+                                    <li>
+                                    <a href="{{route('reports.dailypack')}}">Pack Daily Report</a>
+                                    </li>
+                                    <li>
+                                    <a href="{{route('reports.rangepack')}}">Pack Range Report</a>
                                     </li>
                                     <li>
                                         <a href="{{ route('logout') }}"
@@ -90,10 +96,10 @@
                                     </li>
                                     <li><hr/></li>
                                     <li>
-                                    <a href="{{route('reports.dailypack')}}">Daily Report</a>
+                                    <a href="{{route('reports.dailypack')}}">Pack Daily Report</a>
                                     </li>
                                     <li>
-                                    <a href="{{route('reports.rangepack')}}">Range Report</a>
+                                    <a href="{{route('reports.rangepack')}}">Pack Range Report</a>
                                     </li>
                                     <li>
                                         <a href="{{ route('logout') }}"
@@ -113,14 +119,14 @@
                                     <a href="{{ url('/main') }}">Main</a>
                                     </li>
                                     <li>
-                                    <a href="{{route('ft_logs.index')}}">FT Logs</a>
+                                    <a href="{{route('ft_logs.index')}}">FT Select Logs</a>
                                     </li>
                                     <li><hr/></li>
                                     <li>
-                                    <a href="{{route('reports.daily')}}">Daily Report</a>
+                                    <a href="{{route('reports.daily')}}">Select Daily Report</a>
                                     </li>
                                     <li>
-                                    <a href="{{route('reports.range')}}">Range Report</a>
+                                    <a href="{{route('reports.range')}}">Select Range Report</a>
                                     </li>
                                     <li>
                                         <a href="{{ route('logout') }}"

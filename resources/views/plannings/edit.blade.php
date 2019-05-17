@@ -19,7 +19,12 @@
                             </ul>
                         @endif
 
-                        <form method="POST" action="{{ url('/plannings/' . $planning->id) }}" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
+                        @if (!empty($redirect) && !empty($date))
+                        <form method="POST" action="{{ url('/plannings/' . $planning->id) }}?redirect={{ $redirect }}&date={{ $date }}" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
+                        @else
+                            <form method="POST" action="{{ url('/plannings/' . $planning->id) }}" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
+                        @endif
+                        
                             {{ method_field('PATCH') }}
                             {{ csrf_field() }}
 

@@ -10,6 +10,7 @@ use App\Timeslot;
 use App\Method;
 use App\Package;
 use App\Order;
+use App\StdPack;
 use Illuminate\Http\Request;
 
 class FtLogPacksController extends Controller
@@ -69,7 +70,7 @@ class FtLogPacksController extends Controller
     {
         
         $requestData = $request->all();
-        
+
         
 
         if(empty($requestData['package_id'])){
@@ -88,6 +89,15 @@ class FtLogPacksController extends Controller
             }
 
             
+        }
+
+        $chk = FtLogPack::where('process_date', $requestData['process_date'])
+            ->where('timeslot_id', $requestData['timeslot_id'])
+            ->where('method_id', $requestData['method_id'])
+            ->where('package_id', $requestData[ 'package_id'])
+            ->first();
+        if (!empty($chk)) {
+            return redirect('ft-log-packs')->with('flash_message', 'Duplicate Data')->with('alert_message', 'alert');
         }
 
         if (empty($requestData['order_id'])) {
@@ -111,6 +121,22 @@ class FtLogPacksController extends Controller
         $timeSlotObj = Timeslot::findOrFail($requestData['timeslot_id']);
 
         $requestData['time_seq'] = $timeSlotObj->seq;
+
+        //Find and Create STD
+        $stdObj = StdPack::where('method_id', $requestData[ 'method_id'])
+                            ->where('package_id', $requestData[ 'package_id'])
+                            ->first();
+        if(empty($stdObj)){
+            $tmp = array();
+            
+            $tmp['method_id'] = $requestData['method_id'];
+            $tmp['package_id'] = $requestData['package_id'];
+            $tmp['std_rate'] = 1;
+            $tmp['status'] = true;
+
+            $stdObj = StdPack::create($tmp);
+        }
+        $requestData[ 'std_pack_id'] = $stdObj->id;
 
        // var_dump($requestData);
         FtLogPack::create($requestData);
@@ -163,6 +189,7 @@ class FtLogPacksController extends Controller
         
         $requestData = $request->all();
 
+        
 
         if (empty($requestData['package_id'])) {
 
@@ -178,6 +205,16 @@ class FtLogPacksController extends Controller
             } else {
                 $requestData['package_id'] = $package->id;
             }
+        }
+
+        $chk = FtLogPack::where('process_date', $requestData['process_date'])
+            ->where('timeslot_id', $requestData['timeslot_id'])
+            ->where('method_id', $requestData['method_id'])
+            ->where('package_id', $requestData['package_id'])
+            ->where('id', '!=', $id)
+            ->first();
+        if (!empty($chk)) {
+            return redirect('ft-log-packs')->with('flash_message', 'Duplicate Data')->with('alert_message', 'alert');
         }
 
         if (empty($requestData['order_id'])) {
@@ -201,6 +238,21 @@ class FtLogPacksController extends Controller
 
         $requestData['time_seq'] = $timeSlotObj->seq;
 
+        $stdObj = StdPack::where('method_id', $requestData['method_id'])
+            ->where('package_id', $requestData['package_id'])
+            ->first();
+        if (empty($stdObj)) {
+            $tmp = array();
+
+            $tmp['method_id'] = $requestData['method_id'];
+            $tmp['package_id'] = $requestData['package_id'];
+            $tmp['std_rate'] = 1;
+            $tmp['status'] = true;
+
+            $stdObj = StdPack::create($tmp);
+        }
+        $requestData['std_pack_id'] = $stdObj->id;
+
         $ftlogpack = FtLogPack::findOrFail($id);
         $ftlogpack->update($requestData);
 
@@ -219,12 +271,12 @@ class FtLogPacksController extends Controller
     {
         FtLogPack::destroy($id);
 
-        return redirect( 'ft-log-packs')->with('flash_message', ' deleted!');
+        return redirect( 'ft-log-packs')->with('flash_message', ' deleted!')->with('alert_message', 'alert');
     }
 
     private function recal($date)
     {
-        $data = FtLogPack::where('process_date', $date)->orderBy('timeslot_id')->get();
+        $data = FtLogPack::where('process_date', $date)->orderBy('time_seq')->get();
         $prevCode = "";
         $sum = array();
         $sumin = array();

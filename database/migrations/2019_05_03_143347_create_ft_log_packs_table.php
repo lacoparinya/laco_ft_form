@@ -18,6 +18,7 @@ class CreateFtLogPacksTable extends Migration
             $table->integer('job_id');
             $table->date('process_date');
             $table->integer('timeslot_id');
+            $table->integer('time_seq');
             $table->integer('shift_id');
             $table->integer('method_id');
             $table->integer('package_id');

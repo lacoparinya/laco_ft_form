@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 
 use App\StdPack;
 use App\Method;
+use App\Package;
 use Illuminate\Http\Request;
 
 class StdPacksController extends Controller
@@ -38,7 +39,8 @@ class StdPacksController extends Controller
     public function create()
     {
         $methodlist = Method::pluck('name', 'id');
-        return view( 'std-packs.create',compact( 'methodlist'));
+        $packagelist = Package::pluck('name', 'id');
+        return view( 'std-packs.create',compact( 'methodlist', 'packagelist'));
     }
 
     /**
@@ -83,7 +85,8 @@ class StdPacksController extends Controller
     {
         $stdpack = StdPack::findOrFail($id);
         $methodlist = Method::pluck('name', 'id');
-        return view( 'std-packs.edit', compact( 'stdpack', 'methodlist'));
+        $packagelist = Package::pluck('name', 'id');
+        return view( 'std-packs.edit', compact( 'stdpack', 'methodlist', 'packagelist'));
     }
 
     /**

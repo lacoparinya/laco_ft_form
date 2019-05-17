@@ -16,6 +16,7 @@ class CreatePlanningsTable extends Migration
         Schema::create('plannings', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('job_id');
+            $table->integer('product_id');
             $table->date('plan_date');
             $table->integer('target_man');
             $table->integer('target_value');

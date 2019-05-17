@@ -13,11 +13,13 @@
                                 <thead>
                                     <tr>
                                         <th rowspan="2">งาน</th>
+                                        <th rowspan="2">สินค้า</th>
                                         <th colspan="3">กำลังคน</th>
                                         <th colspan="3">Cap (unit/hr)</th>
                                         <th colspan="3">เป้าหมาย (unit/{{ $rawdata[0]->sum_hr }} hr)</th>
                                         <th rowspan="2">Diff</th>
                                         <th rowspan="2">Note</th>
+                                        <th rowspan="2"></th>
                                     </tr>
                                     <tr>
                                         <th>Actual</th>
@@ -35,6 +37,7 @@
                                 @foreach ($rawdata as $item)    
                                     <tr>
                                     <td>{{ $item->name }}</td>
+                                    <td>{{ $item->productname }}</td>
                                         <td>{{ $item->man_act }}</td>
                                         <td>{{ $item->man_target }}</td>
                                         <td>0</td>
@@ -46,6 +49,9 @@
                                         <td>{{ number_format($item->sum_target,0,".",",") }}</td>
                                         <td>{{ number_format($item->gap,0,".",",") }}</td>
                                         <td>{{ $item->note }}</td>
+                                        <td>
+                                            <a href="{{ url('/plannings/' . $item->id . '/edit?redirect=summary&date='.$item->process_date) }}" title="Edit Planning"><button class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-pencil" aria-hidden="true"></i></button></a>
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>

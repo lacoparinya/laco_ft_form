@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 
 use App\Planning;
 use App\Job;
+use App\Product;
 use Illuminate\Http\Request;
 
 class PlanningsController extends Controller
@@ -44,7 +45,8 @@ class PlanningsController extends Controller
     public function create()
     {
         $joblist = Job::pluck('name', 'id');
-        return view( 'plannings.create',compact( 'joblist'));
+        $productlist = Product::pluck('name', 'id');
+        return view( 'plannings.create',compact( 'joblist', 'productlist'));
     }
 
     /**
@@ -85,11 +87,18 @@ class PlanningsController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
+
+        $redirect = $request->get('redirect');
+        $date = $request->get('date');
+
+
+
         $planning = Planning::findOrFail($id);
         $joblist = Job::pluck('name', 'id');
-        return view( 'plannings.edit', compact( 'planning','joblist'));
+        $productlist = Product::pluck('name', 'id');
+        return view( 'plannings.edit', compact( 'planning','joblist', 'redirect', 'date', 'productlist'));
     }
 
     /**
@@ -105,10 +114,17 @@ class PlanningsController extends Controller
         
         $requestData = $request->all();
 
+        $redirect = $request->get('redirect');
+        $date = $request->get('date');
+
         $planning = Planning::findOrFail($id);
         $planning->update($requestData);
 
-        return redirect( 'plannings')->with('flash_message', ' updated!');
+        if(!empty($redirect) && !empty($date)){
+            return redirect( $redirect.'/'. $date);
+        }else{
+            return redirect('plannings')->with('flash_message', ' updated!');
+        }
     }
 
     /**

@@ -25,7 +25,7 @@
 
 <div class="form-group col-md-4 {{ $errors->has('method_id') ? 'has-error' : ''}}">
     <label for="method_id" class="control-label">{{ 'วิธี' }}</label>
-    <select name="method_id" class="form-control dynamic2" id="method_id" data-dependent = 'std_pack_id' required>
+    <select name="method_id" class="form-control dynamicx" id="method_id" data-dependent = 'std_pack_id' required>
         <option value="">-</option>
     @foreach ($methodlist as $optionKey => $optionValue)
         <option value="{{ $optionKey }}" {{ (isset($ftlogpack->method_id) && $ftlogpack->method_id == $optionKey) ? 'selected' : ''}}>{{ $optionValue }}</option>

@@ -9,6 +9,17 @@
     {!! $errors->first('method_id', '<p class="help-block">:message</p>') !!}
 </div>
 
+<div class="form-group col-md-4  {{ $errors->has('package_id') ? 'has-error' : ''}}">
+    <label for="package_id" class="control-label">{{ 'บรรจุ' }}</label>
+    <select name="package_id" class="form-control" id="package_id" required>
+        <option value="">-</option>
+    @foreach ($packagelist as $optionKey => $optionValue)
+        <option value="{{ $optionKey }}" {{ (isset($stdpack->package_id) && $stdpack->package_id == $optionKey) ? 'selected' : ''}}>{{ $optionValue }}</option>
+    @endforeach
+</select>
+    {!! $errors->first('package_id', '<p class="help-block">:message</p>') !!}
+</div>
+
 <div class="form-group col-md-4 {{ $errors->has('std_rate') ? 'has-error' : ''}}">
     <label for="std_rate" class="control-label">{{ 'Std Rate' }}</label>
     <input required class="form-control" name="std_rate" type="text" id="std_rate" value="{{ $stdpack->std_rate or ''}}" >

@@ -16,6 +16,7 @@ class CreateStdPacksTable extends Migration
         Schema::create('std_packs', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('method_id');
+            $table->integer('package_id');
             $table->float('std_rate');
             $table->boolean('status');
             $table->timestamps();

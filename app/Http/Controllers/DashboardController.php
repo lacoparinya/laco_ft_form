@@ -143,27 +143,52 @@ class DashboardController extends Controller
 
     public function summary($date){
 
+        $rawdata2 = DB::table('ft_logs')
+                ->select(DB::raw('ft_logs.product_id'))
+                ->where('ft_logs.process_date', $date)
+                ->groupBy(DB::raw('ft_logs.product_id'))
+                ->get();
+
+        foreach ( $rawdata2 as $itm) {
+            $chk = Planning::where('plan_date', $date)->where( 'product_id', $itm->product_id)->first();
+
+            if (empty($chk)) {
+                $tmp['job_id'] = 1;
+                $tmp['plan_date'] = $date;
+                $tmp[ 'product_id'] = $itm->product_id;
+                $tmp['target_man'] = 1;
+                $tmp['target_value'] = 1;
+                Planning::create($tmp);
+            }
+        }
+/*
         $chk = Planning::where('plan_date',$date)->first();
 
         if(empty($chk)){
             $tmp['job_id'] = 1;
             $tmp['plan_date'] = $date;
+            $tmp['plan_date'] = $date;
             $tmp['target_man'] = 1;
             $tmp['target_value'] = 1;
             Planning::create( $tmp);
         }
-
+*/
         $rawdata = DB::table('ft_logs')
             ->join('plannings', function ($join) {
                 $join->on('plannings.job_id', '=', 'ft_logs.job_id')
-                ->on( 'plannings.plan_date', '=', 'ft_logs.process_date');
+                ->on( 'plannings.plan_date', '=', 'ft_logs.process_date')
+                ->on( 'plannings.product_id', '=', 'ft_logs.product_id');
             })
             ->join('jobs', 'jobs.id', '=', 'ft_logs.job_id')
+            ->join('products', 'products.id', '=', 'ft_logs.product_id')
             ->join('timeslots', 'timeslots.id', '=', 'ft_logs.timeslot_id')
             ->select(
-                DB::raw('jobs.name,
+                DB::raw( 'jobs.name,
+                ft_logs.product_id,
+                        products.name as productname,
                         ft_logs.process_date,
                         floor(sum(ft_logs.num_classify)/sum(timeslots.gap)) as man_act,
+                        plannings.id,
                         plannings.target_man as man_target,
                         floor(sum(ft_logs.output_kg)/sum(timeslots.gap)) as value_act,
                         floor(plannings.target_value*(sum(ft_logs.num_classify)/sum(timeslots.gap) / plannings.target_man)) as value_cal,
@@ -177,7 +202,7 @@ class DashboardController extends Controller
                         sum(timeslots.gap) as sum_hr')
             )
             ->where('ft_logs.process_date', $date)
-            ->groupBy(DB::raw('jobs.name,ft_logs.process_date,plannings.target_man,plannings.target_value,plannings.note'))
+            ->groupBy(DB::raw( 'jobs.name,ft_logs.product_id,products.name,ft_logs.process_date,plannings.target_man,plannings.id,plannings.target_value,plannings.note'))
             ->get();
         return view('dashboards.summary', compact('rawdata'));
     }

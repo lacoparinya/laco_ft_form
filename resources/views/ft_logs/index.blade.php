@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container">
+        
         <div class="row">
 
             <div class="col-md-12">
@@ -10,7 +11,18 @@
                                     <i class="fa fa-plus" aria-hidden="true"></i> เพิ่มข้อมูล
                                 </a></h3></div>
                     <div class="card-body">
+                        @if(Session::has('flash_message'))
+                        @if(Session::has('alert_message'))
+                            <div class="alert alert-danger alert-block">
+                            <button type="button" class="close" data-dismiss="alert">×</button>	
+                        @else 
+                            <div class="alert alert-success alert-block">
+	                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        @endif
                         
+                                <strong>{{ Session::get('flash_message') }}</strong>
+                        </div>
+                        @endif
                                 <form method="GET" action="{{ url('/ft_logs') }}" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
                                 <div class="row">
                             <div class="col-md-3">

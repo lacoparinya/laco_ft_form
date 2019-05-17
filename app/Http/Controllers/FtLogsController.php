@@ -90,6 +90,15 @@ class FtLogsController extends Controller
         
         $requestData = $request->all();
 
+        $chk = FtLog::where('process_date', $requestData['process_date'])
+            ->where('timeslot_id', $requestData[ 'timeslot_id'])
+            ->where('product_id', $requestData[ 'product_id'])
+            ->first();
+        if(!empty($chk)){
+            return redirect('ft_logs')->with('flash_message', 'Duplicate Data')->with('alert_message','alert');
+        }
+
+
         $productGroup = Product::findOrFail($requestData['product_id']);
 
         $stdData = StdProcess::where('product_id', $productGroup->product_group_id)->where('status', true)->first();
@@ -201,6 +210,16 @@ class FtLogsController extends Controller
             'grade' => 'required'
         ]);
 
+
+        $chk = FtLog::where('process_date', $requestData['process_date'])
+            ->where('timeslot_id', $requestData['timeslot_id'])
+            ->where('product_id', $requestData['product_id'])
+            ->where('id', '!=', $id)
+            ->first();
+        if (!empty($chk)) {
+            return redirect('ft_logs')->with('flash_message', 'Duplicate Data')->with('alert_message', 'alert');
+        }
+
         $productGroup = Product::findOrFail($requestData['product_id']);
 
         $stdData = StdProcess::where('product_id', $productGroup->product_group_id)->where('status', true)->first();
@@ -233,11 +252,11 @@ class FtLogsController extends Controller
         FtLog::destroy($id);
 
         $this->recal($deleteDate);
-        return redirect('ft_logs')->with('flash_message', ' deleted!');
+        return redirect('ft_logs')->with('flash_message', ' deleted!')->with('alert_message', 'alert');
     }
 
     private function recal($date){
-        $data = FtLog::where('process_date', $date)->orderBy('process_time')->get();
+        $data = FtLog::where('process_date', $date)->orderBy('time_seq')->get();
         $prevCode = "";
         $sum = array();
         $sumin = array();

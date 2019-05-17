@@ -31,6 +31,7 @@
                                         <th>#</th>
                                         <th>วันที่</th>
                                         <th>ส่วนงาน</th>
+                                        <th>สินค้า</th>
                                         <th>แผนคน</th>
                                         <th>แผนจำนวน</th>
                                         <th>Actions</th>
@@ -42,6 +43,7 @@
                                         <td>{{ $loop->iteration or $item->id }}</td>
                                         <td>{{ $item->plan_date }}</td>
                                         <td>{{ $item->job->name }}</td>
+                                        <td>{{ $item->product->name or ''}}</td>
                                         <td>{{ $item->target_man }}</td>
                                         <td>{{ $item->target_value }}</td>
                                         <td>
