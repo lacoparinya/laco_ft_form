@@ -83,6 +83,7 @@
                                             <a href="{{ url('/chart/' . $item->process_date) }}" title="สรุปรายวัน"><button class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-stats" aria-hidden="true"></i></button></a>
                                             <a href="{{ url('/charttime/' . $item->process_date) }}" title="สรุปรายชม."><button class="btn btn-info btn-sm"><i class="glyphicon glyphicon-stats" aria-hidden="true"></i></button></a>
                                             <a href="{{ url('/charttimeproduct/' . $item->process_date .'/'. $item->product_id) }}" title="สรุปรายชม.ต่อสินค้า"><button class="btn btn-success btn-sm"><i class="glyphicon glyphicon-stats" aria-hidden="true"></i></button></a>
+                                            <a href="{{ url('/charttimeproductshift/' . $item->process_date .'/'. $item->product_id.'/'. $item->shift_id) }}" title="สรุปรายชม.ต่อสินค้า.ต่อกะ"><button class="btn btn-success btn-sm"><i class="glyphicon glyphicon-stats" aria-hidden="true"></i></button></a>
                                             
                                             <a href="{{ url('/ft_logs/' . $item->id) }}" title="View ft_log"><button class="btn btn-warning btn-sm"><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i></button></a>
                                             

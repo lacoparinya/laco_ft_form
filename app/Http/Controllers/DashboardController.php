@@ -7,6 +7,7 @@ use App\FtLog;
 use App\StdProcess;
 use App\Product;
 use App\Planning;
+use App\Shift;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -224,5 +225,76 @@ class DashboardController extends Controller
                         products.name'))
             ->get();
         return view('dashboards.main', compact('rawdata', 'current_date'));
+    }
+
+    public function timechartandproductshift($selecteddate, $product_id, $shift_id)
+    {
+        $current_date = $selecteddate;
+
+        $productGroup = Product::findOrFail($product_id);
+
+        $shiftData = Shift::findOrFail( $shift_id);
+
+        $stdprocess = StdProcess::where('product_id', $productGroup->product_group_id)->where('status', true)->first();
+
+        // $stdprocess = StdProcess::where('product_id', $product_id)->first();
+
+        $rawdata = DB::table('ft_logs')
+            ->join('products', 'products.id', '=', 'ft_logs.product_id')
+            ->join('timeslots', 'timeslots.id', '=', 'ft_logs.timeslot_id')
+            ->join('shifts', 'shifts.id', '=', 'ft_logs.shift_id')
+            ->join('units', 'units.id', '=', 'ft_logs.line_classify_unit')
+            ->join('std_processes', 'std_processes.id', '=', 'ft_logs.std_process_id')
+            ->select(
+                DB::raw('ft_logs.process_date,
+                        ft_logs.process_time,
+                        shifts.name as shname,
+                        timeslots.name as tname,
+                        timeslots.gap as tgap,
+                        timeslots.seq as tseq,
+                        ft_logs.product_id,
+                        products.name,
+                        ft_logs.num_classify,
+                        ft_logs.input_kg,
+                        ft_logs.output_kg,
+                        ft_logs.sum_kg,
+                        ft_logs.yeild_percent,
+                        ft_logs.num_pk,
+                        ft_logs.num_pf,
+                        ft_logs.num_pst,
+                        ft_logs.line_a,
+                        ft_logs.line_b,
+                        ft_logs.line_classify,
+                        units.name as line_unit,
+                        ft_logs.grade,
+                        ft_logs.ref_note,
+                        std_processes.std_rate
+                        ')
+            )
+            ->where('ft_logs.process_date', $selecteddate)
+            ->where('ft_logs.product_id', $product_id)
+            ->where('ft_logs.shift_id', $shift_id)
+            ->orderBy(DB::raw('ft_logs.process_date,timeslots.seq'))
+            ->get();
+
+        $rawdata2 = DB::table('ft_logs')
+            ->join('products', 'products.id', '=', 'ft_logs.product_id')
+            ->join('timeslots', 'timeslots.id', '=', 'ft_logs.timeslot_id')
+            ->join('shifts', 'shifts.id', '=', 'ft_logs.shift_id')
+            ->join('units', 'units.id', '=', 'ft_logs.line_classify_unit')
+            ->join('std_processes', 'std_processes.id', '=', 'ft_logs.std_process_id')
+            ->select(
+                DB::raw('max(ft_logs.input_kg) as inmax,
+                        max(ft_logs.output_kg) as outmax,
+                        max(std_processes.std_rate) as maxstd,
+                        max((ft_logs.output_kg/ft_logs.num_classify)/timeslots.gap) as maxstp
+                        ')
+            )
+            ->where('ft_logs.process_date', $selecteddate)
+            ->where('ft_logs.product_id', $product_id)
+            ->where('ft_logs.shift_id', $shift_id)
+            ->get();
+
+        return view('dashboards.charttimeproduct', compact('rawdata', 'rawdata2', 'current_date', 'stdprocess','shiftData'));
     }
 }
