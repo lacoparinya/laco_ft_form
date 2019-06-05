@@ -8,7 +8,7 @@
                 <div class="card">
                     <div class="card-header">Edit ft_master #{{ $ft_master->id }}</div>
                     <div class="card-body">
-                        <a href="{{ url('/ft_masters') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
+                        <a href="{{ url('/ft_masters') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="glyphicon glyphicon-arrow-left" aria-hidden="true"></i> Back</button></a>
                         <br />
                         <br />
 

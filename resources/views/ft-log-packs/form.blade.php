@@ -23,6 +23,12 @@
     {!! $errors->first('shift_id', '<p class="help-block">:message</p>') !!}
 </div>
 
+<div class="form-group col-md-4 {{ $errors->has('workhours') ? 'has-error' : ''}}">
+    <label for="workhours" class="control-label">{{ 'เวลาทำงาน' }}</label>
+    <input class="form-control" name="workhours" id="workhours" value={{ $ftlogpack->workhours or '' }}  >
+    {!! $errors->first('workhours', '<p class="help-block">:message</p>') !!}
+</div>
+
 <div class="form-group col-md-4 {{ $errors->has('method_id') ? 'has-error' : ''}}">
     <label for="method_id" class="control-label">{{ 'วิธี' }}</label>
     <select name="method_id" class="form-control dynamicx" id="method_id" data-dependent = 'std_pack_id' required>
@@ -41,6 +47,8 @@
     {!! $errors->first('package_name', '<p class="help-block">:message</p>') !!}
 </div>
 
+
+
 <div class="form-group col-md-4 {{ $errors->has('order_name') ? 'has-error' : ''}}">
     <label for="order_name" class="control-label">{{ 'Order No.' }}</label>
     <input required class="form-control uicomplete" autocomplete="on" name="order_name" type="text" id="order_name"   value={{ $ftlogpack->order->order_no or '' }}  >
@@ -54,18 +62,11 @@
     {!! $errors->first('order_date', '<p class="help-block">:message</p>') !!}
 </div>
 
-<div class="form-group col-md-4 {{ $errors->has('output_pack') ? 'has-error' : ''}}">
-    <label for="output_pack" class="control-label">{{ 'Output (กล่อง หรือ EA)' }}</label>
-    <input required class="form-control" name="output_pack" type="number" id="output_pack" value="{{ $ftlogpack->output_pack or ''}}" >
-    {!! $errors->first('output_pack', '<p class="help-block">:message</p>') !!}
+<div class="form-group col-md-4 {{ $errors->has('kgsperpack') ? 'has-error' : ''}}">
+    <label for="kgsperpack" class="control-label">{{ 'kgs ต่อ กล่อง หรือ EA' }}</label>
+    <input class="form-control" name="kgsperpack" id="kgsperpack" value={{ $ftlogpack->package->kgsperpack or '' }}  >
+    {!! $errors->first('kgsperpack', '<p class="help-block">:message</p>') !!}
 </div>
-
-<div class="form-group col-md-4 {{ $errors->has('output_pack_sum') ? 'has-error' : ''}}">
-    <label for="output_pack_sum" class="control-label">{{ 'Output สะสม (กล่อง หรือ EA)' }}</label>
-    <input readonly class="form-control" name="output_pack_sum" type="number" id="output_pack_sum" value="{{ $ftlogpack->output_pack_sum or '0'}}" >
-    {!! $errors->first('output_pack_sum', '<p class="help-block">:message</p>') !!}
-</div>
-
 <div class="form-group col-md-4 {{ $errors->has('input_kg') ? 'has-error' : ''}}">
     <label for="input_kg" class="control-label">{{ 'Input (kg)' }}</label>
     <input required class="form-control" name="input_kg" type="number" id="input_kg" value="{{ $ftlogpack->input_kg or ''}}" >
@@ -83,6 +84,19 @@
     <input readonly class="form-control" name="output_kg_sum" type="number" id="output_kg_sum" value="{{ $ftlogpack->output_kg_sum or '0'}}" >
     {!! $errors->first('output_kg_sum', '<p class="help-block">:message</p>') !!}
 </div>
+<div class="form-group col-md-4 {{ $errors->has('output_pack') ? 'has-error' : ''}}">
+    <label for="output_pack" class="control-label">{{ 'Output (กล่อง หรือ EA)' }}</label>
+    <input required class="form-control" name="output_pack" type="number" id="output_pack" value="{{ $ftlogpack->output_pack or ''}}" >
+    {!! $errors->first('output_pack', '<p class="help-block">:message</p>') !!}
+</div>
+
+<div class="form-group col-md-4 {{ $errors->has('output_pack_sum') ? 'has-error' : ''}}">
+    <label for="output_pack_sum" class="control-label">{{ 'Output สะสม (กล่อง หรือ EA)' }}</label>
+    <input readonly class="form-control" name="output_pack_sum" type="number" id="output_pack_sum" value="{{ $ftlogpack->output_pack_sum or '0'}}" >
+    {!! $errors->first('output_pack_sum', '<p class="help-block">:message</p>') !!}
+</div>
+
+
 
 <div class="form-group col-md-4 {{ $errors->has('num_pack') ? 'has-error' : ''}}">
     <label for="num_pack" class="control-label">{{ 'จำนวนคน' }}</label>

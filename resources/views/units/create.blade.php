@@ -8,7 +8,7 @@
                 <div class="card">
                     <div class="card-header">Create New unit</div>
                     <div class="card-body">
-                        <a href="{{ url('/units') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
+                        <a href="{{ url('/units') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="glyphicon glyphicon-arrow-left" aria-hidden="true"></i> Back</button></a>
                         <br />
                         <br />
 

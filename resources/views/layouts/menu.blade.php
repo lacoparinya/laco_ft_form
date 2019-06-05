@@ -48,6 +48,9 @@
                                     <a href="{{ route('methods.index') }}">Methods</a>
                                     </li>
                                     <li>
+                                    <a href="{{route('packages.index')}}">Packages</a>
+                                    </li>
+                                    <li>
                                     <a href="{{route('std-packs.index')}}">Std Pack</a>
                                     </li>
                                     <li><hr/></li>
@@ -88,9 +91,6 @@
                                 @else
                                 @if ( App\User::find(Auth::user()->id)->group->name == 'user_pack' )
                                 <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                    <a href="{{ url('/main') }}">Main</a>
-                                    </li>
                                     <li>
                                     <a href="{{route('ft-log-packs.index')}}">FT Pack Logs</a>
                                     </li>

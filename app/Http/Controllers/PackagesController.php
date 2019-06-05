@@ -5,12 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\StdPack;
-use App\Method;
 use App\Package;
 use Illuminate\Http\Request;
 
-class StdPacksController extends Controller
+class PackagesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,17 +18,16 @@ class StdPacksController extends Controller
     public function index(Request $request)
     {
         $keyword = $request->get('search');
-        $perPage = 25;
+        $perPage = 10;
 
         if (!empty($keyword)) {
-            $products = Package::where('name', 'like', '%' . $keyword . '%')->pluck('id')->toArray();
-            $stdpacks = StdPack::WhereIn('package_id', $products)
+            $packages = Package::where('name', 'like', '%' . $keyword . '%')
                 ->paginate($perPage);
         } else {
-            $stdpacks = StdPack::latest()->paginate($perPage);
+            $packages = Package::latest()->paginate($perPage);
         }
 
-        return view( 'std-packs.index', compact( 'stdpacks'));
+        return view( 'packages.index', compact( 'packages'));
     }
 
     /**
@@ -40,9 +37,7 @@ class StdPacksController extends Controller
      */
     public function create()
     {
-        $methodlist = Method::pluck('name', 'id');
-        $packagelist = Package::pluck('name', 'id');
-        return view( 'std-packs.create',compact( 'methodlist', 'packagelist'));
+        return view( 'packages.create');
     }
 
     /**
@@ -57,9 +52,12 @@ class StdPacksController extends Controller
         
         $requestData = $request->all();
 
-        StdPack::create($requestData);
+        $requestData['name'] = strtoupper($requestData['name']);
+        $requestData['desc'] = strtoupper($requestData['desc']);
+        
+        Package::create($requestData);
 
-        return redirect( 'std-packs')->with('flash_message', ' added!');
+        return redirect( 'packages')->with('flash_message', ' added!');
     }
 
     /**
@@ -71,9 +69,9 @@ class StdPacksController extends Controller
      */
     public function show($id)
     {
-        $stdpack = StdPack::findOrFail($id);
+        $package = Package::findOrFail($id);
 
-        return view( 'std-packs.show', compact( 'stdpack'));
+        return view( 'packages.show', compact( 'package'));
     }
 
     /**
@@ -85,10 +83,9 @@ class StdPacksController extends Controller
      */
     public function edit($id)
     {
-        $stdpack = StdPack::findOrFail($id);
-        $methodlist = Method::pluck('name', 'id');
-        $packagelist = Package::pluck('name', 'id');
-        return view( 'std-packs.edit', compact( 'stdpack', 'methodlist', 'packagelist'));
+        $package = Package::findOrFail($id);
+
+        return view( 'packages.edit', compact( 'package'));
     }
 
     /**
@@ -104,10 +101,13 @@ class StdPacksController extends Controller
         
         $requestData = $request->all();
 
-        $stdpack = StdPack::findOrFail($id);
-        $stdpack->update($requestData);
+        $requestData['name'] = strtoupper($requestData['name']);
+        $requestData['desc'] = strtoupper($requestData['desc']);
 
-        return redirect( 'std-packs')->with('flash_message', ' updated!');
+        $package = Package::findOrFail($id);
+        $package->update($requestData);
+
+        return redirect( 'packages')->with('flash_message', ' updated!');
     }
 
     /**
@@ -119,8 +119,8 @@ class StdPacksController extends Controller
      */
     public function destroy($id)
     {
-        StdPack::destroy($id);
+        Package::destroy($id);
 
-        return redirect( 'std-packs')->with('flash_message', ' deleted!');
+        return redirect( 'packages')->with('flash_message', ' deleted!');
     }
 }

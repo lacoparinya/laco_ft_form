@@ -9,7 +9,7 @@ class FtLogPack extends Model
     protected $fillable = [
         'job_id', 'process_date', 'timeslot_id', 'shift_id', 'method_id', 'package_id', 'order_id', 'std_pack_id',
         'output_pack', 'output_pack_sum', 'input_kg', 'output_kg', 'input_kg_sum', 'output_kg_sum', 
-        'productivity', 'yeild_percent', 'num_pack', 'note', 'time_seq'
+        'productivity', 'yeild_percent', 'num_pack', 'note', 'time_seq', 'workhours'
     ];
 
     public function job()

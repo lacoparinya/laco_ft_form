@@ -22,6 +22,7 @@ class DynamicListController extends Controller
        
         $output['value'] = $timeslot->shift_id;
         $output['label'] = $timeslot->shift->name;
+        $output['gap'] = $timeslot->gap;
         echo json_encode($output);
     }
 

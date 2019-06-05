@@ -26,7 +26,7 @@ class FtLogPacksController extends Controller
         $perPage = 25;
 
         if (!empty($keyword)) {
-            $products = Product::where('name', 'like', '%' . $keyword . '%')->pluck('id')->toArray();
+            $products = Package::where('name', 'like', '%' . $keyword . '%')->pluck('id')->toArray();
             if (empty($products)) {
                 $ftlogpacks = FtLogPack::where('note', 'like', '%' . $keyword . '%')
                     ->orderBy('process_date', 'DESC')
@@ -34,7 +34,7 @@ class FtLogPacksController extends Controller
                     ->paginate($perPage);
             } else {
                 $ftlogpacks = FtLogPack::where('note', 'like', '%' . $keyword . '%')
-                    ->orWhereIn('product_id', $products)
+                    ->orWhereIn('package_id', $products)
                     ->orderBy('process_date', 'DESC')
                     ->orderBy('timeslot_id', 'DESC')
                     ->paginate($perPage);
@@ -78,17 +78,30 @@ class FtLogPacksController extends Controller
             $package = Package::where('name', $requestData['package_name'])->first();
             if(empty($package)){
                 $tmp = array();
-                $tmp['name'] = $requestData['package_name'];
-                $tmp['desc'] = $requestData['package_name'];
+                $tmp['name'] = strtoupper($requestData['package_name']);
+                $tmp['desc'] = strtoupper($requestData['package_name']);
+                $tmp['kgsperpack'] = $requestData['kgsperpack'];
 
                 $package = Package::create($tmp);
 
                 $requestData['package_id'] = $package->id;
             }else{
+
+                if ($package->kgsperpack <> $requestData['kgsperpack']) {
+                    $package->kgsperpack = $requestData['kgsperpack'];
+                    $package->update( $package);
+                }
+
                 $requestData['package_id'] = $package->id;
             }
 
             
+        } else {
+            $package = Package::findOrFail($requestData['package_id']);
+            if ($package->kgsperpack <> $requestData['kgsperpack']) {
+                $package->kgsperpack = $requestData['kgsperpack'];
+                $package->update();
+            }
         }
 
         $chk = FtLogPack::where('process_date', $requestData['process_date'])
@@ -125,6 +138,7 @@ class FtLogPacksController extends Controller
         //Find and Create STD
         $stdObj = StdPack::where('method_id', $requestData[ 'method_id'])
                             ->where('package_id', $requestData[ 'package_id'])
+                            ->where('status', true)
                             ->first();
         if(empty($stdObj)){
             $tmp = array();
@@ -196,14 +210,28 @@ class FtLogPacksController extends Controller
             $package = Package::where('name', $requestData['package_name'])->first();
             if (empty($package)) {
                 $tmp = array();
-                $tmp['name'] = $requestData['package_name'];
-                $tmp['desc'] = $requestData['package_name'];
+                $tmp['name'] = strtoupper($requestData['package_name']);
+                $tmp['desc'] = strtoupper($requestData['package_name']);
+                $tmp['kgsperpack'] = $requestData['kgsperpack'];
 
                 $package = Package::create($tmp);
 
                 $requestData['package_id'] = $package->id;
             } else {
+
+                if($package->kgsperpack <> $requestData['kgsperpack']){
+                    $package->kgsperpack = $requestData['kgsperpack'];
+                    $package->update();
+                    
+                }
+
                 $requestData['package_id'] = $package->id;
+            }
+        }else{
+            $package = Package::findOrFail( $requestData['package_id']);
+            if ($package->kgsperpack <> $requestData['kgsperpack']) {
+                $package->kgsperpack = $requestData['kgsperpack'];
+                $package->update();
             }
         }
 
@@ -240,6 +268,7 @@ class FtLogPacksController extends Controller
 
         $stdObj = StdPack::where('method_id', $requestData['method_id'])
             ->where('package_id', $requestData['package_id'])
+            ->where('status', true)
             ->first();
         if (empty($stdObj)) {
             $tmp = array();
@@ -247,9 +276,17 @@ class FtLogPacksController extends Controller
             $tmp['method_id'] = $requestData['method_id'];
             $tmp['package_id'] = $requestData['package_id'];
             $tmp['std_rate'] = 1;
+            $tmp['kgsperpack'] = $requestData['kgsperpack'];
+            
             $tmp['status'] = true;
 
             $stdObj = StdPack::create($tmp);
+        }else{
+            if ( $requestData['kgsperpack'] <> $stdObj->kgsperpack){
+                
+                $stdObj->kgsperpack = $requestData['kgsperpack'];
+                $stdObj->update();
+            }
         }
         $requestData['std_pack_id'] = $stdObj->id;
 

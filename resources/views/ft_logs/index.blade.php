@@ -8,7 +8,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header"><h3>งานคัด <a href="{{ url('/ft_logs/create') }}" class="btn btn-success btn-sm" title="เพิ่มข้อมูล">
-                                    <i class="fa fa-plus" aria-hidden="true"></i> เพิ่มข้อมูล
+                                    <i class="glyphicon glyphicon-plus" aria-hidden="true"></i> เพิ่มข้อมูล
                                 </a></h3></div>
                     <div class="card-body">
                         @if(Session::has('flash_message'))

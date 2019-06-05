@@ -6,10 +6,16 @@ $(document).ready(function () {
     $('#output_kg').change(function () {
         calpercent();
         calproductivity();
+        caloutput();
     });
 
     $('#num_pack').change(function () {
         calproductivity();
+    });
+
+    $('#kgsperpack').change(function () {
+        calproductivity();
+        caloutput();
     });
 
     $('.dynamic').change(function () {
@@ -31,6 +37,7 @@ $(document).ready(function () {
                     var jresult = JSON.parse(result);
                     $('#' + dependent).val(jresult.value);
                     $('#' + dependent + '_show').val(jresult.label);
+                    $('#workhours').val(jresult.gap);
                 }
             })
         }
@@ -55,6 +62,9 @@ $(document).ready(function () {
                     var jresult = JSON.parse(result);
                     $('#' + dependent).val(jresult.value);
                     $('#' + dependent + '_show').val(jresult.label);
+
+
+                    
                 }
             })
         }
@@ -73,11 +83,11 @@ $(document).ready(function () {
                 success: function (data) {
                     $('#package_id').val('');
                     response($.map(data, function (item) {
-                        console.log(item);
                         return {
                             label: item.name,
                             value: item.name,
-                            realv: item.id
+                            realv: item.id,
+                            packv: item.kgsperpack
                         }
                     }));
                 },
@@ -89,6 +99,7 @@ $(document).ready(function () {
         minLength: 3,
         select: function (event, ui) {
             $('#package_id').val(ui.item.realv);
+            $('#kgsperpack').val(ui.item.packv);
         }
     });
 
@@ -133,7 +144,7 @@ function calpercent(){
      var oup = $('#output_kg').val();
      var yeild = 0;
      if (inp > 0 && oup > 0) {
-         yeild = (oup * 100 / inp).toFixed(2);
+         yeild = (oup * 100 / inp).toFixed(3);
      }
      $('#yeild_percent').val(yeild);
 }
@@ -144,8 +155,19 @@ function calproductivity(){
     var prod = 0;
 
     if (oup > 0 && num > 0) {
-        prod = (oup / num).toFixed(2);
+        prod = (oup / num).toFixed(3);
     }
 
     $('#productivity').val(prod);
+}
+
+function caloutput(){
+    var oup = $('#output_kg').val();
+    var kgperpack = $('#kgsperpack').val();
+    var outpack = 0;
+    if (kgperpack > 0){
+        outpack = (oup / kgperpack).toFixed(0);
+    }
+
+    $('#output_pack').val(outpack);
 }

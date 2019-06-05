@@ -6,7 +6,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header"><h3>งานแพ็ค <a href="{{ url('/ft-log-packs/create') }}" class="btn btn-success btn-sm" title="Add New FtLogPack">
-                            <i class="fa fa-plus" aria-hidden="true"></i> Add New
+                            <i class="glyphicon glyphicon-plus" aria-hidden="true"></i> Add New
                         </a></h3></div>
                     <div class="card-body">
                         @if(Session::has('flash_message'))
@@ -49,7 +49,7 @@
                                         <th rowspan=2>วิธี</th>
                                         <th rowspan=2>บรรจุผลิตภัณฑ์</th>
                                         <th rowspan=2>Order<br/>Loading date</th>
-                                        <th rowspan=2>Output<br/>(กล่อง หรือ EA)</th>
+                                        <th rowspan=2>Output / สะสม<br/>(กล่อง หรือ EA)</th>
                                         <th colspan=2>(kg)</th>
                                         <th rowspan=2>Productivity</th>
                                         <th rowspan=2>Yeild (%)</th>
@@ -71,12 +71,14 @@
                                         <td>{{ $item->method->name }}</td>
                                         <td>{{ $item->package->name }}</td>
                                         <td>{{ $item->order->order_no }} <br/> {{ $item->order->loading_date }}</td>
-                                        <td>{{ number_format($item->output_pack,0,".",",")}}</td>
+                                        <td>{{ number_format($item->output_pack,0,".",",")}} / {{ number_format($item->output_pack_sum,0,".",",")}}</td>
                                         <td>{{ number_format($item->input_kg,0,".",",") }}</td>
                                         <td>{{ number_format($item->output_kg,0,".",",") }}</td>
                                         <td>{{ number_format($item->productivity,2,".",",") }}</td>
                                         <td>{{ number_format($item->yeild_percent,2,".",",") }}</td>
                                         <td>
+                                            <a href="{{ url('/chart/packdatepackage/' . $item->process_date. '/'. $item->package->id . '/'.$item->method->id ) }}" title="สรุปรายวัน"><button class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-stats" aria-hidden="true"></i></button></a>
+                                            
                                             <a href="{{ url('/ft-log-packs/' . $item->id) }}" title="View FtLogPack"><button class="btn btn-info btn-sm"><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i></button></a>
                                             <a href="{{ url('/ft-log-packs/' . $item->id . '/edit') }}" title="Edit FtLogPack"><button class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-pencil" aria-hidden="true"></i></button></a>
 

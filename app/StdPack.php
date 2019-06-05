@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class StdPack extends Model
 {
     protected $fillable = [
-        'method_id', 'package_id', 'std_rate', 'status',
+        'method_id', 'package_id', 'std_rate', 'kgsperpack', 'packperhour', 'status',
     ];
 
     public function method()

@@ -18,6 +18,7 @@ class CreateStdPacksTable extends Migration
             $table->integer('method_id');
             $table->integer('package_id');
             $table->float('std_rate');
+            $table->float('kgsperpack');
             $table->boolean('status');
             $table->timestamps();
         });
