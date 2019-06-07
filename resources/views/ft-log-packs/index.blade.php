@@ -77,7 +77,8 @@
                                         <td>{{ number_format($item->productivity,2,".",",") }}</td>
                                         <td>{{ number_format($item->yeild_percent,2,".",",") }}</td>
                                         <td>
-                                            <a href="{{ url('/chart/packdatepackage/' . $item->process_date. '/'. $item->package->id . '/'.$item->method->id ) }}" title="สรุปรายวัน"><button class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-stats" aria-hidden="true"></i></button></a>
+                                            <a href="{{ url('/chart/packdatepackage/' . $item->process_date. '/'. $item->package->id . '/'.$item->method->id ) }}" title="รายงานสรุปสะสมตาม เครื่อง และ Package"><button class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-stats" aria-hidden="true"></i></button></a>
+                                            <a href="{{ url('/chart/packdatepackageshift/' . $item->process_date. '/'. $item->package->id . '/'.$item->method->id. '/'.$item->shift->id ) }}" title="รายงานสรุปสะสมตาม เครื่อง, Package และ กะ"><button class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-stats" aria-hidden="true"></i></button></a>
                                             
                                             <a href="{{ url('/ft-log-packs/' . $item->id) }}" title="View FtLogPack"><button class="btn btn-info btn-sm"><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i></button></a>
                                             <a href="{{ url('/ft-log-packs/' . $item->id . '/edit') }}" title="Edit FtLogPack"><button class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-pencil" aria-hidden="true"></i></button></a>

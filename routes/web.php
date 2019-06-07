@@ -51,4 +51,7 @@ Route::get('dynamic-list/getpackage', 'DynamicListController@getpackage');
 Route::get('dynamic-list/getorder', 'DynamicListController@getorder');
 Route::get('/summary/{date}', 'DashboardController@summary');
 Route::get('/main', 'DashboardController@main');
-Route::get( '/chart/packdatepackage/{selecteddate}/{package_id}/{method_id}', 'DashboardController@dtPackByDatePack');
+Route::get('/chart/packdatepackage/{selecteddate}/{package_id}/{method_id}', 'DashboardController@dtPackByDatePack');
+Route::get('/chart/packdatepackageshift/{selecteddate}/{package_id}/{method_id}/{shift_id}', 'DashboardController@dtPackByDatePackShift');
+Route::get('/testgraph', 'TestController@test');
+Route::get( '/graph/gengraph/{selecteddate}/{product_id}', 'TestController@gengraph');

@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-            <div class="panel-heading">FT Form Application - {{ $packageObj->name }}</div>
+            <div class="panel-heading">FT Form Application - {{ $stdprocess->product->name  }}</div>
 
                 <div class="panel-body">
                     <div class="row">
@@ -205,8 +205,8 @@ var container = document.getElementById('chart_div');
           @endforeach
         ]);
 
-        var max1 = {{ $sum }} ;
-        var max2 = 
+        var max2 = {{ $sum }} ;
+        var max1 = 
         @if ($rawdata2[0]->maxstd > $rawdata2[0]->maxstp) 
           {{ $rawdata2[0]->maxstd }}
         @else 
@@ -231,11 +231,19 @@ var container = document.getElementById('chart_div');
     @endif
           
           legend: { position: 'top', maxLines: 3 },
-          vAxis: {
+          vAxes: {
+            0: {
               title: 'ปริมาณสินค้า (kg)',
               viewWindow: {
             max : max1 + 1500,
-            }
+          }
+              }, 
+            1: {
+              title: 'ปริมาณสินค้าสะสม (kg)',
+              viewWindow: {
+            max : max2 + 1500,
+          }
+              }
           },
           hAxis: {title: 'เวลา'},
           seriesType: 'bars',

@@ -30,6 +30,7 @@
     26 => 'App\\Providers\\RouteServiceProvider',
     27 => 'Collective\\Html\\HtmlServiceProvider',
     28 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
+    29 => 'ConsoleTVs\\Charts\\ChartsServiceProvider',
   ),
   'eager' => 
   array (
@@ -48,6 +49,7 @@
     12 => 'App\\Providers\\EventServiceProvider',
     13 => 'App\\Providers\\RouteServiceProvider',
     14 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
+    15 => 'ConsoleTVs\\Charts\\ChartsServiceProvider',
   ),
   'deferred' => 
   array (

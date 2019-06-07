@@ -162,6 +162,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        
 
         /*
          * Package Service Providers...
@@ -180,6 +181,8 @@ return [
         Collective\Html\HtmlServiceProvider::class,
 
         Maatwebsite\Excel\ExcelServiceProvider::class,
+
+        ConsoleTVs\Charts\ChartsServiceProvider::class,
 
     ],
 
@@ -233,6 +236,8 @@ return [
         'HTML' => Collective\Html\HtmlFacade::class,
 
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+
+        'Charts' => ConsoleTVs\Charts\Facades\Charts::class,
     ],
 
 ];

@@ -9,6 +9,7 @@ use App\Product;
 use App\Planning;
 use App\Shift;
 use App\Package;
+use App\Method;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -303,6 +304,7 @@ class DashboardController extends Controller
         $current_date = $selecteddate;
 
         $packageObj = Package::findOrFail( $package_id);
+        $methodObj = Method::findOrFail( $method_id);
 
         // $stdprocess = StdProcess::where('product_id', $product_id)->first();
 
@@ -328,6 +330,43 @@ class DashboardController extends Controller
             ->orderBy(DB::raw( 'ft_log_packs.process_date,timeslots.seq'))
             ->get();
 
-        return view('dashboards.dtpack', compact('rawdata', 'packageObj', 'current_date'));
+        return view('dashboards.dtpack', compact('rawdata', 'packageObj', 'current_date', 'methodObj'));
+    }
+
+    public function dtPackByDatePackShift($selecteddate, $package_id, $method_id,$shift_id)
+    {
+        $current_date = $selecteddate;
+
+        $packageObj = Package::findOrFail($package_id);
+        $methodObj = Method::findOrFail($method_id);
+        $shiftData = Shift::findOrFail($method_id);
+
+        // $stdprocess = StdProcess::where('product_id', $product_id)->first();
+
+        $rawdata = DB::table('ft_log_packs')
+            ->join('packages', 'packages.id', '=', 'ft_log_packs.package_id')
+            ->join('timeslots', 'timeslots.id', '=', 'ft_log_packs.timeslot_id')
+            ->join('shifts', 'shifts.id', '=', 'ft_log_packs.shift_id')
+            ->join('methods', 'methods.id', '=', 'ft_log_packs.method_id')
+            ->join('std_packs', 'std_packs.id', '=', 'ft_log_packs.std_pack_id')
+            ->select(
+                DB::raw(
+                    'ft_log_packs.process_date as pc_date,
+                    timeslots.name as timename,
+                    shifts.name as shiftname,
+                    methods.name as methodname,
+                    packages.name as packagename,
+                    ft_log_packs.output_pack as actual,
+                    std_packs.packperhour * ft_log_packs.workhours as planning'
+                )
+            )
+            ->where('ft_log_packs.process_date', $selecteddate)
+            ->where('ft_log_packs.package_id', $package_id)
+            ->where('ft_log_packs.method_id', $method_id)
+            ->where('ft_log_packs.shift_id', $shift_id)
+            ->orderBy(DB::raw('ft_log_packs.process_date,timeslots.seq'))
+            ->get();
+
+        return view('dashboards.dtpack', compact('rawdata', 'packageObj', 'current_date', 'methodObj', 'shiftData'));
     }
 }

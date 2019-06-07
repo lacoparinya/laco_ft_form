@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-            <div class="panel-heading">FT Form Application - {{ $packageObj->name }}</div>
+            <div class="panel-heading">FT Form Application - {{ $methodObj->name }} - {{ $packageObj->name }}</div>
 
                 <div class="panel-body">
                     <div class="row">
@@ -90,9 +90,9 @@
         alwaysOutside : false
     },
     @if(isset($shiftData))
-      title : '{{ $stdprocess->product->name }} - อัตราการผลิตสะสมวันที่ {{ $current_date }} - กะ {{ $shiftData->name }}',
+      title : '{{ $methodObj->name }} - {{ $packageObj->name }} - อัตราการผลิตสะสมวันที่ {{ $current_date }} - กะ {{ $shiftData->name }}',
     @else 
-      title : '{{ $packageObj->name }} - อัตราการผลิตสะสมวันที่ {{ $current_date }}',
+      title : '{{ $methodObj->name }} - {{ $packageObj->name }} - อัตราการผลิตสะสมวันที่ {{ $current_date }}',
     @endif
           
           legend: { position: 'top', maxLines: 3 },
