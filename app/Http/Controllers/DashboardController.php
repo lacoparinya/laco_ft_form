@@ -339,7 +339,7 @@ class DashboardController extends Controller
 
         $packageObj = Package::findOrFail($package_id);
         $methodObj = Method::findOrFail($method_id);
-        $shiftData = Shift::findOrFail($method_id);
+        $shiftData = Shift::findOrFail( $shift_id);
 
         // $stdprocess = StdProcess::where('product_id', $product_id)->first();
 

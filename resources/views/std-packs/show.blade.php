@@ -31,6 +31,9 @@
                                     <tr>
                                         <th>Std rate</th><td>{{ $stdpack->std_rate }}</td>
                                     </tr>
+                                     <tr>
+                                        <th>Target Pack per Hour</th><td>{{ $stdpack->packperhour }}</td>
+                                    </tr>
                                     <tr>
                                         <th>Status</th><td>{{ $stdpack->status }}</td>
                                     </tr>

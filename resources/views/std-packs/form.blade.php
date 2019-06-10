@@ -26,6 +26,12 @@
     {!! $errors->first('std_rate', '<p class="help-block">:message</p>') !!}
 </div>
 
+<div class="form-group col-md-4 {{ $errors->has('packperhour') ? 'has-error' : ''}}">
+    <label for="packperhour" class="control-label">{{ 'Target Pack per Hour' }}</label>
+    <input required class="form-control" name="packperhour" type="text" id="packperhour" value="{{ $stdpack->packperhour or ''}}" >
+    {!! $errors->first('packperhour', '<p class="help-block">:message</p>') !!}
+</div>
+
 <div class="form-group col-md-4 {{ $errors->has('status') ? 'has-error' : ''}}">
     <label for="status" class="control-label">{{ 'Status' }}</label>
     <input required class="form-control" name="status" type="text" id="status" value="{{ $stdpack->status or '1'}}" >

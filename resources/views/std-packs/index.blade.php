@@ -32,7 +32,6 @@
                                         <th>วิธี</th>
                                         <th>บรรจุ</th>
                                         <th>Std Rate</th>
-                                        <th>Kgs per Pakages</th>
                                         <th>Target Pack per Hour</th>
                                         <th>Status</th>
                                         <th>Actions</th>
@@ -45,7 +44,6 @@
                                         <td>{{ $item->method->name }}</td>
                                         <td>{{ $item->package->name or '' }}</td>
                                         <td>{{ number_format($item->std_rate,2,".",",") }}</td>
-                                        <td>{{ number_format($item->kgsperpack,2,".",",") }}</td>
                                         <td>{{ number_format($item->packperhour,0,".",",") }}</td>
                                         <td>{{ $item->status }}</td>
                                         <td>

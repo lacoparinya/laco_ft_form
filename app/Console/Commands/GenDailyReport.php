@@ -6,6 +6,7 @@ use App\Mail\FtDataEmail;
 use App\FtLog;
 use App\Product;
 use App\StdProcess;
+use App\Shift;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
@@ -18,7 +19,7 @@ class GenDailyReport extends Command
      *
      * @var string
      */
-    protected $signature = 'gen:dailyreport';
+    protected $signature = 'gen:dailyreport {shift_id}';
 
     /**
      * The console command description.
@@ -45,7 +46,11 @@ class GenDailyReport extends Command
     public function handle()
     {
 
-        $selecteddate = '2019-05-31';
+        $shiftId = $this->argument('shift_id');
+
+        //echo $shiftId;
+
+        $selecteddate = date('Y-m-d');
 
         require_once app_path() . '/jpgraph/jpgraph.php';
         require_once app_path() . '/jpgraph/jpgraph_bar.php';
@@ -54,6 +59,8 @@ class GenDailyReport extends Command
         $current_date = $selecteddate;
 
         $fileList = array();
+
+        $shiftObj = Shift::findOrFail($shiftId);
 
         $loopData = FtLog::where('process_date', $current_date)->select('product_id')->groupBy('product_id')->get()->toArray();
 
@@ -105,6 +112,7 @@ class GenDailyReport extends Command
                 )
                 ->where('ft_logs.process_date', $selecteddate)
                 ->where('ft_logs.product_id', $product_id)
+                ->where('ft_logs.shift_id', $shiftId)
                 ->orderBy(DB::raw('ft_logs.process_date,timeslots.seq'))
                 ->get();
 
@@ -123,6 +131,7 @@ class GenDailyReport extends Command
                 )
                 ->where('ft_logs.process_date', $selecteddate)
                 ->where('ft_logs.product_id', $product_id)
+                ->where('ft_logs.shift_id', $shiftId)
                 ->get();
 
             //var_dump($rawdata);
@@ -174,7 +183,7 @@ class GenDailyReport extends Command
             $b2plot = new \LinePlot($data2y);
 
 
-            $graph->title->Set($productGroup->name . " อัตราการผลิตสะสม " . $selecteddate);
+            $graph->title->Set($productGroup->name . " อัตราการผลิตสะสม " . $selecteddate." กะ ".$shiftObj->name );
             $graph->title->SetFont(FF_CORDIA, FS_BOLD, 14);
 
             $graph->Add($b1plot);
@@ -220,6 +229,7 @@ class GenDailyReport extends Command
         $ftStaff = config('myconfig.emaillist');
 
         $mailObj['graph'] = $fileList;
+        $mailObj['shift'] = $shiftObj;
         $mailObj['subject'] = " อัตราการผลิตสะสม " . $selecteddate;
 
         Mail::to($ftStaff)->send(new FtDataEmail($mailObj));
