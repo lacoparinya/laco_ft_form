@@ -28,6 +28,12 @@
             <img src="{{ url('/') }}/ft_form/{{ $item }}" alt="">
  <br/></p>
             @endforeach
+
+                        @foreach($ftdataobj['graph2'] as $item)
+            <p>
+            <img src="{{ url('/') }}/ft_form/{{ $item }}" alt="">
+ <br/></p>
+            @endforeach
     
 </body>
 </html>
