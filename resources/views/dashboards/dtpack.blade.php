@@ -96,11 +96,21 @@
     @endif
           
           legend: { position: 'top', maxLines: 3 },
-          vAxis: {
+
+
+          vAxes: {
+            0: {
               title: 'ปริมาณสินค้า (kg)',
-              viewWindow: {
-            max : max1 + 100,
-            }
+                viewWindow: {
+               // max : max1 -1500,
+              },
+            },
+              1: {
+                title: 'ปริมาณสินค้า (kg)',
+                viewWindow: {
+              //  max : max1 + 100,
+              },
+            },
           },
           hAxis: {title: 'เวลา'},
           seriesType: 'bars',
@@ -112,7 +122,7 @@
 
             1: {
             type: 'bar',
-            targetAxisIndex:1,
+            targetAxisIndex:0,
             },
             2: {
             type: 'line',

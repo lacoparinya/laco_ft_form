@@ -235,13 +235,13 @@ var container = document.getElementById('chart_div');
             0: {
               title: 'ปริมาณสินค้า (kg)',
               viewWindow: {
-            max : max1 + 1500,
+         //   max : max1 + 1500,
           }
               }, 
             1: {
               title: 'ปริมาณสินค้าสะสม (kg)',
               viewWindow: {
-            max : max2 + 1500,
+           // max : max2 + 1500,
           }
               }
           },
