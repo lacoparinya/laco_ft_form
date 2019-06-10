@@ -311,7 +311,7 @@ class GenDailyReport extends Command
             $b2plot = new \LinePlot($data2y);
 
 
-            $graph->title->Set($productGroup->name . " อัตราการผลิตสะสม " . $selecteddate );
+            $graph->title->Set($productGroup->name . " อัตราการผลิตสะสมทั้งหมด " . $selecteddate );
             $graph->title->SetFont(FF_CORDIA, FS_BOLD, 14);
 
             $graph->Add($b1plot);
