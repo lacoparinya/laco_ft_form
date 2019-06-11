@@ -188,7 +188,7 @@ class GenDailyPackReport extends Command
             //$fileList[$mpObj->method_id][$mpObj->package_id]['method'] = $packageObj;
         }
 
-        $ftStaff = config( 'myconfig.emailpacklist');
+        $ftStaff = config( 'myconfig.emaillist');
 
         $mailObj['graph'] = $fileList;
         $mailObj['shift'] = $shiftObj;
