@@ -79,7 +79,7 @@ class GenDailyPackReport extends Command
                 ->join( 'timeslots', 'timeslots.id', '=', 'ft_log_packs.timeslot_id')
                 ->join( 'std_packs', 'std_packs.id', '=', 'ft_log_packs.std_pack_id')
                 ->select(
-                    DB::raw( 'timeslots.name as tname, ft_log_packs.output_kg as actual, std_packs.packperhour * ft_log_packs.workhours as planning')
+                    DB::raw( 'timeslots.name as tname, ft_log_packs.output_pack as actual, std_packs.packperhour * ft_log_packs.workhours as planning')
                 )
                 ->where( 'ft_log_packs.process_date', $selecteddate)
                 ->where( 'ft_log_packs.method_id', $mpObj->method_id)
