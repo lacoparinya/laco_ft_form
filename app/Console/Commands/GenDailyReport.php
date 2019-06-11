@@ -216,7 +216,12 @@ class GenDailyReport extends Command
 
             $graph->Stroke( $filename1);
 
-            $fileList[] = $filename;
+            $image1 = file_get_contents($filename1);
+            if ($image1 !== false) {
+                $fileList[] = 'data:image/jpg;base64,' . base64_encode( $image1);
+            }
+
+            //$fileList[] = $filename;
 
             $rawdata = DB::table('ft_logs')
                 ->join('products', 'products.id', '=', 'ft_logs.product_id')
@@ -351,8 +356,12 @@ class GenDailyReport extends Command
 
             $graph->Stroke( $filename11);
 
+            $image2 = file_get_contents($filename11);
+            if ( $image2 !== false) {
+                $fileList2[] = 'data:image/jpg;base64,' . base64_encode( $image2);
+            }
 
-            $fileList2[] = $filename2;
+            //$fileList2[] = $filename2;
         }
 
         $ftStaff = config('myconfig.emaillist');

@@ -27,7 +27,7 @@
             @foreach($item2 as $item1)
             @foreach($item1 as $item)
             <p>
-            <img src="{{ url('/') }}/ft_form/{{ $item }}" alt="">
+            <img src="{{ $item }}" alt="">
  <br/></p>
  @endforeach
             @endforeach

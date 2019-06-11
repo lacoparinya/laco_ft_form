@@ -177,7 +177,13 @@ class GenDailyPackReport extends Command
 
             $graph->Stroke($filename1);
 
-            $fileList[$mpObj->method_id][$mpObj->package_id][] = $filename;
+            //$fileList[$mpObj->method_id][$mpObj->package_id][] = $filename;
+
+            $image = file_get_contents( $filename1);
+            if ($image !== false) {
+                $fileList[$mpObj->method_id][$mpObj->package_id][] = 'data:image/jpg;base64,' . base64_encode($image);
+            }
+
            // $fileList[$mpObj->method_id][$mpObj->package_id]['method'] = $methodObj;
             //$fileList[$mpObj->method_id][$mpObj->package_id]['method'] = $packageObj;
         }

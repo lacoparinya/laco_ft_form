@@ -25,13 +25,13 @@
   
             @foreach($ftdataobj['graph'] as $item)
             <p>
-            <img src="{{ url('/') }}/ft_form/{{ $item }}" alt="">
+            <img src="{{ $item }}" alt="">
  <br/></p>
             @endforeach
 
                         @foreach($ftdataobj['graph2'] as $item)
             <p>
-            <img src="{{ url('/') }}/ft_form/{{ $item }}" alt="">
+            <img src="{{ $item }}" alt="">
  <br/></p>
             @endforeach
     
