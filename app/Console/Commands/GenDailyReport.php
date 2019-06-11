@@ -26,7 +26,7 @@ class GenDailyReport extends Command
      *
      * @var string
      */
-    protected $description = 'Generate Daily Report';
+    protected $description = 'Generate Daily Select Report';
 
     /**
      * Create a new command instance.
@@ -182,7 +182,7 @@ class GenDailyReport extends Command
             $b2plot = new \LinePlot($data2y);
 
 
-            $graph->title->Set($productGroup->name . " อัตราการผลิตสะสม " . $selecteddate." กะ ".$shiftObj->name );
+            $graph->title->Set($productGroup->name . " อัตราการคัดสะสม " . $selecteddate." กะ ".$shiftObj->name );
             $graph->title->SetFont(FF_CORDIA, FS_BOLD, 14);
 
             $graph->Add($b1plot);
@@ -317,7 +317,7 @@ class GenDailyReport extends Command
             $b2plot = new \LinePlot($data2y);
 
 
-            $graph->title->Set($productGroup->name . " อัตราการผลิตสะสมทั้งหมด " . $selecteddate );
+            $graph->title->Set($productGroup->name . " อัตราการคัดสะสมทั้งหมด " . $selecteddate );
             $graph->title->SetFont(FF_CORDIA, FS_BOLD, 14);
 
             $graph->Add($b1plot);
@@ -360,7 +360,7 @@ class GenDailyReport extends Command
         $mailObj['graph'] = $fileList;
         $mailObj['graph2'] = $fileList2;
         $mailObj['shift'] = $shiftObj;
-        $mailObj['subject'] = " อัตราการผลิตสะสม " . $selecteddate;
+        $mailObj['subject'] = " อัตราการคัดสะสม " . $selecteddate;
 
         Mail::to($ftStaff)->send(new FtDataEmail($mailObj));
 
