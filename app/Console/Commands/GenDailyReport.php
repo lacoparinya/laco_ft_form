@@ -19,7 +19,7 @@ class GenDailyReport extends Command
      *
      * @var string
      */
-    protected $signature = 'gen:dailyreport {shift_id}';
+    protected $signature = 'gen:dailyreport {shift_id} {diff}';
 
     /**
      * The console command description.
@@ -47,10 +47,16 @@ class GenDailyReport extends Command
     {
 
         $shiftId = $this->argument('shift_id');
+        $diff = $this->argument('diff');
 
         //echo $shiftId;
 
         $selecteddate = date('Y-m-d');
+        if($diff == 'Y'){
+            $selecteddate = date('Y-m-d', strtotime("-1 days"));
+        }
+        //
+        
 
         require_once app_path() . '/jpgraph/jpgraph.php';
         require_once app_path() . '/jpgraph/jpgraph_bar.php';

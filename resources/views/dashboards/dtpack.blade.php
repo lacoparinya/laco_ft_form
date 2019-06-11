@@ -100,13 +100,13 @@
 
           vAxes: {
             0: {
-              title: 'ปริมาณสินค้า (kg)',
+              title: 'ปริมาณสินค้า (กล่อง หรือ EA)',
                 viewWindow: {
                // max : max1 -1500,
               },
             },
               1: {
-                title: 'ปริมาณสินค้า (kg)',
+                title: 'ปริมาณสินค้า (กล่อง หรือ EA)',
                 viewWindow: {
               //  max : max1 + 100,
               },
