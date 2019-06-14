@@ -149,6 +149,8 @@ class GenDailyReport extends Command
                 $data1x[] = $valueObj->tname;
             }
 
+            if(!empty( $data1x)){
+
             $graph = new \Graph(900, 400);
             $graph->SetScale('intlin');
             $graph->SetYScale(0, 'lin');
@@ -222,6 +224,7 @@ class GenDailyReport extends Command
             //}
 
             $fileList[] = $filename;
+            }
 
             $rawdata = DB::table('ft_logs')
                 ->join('products', 'products.id', '=', 'ft_logs.product_id')
@@ -288,6 +291,8 @@ class GenDailyReport extends Command
                 $data2y[] = $sum;
                 $data1x[] = $valueObj->tname;
             }
+
+            if (!empty($data1x)) {
 
             $graph = new \Graph(900, 400);
             $graph->SetScale('intlin');
@@ -362,6 +367,7 @@ class GenDailyReport extends Command
             //}
 
             $fileList2[] = $filename2;
+            }
         }
 
         $ftStaff = config('myconfig.emaillist');
