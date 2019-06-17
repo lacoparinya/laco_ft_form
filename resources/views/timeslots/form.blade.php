@@ -15,7 +15,7 @@
     {!! $errors->first('seq', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group {{ $errors->has('shift_id') ? 'has-error' : ''}}">
-    <label for="shift_id" class="control-label">{{ 'Product Id' }}</label>
+    <label for="shift_id" class="control-label">{{ 'Shift' }}</label>
     <select name="shift_id" class="form-control" id="shift_id" >
     @foreach ($shiftlist as $optionKey => $optionValue)
         <option value="{{ $optionKey }}" {{ (isset($timeslot->shift_id) && $timeslot->shift_id == $optionKey) ? 'selected' : ''}}>{{ $optionValue }}</option>

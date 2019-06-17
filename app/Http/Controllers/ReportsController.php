@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\FtLog;
 use App\FtLogPack;
+use App\FtLogFreeze;
 
 use Maatwebsite\Excel\Facades\Excel;
+use App\IqfMapCol;
 
 class ReportsController extends Controller
 {
@@ -17,6 +19,11 @@ class ReportsController extends Controller
     public function dailypack()
     {
         return view('reports.dailypack');
+    }
+
+    public function dailyfreeze()
+    {
+        return view('reports.dailyfreeze');
     }
 
     public function reportAction(Request $request){
@@ -73,6 +80,35 @@ class ReportsController extends Controller
         }
     }
 
+    public function reportFreezeAction(Request $request)
+    {
+        $requestData = $request->all();
+
+        $iqfmapcollist = IqfMapCol::pluck('name', 'col_name');
+
+        if ($requestData['action_type'] == 'daily') {
+            $data = FtLogFreeze::where('process_date', $requestData['process_date'])->orderBy( 'process_time')->get();
+
+            $filename = "ft_report_" . date('ymdHi');
+
+            Excel::create($filename, function ($excel) use ($data, $iqfmapcollist) {
+                $excel->sheet('งานFreeze', function ($sheet) use ($data, $iqfmapcollist) {
+                    $sheet->loadView('exports.dailyfreezeexport')->with('data', $data)->with( 'iqfmapcollist', $iqfmapcollist);
+                });
+            })->export('xlsx');
+        } elseif ($requestData['action_type'] == 'range') {
+            $data = FtLogFreeze::whereBetween('process_date', [$requestData['from_date'], $requestData['to_date']])->orderBy('process_date')->orderBy( 'process_time')->get();
+
+            $filename = "ft_report_" . date('ymdHi');
+
+            Excel::create($filename, function ($excel) use ($data, $iqfmapcollist) {
+                $excel->sheet('งานFreeze', function ($sheet) use ($data, $iqfmapcollist) {
+                    $sheet->loadView('exports.dailyfreezeexport')->with('data', $data)->with('iqfmapcollist', $iqfmapcollist);
+                });
+            })->export('xlsx');
+        }
+    }
+
     public function range()
     {
         return view('reports.range');
@@ -81,5 +117,10 @@ class ReportsController extends Controller
     public function rangepack()
     {
         return view('reports.rangepack');
+    }
+
+    public function rangefreeze()
+    {
+        return view('reports.rangefreeze');
     }
 }

@@ -30,6 +30,8 @@ class FtLogsController extends Controller
         $user = Auth::user();
         if($user->group->name == 'user_pack'){
             return redirect('ft-log-packs');
+        }elseif( $user->group->name == 'user_freeze'){
+            return redirect('ft-log-freezes');
         }
         
 

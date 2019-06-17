@@ -369,4 +369,14 @@ class DashboardController extends Controller
 
         return view('dashboards.dtpack', compact('rawdata', 'packageObj', 'current_date', 'methodObj', 'shiftData'));
     }
+
+    public function graphFreezeByDate($selecteddate){
+        $current_date = $selecteddate;
+        $rawdata = DB::table( 'ft_log_freezes')
+            ->select(DB::raw('process_date, process_time, output_sum, output_all_sum, current_RM'))
+            ->where( 'ft_log_freezes.process_date', $selecteddate)
+            ->orderBy(DB::raw( 'process_date, process_time'))
+            ->get();
+        return view('dashboards.chartfreeze', compact('rawdata', 'current_date'));
+    }
 }

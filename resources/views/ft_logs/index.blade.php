@@ -12,13 +12,13 @@
                                 </a></h3></div>
                     <div class="card-body">
                         @if(Session::has('flash_message'))
-                        @if(Session::has('alert_message'))
-                            <div class="alert alert-danger alert-block">
-                            <button type="button" class="close" data-dismiss="alert">×</button>	
-                        @else 
-                            <div class="alert alert-success alert-block">
-	                        <button type="button" class="close" data-dismiss="alert">×</button>
-                        @endif
+                            @if(Session::has('alert_message'))
+                                <div class="alert alert-danger alert-block">
+                                <button type="button" class="close" data-dismiss="alert">×</button>	
+                            @else 
+                                <div class="alert alert-success alert-block">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                            @endif
                         
                                 <strong>{{ Session::get('flash_message') }}</strong>
                         </div>
