@@ -63,6 +63,9 @@
                                     <li>
                                     <a href="{{route('ft-log-packs.index')}}">FT Pack Logs</a>
                                     </li>
+                                    <li>
+                                    <a href="{{route('ft-log-freezes.index')}}">FT Freeze Logs</a>
+                                    </li>
                                     <li><hr/></li>
                                     <li>
                                     <a href="{{route('reports.daily')}}">Select Daily Report</a>
