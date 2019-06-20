@@ -25,7 +25,35 @@
                                     <tr>
                                         <th>ID</th><td>{{ $ftlogfreeze->id }}</td>
                                     </tr>
-                                    
+                                    <tr>
+                                        <th>Date</th><td>{{ $ftlogfreeze->process_date }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Time</th><td>{{ substr($ftlogfreeze->process_time,0,5) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Target</th><td>{{ $ftlogfreeze->target }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Working Time (ชม.)</th><td>{{ $ftlogfreeze->workhours }}</td>
+                                    </tr>
+                                    @foreach ($iqfmapcollist as $key=>$item)
+                                    <tr>
+                                    <th>{{ $item }}</th><td>{{ $ftlogfreeze->$key }}</td>
+                                    </tr>
+                                    @endforeach
+                                    <tr>
+                                        <th>รวมฟรีส</th><td>{{ $ftlogfreeze->output_sum }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>รวมฟรีสสะสม</th><td>{{ $ftlogfreeze->output_all_sum }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>ปริมาณ RM คงเหลือ</th><td>{{ $ftlogfreeze->current_RM }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Note</th><td>{{ $ftlogfreeze->note }}</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>

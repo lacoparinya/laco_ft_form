@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h3>งาน Freeze <a href="{{ url('/ft-log-freezes/create') }}" class="btn btn-success btn-sm" title="Add New FtLogIqf">
-                            <i class="glyphicon glyphicon-plus" aria-hidden="true"></i> Add New
+                            <i class="glyphicon glyphicon-plus" aria-hidden="true"></i> เปิดงานใหม่
                         </a></h3>
 
                     </div>
@@ -49,14 +49,18 @@
                                 <tbody>
                                 @foreach($ftlogfreezes as $item)
                                     <tr>
-                                        <td>{{ $item->id }}</td>
+                                        <td>{{ $loop->iteration or $item->id }}</td>
                                         <td>{{ $item->process_date }} / {{ date('H:i',strtotime($item->process_time)) }}</td>
                                         <td>{{ $item->iqfjob->name }}</td>
                                         <td>{{ $item->output_sum }}</td>
                                         <td>{{ $item->current_RM }}</td>
                                         <td>{{ $item->output_all_sum }}</td>
                                         <td>
-                                            <a href="{{ url('/chart/freezebydate/' . $item->process_date ) }}" title="รายงานสรุปสะสม Freeze"><button class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-stats" aria-hidden="true"></i></button></a>
+                                            @if (!isset($endList[$item->master_code]))
+                                                <a href="{{ url('/ft-log-freezes/create?code=' . $item->master_code) }}" title="View FtLogFreeze"><button class="btn btn-info btn-sm"><i class="glyphicon glyphicon-plus" aria-hidden="true"></i></button></a>
+                                            @endif
+                                            
+                                            <a href="{{ url('/chart/freezebydate/' . $item->master_code ) }}" title="รายงานสรุปสะสม Freeze"><button class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-stats" aria-hidden="true"></i></button></a>
                                             
                                             <a href="{{ url('/ft-log-freezes/' . $item->id) }}" title="View FtLogFreeze"><button class="btn btn-info btn-sm"><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i></button></a>
                                             <a href="{{ url('/ft-log-freezes/' . $item->id . '/edit') }}" title="Edit FtLogFreeze"><button class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-pencil" aria-hidden="true"></i></button></a>

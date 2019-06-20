@@ -53,6 +53,9 @@
                                     <li>
                                     <a href="{{route('std-packs.index')}}">Std Pack</a>
                                     </li>
+                                    <li>
+                                    <a href="{{route('iqf-jobs.index')}}">iQf Job</a>
+                                    </li>
                                     <li><hr/></li>
                                     <li>
                                     <a href="{{ url('/main') }}">Main Select</a>

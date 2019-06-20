@@ -5,6 +5,10 @@
         <div class="col-md-12">
             <div class="panel panel-default">
             <div class="panel-heading">FT Form Application - Freeze - {{ $current_date }}</div>
+            <br />
+ <a href="{{ url('/ft-log-freezes') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="glyphicon glyphicon-arrow-left" aria-hidden="true"></i> Back</button></a>
+                        <br />
+                        <br />
 
                 <div class="panel-body">
                     <div class="row">
@@ -15,7 +19,9 @@
                       <table class='table'>
                         <thead>
                           <tr>
+                            <th>Date</th>
                             <th>Time</th>
+                            <th>Product</th>
                             <th>Freeze ได้</th>
                             <th>Freeze สะสม</th>
                             <th>RM คงเหลือ</th>
@@ -24,7 +30,9 @@
                         <tbody>
                            @foreach ($rawdata as $item)
                           <tr>
+                            <td>{{ $item->process_date }}</td>
                           <td>{{ date('H:i',strtotime($item->process_time)) }}</td>
+                          <td>{{ $item->iqf_job_name }}</td>
                           <td>{{ number_format($item->output_sum,2,".",",") }}</td>
                           <td>{{ number_format($item->output_all_sum,2,".",",") }}</td>
                           <td>{{ number_format($item->current_RM,2,".",",") }}</td>
@@ -69,7 +77,7 @@
     },
     annotations: {
         alwaysOutside : false
-    },     title : 'Freeze ถั่วแระ - อัตราการผลิตสะสมวันที่ {{ $current_date }}',
+    },     title : 'Freeze ถั่วแระ {{ $rawdata[0]->iqf_job_name }} - อัตราการผลิตสะสมวันที่ {{ $current_date }}',
 
           
           legend: { position: 'top', maxLines: 3 },

@@ -25,10 +25,17 @@ class FtLogFreezesController extends Controller
         if (!empty($keyword)) {
             $ftlogfreezes = FtLogFreeze::latest()->paginate($perPage);
         } else {
-            $ftlogfreezes = FtLogFreeze::latest()->paginate($perPage);
+            $ftlogfreezes = FtLogFreeze::orderBy('process_date', 'desc')->orderBy('process_time','desc')->orderBy('iqf_job_id','asc')->paginate($perPage);
         }
 
-        return view( 'ft-log-freezes.index', compact( 'ftlogfreezes'));
+        $endList = array();
+        foreach ( $ftlogfreezes as $ftlogfreezesObj) {
+            if( $ftlogfreezesObj->current_RM == 0){
+                $endList[ $ftlogfreezesObj->master_code] = 1; 
+            }
+        }
+
+        return view( 'ft-log-freezes.index', compact( 'ftlogfreezes', 'endList'));
     }
 
     /**
@@ -36,9 +43,13 @@ class FtLogFreezesController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create()
+    public function create(Request $request)
     {
-        $prevftlogfreeze = FtLogFreeze::latest()->first();
+        $code = $request->input('code');
+        //echo $code;
+        $prevftlogfreeze = FtLogFreeze::Where('master_code',$code)->latest()->first();
+
+        
 
         $iqfmapcollist = IqfMapCol::pluck('name', 'col_name');
         $iqfjoblist = IqfJob::pluck('name', 'id');
@@ -63,14 +74,17 @@ class FtLogFreezesController extends Controller
             $requestData['output_all_sum'] = $requestData['output_sum'];
         }
 
+        if ($requestData['prev_current_RM'] > 0) {
+            $requestData['use_RM'] = $requestData['prev_current_RM'];
+            $requestData['master_code'] = $requestData['prev_master_code'];
+        }
 
         if($requestData['recv_RM'] > 0){
             $requestData['start_RM'] = $requestData['recv_RM'];
+            $requestData['master_code'] = $requestData['process_date']."-". $requestData['process_time']."-". $requestData[ 'iqf_job_id'];
         }
 
-        if( $requestData['prev_current_RM'] > 0){
-            $requestData['use_RM'] = $requestData['prev_current_RM'];
-        }
+        
 
         FtLogFreeze::create($requestData);
 
@@ -87,8 +101,8 @@ class FtLogFreezesController extends Controller
     public function show($id)
     {
         $ftlogfreeze = FtLogFreeze::findOrFail($id);
-
-        return view( 'ft-log-freezes.show', compact( 'ftlogfreeze'));
+        $iqfmapcollist = IqfMapCol::pluck('name', 'col_name');
+        return view( 'ft-log-freezes.show', compact( 'ftlogfreeze', 'iqfmapcollist'));
     }
 
     /**
@@ -102,7 +116,9 @@ class FtLogFreezesController extends Controller
     {
         $ftlogfreeze = FtLogFreeze::findOrFail($id);
 
-        return view( 'ft-log-freezes.edit', compact( 'ftlogfreeze'));
+        $iqfmapcollist = IqfMapCol::pluck('name', 'col_name');
+        $iqfjoblist = IqfJob::pluck('name', 'id');
+        return view( 'ft-log-freezes.edit', compact( 'ftlogfreeze', 'iqfmapcollist', 'iqfjoblist'));
     }
 
     /**
@@ -121,6 +137,8 @@ class FtLogFreezesController extends Controller
         $ftlogfreeze = FtLogFreeze::findOrFail($id);
         $ftlogfreeze->update($requestData);
 
+        $ftlogfreeze->recalculate( $ftlogfreeze->master_code);
+
         return redirect( 'ft-log-freezes')->with('flash_message', ' updated!');
     }
 
@@ -133,7 +151,13 @@ class FtLogFreezesController extends Controller
      */
     public function destroy($id)
     {
+        $delteObj = FtLogFreeze::findOrFail($id);
+
+        $code = $delteObj->master_code;
+
         FtLogFreeze::destroy($id);
+
+        $delteObj->recalculate( $code);
 
         return redirect( 'ft-log-freezes')->with('flash_message', ' deleted!');
     }

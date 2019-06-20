@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.appfreeze')
 
 @section('content')
     <div class="container">

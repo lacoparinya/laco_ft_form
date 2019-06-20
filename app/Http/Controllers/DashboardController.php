@@ -373,8 +373,9 @@ class DashboardController extends Controller
     public function graphFreezeByDate($selecteddate){
         $current_date = $selecteddate;
         $rawdata = DB::table( 'ft_log_freezes')
-            ->select(DB::raw('process_date, process_time, output_sum, output_all_sum, current_RM'))
-            ->where( 'ft_log_freezes.process_date', $selecteddate)
+            ->join('iqf_jobs', 'iqf_jobs.id', '=', 'ft_log_freezes.iqf_job_id')
+            ->select(DB::raw( 'ft_log_freezes.process_date, ft_log_freezes.process_time, ft_log_freezes.output_sum, ft_log_freezes.output_all_sum, ft_log_freezes.current_RM, iqf_jobs.name as iqf_job_name'))
+            ->where( 'ft_log_freezes.master_code', $selecteddate)
             ->orderBy(DB::raw( 'process_date, process_time'))
             ->get();
         return view('dashboards.chartfreeze', compact('rawdata', 'current_date'));
