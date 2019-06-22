@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\GenDailyReport::class,
         Commands\GenDailyPackReport::class,
+        Commands\GenDailyFreezeReport::class,
     ];
 
     /**
