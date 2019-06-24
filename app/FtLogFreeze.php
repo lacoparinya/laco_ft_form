@@ -19,8 +19,12 @@ class FtLogFreeze extends Model
     }
 
     public function recalculate($master_code){
-        $data = self::where('master_code',$master_code)->orderBy( 'process_date','asc')->orderBy('process_time', 'asc')->get();
-        if(!empty($data)){
+        $data = self::where('master_code',$master_code)
+            ->orderBy( 'process_date','asc')
+            ->orderBy('process_time', 'asc')
+            ->get();
+
+        if(!($data->isEmpty())){
             $sumAll = 0;
             $remainAll = $data[0]->recv_RM;
             foreach ($data as $dataObj) { 

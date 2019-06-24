@@ -47,7 +47,7 @@
     @endforeach
     <div class="form-group col-md-4 {{ $errors->has('output_sum') ? 'has-error' : ''}}">
         <label for="output_sum" class="control-label">{{ 'รวม '.$str }}</label>
-        <input class="form-control" name="output_sum" id="output_sum" value="{{ $ftlogfreeze->output_sum or '0'}}" >
+        <input required="required" class="form-control" name="output_sum" id="output_sum" value="{{ $ftlogfreeze->output_sum or '0'}}" >
         {!! $errors->first('output_sum' , '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -104,9 +104,14 @@
             }else{
                 if(isset($ftlogfreeze)){
                     if(isset($ftlogfreeze->recv_RM) && $ftlogfreeze->recv_RM > 0 ){
-                        
+                    
                     }else{
-                        echo " readonly ";
+                        if( isset($codecount) && $codecount > 0){
+
+                        }else{
+                            echo " readonly ";
+                        }
+                        
                     }
                 }
             }

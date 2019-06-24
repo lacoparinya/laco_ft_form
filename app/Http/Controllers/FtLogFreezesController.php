@@ -68,6 +68,10 @@ class FtLogFreezesController extends Controller
         
         $requestData = $request->all();
 
+        $this->validate($request, [
+            'output_sum' => 'required|numeric|min:0|not_in:0',
+        ]);
+
         $requestData['job_id'] = 3;
 
         if($requestData['prev_current_RM'] == 0){
@@ -116,9 +120,12 @@ class FtLogFreezesController extends Controller
     {
         $ftlogfreeze = FtLogFreeze::findOrFail($id);
 
+        $chkData = FtLogFreeze::where('master_code', $ftlogfreeze->master_code)->get();
+        $codecount = $chkData->count();
+
         $iqfmapcollist = IqfMapCol::pluck('name', 'col_name');
         $iqfjoblist = IqfJob::pluck('name', 'id');
-        return view( 'ft-log-freezes.edit', compact( 'ftlogfreeze', 'iqfmapcollist', 'iqfjoblist'));
+        return view( 'ft-log-freezes.edit', compact( 'ftlogfreeze', 'iqfmapcollist', 'iqfjoblist', 'codecount'));
     }
 
     /**
@@ -155,10 +162,11 @@ class FtLogFreezesController extends Controller
 
         $code = $delteObj->master_code;
 
-        FtLogFreeze::destroy($id);
+        if(FtLogFreeze::destroy($id)){
 
-        $delteObj->recalculate( $code);
+            $delteObj->recalculate( $code);
 
+        }
         return redirect( 'ft-log-freezes')->with('flash_message', ' deleted!');
     }
 }
