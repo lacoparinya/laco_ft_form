@@ -52,9 +52,9 @@
                                         <td>{{ $loop->iteration or $item->id }}</td>
                                         <td>{{ $item->process_date }} / {{ date('H:i',strtotime($item->process_time)) }}</td>
                                         <td>{{ $item->iqfjob->name }}</td>
-                                        <td>{{ $item->output_sum }}</td>
-                                        <td>{{ $item->current_RM }}</td>
-                                        <td>{{ $item->output_all_sum }}</td>
+                                        <td>{{ number_format($item->output_sum,2,".",",") }}</td>
+                                        <td>{{ number_format($item->current_RM,2,".",",") }}</td>
+                                        <td>{{ number_format($item->output_all_sum,2,".",",") }}</td>
                                         <td>
                                             @if (!isset($endList[$item->master_code]))
                                                 <a href="{{ url('/ft-log-freezes/create?code=' . $item->master_code) }}" title="View FtLogFreeze"><button class="btn btn-info btn-sm"><i class="glyphicon glyphicon-plus" aria-hidden="true"></i></button></a>

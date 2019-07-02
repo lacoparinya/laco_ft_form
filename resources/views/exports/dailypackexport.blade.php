@@ -71,7 +71,7 @@
                         <td>{{ $item->input_kg }}</td>
                         <td>{{ $item->output_kg  }}</td>
                         <td>{{ $item->output_kg_sum }}</td>
-                        <td>{{ $item->stdpack->std_rate }}</td>
+                        <td>{{ $item->stdpack->std_rate or 0 }}</td>
                         <td>{{ $item->productivity }}</td>
                         <td>{{ $item->yeild_percent }}</td>
                         <td>{{ $item->num_pack }}</td>
