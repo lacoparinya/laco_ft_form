@@ -30,7 +30,7 @@ class FtLogFreezesController extends Controller
 
         $endList = array();
         foreach ( $ftlogfreezes as $ftlogfreezesObj) {
-            if( $ftlogfreezesObj->current_RM == 0){
+            if( $ftlogfreezesObj->current_RM <= 0){
                 $endList[ $ftlogfreezesObj->master_code] = 1; 
             }
         }

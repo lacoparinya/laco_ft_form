@@ -39,6 +39,9 @@ Route::resource('std-iqfs', 'StdIqfsController');
 Route::resource('ft-log-iqfs', 'FtLogIqfsController');
 Route::resource('iqf-map-cols', 'IqfMapColsController');
 Route::resource('ft-log-freezes', 'FtLogFreezesController');
+Route::resource('pre-prods', 'PreProdsController');
+Route::resource('std-pre-prods', 'StdPreProdsController');
+Route::resource('ft-log-pres', 'FtLogPresController');
 Route::get('/import', 'AutoImportController@test');
 Route::get('/reports/daily', 'ReportsController@daily')->name('reports.daily');
 Route::get('/reports/range', 'ReportsController@range')->name('reports.range');
@@ -64,4 +67,5 @@ Route::get('/chart/packdatepackage/{selecteddate}/{package_id}/{method_id}', 'Da
 Route::get('/chart/packdatepackageshift/{selecteddate}/{package_id}/{method_id}/{shift_id}', 'DashboardController@dtPackByDatePackShift');
 Route::get('/chart/freezebydate/{selecteddate}', 'DashboardController@graphFreezeByDate');
 Route::get('/testgraph', 'TestController@test');
-Route::get( '/graph/gengraph/{selecteddate}/{product_id}', 'TestController@gengraph');
+Route::get('/graph/gengraph/{selecteddate}/{product_id}', 'TestController@gengraph');
+Route::get('/ft-log-freezes/recaldelete/{code}/{id}', 'FtLogFreezesController@recaldelete');

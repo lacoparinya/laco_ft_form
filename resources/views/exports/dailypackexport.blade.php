@@ -42,6 +42,7 @@
                 <th>วันที่</th>
                 <th>เวลา</th>
                 <th>กะ</th>
+                <th>วิธี</th>
                 <th>บรรจุผลิตภัณฑ์</th>
                 <th>Order No.</th>
                 <th>Loading</th>
@@ -64,6 +65,7 @@
                         <td>{{ $item->timeslot->name }}</td>
                         <td>{{ $item->shift->name }}</td>
                         <td>{{ $item->method->name }}</td>
+                        <td>{{ $item->package->name }}</td>
                         <td>{{ $item->order->order_no }}</td>
                         <td>{{ $item->order->loading_date }}</td>
                         <td>{{ $item->output_pack }}</td>
