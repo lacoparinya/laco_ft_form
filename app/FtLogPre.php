@@ -26,4 +26,27 @@ class FtLogPre extends Model
     {
         return $this->hasOne('App\Shift', 'id', 'shift_id');
     }
+
+    public function recalculate($date, $shift_id, $pre_prod_id)
+    {
+        $data = self::where('process_date', $date)
+            ->where( 'shift_id', $shift_id)
+            ->where( 'pre_prod_id', $pre_prod_id)
+            ->orderBy('process_time', 'asc')
+            ->get();
+
+        if (!($data->isEmpty())) {
+            $sumInputAll = 0;
+            $sumOutputAll = 0;
+            foreach ($data as $dataObj) {
+                $sumInputAll += $dataObj->input;
+                $sumOutputAll += $dataObj->output;
+                $tmp = $dataObj;
+                $tmp->input_sum = $sumInputAll;
+                $tmp->output_sum = $sumOutputAll;
+
+                $tmp->update();
+            }
+        }
+    }
 }

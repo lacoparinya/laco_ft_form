@@ -39,7 +39,9 @@ class FtLogPresController extends Controller
      */
     public function create()
     {
-        return view( 'ft-log-pres.create');
+        $shiftlist = Shift::pluck('name', 'id');
+        $preprodlist = PreProd::pluck('name', 'id');
+        return view( 'ft-log-pres.create',compact( 'shiftlist', 'preprodlist'));
     }
 
     /**
@@ -53,8 +55,31 @@ class FtLogPresController extends Controller
     {
         
         $requestData = $request->all();
-        
+
+        $stdpreprod = StdPreProd::where('pre_prod_id', $requestData[ 'pre_prod_id'])->where('status',1)->first();
+
+        if(empty( $stdpreprod->id)){
+            $tmp = array();
+            $tmp[ 'pre_prod_id'] = $requestData['pre_prod_id'];
+            $tmp[ 'std_rate_per_h_m'] = 1;
+            $tmp['note'] = 'Aut Gen';
+            $tmp['status'] = 1;
+
+            $stdpreprod = FtLogPre::create($tmp);
+
+            $requestData['std_pre_prod_id'] = $stdpreprod->id;
+
+        }else{
+            $requestData[ 'std_pre_prod_id'] = $stdpreprod->id;
+
+        }
+
+        $requestData['status'] = 'Active';
+
         FtLogPre::create($requestData);
+
+        $ftlogpre = new FtLogPre;
+        $ftlogpre->recalculate( $requestData[ 'process_date'], $requestData[ 'shift_id'], $requestData[ 'pre_prod_id']);
 
         return redirect( 'ft-log-pres')->with('flash_message', ' added!');
     }
@@ -83,8 +108,10 @@ class FtLogPresController extends Controller
     public function edit($id)
     {
         $ftlogpre = FtLogPre::findOrFail($id);
+        $shiftlist = Shift::pluck('name', 'id');
+        $preprodlist = PreProd::pluck('name', 'id');
 
-        return view( 'ft-log-pres.edit', compact( 'ftlogpre'));
+        return view( 'ft-log-pres.edit', compact( 'ftlogpre', 'shiftlist', 'preprodlist'));
     }
 
     /**
@@ -102,6 +129,7 @@ class FtLogPresController extends Controller
 
         $ftlogpre = FtLogPre::findOrFail($id);
         $ftlogpre->update($requestData);
+        $ftlogpre->recalculate( $ftlogpre->process_date, $ftlogpre->shift_id, $ftlogpre->pre_prod_id);
 
         return redirect( 'ft-log-pres')->with('flash_message', ' updated!');
     }

@@ -28,14 +28,28 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>#</th><th>Actions</th>
+                                        <th>Date/Time</th>
+                                        <th>ผลิตภัณฑ์</th>
+                                        <th>กะ</th>
+                                        <th>Target</th>
+                                        <th>output</th>
+                                        <th>สะสม</th>
+                                        <th>จำนวนเตรียมการ</th>
+                                        <th>จำนวน IQF/F</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($ftlogpres as $item)
                                     <tr>
-                                        <td>{{ $loop->iteration or $item->id }}</td>
-                                        
+                                        <td>{{ $item->process_date }}/{{ $item->process_time }}</td>
+                                        <td>{{ $item->preprod->name }}</td>
+                                        <td>{{ $item->shift->name }}</td>
+                                        <td>{{ $item->targets }}</td>
+                                        <td>{{ $item->output }}</td>
+                                        <td>{{ $item->output_sum }}</td>
+                                        <td>{{ $item->num_pre }}</td>
+                                        <td>{{ $item->num_iqf }}</td>
                                         <td>
                                             <a href="{{ url('/ft-log-pres/' . $item->id) }}" title="View FtLogPre"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
                                             <a href="{{ url('/ft-log-pres/' . $item->id . '/edit') }}" title="Edit FtLogPre"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
