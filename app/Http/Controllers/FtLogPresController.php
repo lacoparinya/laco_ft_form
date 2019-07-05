@@ -65,7 +65,7 @@ class FtLogPresController extends Controller
             $tmp['note'] = 'Aut Gen';
             $tmp['status'] = 1;
 
-            $stdpreprod = FtLogPre::create($tmp);
+            $stdpreprod = StdPreProd::create($tmp);
 
             $requestData['std_pre_prod_id'] = $stdpreprod->id;
 
@@ -126,6 +126,23 @@ class FtLogPresController extends Controller
     {
         
         $requestData = $request->all();
+
+
+        $stdpreprod = StdPreProd::where('pre_prod_id', $requestData['pre_prod_id'])->where('status', 1)->first();
+
+        if (empty($stdpreprod->id)) {
+            $tmp = array();
+            $tmp['pre_prod_id'] = $requestData['pre_prod_id'];
+            $tmp['std_rate_per_h_m'] = 1;
+            $tmp['note'] = 'Aut Gen';
+            $tmp['status'] = 1;
+
+            $stdpreprod = StdPreProd::create($tmp);
+
+            $requestData['std_pre_prod_id'] = $stdpreprod->id;
+        } else {
+            $requestData['std_pre_prod_id'] = $stdpreprod->id;
+        }
 
         $ftlogpre = FtLogPre::findOrFail($id);
         $ftlogpre->update($requestData);
