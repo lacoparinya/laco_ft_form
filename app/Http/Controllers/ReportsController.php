@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\FtLog;
 use App\FtLogPack;
 use App\FtLogFreeze;
+use App\FtLogPre;
 
 use Maatwebsite\Excel\Facades\Excel;
 use App\IqfMapCol;
@@ -24,6 +25,11 @@ class ReportsController extends Controller
     public function dailyfreeze()
     {
         return view('reports.dailyfreeze');
+    }
+
+    public function dailypreprod()
+    {
+        return view('reports.dailypreprod');
     }
 
     public function reportAction(Request $request){
@@ -109,6 +115,33 @@ class ReportsController extends Controller
         }
     }
 
+    public function reportPreprodAction(Request $request)
+    {
+        $requestData = $request->all();
+
+        if ($requestData['action_type'] == 'daily') {
+            $data = FtLogPre::where('process_date', $requestData['process_date'])->orderBy('process_time')->get();
+
+            $filename = "ft_preprod_report_" . date('ymdHi');
+
+            Excel::create($filename, function ($excel) use ($data) {
+                $excel->sheet('งานเตรียมการ', function ($sheet) use ($data) {
+                    $sheet->loadView('exports.dailypreprodexport')->with('data', $data);
+                });
+            })->export('xlsx');
+        } elseif ($requestData['action_type'] == 'range') {
+            $data = FtLogPre::whereBetween('process_date', [$requestData['from_date'], $requestData['to_date']])->orderBy('process_date')->orderBy('process_time')->get();
+
+            $filename = "ft_preprod_report_" . date('ymdHi');
+
+            Excel::create($filename, function ($excel) use ($data) {
+                $excel->sheet( 'งานเตรียมการ', function ($sheet) use ($data) {
+                    $sheet->loadView('exports.dailypreprodexport')->with('data', $data);
+                });
+            })->export('xlsx');
+        }
+    }
+
     public function range()
     {
         return view('reports.range');
@@ -122,5 +155,10 @@ class ReportsController extends Controller
     public function rangefreeze()
     {
         return view('reports.rangefreeze');
+    }
+
+    public function rangepreprod()
+    {
+        return view( 'reports.rangepreprod');
     }
 }

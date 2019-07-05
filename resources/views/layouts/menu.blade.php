@@ -69,6 +69,9 @@
                                     <li>
                                     <a href="{{route('ft-log-freezes.index')}}">FT Freeze Logs</a>
                                     </li>
+                                    <li>
+                                    <a href="{{route('ft-log-pres.index')}}">FT Prepare Logs</a>
+                                    </li>
                                     <li><hr/></li>
                                     <li>
                                     <a href="{{route('reports.daily')}}">Select Daily Report</a>
@@ -83,12 +86,19 @@
                                     <a href="{{route('reports.rangepack')}}">Pack Range Report</a>
                                     </li>
                                     <li>
-                                        <a href="{{route('reports.dailyfreeze')}}">Freeze Daily Report</a>
-                                        </li>
-                                        <li>
-                                        <a href="{{route('reports.rangefreeze')}}">Freeze Range Report</a>
-                                        </li>
+                                    <a href="{{route('reports.dailyfreeze')}}">Freeze Daily Report</a>
+                                    </li>
                                     <li>
+                                    <a href="{{route('reports.rangefreeze')}}">Freeze Range Report</a>
+                                    </li>
+                                    <li>
+                                    <a href="{{route('reports.dailypreprod')}}">Prepare Daily Report</a>
+                                    </li>
+                                    <li>
+                                    <a href="{{route('reports.rangepreprod')}}">Prepare Range Report</a>
+                                    </li>
+                                    <li>
+
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -151,6 +161,31 @@
                                         </li>
                                     </ul>
                                     @else
+                                    @if ( App\User::find(Auth::user()->id)->group->name == 'user_prepare' )
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li>
+                                        <a href="{{route('ft-log-pres.index')}}">FT Prepare Logs</a>
+                                        </li>
+                                        <li><hr/></li>
+                                        <li>
+                                        <a href="{{route('reports.dailypreprod')}}">Prepare Daily Report</a>
+                                        </li>
+                                        <li>
+                                        <a href="{{route('reports.rangepreprod')}}">Prepare Range Report</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('logout') }}"
+                                                onclick="event.preventDefault();
+                                                        document.getElementById('logout-form').submit();">
+                                                Logout
+                                            </a>
+
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                                {{ csrf_field() }}
+                                            </form>
+                                        </li>
+                                    </ul>
+                                    @else
                                     <ul class="dropdown-menu" role="menu">
                                         <li>
                                         <a href="{{ url('/main') }}">Main</a>
@@ -177,6 +212,7 @@
                                             </form>
                                         </li>
                                     </ul>
+                                    @endif
                                     @endif
                                     @endif
                                 @endif

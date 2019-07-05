@@ -8,7 +8,7 @@
                 <div class="card">
                     <div class="card-header">รายงานบรรจุตั้งแต่วันที่ถึงวันที่</div>
                     <div class="card-body">
-                        <a href="{{ url('/ft_logs') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="glyphicon glyphicon-arrow-left" aria-hidden="true"></i> Back</button></a>
+                        <a href="{{ url('/ft-log-packs') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="glyphicon glyphicon-arrow-left" aria-hidden="true"></i> Back</button></a>
                 
                         <form method="POST" action="{{ url('/reports/reportPackAction') }}" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
                             {{ csrf_field() }}

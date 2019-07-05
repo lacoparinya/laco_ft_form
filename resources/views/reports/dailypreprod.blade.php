@@ -6,11 +6,11 @@
 
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">รายงานบรรจุรายวัน</div>
+                    <div class="card-header">รายงานเตรียมการรายวัน</div>
                     <div class="card-body">
-                        <a href="{{ url('/ft-log-packs') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="glyphicon glyphicon-arrow-left" aria-hidden="true"></i> Back</button></a>
+                        <a href="{{ url('/ft-log-pres') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="glyphicon glyphicon-arrow-left" aria-hidden="true"></i> Back</button></a>
                 
-                        <form method="POST" action="{{ url('/reports/reportPackAction') }}" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
+                        <form method="POST" action="{{ url('/reports/reportPreprodAction') }}" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <div class="row">
                             <div class="form-group col-md-12 {{ $errors->has('process_date') ? 'has-error' : ''}}">
