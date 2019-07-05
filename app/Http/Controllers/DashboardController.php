@@ -10,6 +10,8 @@ use App\Planning;
 use App\Shift;
 use App\Package;
 use App\Method;
+use App\PreProd;
+use App\FtLogPre;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -379,5 +381,35 @@ class DashboardController extends Controller
             ->orderBy(DB::raw( 'process_date, process_time'))
             ->get();
         return view('dashboards.chartfreeze', compact('rawdata', 'current_date'));
+    }
+
+    public function graphOutputPrepareByDateProdShift($selecteddate,$pre_prod_id,$shift_id)
+    {
+        $current_date = $selecteddate;
+        $preprodObj = PreProd::findOrFail($pre_prod_id);
+        $shiftObj = Shift::findOrFail($shift_id);
+        $rawdata = DB::table('ft_log_pres')
+            ->select(DB::raw( 'ft_log_pres.process_date, ft_log_pres.process_time, ft_log_pres.output, ft_log_pres.output_sum'))
+            ->where( 'ft_log_pres.process_date', $selecteddate)
+            ->where('ft_log_pres.pre_prod_id', $pre_prod_id)
+            ->where('ft_log_pres.shift_id', $shift_id)
+            ->orderBy(DB::raw('process_date, process_time'))
+            ->get();
+        return view('dashboards.chartpreprodoutput', compact('rawdata', 'current_date', 'preprodObj', 'shiftObj'));
+    }
+
+    public function graphInputPrepareByDateProdShift($selecteddate, $pre_prod_id, $shift_id)
+    {
+        $current_date = $selecteddate;
+        $preprodObj = PreProd::findOrFail($pre_prod_id);
+        $shiftObj = Shift::findOrFail($shift_id);
+        $rawdata = DB::table('ft_log_pres')
+            ->select(DB::raw('ft_log_pres.process_date, ft_log_pres.process_time, ft_log_pres.input, ft_log_pres.input_sum'))
+            ->where('ft_log_pres.process_date', $selecteddate)
+            ->where('ft_log_pres.pre_prod_id', $pre_prod_id)
+            ->where('ft_log_pres.shift_id', $shift_id)
+            ->orderBy(DB::raw('process_date, process_time'))
+            ->get();
+        return view('dashboards.chartpreprodinput', compact('rawdata', 'current_date', 'preprodObj', 'shiftObj'));
     }
 }
