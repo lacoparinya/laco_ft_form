@@ -40,7 +40,7 @@ class FtLogPresController extends Controller
     public function create()
     {
         $shiftlist = Shift::pluck('name', 'id');
-        $preprodlist = PreProd::pluck('name', 'id');
+        $preprodlist = PreProd::orderBy('name')->pluck('name', 'id');
         return view( 'ft-log-pres.create',compact( 'shiftlist', 'preprodlist'));
     }
 
@@ -109,7 +109,7 @@ class FtLogPresController extends Controller
     {
         $ftlogpre = FtLogPre::findOrFail($id);
         $shiftlist = Shift::pluck('name', 'id');
-        $preprodlist = PreProd::pluck('name', 'id');
+        $preprodlist = PreProd::orderBy('name')->pluck('name', 'id');
 
         return view( 'ft-log-pres.edit', compact( 'ftlogpre', 'shiftlist', 'preprodlist'));
     }
