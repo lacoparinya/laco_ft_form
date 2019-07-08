@@ -13,6 +13,11 @@ use App\IqfMapCol;
 
 class ReportsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function daily(){
         return view('reports.daily');
     }

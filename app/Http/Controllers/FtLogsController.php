@@ -28,6 +28,7 @@ class FtLogsController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
+        
         if($user->group->name == 'user_pack'){
             return redirect('ft-log-packs');
         } elseif ( $user->group->name == 'user_freeze'){
@@ -36,7 +37,6 @@ class FtLogsController extends Controller
             return redirect('ft-log-pres');
         }
         
-
         $keyword = $request->get('search');
         $perPage = 25;
 

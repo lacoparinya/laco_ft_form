@@ -21,7 +21,7 @@ class PreProdsController extends Controller
         $perPage = 25;
 
         if (!empty($keyword)) {
-            $preprods = PreProd::latest()->paginate($perPage);
+            $preprods = PreProd::where('name', 'like', '%' . $keyword . '%')->paginate($perPage);
         } else {
             $preprods = PreProd::latest()->paginate($perPage);
         }

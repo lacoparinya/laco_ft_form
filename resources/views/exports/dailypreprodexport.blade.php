@@ -40,9 +40,9 @@
         <thead>
             <tr>
                 <th>วันที่</th>
-                <th>เวลา</th>
-                <th>ผลิตภัณฑ์</th>
                 <th>กะ</th>
+                <th>ผลิตภัณฑ์</th>
+                <th>เวลา</th>
                 <th>Target</th>
                 <th>Input</th>
                 <th>Output</th>
@@ -56,9 +56,9 @@
             @foreach($data as $item)
                     <tr>
                         <td>{{ $item->process_date }}</td>
-                        <td>{{ date('H:i',strtotime($item->process_time)) }}</td>
-                        <td>{{ $item->preprod->name }}</td>
                         <td>{{ $item->shift->name }}</td>
+                        <td>{{ $item->preprod->name }}</td>
+                        <td>{{ date('H:i',strtotime($item->process_time)) }}</td>
                         <td>{{ $item->targets }}</td>
                         <td>{{ $item->input }}</td>
                         <td>{{ $item->output }}</td>
