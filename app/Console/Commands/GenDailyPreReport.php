@@ -159,12 +159,15 @@ class GenDailyPreReport extends Command
             $fileList[] = $filename;
         }
 
-        $ftStaff = config('myconfig.emailpacklist');
+        if(!empty( $fileList)){
+
+        $ftStaff = config( 'myconfig.emaillist');
 
         $mailObj['graph'] = $fileList;
         $mailObj['subject'] = " อัตราการเตรียมการสะสม " . $selecteddate;
 
         Mail::to($ftStaff)->send(new FtPreRptMail($mailObj));
+        }
 
     }
 }
