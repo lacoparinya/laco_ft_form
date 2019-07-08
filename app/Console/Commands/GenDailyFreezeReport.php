@@ -48,9 +48,7 @@ class GenDailyFreezeReport extends Command
         if ($diff == 'Y') {
             $selecteddate = date('Y-m-d', strtotime("-1 days"));
         }
-
         //$selecteddate = '2019-06-17';
-
         require_once app_path() . '/jpgraph/jpgraph.php';
         require_once app_path() . '/jpgraph/jpgraph_bar.php';
         require_once app_path() . '/jpgraph/jpgraph_line.php';

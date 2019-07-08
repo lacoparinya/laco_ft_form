@@ -72,7 +72,7 @@ class GenDailyPreReport extends Command
             $preProdObj = PreProd::findOrFail($mpObj->pre_prod_id);
 
             $rawdata = DB::table('ft_log_pres')
-                ->select(DB::raw('ft_log_pres.process_date, ft_log_pres.process_time, ft_log_pres.output, ft_log_pres.output_sum'))
+                ->select(DB::raw( 'ft_log_pres.process_date, ft_log_pres.process_time, ft_log_pres.output, ft_log_pres.output_sum, ft_log_pres.input, ft_log_pres.input_sum'))
                 ->where('ft_log_pres.process_date', $current_date)
                 ->where('ft_log_pres.pre_prod_id', $mpObj->pre_prod_id)
                 ->where('ft_log_pres.shift_id', $mpObj->shift_id)
@@ -81,11 +81,15 @@ class GenDailyPreReport extends Command
 
             $data1y = array();
             $data2y = array();
+            $data3y = array();
+            $data4y = array();
             $data1x = array();
             foreach ($rawdata as $rptObj) {
                 $data1x[] = date('H:i', strtotime( $rptObj->process_time));
-                $data1y[] = $rptObj->output;
-                $data2y[] = $rptObj->output_sum;
+                $data3y[] = $rptObj->output;
+                $data4y[] = $rptObj->output_sum;
+                $data1y[] = $rptObj->input;
+                $data2y[] = $rptObj->input_sum;
             }
 
             $graph = new \Graph(900, 400);
@@ -103,7 +107,7 @@ class GenDailyPreReport extends Command
             $graph->xaxis->title->SetFont(FF_CORDIA, FS_NORMAL, 14);
             $graph->xaxis->SetTitle('เวลา', 'center');
             $graph->xaxis->SetTitleMargin(30);
-            $graph->yaxis->SetTitle('ปริมาณแพ็ค');
+            $graph->yaxis->SetTitle('ปริมาณ');
             $graph->yaxis->SetTitleMargin(3);
             $graph->yaxis->HideZeroLabel();
             $graph->yaxis->SetTitlemargin(-10);
@@ -111,20 +115,23 @@ class GenDailyPreReport extends Command
             $graph->yaxis->title->SetFont(FF_CORDIA, FS_NORMAL, 14);
 
             $b1plot = new \BarPlot($data1y);
+            $b2plot = new \BarPlot($data3y);
             $l1plot = new \LinePlot($data2y);
+            $l2plot = new \LinePlot($data4y);
+
+            $gbplot = new \GroupBarPlot(array($b1plot, $b2plot));
 
             $graph->title->Set($preProdObj->name . " - อัตราการเตรียมการ กะ " . $shiftObj->name . " วันที่ " . $selecteddate);
             $graph->title->SetFont(FF_CORDIA, FS_BOLD, 14);
 
 
-            $graph->Add($b1plot);
+            $graph->Add( $gbplot);
+
             $graph->AddY(0, $l1plot);
+            $graph->AddY(0, $l2plot);
             $graph->ynaxis[0]->SetColor('black');
             $graph->ynaxis[0]->title->Set('Y-title');
 
-
-            //$gbplot->value->SetFormat( '%01.0f');
-            //$gbplot->value->Show();
 
             $l1plot->SetColor("red");
             //$b2plot->legend->SetFont(FF_FONT2, FS_NORMAL);
@@ -136,16 +143,36 @@ class GenDailyPreReport extends Command
             $l1plot->value->SetColor('red');
 
             $l1plot->mark->setFillColor("red");
-            $l1plot->SetLegend("Prepare Summary");
+            $l1plot->SetLegend("Input Sum");
+
+            $l2plot->SetColor("green");
+            //$b2plot->legend->SetFont(FF_FONT2, FS_NORMAL);
+
+            $l2plot->mark->SetType(MARK_X, '', 1.0);
+            $l2plot->mark->setColor("green");
+            $l1plot->value->SetFormat('%d');
+            $l2plot->value->Show();
+            $l2plot->value->SetColor('green');
+
+            $l2plot->mark->setFillColor("green");
+            $l2plot->SetLegend("Output Sum");
+
+            $gbplot->SetColor("white");
+            $gbplot->SetFillColor("#22ff11");
 
             $b1plot->value->Show();
-            $b1plot->SetColor("#61a9f3");
-            $b1plot->SetFillColor("#61a9f3");
             $b1plot->value->SetFormat('%d');
             $b1plot->value->SetColor('black', 'darkred');
-            $b1plot->SetLegend( "Prepare");
+            $b1plot->SetLegend("Input");
+            $b2plot->value->Show();
+            $b2plot->value->SetFormat('%d');
+            $b2plot->value->SetColor('black', 'darkred');
+            $b2plot->SetLegend("Output");
 
-            $graph->legend->SetPos(0.6, 0.05, 'left', 'top');
+            
+
+            $graph->legend->SetPos(0.4, 0.05, 'left', 'top');
+            $graph->legend->SetColumns(4);
 
             $date = date('ymdHis');
 
@@ -161,7 +188,7 @@ class GenDailyPreReport extends Command
 
         if(!empty( $fileList)){
 
-        $ftStaff = config( 'myconfig.emaillist');
+        $ftStaff = config( 'myconfig.emailpacklist');
 
         $mailObj['graph'] = $fileList;
         $mailObj['subject'] = " อัตราการเตรียมการสะสม " . $selecteddate;
