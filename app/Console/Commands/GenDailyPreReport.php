@@ -3,27 +3,29 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\FtLogFreeze;
-
+use App\FtLogPre;
+use App\Shift;
+use App\PreProd;
+use App\Mail\FtPreRptMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
-use App\Mail\FreezeRptMail;
 
-class GenDailyFreezeReport extends Command
+class GenDailyPreReport extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'gen:dailyfreezereport {diff}';
+    protected $signature = 'gen:dailyprereport {diff}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Generate Daily Freeze Report';
+    protected $description = 'Generate Daily Prepare Report';
+
 
     /**
      * Create a new command instance.
@@ -49,8 +51,6 @@ class GenDailyFreezeReport extends Command
             $selecteddate = date('Y-m-d', strtotime("-1 days"));
         }
 
-        //$selecteddate = '2019-06-17';
-
         require_once app_path() . '/jpgraph/jpgraph.php';
         require_once app_path() . '/jpgraph/jpgraph_bar.php';
         require_once app_path() . '/jpgraph/jpgraph_line.php';
@@ -59,33 +59,33 @@ class GenDailyFreezeReport extends Command
 
         $fileList = array();
 
-        $loopData = FtLogFreeze::where('process_date',$current_date)
-            ->select('master_code')
-            ->groupBy('master_code')
+        $loopData = FtLogPre::where('process_date', $current_date)
+            ->select('shift_id', 'pre_prod_id')
+            ->groupBy('shift_id', 'pre_prod_id')
+            ->orderBy( 'shift_id', 'asc')
+            ->orderBy( 'pre_prod_id', 'asc')
             ->get();
 
-        foreach ( $loopData as $loopObj) {
-            $rawdata = DB::table('ft_log_freezes')
-                ->join('iqf_jobs', 'iqf_jobs.id', '=', 'ft_log_freezes.iqf_job_id')
-                ->select(DB::raw('ft_log_freezes.process_date, ft_log_freezes.process_time, ft_log_freezes.output_sum, ft_log_freezes.output_all_sum, ft_log_freezes.current_RM, iqf_jobs.name as iqf_job_name'))
-                ->where('ft_log_freezes.master_code', $loopObj->master_code)
+        foreach ($loopData as $mpObj) {
+            //echo $mpObj->shift_id." - ". $mpObj->pre_prod_id;
+            $shiftObj = Shift::findOrFail( $mpObj->shift_id);
+            $preProdObj = PreProd::findOrFail($mpObj->pre_prod_id);
+
+            $rawdata = DB::table('ft_log_pres')
+                ->select(DB::raw('ft_log_pres.process_date, ft_log_pres.process_time, ft_log_pres.output, ft_log_pres.output_sum'))
+                ->where('ft_log_pres.process_date', $current_date)
+                ->where('ft_log_pres.pre_prod_id', $mpObj->pre_prod_id)
+                ->where('ft_log_pres.shift_id', $mpObj->shift_id)
                 ->orderBy(DB::raw('process_date, process_time'))
                 ->get();
 
             $data1y = array();
             $data2y = array();
-            $data3y = array();
             $data1x = array();
-            $sumAll = 0;
-            $sumRemain = $rawdata[0]->current_RM + $rawdata[0]->output_sum;
-            $productName = $rawdata[0]->iqf_job_name;
-            foreach ( $rawdata as $rptObj) {
-                $sumAll += $rptObj->output_sum;
-                $sumRemain -= $rptObj->output_sum;
-                $data1x[] = substr($rptObj->process_time,0,5);
-                $data1y[] = $rptObj->output_sum;
-                $data2y[] = $sumAll;
-                $data3y[] = $sumRemain;
+            foreach ($rawdata as $rptObj) {
+                $data1x[] = date('H:i', strtotime( $rptObj->process_time));
+                $data1y[] = $rptObj->output;
+                $data2y[] = $rptObj->output_sum;
             }
 
             $graph = new \Graph(900, 400);
@@ -112,24 +112,17 @@ class GenDailyFreezeReport extends Command
 
             $b1plot = new \BarPlot($data1y);
             $l1plot = new \LinePlot($data2y);
-            $l2plot = new \LinePlot($data3y);
 
-
-
-
-           // $gbplot = new \GroupBarPlot(array($b1plot, $b2plot));
-
-            $graph->title->Set( $productName . " - อัตราการฟรีสสะสม " . $selecteddate );
+            $graph->title->Set($preProdObj->name . " - อัตราการเตรียมการ กะ " . $shiftObj->name . " วันที่ " . $selecteddate);
             $graph->title->SetFont(FF_CORDIA, FS_BOLD, 14);
 
 
             $graph->Add($b1plot);
             $graph->AddY(0, $l1plot);
-            $graph->AddY(0, $l2plot);
             $graph->ynaxis[0]->SetColor('black');
             $graph->ynaxis[0]->title->Set('Y-title');
 
-            
+
             //$gbplot->value->SetFormat( '%01.0f');
             //$gbplot->value->Show();
 
@@ -143,51 +136,35 @@ class GenDailyFreezeReport extends Command
             $l1plot->value->SetColor('red');
 
             $l1plot->mark->setFillColor("red");
-            $l1plot->SetLegend("Freeze Summary");
-
-            $l2plot->SetColor( "green");
-            //$b2plot->legend->SetFont(FF_FONT2, FS_NORMAL);
-
-            $l2plot->mark->SetType(MARK_X, '', 1.0);
-            $l2plot->mark->setColor("green");
-            $l1plot->value->SetFormat('%d');
-            $l2plot->value->Show();
-            $l2plot->value->SetColor( 'green');
-
-            $l2plot->mark->setFillColor( "green");
-            $l2plot->SetLegend("RM Remain");
+            $l1plot->SetLegend("Prepare Summary");
 
             $b1plot->value->Show();
             $b1plot->SetColor("#61a9f3");
-            $b1plot->SetFillColor( "#61a9f3");
+            $b1plot->SetFillColor("#61a9f3");
             $b1plot->value->SetFormat('%d');
             $b1plot->value->SetColor('black', 'darkred');
-            $b1plot->SetLegend("Freeze");
+            $b1plot->SetLegend( "Prepare");
 
             $graph->legend->SetPos(0.6, 0.05, 'left', 'top');
 
             $date = date('ymdHis');
 
-            $filename = "graph/freezes/ft_log_freeze_" . $current_date . "-" . md5($loopObj->master_code) . "-" . $date . ".jpg";
+            $filename = "graph/prepare/ft_log_freeze_" . $current_date . "-" . $preProdObj->name . "-" . $shiftObj->name . "-" . $date . ".jpg";
 
-            $filename1 = public_path() . "/graph/freezes/ft_log_freeze_" . $current_date . "-" . md5($loopObj->master_code) . "-" . $date . ".jpg";
+            $filename1 = public_path() . "/graph/prepare/ft_log_freeze_" . $current_date . "-" . $preProdObj->name . "-" . $shiftObj->name . "-" . $date . ".jpg";
 
 
             $graph->Stroke($filename1);
 
             $fileList[] = $filename;
-
         }
 
-        $ftStaff = config( 'myconfig.emailpacklist');
+        $ftStaff = config('myconfig.emailpacklist');
 
         $mailObj['graph'] = $fileList;
-        $mailObj['subject'] = " อัตราการฟรีสสะสม " . $selecteddate;
+        $mailObj['subject'] = " อัตราการเตรียมการสะสม " . $selecteddate;
 
-        Mail::to($ftStaff)->send(new FreezeRptMail($mailObj));
-
-
-        
+        Mail::to($ftStaff)->send(new FtPreRptMail($mailObj));
 
     }
 }

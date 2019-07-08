@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         Commands\GenDailyReport::class,
         Commands\GenDailyPackReport::class,
         Commands\GenDailyFreezeReport::class,
+        Commands\GenDailyPreReport::class,
     ];
 
     /**
