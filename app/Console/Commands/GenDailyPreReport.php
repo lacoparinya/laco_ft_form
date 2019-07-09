@@ -187,14 +187,12 @@ class GenDailyPreReport extends Command
         }
 
         if(!empty( $fileList)){
+            $ftStaff = config( 'myconfig.emaillist');
 
-        $ftStaff = config( 'myconfig.emailpacklist');
+            $mailObj['graph'] = $fileList;
+            $mailObj['subject'] = " อัตราการเตรียมการสะสม " . $selecteddate;
 
-        $mailObj['graph'] = $fileList;
-        $mailObj['subject'] = " อัตราการเตรียมการสะสม " . $selecteddate;
-
-        Mail::to($ftStaff)->send(new FtPreRptMail($mailObj));
+            Mail::to($ftStaff)->send(new FtPreRptMail($mailObj));
         }
-
     }
 }

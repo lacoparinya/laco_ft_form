@@ -12,6 +12,7 @@ return [
         'PG' => 'Phadnithi@Lannaagro.com',
         'WW' => 'Wanwalee@Lannaagro.com',
         'VW' => 'Varut@lannaagro.com',
+        'OC' => 'Oraphan@Lannaagro.com',
         'PKP' => 'parinya.k@lannaagro.com',
     ],
     'emailpacklist' => [
