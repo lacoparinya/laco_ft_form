@@ -404,7 +404,7 @@ class DashboardController extends Controller
         $preprodObj = PreProd::findOrFail($pre_prod_id);
         $shiftObj = Shift::findOrFail($shift_id);
         $rawdata = DB::table('ft_log_pres')
-            ->select(DB::raw('ft_log_pres.process_date, ft_log_pres.process_time, ft_log_pres.input, ft_log_pres.input_sum'))
+            ->select(DB::raw('ft_log_pres.process_date, ft_log_pres.process_time, ft_log_pres.input, ft_log_pres.input_sum, ft_log_pres.output, ft_log_pres.output_sum, ft_log_pres.targets'))
             ->where('ft_log_pres.process_date', $selecteddate)
             ->where('ft_log_pres.pre_prod_id', $pre_prod_id)
             ->where('ft_log_pres.shift_id', $shift_id)

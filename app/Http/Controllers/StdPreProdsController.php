@@ -27,7 +27,7 @@ class StdPreProdsController extends Controller
             $stdpreprods = StdPreProd::latest()->paginate($perPage);
         }
 
-        return view( 'std-pre-prods.index', compact( 'stdpreprods'));
+        return view( 'std-pre-prods.index', compact('stdpreprods'));
     }
 
     /**

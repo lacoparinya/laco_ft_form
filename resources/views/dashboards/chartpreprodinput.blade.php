@@ -29,11 +29,14 @@
       function drawVisualization2() {
         // Some raw data (not necessarily accurate)
         var data2 = google.visualization.arrayToDataTable([
-          ['Time', 'Input','Freeze สะสม' ],
+          ['Time', 'Target','Input','Output','Input สะสม','Output สะสม' ],
           @foreach ($rawdata as $item)
             ['{{ date("H:i",strtotime($item->process_time)) }}',  
+            {{ $item->targets }}, 
             {{ $item->input }}, 
-            {{ $item->input_sum }}, 
+            {{ $item->output }}, 
+            {{ $item->input_sum }},
+            {{ $item->output_sum }}, 
             ],
           @endforeach
         ]);
@@ -49,7 +52,7 @@
     },
     annotations: {
         alwaysOutside : false
-    },     title : 'งานเตรียมการ {{ $preprodObj->name }} - อัตรา Input สะสมวันที่ {{ $current_date }} / กะ {{ $shiftObj->name }}',
+    },     title : 'งานเตรียมการ {{ $preprodObj->name }} - อัตราสะสมวันที่ {{ $current_date }} / กะ {{ $shiftObj->name }}',
 
           
           legend: { position: 'top', maxLines: 3 },
@@ -76,13 +79,31 @@
             type: 'bar',
         targetAxisIndex: 0
       },
+       1: {
+            type: 'bar',
+        targetAxisIndex: 0
+      },
+       2: {
+            type: 'bar',
+        targetAxisIndex: 0
+      },
 
-            1: {
+            3: {
             type: 'line',
             targetAxisIndex:1,
-            }
-          },
-          
+            
+          }, 
+          4: {
+            type: 'line',
+            targetAxisIndex:1,
+            
+          }, 
+          5: {
+            type: 'line',
+            targetAxisIndex:1,
+            
+          }
+          }  
         };
 
         var view = new google.visualization.DataView(data2);
@@ -101,10 +122,34 @@
       calc: "stringify",
       sourceColumn: 2,
       type: "string",
+      role: "annotation"
+    },
+    3,
+    {
+      calc: "stringify",
+      sourceColumn: 3,
+      type: "string",
+      role: "annotation"
+    },
+    4,
+    {
+      calc: "stringify",
+      sourceColumn: 4,
+      type: "string",
       role: "annotation",
       pointShape: 'square',
       pointsVisible: true
-    }]);
+    },
+    5,
+    {
+      calc: "stringify",
+      sourceColumn: 5,
+      type: "string",
+      role: "annotation",
+      pointShape: 'square',
+      pointsVisible: true
+    }
+  ]);
 
 var container = document.getElementById('chart_div2');
         var chart = new google.visualization.ComboChart(container);

@@ -55,8 +55,7 @@
                                         <td>{{ $item->num_pre }}</td>
                                         <td>{{ $item->num_iqf }}</td>
                                         <td> 
-                                            <a href="{{ url('/charttime/prepareinput/' . $item->process_date. '/'. $item->preprod->id . '/'.$item->shift->id ) }}" title="รายงานสรุปสะสมตาม เครื่อง และ Package"><button class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-stats" aria-hidden="true"></i> Input</button></a>
-                                           <a href="{{ url('/charttime/prepareoutput/' . $item->process_date. '/'. $item->preprod->id . '/'.$item->shift->id ) }}" title="รายงานสรุปสะสมตาม เครื่อง และ Package"><button class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-stats" aria-hidden="true"></i> Output</button></a>
+                                            <a href="{{ url('/charttime/prepareinput/' . $item->process_date. '/'. $item->preprod->id . '/'.$item->shift->id ) }}" title="รายงานสรุปสะสมตาม เครื่อง และ Package"><button class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-stats" aria-hidden="true"></i> Graph</button></a>
                                            
                                             <a href="{{ url('/ft-log-pres/' . $item->id) }}" title="View FtLogPre"><button class="btn btn-info btn-sm"><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i> View</button></a>
                                             <a href="{{ url('/ft-log-pres/' . $item->id . '/edit') }}" title="Edit FtLogPre"><button class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-pencil" aria-hidden="true"></i> Edit</button></a>

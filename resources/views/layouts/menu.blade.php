@@ -56,6 +56,9 @@
                                     <li>
                                     <a href="{{route('iqf-jobs.index')}}">iQf Job</a>
                                     </li>
+                                    <li>
+                                    <a href="{{route('std-pre-prods.index')}}">Std Prepare Prod</a>
+                                    </li>
                                     <li><hr/></li>
                                     <li>
                                     <a href="{{ url('/main') }}">Main Select</a>

@@ -38,8 +38,8 @@
                                 <tbody>
                                 @foreach($stdpreprods as $item)
                                     <tr>
-                                        <td>{{ $loop->iteration or $item->id }}</td>
-                                        <td>{{ $item->preprod->name }}</td>
+                                        <td>{{ $item->id }}</td>
+                                        <td>{{ $item->preprod->name or '' }}</td>
                                         <td>{{ $item->std_rate_per_h_m }}</td>
                                         <td>{{ $item->status }}</td>
                                         <td>

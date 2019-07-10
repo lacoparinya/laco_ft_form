@@ -72,7 +72,7 @@ class GenDailyPreReport extends Command
             $preProdObj = PreProd::findOrFail($mpObj->pre_prod_id);
 
             $rawdata = DB::table('ft_log_pres')
-                ->select(DB::raw( 'ft_log_pres.process_date, ft_log_pres.process_time, ft_log_pres.output, ft_log_pres.output_sum, ft_log_pres.input, ft_log_pres.input_sum'))
+                ->select(DB::raw('ft_log_pres.process_date, ft_log_pres.process_time, ft_log_pres.targets, ft_log_pres.output, ft_log_pres.output_sum, ft_log_pres.input, ft_log_pres.input_sum'))
                 ->where('ft_log_pres.process_date', $current_date)
                 ->where('ft_log_pres.pre_prod_id', $mpObj->pre_prod_id)
                 ->where('ft_log_pres.shift_id', $mpObj->shift_id)
@@ -83,6 +83,7 @@ class GenDailyPreReport extends Command
             $data2y = array();
             $data3y = array();
             $data4y = array();
+            $dataty = array();
             $data1x = array();
             foreach ($rawdata as $rptObj) {
                 $data1x[] = date('H:i', strtotime( $rptObj->process_time));
@@ -90,6 +91,7 @@ class GenDailyPreReport extends Command
                 $data4y[] = $rptObj->output_sum;
                 $data1y[] = $rptObj->input;
                 $data2y[] = $rptObj->input_sum;
+                $dataty[] = $rptObj->targets;
             }
 
             $graph = new \Graph(900, 400);
@@ -116,10 +118,11 @@ class GenDailyPreReport extends Command
 
             $b1plot = new \BarPlot($data1y);
             $b2plot = new \BarPlot($data3y);
+            $b3plot = new \BarPlot($dataty);
             $l1plot = new \LinePlot($data2y);
             $l2plot = new \LinePlot($data4y);
 
-            $gbplot = new \GroupBarPlot(array($b1plot, $b2plot));
+            $gbplot = new \GroupBarPlot(array($b3plot,$b1plot, $b2plot));
 
             $graph->title->Set($preProdObj->name . " - อัตราการเตรียมการ กะ " . $shiftObj->name . " วันที่ " . $selecteddate);
             $graph->title->SetFont(FF_CORDIA, FS_BOLD, 14);
@@ -160,6 +163,10 @@ class GenDailyPreReport extends Command
             $gbplot->SetColor("white");
             $gbplot->SetFillColor("#22ff11");
 
+            $b3plot->value->Show();
+            $b3plot->value->SetFormat('%d');
+            $b3plot->value->SetColor('black', 'darkred');
+            $b3plot->SetLegend("Target");
             $b1plot->value->Show();
             $b1plot->value->SetFormat('%d');
             $b1plot->value->SetColor('black', 'darkred');
@@ -172,7 +179,7 @@ class GenDailyPreReport extends Command
             
 
             $graph->legend->SetPos(0.4, 0.05, 'left', 'top');
-            $graph->legend->SetColumns(4);
+            $graph->legend->SetColumns(5);
 
             $date = date('ymdHis');
 
@@ -187,12 +194,12 @@ class GenDailyPreReport extends Command
         }
 
         if(!empty( $fileList)){
-            $ftStaff = config( 'myconfig.emaillist');
+            //$ftStaff = config( 'myconfig.emaillist');
 
             $mailObj['graph'] = $fileList;
             $mailObj['subject'] = " อัตราการเตรียมการสะสม " . $selecteddate;
 
-            Mail::to($ftStaff)->send(new FtPreRptMail($mailObj));
+           // Mail::to($ftStaff)->send(new FtPreRptMail($mailObj));
         }
     }
 }
