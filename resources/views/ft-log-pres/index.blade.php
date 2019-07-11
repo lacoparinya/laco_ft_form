@@ -36,7 +36,7 @@
                                         <th>ผลิตภัณฑ์</th>
                                         <th>กะ</th>
                                         <th>Target</th>
-                                        <th>output</th>
+                                        <th>input หรือ output</th>
                                         <th>สะสม</th>
                                         <th>จำนวนเตรียมการ</th>
                                         <th>จำนวน IQF/F</th>
@@ -50,8 +50,21 @@
                                         <td>{{ $item->preprod->name }}</td>
                                         <td>{{ $item->shift->name }}</td>
                                         <td>{{ $item->targets }}</td>
-                                        <td>{{ $item->output }}</td>
-                                        <td>{{ $item->output_sum }}</td>
+                                        <td>
+                                            @if ($item->input > 0 )
+                                                {{$item->input}}
+                                            @else
+                                                {{$item->output}}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($item->input_sum > 0)
+                                                {{ $item->input_sum }}
+                                            @else
+                                                {{ $item->output_sum }}
+                                            @endif
+                                            
+                                        </td>
                                         <td>{{ $item->num_pre }}</td>
                                         <td>{{ $item->num_iqf }}</td>
                                         <td> 

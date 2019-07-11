@@ -29,14 +29,20 @@
       function drawVisualization2() {
         // Some raw data (not necessarily accurate)
         var data2 = google.visualization.arrayToDataTable([
-          ['Time', 'Target','Input','Output','Input สะสม','Output สะสม' ],
+          ['Time', 'Target','Input หรือ Output','สะสม' ],
           @foreach ($rawdata as $item)
             ['{{ date("H:i",strtotime($item->process_time)) }}',  
             {{ $item->targets }}, 
-            {{ $item->input }}, 
-            {{ $item->output }}, 
-            {{ $item->input_sum }},
-            {{ $item->output_sum }}, 
+            @if ($item->input > 0)
+              {{ $item->input }},
+            @else
+              {{ $item->output }},
+            @endif
+            @if ($item->input_sum > 0)
+              {{ $item->input_sum }},
+            @else
+              {{ $item->output_sum }},
+            @endif
             ],
           @endforeach
         ]);
@@ -83,22 +89,8 @@
             type: 'bar',
         targetAxisIndex: 0
       },
-       2: {
-            type: 'bar',
-        targetAxisIndex: 0
-      },
 
-            3: {
-            type: 'line',
-            targetAxisIndex:1,
-            
-          }, 
-          4: {
-            type: 'line',
-            targetAxisIndex:1,
-            
-          }, 
-          5: {
+            2: {
             type: 'line',
             targetAxisIndex:1,
             
@@ -130,24 +122,6 @@
       sourceColumn: 3,
       type: "string",
       role: "annotation"
-    },
-    4,
-    {
-      calc: "stringify",
-      sourceColumn: 4,
-      type: "string",
-      role: "annotation",
-      pointShape: 'square',
-      pointsVisible: true
-    },
-    5,
-    {
-      calc: "stringify",
-      sourceColumn: 5,
-      type: "string",
-      role: "annotation",
-      pointShape: 'square',
-      pointsVisible: true
     }
   ]);
 
