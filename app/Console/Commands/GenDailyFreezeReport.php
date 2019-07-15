@@ -62,7 +62,10 @@ class GenDailyFreezeReport extends Command
             ->groupBy('master_code')
             ->get();
 
+        //echo "Number OF Loop" . $loopData->count() . "\n\r";
+
         foreach ( $loopData as $loopObj) {
+            //echo "Test".$loopObj->master_code."\n\r";
             $rawdata = DB::table('ft_log_freezes')
                 ->join('iqf_jobs', 'iqf_jobs.id', '=', 'ft_log_freezes.iqf_job_id')
                 ->select(DB::raw('ft_log_freezes.process_date, ft_log_freezes.process_time, ft_log_freezes.output_sum, ft_log_freezes.output_all_sum, ft_log_freezes.current_RM, iqf_jobs.name as iqf_job_name'))
@@ -101,7 +104,7 @@ class GenDailyFreezeReport extends Command
             $graph->xaxis->title->SetFont(FF_CORDIA, FS_NORMAL, 14);
             $graph->xaxis->SetTitle('เวลา', 'center');
             $graph->xaxis->SetTitleMargin(30);
-            $graph->yaxis->SetTitle('ปริมาณแพ็ค');
+            $graph->yaxis->SetTitle('ปริมาณ');
             $graph->yaxis->SetTitleMargin(3);
             $graph->yaxis->HideZeroLabel();
             $graph->yaxis->SetTitlemargin(-10);
@@ -177,12 +180,16 @@ class GenDailyFreezeReport extends Command
 
         }
 
-        $ftStaff = config( 'myconfig.emailpacklist');
+        if(!empty($fileList)){
+            $ftStaff = config('myconfig.emaillist');
 
-        $mailObj['graph'] = $fileList;
-        $mailObj['subject'] = " อัตราการฟรีสสะสม " . $selecteddate;
+            $mailObj['graph'] = $fileList;
+            $mailObj['subject'] = " อัตราการฟรีสสะสม " . $selecteddate;
 
-        Mail::to($ftStaff)->send(new FreezeRptMail($mailObj));
+            Mail::to($ftStaff)->send(new FreezeRptMail($mailObj));
+        }
+
+        
 
 
         

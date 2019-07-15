@@ -211,9 +211,9 @@ class GenDailyReport extends Command
 
             $date = date('ymdHis');
 
-            $filename = "graph/ft_log_select_" . $current_date . "-" . $shiftId . "-" . $product_id . "-" . $date . ".jpg";
+            $filename = "graph/selects/ft_log_select_" . $current_date . "-" . $shiftId . "-" . $product_id . "-" . $date . ".jpg";
 
-            $filename1 = public_path() . "/graph/ft_log_select_" . $current_date . "-" . $shiftId . "-" . $product_id . "-" . $date . ".jpg";
+            $filename1 = public_path() . "/graph/selects/ft_log_select_" . $current_date . "-" . $shiftId . "-" . $product_id . "-" . $date . ".jpg";
 
 
             $graph->Stroke( $filename1);
@@ -354,9 +354,9 @@ class GenDailyReport extends Command
 
             $date = date('ymdHis');
 
-            $filename2 = "graph/ft_log_select_all_" . $current_date . "-" . $product_id . "-" . $date . ".jpg";
+            $filename2 = "graph/selects/ft_log_select_all_" . $current_date . "-" . $product_id . "-" . $date . ".jpg";
 
-            $filename11 = public_path() . "/graph/ft_log_select_all_" . $current_date . "-" . $product_id . "-" . $date . ".jpg";
+            $filename11 = public_path() . "/graph/selects/ft_log_select_all_" . $current_date . "-" . $product_id . "-" . $date . ".jpg";
 
 
             $graph->Stroke( $filename11);

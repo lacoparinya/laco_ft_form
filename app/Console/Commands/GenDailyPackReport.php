@@ -170,9 +170,9 @@ class GenDailyPackReport extends Command
 
             $date = date('ymdHis');
 
-            $filename = "graph/ft_log_pack_" . $current_date . "-" . $shiftId . "-" . $mpObj->method_id . "-" . $mpObj->package_id . "-" . $date . ".jpg";
+            $filename = "graph/packs/ft_log_pack_" . $current_date . "-" . $shiftId . "-" . $mpObj->method_id . "-" . $mpObj->package_id . "-" . $date . ".jpg";
 
-            $filename1 = public_path() . "/graph/ft_log_pack_" . $current_date . "-" . $shiftId . "-" . $mpObj->method_id . "-" . $mpObj->package_id . "-" . $date . ".jpg";
+            $filename1 = public_path() . "/graph/packs/ft_log_pack_" . $current_date . "-" . $shiftId . "-" . $mpObj->method_id . "-" . $mpObj->package_id . "-" . $date . ".jpg";
 
 
             $graph->Stroke($filename1);
