@@ -24,7 +24,6 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>Date</th>
                                         <th>Order</th>
                                         <th>Pack Product</th>
                                         <th>Sum Pack</th>
@@ -34,7 +33,6 @@
                                 <tbody>
                                 @foreach($data as $item)
                                     <tr>
-                                        <td>{{ $item->process_date }}</td>
                                         <td>{{ $item->order_no }}</td>
                                         <td>{{ $item->packagename }}</td>
                                         <td>{{ $item->sumbox }}</td>

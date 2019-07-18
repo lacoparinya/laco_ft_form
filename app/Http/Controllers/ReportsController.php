@@ -175,9 +175,10 @@ class ReportsController extends Controller
         $data = DB::table('ft_log_packs')
             ->join('orders', 'orders.id','=', 'ft_log_packs.order_id')
             ->join('packages', 'packages.id', '=', 'ft_log_packs.package_id')
-            ->select(DB::raw('ft_log_packs.process_date,orders.order_no, packages.name as packagename, sum([ft_log_packs].output_pack) as sumbox, sum([ft_log_packs].output_kg) as sumkg'))
-            ->groupBy(DB::raw('ft_log_packs.process_date,orders.order_no, packages.name'))
-            ->orderBy('ft_log_packs.process_date','desc')
+            ->select(DB::raw('orders.order_no, packages.name as packagename, sum([ft_log_packs].output_pack) as sumbox, sum([ft_log_packs].output_kg) as sumkg'))
+            ->groupBy(DB::raw('orders.order_no, packages.name'))
+            ->orderBy('orders.order_no','asc')
+            ->orderBy('packages.name', 'asc')
             ->paginate($perPage);
 
         return view('reports.orderreport',compact('data'));
@@ -192,19 +193,21 @@ class ReportsController extends Controller
             $data = DB::table('ft_log_packs')
                 ->join('orders', 'orders.id', '=', 'ft_log_packs.order_id')
                 ->join('packages', 'packages.id', '=', 'ft_log_packs.package_id')
-                ->select(DB::raw('ft_log_packs.process_date,orders.order_no, packages.name as packagename, sum([ft_log_packs].output_pack) as sumbox, sum([ft_log_packs].output_kg) as sumkg'))
+                ->select(DB::raw('orders.order_no, packages.name as packagename, sum([ft_log_packs].output_pack) as sumbox, sum([ft_log_packs].output_kg) as sumkg'))
                 ->where('orders.order_no','like','%'.$keyword.'%')
-                ->groupBy(DB::raw('ft_log_packs.process_date,orders.order_no, packages.name'))
-                ->orderBy('ft_log_packs.process_date', 'desc')
+                ->groupBy(DB::raw('orders.order_no, packages.name'))
+                ->orderBy('orders.order_no', 'asc')
+                ->orderBy('packages.name', 'asc')
                 ->paginate($perPage);
         }else{
 
             $data = DB::table('ft_log_packs')
                 ->join('orders', 'orders.id', '=', 'ft_log_packs.order_id')
                 ->join('packages', 'packages.id', '=', 'ft_log_packs.package_id')
-                ->select(DB::raw('ft_log_packs.process_date,orders.order_no, packages.name as packagename, sum([ft_log_packs].output_pack) as sumbox, sum([ft_log_packs].output_kg) as sumkg'))
-                ->groupBy(DB::raw('ft_log_packs.process_date,orders.order_no, packages.name'))
-                ->orderBy('ft_log_packs.process_date', 'desc')
+                ->select(DB::raw('orders.order_no, packages.name as packagename, sum([ft_log_packs].output_pack) as sumbox, sum([ft_log_packs].output_kg) as sumkg'))
+                ->groupBy(DB::raw('orders.order_no, packages.name'))
+                ->orderBy('orders.order_no', 'asc')
+                ->orderBy('packages.name', 'asc')
                 ->paginate($perPage);
         }
 

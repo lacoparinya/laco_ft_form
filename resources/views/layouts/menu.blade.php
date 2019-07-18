@@ -101,6 +101,9 @@
                                     <a href="{{route('reports.rangepreprod')}}">Prepare Range Report</a>
                                     </li>
                                     <li>
+                                    <a href="{{route('reports.orderreport')}}">Order Report</a>
+                                    </li>
+                                    <li>
 
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
