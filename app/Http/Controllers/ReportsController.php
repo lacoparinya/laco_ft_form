@@ -8,6 +8,7 @@ use App\FtLogPack;
 use App\FtLogFreeze;
 use App\FtLogPre;
 
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\IqfMapCol;
 
@@ -165,5 +166,48 @@ class ReportsController extends Controller
     public function rangepreprod()
     {
         return view( 'reports.rangepreprod');
+    }
+
+    public function orderreport(){
+
+        $perPage = 25;
+
+        $data = DB::table('ft_log_packs')
+            ->join('orders', 'orders.id','=', 'ft_log_packs.order_id')
+            ->join('packages', 'packages.id', '=', 'ft_log_packs.package_id')
+            ->select(DB::raw('ft_log_packs.process_date,orders.order_no, packages.name as packagename, sum([ft_log_packs].output_pack) as sumbox, sum([ft_log_packs].output_kg) as sumkg'))
+            ->groupBy(DB::raw('ft_log_packs.process_date,orders.order_no, packages.name'))
+            ->orderBy('ft_log_packs.process_date','desc')
+            ->paginate($perPage);
+
+        return view('reports.orderreport',compact('data'));
+    }
+
+    public function packOrderAction(Request $request){
+
+        $keyword = $request->get('search');
+        $perPage = 25;
+
+        if (!empty($keyword)) {
+            $data = DB::table('ft_log_packs')
+                ->join('orders', 'orders.id', '=', 'ft_log_packs.order_id')
+                ->join('packages', 'packages.id', '=', 'ft_log_packs.package_id')
+                ->select(DB::raw('ft_log_packs.process_date,orders.order_no, packages.name as packagename, sum([ft_log_packs].output_pack) as sumbox, sum([ft_log_packs].output_kg) as sumkg'))
+                ->where('orders.order_no','like','%'.$keyword.'%')
+                ->groupBy(DB::raw('ft_log_packs.process_date,orders.order_no, packages.name'))
+                ->orderBy('ft_log_packs.process_date', 'desc')
+                ->paginate($perPage);
+        }else{
+
+            $data = DB::table('ft_log_packs')
+                ->join('orders', 'orders.id', '=', 'ft_log_packs.order_id')
+                ->join('packages', 'packages.id', '=', 'ft_log_packs.package_id')
+                ->select(DB::raw('ft_log_packs.process_date,orders.order_no, packages.name as packagename, sum([ft_log_packs].output_pack) as sumbox, sum([ft_log_packs].output_kg) as sumkg'))
+                ->groupBy(DB::raw('ft_log_packs.process_date,orders.order_no, packages.name'))
+                ->orderBy('ft_log_packs.process_date', 'desc')
+                ->paginate($perPage);
+        }
+
+        return view('reports.orderreport', compact('data'));
     }
 }

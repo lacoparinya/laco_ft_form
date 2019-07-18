@@ -74,3 +74,5 @@ Route::get('/graph/gengraph/{selecteddate}/{product_id}', 'TestController@gengra
 Route::get('/ft-log-freezes/recaldelete/{code}/{id}', 'FtLogFreezesController@recaldelete');
 Route::get( '/charttime/prepareoutput/{selecteddate}/{pre_prod_id}/{shift_id}', 'DashboardController@graphOutputPrepareByDateProdShift');
 Route::get('/charttime/prepareinput/{selecteddate}/{pre_prod_id}/{shift_id}', 'DashboardController@graphInputPrepareByDateProdShift');
+Route::get('/reports/orderreport', 'ReportsController@orderreport')->name('reports.orderreport');
+Route::get('/reports/packorderaction', 'ReportsController@packOrderAction');
