@@ -10,12 +10,13 @@
                         @if (Auth::guest())
                             <li><a href="{{ route('login') }}">Login</a></li>
                         @else
+                            @if ( App\User::find(Auth::user()->id)->group->name == 'admin'  )
+                            
                             <li class="dropdown">
+                                
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     {{ Auth::user()->laconame }} - {{App\User::find(Auth::user()->id)->group->name}} <span class="caret"></span>
                                 </a>
-                            
-                                @if ( App\User::find(Auth::user()->id)->group->name == 'admin'  )
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
                                     <a href="{{route('users.index')}}">User</a>
@@ -57,9 +58,34 @@
                                     <a href="{{route('iqf-jobs.index')}}">iQf Job</a>
                                     </li>
                                     <li>
+                                    <a href="{{route('pre-prods.index')}}">Prepare Prod</a>
+                                    </li>
+                                    <li>
                                     <a href="{{route('std-pre-prods.index')}}">Std Prepare Prod</a>
                                     </li>
                                     <li><hr/></li>
+                                    <li>
+
+                                        <a href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                            Logout
+                                        </a>
+
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                        </form>
+                                    </li>
+
+                                    
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                        Logs <span class="caret"></span>
+                                    </a>
+                                <ul class="dropdown-menu" role="menu">       
+                                   
                                     <li>
                                     <a href="{{ url('/main') }}">Main Select</a>
                                     </li>
@@ -75,7 +101,13 @@
                                     <li>
                                     <a href="{{route('ft-log-pres.index')}}">FT Prepare Logs</a>
                                     </li>
-                                    <li><hr/></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                        Reports <span class="caret"></span>
+                                    </a>
+                                <ul class="dropdown-menu" role="menu">       
                                     <li>
                                     <a href="{{route('reports.daily')}}">Select Daily Report</a>
                                     </li>
@@ -103,20 +135,13 @@
                                     <li>
                                     <a href="{{route('reports.orderreport')}}">Order Report</a>
                                     </li>
-                                    <li>
-
-                                        <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
                                 </ul>
+                            </li>
                                 @else
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    {{ Auth::user()->laconame }} - {{App\User::find(Auth::user()->id)->group->name}} <span class="caret"></span>
+                                </a>
                                     @if ( App\User::find(Auth::user()->id)->group->name == 'user_pack' )
                                     <ul class="dropdown-menu" role="menu">
                                         <li>
