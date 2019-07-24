@@ -40,13 +40,16 @@
     {!! $errors->first('method_id', '<p class="help-block">:message</p>') !!}
 </div>
 
-<div class="form-group col-md-4 {{ $errors->has('package_name') ? 'has-error' : ''}}">
-    <label for="package_name" class="control-label">{{ 'บรรจุผลิตภัณฑ์' }}</label>
-    <input required class="form-control uicomplete" autocomplete="on" name="package_name" type="text" id="package_name" value={{ $ftlogpack->package->name or '' }}  >
-    <input name="package_id" type="hidden" id="package_id"  value={{ $ftlogpack->package->id or '' }}  >
-    {!! $errors->first('package_name', '<p class="help-block">:message</p>') !!}
+<div class="form-group col-md-4 {{ $errors->has('package_id') ? 'has-error' : ''}}">
+    <label for="package_id" class="control-label">{{ 'สินค้า' }}</label>
+    <select name="package_id" class="form-control" id="package_id" required>
+        <option value="">-</option>
+    @foreach ($packagelist as $optionKey => $optionValue)
+        <option value="{{ $optionKey }}" {{ (isset($ftlogpack->package_id) && $ftlogpack->package_id == $optionKey) ? 'selected' : ''}}>{{ $optionValue }}</option>
+    @endforeach
+</select>
+    {!! $errors->first('package_id', '<p class="help-block">:message</p>') !!}
 </div>
-
 
 
 <div class="form-group col-md-4 {{ $errors->has('order_name') ? 'has-error' : ''}}">

@@ -32,6 +32,7 @@
                                         <th>Name</th>
                                         <th>Desc</th>
                                         <th>Kgs Per Pack</th>
+                                        <th>Use</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
@@ -43,7 +44,8 @@
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->desc }}</td>
                                         <td>{{ number_format($item->kgsperpack,3,".",",") }}</td>
-                                         <td>{{ $item->status }}</td>
+                                        <td>{{ $item->logpack->count() }}</td>
+                                        <td>{{ $item->status }}</td>
                                         <td>
                                             <a href="{{ url('/packages/' . $item->id) }}" title="View Package"><button class="btn btn-info btn-sm"><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i> View</button></a>
                                             <a href="{{ url('/packages/' . $item->id . '/edit') }}" title="Edit Package"><button class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-pencil" aria-hidden="true"></i> Edit</button></a>

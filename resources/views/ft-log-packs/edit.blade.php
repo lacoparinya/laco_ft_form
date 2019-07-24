@@ -5,12 +5,9 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Edit FtLogPack #{{ $ftlogpack->id }}</div>
+                    <div class="card-header">
+                    <h3>แก้ไขข้อมูล งานแพ็ค <a href="{{ url('/ft-log-packs') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="glyphicon glyphicon-arrow-left" aria-hidden="true"></i> Back</button></a></h3> Note : ถ้าไม่พบสินค้าให้เลือก แจ้งมาทางแผนกวางแผนการผลิต เพื่อเพิ่มสินค้าลงไป</div>
                     <div class="card-body">
-                        <a href="{{ url('/ft-log-packs') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="glyphicon glyphicon-arrow-left" aria-hidden="true"></i> Back</button></a>
-                        <br />
-                        <br />
-
                         @if ($errors->any())
                             <ul class="alert alert-danger">
                                 @foreach ($errors->all() as $error)

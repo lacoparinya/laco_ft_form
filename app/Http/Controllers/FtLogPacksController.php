@@ -61,7 +61,8 @@ class FtLogPacksController extends Controller
 
         $timeslotlist = Timeslot::pluck('name', 'id');
         $methodlist = Method::pluck('name', 'id');
-        return view( 'ft-log-packs.create',compact( 'timeslotlist', 'methodlist'));
+        $packagelist = Package::where('status','Active')->orderBy('name', 'asc')->pluck('name', 'id');
+        return view( 'ft-log-packs.create',compact( 'timeslotlist', 'methodlist', 'packagelist'));
     }
 
     /**
@@ -191,9 +192,10 @@ class FtLogPacksController extends Controller
     {
         $timeslotlist = Timeslot::pluck('name', 'id');
         $methodlist = Method::pluck('name', 'id');
+        $packagelist = Package::where('status', 'Active')->orderBy('name', 'asc')->pluck('name', 'id');
         $ftlogpack = FtLogPack::findOrFail($id);
 
-        return view( 'ft-log-packs.edit', compact( 'ftlogpack', 'timeslotlist', 'methodlist'));
+        return view( 'ft-log-packs.edit', compact( 'ftlogpack', 'timeslotlist', 'methodlist', 'packagelist'));
     }
 
     /**
