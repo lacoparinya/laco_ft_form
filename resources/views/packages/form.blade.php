@@ -16,6 +16,19 @@
     {!! $errors->first('kgsperpack', '<p class="help-block">:message</p>') !!}
 </div>
 
+@php
+    $statuslist = array('Active'=>'Active','Inactive'=>'Inactve');
+@endphp
+<div class="form-group {{ $errors->has('status') ? 'has-error' : ''}}">
+    <label for="status" class="control-label">{{ 'เวลา' }}</label>
+    <select name="status" class="form-control dynamic" id="status" required>
+    @foreach ($statuslist as $optionKey => $optionValue)
+        <option value="{{ $optionKey }}" {{ (isset($package->status) && $package->status == $optionKey) ? 'selected' : ''}}>{{ $optionValue }}</option>
+    @endforeach
+</select>
+    {!! $errors->first('status', '<p class="help-block">:message</p>') !!}
+</div>
+
 <div class="form-group">
     <input class="btn btn-primary" type="submit" value="{{ $formMode === 'edit' ? 'Update' : 'Create' }}">
 </div>

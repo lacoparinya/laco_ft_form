@@ -45,7 +45,7 @@ class DynamicListController extends Controller
         $value = $request->get('q');
         $callback = $request->get( 'callback');
         
-        $data = DB::table('packages')->where('name','like','%'.$value.'%')->get();
+        $data = DB::table('packages')->where('status','Active')->where('name','like','%'.$value.'%')->get();
 
         $result = array();
         foreach ( $data as $obj) {

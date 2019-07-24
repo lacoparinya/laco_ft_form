@@ -86,6 +86,7 @@ class FtLogPacksController extends Controller
                 $tmp['name'] = strtoupper($requestData['package_name']);
                 $tmp['desc'] = strtoupper($requestData['package_name']);
                 $tmp['kgsperpack'] = $requestData['kgsperpack'];
+                $tmp['status'] = 'Active';
 
                 $package = Package::create($tmp);
 
@@ -218,6 +219,7 @@ class FtLogPacksController extends Controller
                 $tmp['name'] = strtoupper($requestData['package_name']);
                 $tmp['desc'] = strtoupper($requestData['package_name']);
                 $tmp['kgsperpack'] = $requestData['kgsperpack'];
+                $tmp['status'] = 'Active';
 
                 $package = Package::create($tmp);
 

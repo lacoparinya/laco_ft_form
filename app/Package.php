@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Package extends Model
 {
     protected $fillable = [
-        'name', 'desc', 'kgsperpack'
+        'name', 'desc', 'kgsperpack', 'status'
     ];
 }

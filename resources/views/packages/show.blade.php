@@ -34,7 +34,9 @@
                                     <tr>
                                         <th>Kgs per Pack</th><td>{{ $package->kgsperpack }}</td>
                                     </tr>
-                                    
+                                    <tr>
+                                        <th>Status</th><td>{{ $package->status }}</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
