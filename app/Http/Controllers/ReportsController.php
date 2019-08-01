@@ -126,7 +126,11 @@ class ReportsController extends Controller
         $requestData = $request->all();
 
         if ($requestData['action_type'] == 'daily') {
-            $data = FtLogPre::where('process_date', $requestData['process_date'])->orderBy('process_time')->get();
+            $data = FtLogPre::where('ft_log_pres.process_date', $requestData['process_date'])
+                ->join('pre_prods', 'pre_prods.id', '=', 'ft_log_pres.pre_prod_id')
+                ->orderBy('ft_log_pres.process_date')
+                ->orderBy('pre_prods.name')
+                ->orderBy('ft_log_pres.process_time')->get();
 
             $filename = "ft_preprod_report_" . date('ymdHi');
 
@@ -136,7 +140,11 @@ class ReportsController extends Controller
                 });
             })->export('xlsx');
         } elseif ($requestData['action_type'] == 'range') {
-            $data = FtLogPre::whereBetween('process_date', [$requestData['from_date'], $requestData['to_date']])->orderBy('process_date')->orderBy('process_time')->get();
+            $data = FtLogPre::whereBetween('ft_log_pres.process_date', [$requestData['from_date'], $requestData['to_date']])
+                ->join('pre_prods', 'pre_prods.id', '=', 'ft_log_pres.pre_prod_id')
+                ->orderBy('ft_log_pres.process_date')
+                ->orderBy('pre_prods.name')
+                ->orderBy('ft_log_pres.process_time')->get();
 
             $filename = "ft_preprod_report_" . date('ymdHi');
 
