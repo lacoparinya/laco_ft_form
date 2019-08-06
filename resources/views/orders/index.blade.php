@@ -31,6 +31,7 @@
                                         <th>#</th>
                                         <th>Order NO.</th>
                                         <th>Loading Date</th>
+                                        <th>Details</th>
                                         <th>Note</th>
                                         <th>Actions</th>
                                     </tr>
@@ -41,9 +42,10 @@
                                         <td>{{ $loop->iteration or $item->id }}</td>
                                         <td>{{ $item->order_no }}</td>
                                         <td>{{ $item->loading_date }}</td>
+                                        <td>{{ $item->orderdetail->count() }}</td>
                                         <td>{{ $item->note }}</td>
                                         <td>
-                                            <a href="{{ url('/orders/' . $item->id) }}" title="View Order"><button class="btn btn-info btn-sm"><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i> View</button></a>
+                                            <a href="{{ url('/orders/listDetail/' . $item->id) }}" title="Manage Order"><button class="btn btn-info btn-sm"><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i> Manage</button></a>
                                             <a href="{{ url('/orders/' . $item->id . '/edit') }}" title="Edit Order"><button class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-pencil" aria-hidden="true"></i> Edit</button></a>
 
                                             <form method="POST" action="{{ url('/orders' . '/' . $item->id) }}" accept-charset="UTF-8" style="display:inline">

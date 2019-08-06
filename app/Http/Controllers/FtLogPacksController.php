@@ -58,7 +58,6 @@ class FtLogPacksController extends Controller
      */
     public function create()
     {
-
         $timeslotlist = Timeslot::pluck('name', 'id');
         $methodlist = Method::pluck('name', 'id');
         $packagelist = Package::where('status','Active')->orderBy('name', 'asc')->pluck('name', 'id');

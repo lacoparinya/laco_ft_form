@@ -6,6 +6,9 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Order;
+use App\Method;
+use App\Package;
+use App\OrderDetail;
 use Illuminate\Http\Request;
 
 class OrdersController extends Controller
@@ -115,5 +118,56 @@ class OrdersController extends Controller
         Order::destroy($id);
 
         return redirect( 'orders')->with('flash_message', ' deleted!');
+    }
+
+    public function listDetail($order_id){
+
+        $order = Order::findOrFail($order_id);
+
+        return view('orders.list-detail', compact('order'));
+    }
+
+    public function createDetail($order_id){
+        $order = Order::findOrFail($order_id);
+        $methodlist = Method::pluck('name', 'id');
+        $packagelist = Package::where('status', 'Active')->orderBy('name', 'asc')->pluck('name', 'id');
+        return view('orders.create-detail', compact('order','methodlist', 'packagelist'));
+    }
+
+    public function storeDetail(Request $request, $order_id)
+    {
+
+        $requestData = $request->all();
+
+        OrderDetail::create($requestData);
+
+        return redirect('orders/listDetail/'.$order_id)->with('flash_message', ' added!');
+    }
+
+    public function editDetail($id)
+    {
+        $orderdetail = OrderDetail::findOrFail($id);
+        $order = Order::findOrFail($orderdetail->order_id);
+        $methodlist = Method::pluck('name', 'id');
+        $packagelist = Package::where('status', 'Active')->orderBy('name', 'asc')->pluck('name', 'id');
+        return view('orders.edit-detail', compact('order', 'methodlist', 'packagelist', 'orderdetail'));
+    }
+
+    public function updateDetail(Request $request, $id)
+    {
+
+        $requestData = $request->all();
+
+        $orderdetail = OrderDetail::findOrFail($id);
+        $orderdetail->update($requestData);
+
+        return redirect('orders/listDetail/' . $orderdetail->order_id)->with('flash_message', ' updated!');
+    }
+
+    public function deleteDetail($id,$order_id){
+
+        OrderDetail::destroy($id);
+
+        return redirect('orders/listDetail/' . $order_id)->with('flash_message', ' deleted!');
     }
 }

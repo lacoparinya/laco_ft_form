@@ -11,9 +11,10 @@
     {!! $errors->first('loading_date', '<p class="help-block">:message</p>') !!}
 </div>
 
+
 <div class="form-group col-md-12 {{ $errors->has('note') ? 'has-error' : ''}}">
     <label for="note" class="control-label">{{ 'Note' }}</label>
-    <input required class="form-control" name="note" type="text" id="note" value="{{ $order->note or ''}}" >
+    <input class="form-control" name="note" type="text" id="note" value="{{ $order->note or ''}}" >
     {!! $errors->first('note', '<p class="help-block">:message</p>') !!}
 </div>
 

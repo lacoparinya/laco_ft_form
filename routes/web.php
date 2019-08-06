@@ -76,3 +76,13 @@ Route::get( '/charttime/prepareoutput/{selecteddate}/{pre_prod_id}/{shift_id}', 
 Route::get('/charttime/prepareinput/{selecteddate}/{pre_prod_id}/{shift_id}', 'DashboardController@graphInputPrepareByDateProdShift');
 Route::get('/reports/orderreport', 'ReportsController@orderreport')->name('reports.orderreport');
 Route::get('/reports/packorderaction', 'ReportsController@packOrderAction');
+
+Route::get('/planner/dashboard', 'PlannersController@dashboard');
+Route::get('/planner/selectbyyearmonth/{yearmonth}/{type}', 'PlannersController@selectbyyearmonth');
+
+Route::get('/orders/listDetail/{order_id}', 'OrdersController@listDetail');
+Route::get('/orders/createDetail/{order_id}', 'OrdersController@createDetail');
+Route::post('/orders/storeDetail/{order_id}', 'OrdersController@storeDetail');
+Route::get('/orders/editDetail/{id}', 'OrdersController@editDetail');
+Route::post('/orders/updateDetail/{id}', 'OrdersController@updateDetail');
+Route::get('/orders/deleteDetail/{id}/{order_id}', 'OrdersController@deleteDetail');

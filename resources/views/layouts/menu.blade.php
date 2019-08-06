@@ -31,6 +31,9 @@
                                     <a href="{{route('products.index')}}">Product</a>
                                     </li>
                                     <li>
+                                    <a href="{{route('orders.index')}}">Order</a>
+                                    </li>
+                                    <li>
                                     <a href="{{route('product-groups.index')}}">Product Group</a>
                                     </li>
                                     <li>
