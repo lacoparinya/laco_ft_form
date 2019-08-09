@@ -7,6 +7,7 @@ use App\FtLog;
 use App\FtLogPack;
 use App\FtLogFreeze;
 use App\FtLogPre;
+use App\FreezeM;
 
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -221,4 +222,45 @@ class ReportsController extends Controller
 
         return view('reports.orderreport', compact('data'));
     }
+
+
+    public function reportFreeze2Action(Request $request)
+    {
+        $requestData = $request->all();
+
+        $iqfmapcollist = IqfMapCol::pluck('name', 'col_name');
+
+        if ($requestData['action_type'] == 'daily') {
+            $data = FreezeM::where('process_date', $requestData['process_date'])->get();
+
+            $filename = "ft_report_" . date('ymdHi');
+
+            Excel::create($filename, function ($excel) use ($data, $iqfmapcollist) {
+                $excel->sheet('งานFreeze', function ($sheet) use ($data, $iqfmapcollist) {
+                    $sheet->loadView('exports.dailyfreezeexport2')->with('data', $data)->with('iqfmapcollist', $iqfmapcollist);
+                });
+            })->export('xlsx');
+        } elseif ($requestData['action_type'] == 'range') {
+            $data = FreezeM::whereBetween('process_date', [$requestData['from_date'], $requestData['to_date']])->orderBy('process_date')->get();
+
+            $filename = "ft_report_" . date('ymdHi');
+
+            Excel::create($filename, function ($excel) use ($data, $iqfmapcollist) {
+                $excel->sheet('งานFreeze', function ($sheet) use ($data, $iqfmapcollist) {
+                    $sheet->loadView('exports.dailyfreezeexport2')->with('data', $data)->with('iqfmapcollist', $iqfmapcollist);
+                });
+            })->export('xlsx');
+        }
+    }
+
+    public function dailyfreeze2()
+    {
+        return view('reports.dailyfreeze2');
+    }
+
+    public function rangefreeze2()
+    {
+        return view('reports.rangefreeze2');
+    }
+
 }

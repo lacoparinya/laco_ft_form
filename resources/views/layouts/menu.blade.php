@@ -104,6 +104,9 @@
                                     <li>
                                     <a href="{{route('ft-log-pres.index')}}">FT Prepare Logs</a>
                                     </li>
+                                     <li>
+                                    <a href="{{route('freeze-ms.index')}}">New Freeze Logs</a>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -138,6 +141,12 @@
                                     <li>
                                     <a href="{{route('reports.orderreport')}}">Order Report</a>
                                     </li>
+                                    <li>
+                                        <a href="{{route('reports.dailyfreeze2')}}">New Freeze Daily Report</a>
+                                        </li>
+                                        <li>
+                                        <a href="{{route('reports.rangefreeze2')}}">New Freeze Range Report</a>
+                                        </li>
                                 </ul>
                             </li>
                                 @else
@@ -175,12 +184,21 @@
                                         <li>
                                         <a href="{{route('ft-log-freezes.index')}}">FT Freeze Logs</a>
                                         </li>
+                                        <li>
+                                    <a href="{{route('freeze-ms.index')}}">New Freeze Logs</a>
+                                    </li>
                                         <li><hr/></li>
                                         <li>
                                         <a href="{{route('reports.dailyfreeze')}}">Freeze Daily Report</a>
                                         </li>
                                         <li>
                                         <a href="{{route('reports.rangefreeze')}}">Freeze Range Report</a>
+                                        </li>
+                                        <li>
+                                        <a href="{{route('reports.dailyfreeze2')}}">New Freeze Daily Report</a>
+                                        </li>
+                                        <li>
+                                        <a href="{{route('reports.rangefreeze2')}}">New Freeze Range Report</a>
                                         </li>
                                         <li>
                                             <a href="{{ route('logout') }}"

@@ -42,6 +42,8 @@ Route::resource('ft-log-freezes', 'FtLogFreezesController');
 Route::resource('pre-prods', 'PreProdsController');
 Route::resource('std-pre-prods', 'StdPreProdsController');
 Route::resource('ft-log-pres', 'FtLogPresController');
+Route::resource('freeze-ms','FreezeMsController');
+
 Route::get('/import', 'AutoImportController@test');
 Route::get('/reports/daily', 'ReportsController@daily')->name('reports.daily');
 Route::get('/reports/range', 'ReportsController@range')->name('reports.range');
@@ -55,6 +57,10 @@ Route::post('/reports/reportFreezeAction', 'ReportsController@reportFreezeAction
 Route::get('/reports/dailypreprod', 'ReportsController@dailypreprod')->name( 'reports.dailypreprod');
 Route::get('/reports/rangepreprod', 'ReportsController@rangepreprod')->name( 'reports.rangepreprod');
 Route::post('/reports/reportPreprodAction', 'ReportsController@reportPreprodAction');
+Route::get('/reports/dailyfreeze2', 'ReportsController@dailyfreeze2')->name('reports.dailyfreeze2');
+Route::get('/reports/rangefreeze2', 'ReportsController@rangefreeze2')->name('reports.rangefreeze2');
+Route::post('/reports/reportFreeze2Action', 'ReportsController@reportFreeze2Action');
+
 Route::get('/dashboard', 'DashboardController@home');
 Route::get('/chart/{selecteddate}', 'DashboardController@datechart');
 Route::get('/charttime/{selecteddate}', 'DashboardController@timechart');
@@ -86,3 +92,11 @@ Route::post('/orders/storeDetail/{order_id}', 'OrdersController@storeDetail');
 Route::get('/orders/editDetail/{id}', 'OrdersController@editDetail');
 Route::post('/orders/updateDetail/{id}', 'OrdersController@updateDetail');
 Route::get('/orders/deleteDetail/{id}/{order_id}', 'OrdersController@deleteDetail');
+
+Route::get('/freeze-ms/createDetail/{freeze_m_id}', 'FreezeMsController@createDetail');
+Route::post('/freeze-ms/storeDetail/{freeze_m_id}', 'FreezeMsController@storeDetail');
+Route::get('/freeze-ms/editDetail/{id}', 'FreezeMsController@editDetail');
+Route::post('/freeze-ms/updateDetail/{id}', 'FreezeMsController@updateDetail');
+Route::get('/freeze-ms/deleteDetail/{id}/{order_id}', 'FreezeMsController@deleteDetail');
+Route::get('/freeze-ms/graph/{freeze_m_id}', 'FreezeMsController@graph');
+Route::get('/freeze-ms/changestatus/{freeze_m_id}', 'FreezeMsController@changestatus');
