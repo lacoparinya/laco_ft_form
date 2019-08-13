@@ -29,10 +29,29 @@ class FtLogPresController extends Controller
         $perPage = 25;
 
         if (!empty($keyword)) {
+            $products = PreProd::where('name', 'like', '%' . $keyword . '%')->pluck('id')->toArray();
+            if (empty($products)) {
+                $ftlogpres = FtLogPre::where('note', 'like', '%' . $keyword . '%')
+                    ->orderBy('process_date', 'DESC')
+                    ->orderBy('id', 'DESC')
+                    ->paginate($perPage);
+            } else {
+                $ftlogpres = FtLogPre::where('note', 'like', '%' . $keyword . '%')
+                    ->orWhereIn('pre_prod_id', $products)
+                    ->orderBy('process_date', 'DESC')
+                    ->orderBy('id', 'DESC')
+                    ->paginate($perPage);
+            }
+        } else {
+            $ftlogpres = FtLogPre::orderBy('process_date', 'DESC')->orderBy('id', 'DESC')->paginate($perPage);
+        } 
+/*
+        if (!empty($keyword)) {
             $ftlogpres = FtLogPre::latest()->paginate($perPage);
         } else {
             $ftlogpres = FtLogPre::latest()->paginate($perPage);
         }
+        */
 
         return view( 'ft-log-pres.index', compact( 'ftlogpres'));
     }
