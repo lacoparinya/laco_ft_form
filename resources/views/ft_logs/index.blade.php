@@ -53,7 +53,7 @@
                                         <th colspan=2>รวม(kg)</th>
                                         <th rowspan=2>Yeild (%)</th>
                                         <th rowspan=2>เกรด</th>
-                                        <th rowspan=2>หมายเหตุ</th>
+                                        <th rowspan=2>SAP Code<br/>หมายเหตุ</th>
                                         <th rowspan=2></th>
                                     </tr>
                                     <tr>
@@ -78,7 +78,7 @@
                                         <td>{{ number_format($item->sum_kg,0,".",",") }}</td>
                                         <td>{{ number_format(round($item->yeild_percent,2),2,".",",")  }}</td>
                                         <td>{{ $item->grade }}</td>
-                                        <td>{{ $item->note }}</td>
+                                        <td>{{ $item->ref_note }}<br/>{{ $item->note }}</td>
                                         <td>
                                             <a href="{{ url('/chart/' . $item->process_date) }}" title="สรุปรายวัน"><button class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-stats" aria-hidden="true"></i></button></a>
                                             <a href="{{ url('/charttime/' . $item->process_date) }}" title="สรุปรายชม."><button class="btn btn-info btn-sm"><i class="glyphicon glyphicon-stats" aria-hidden="true"></i></button></a>

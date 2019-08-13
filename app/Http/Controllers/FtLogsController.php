@@ -44,11 +44,13 @@ class FtLogsController extends Controller
             $products = Product::where('name', 'like', '%' . $keyword . '%')->pluck('id')->toArray();
             if(empty($products)){
                 $ft_logs = FtLog::where('note', 'like', '%' . $keyword . '%')
+                    ->orWhere('ref_note', 'like', '%' . $keyword . '%')
                     ->orderBy('process_date', 'DESC')
                     ->orderBy('timeslot_id', 'DESC')
                     ->paginate($perPage);
             }else{
                 $ft_logs = FtLog::where('note', 'like', '%' . $keyword . '%')
+                    ->orWhere('ref_note', 'like', '%' . $keyword . '%')
                     ->orWhereIn('product_id',$products)
                     ->orderBy('process_date', 'DESC')
                     ->orderBy('timeslot_id', 'DESC')
