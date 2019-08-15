@@ -46,7 +46,7 @@
                                 <tbody>
                                     @foreach ($freezem->freezed()->orderBy('process_datetime')->get() as $freezeditem)
                                     <tr>
-                                        <td>{{ $freezeditem->process_datetime }}</td>
+                                        <td>{{ $freezeditem->process_datetime }} / {{ $freezeditem->iqfjob->name or '' }}</td>
                                         @foreach ($iqfmapcollist as $key=>$item)
                                         <td>{{ $freezeditem->$key }}</td>
                                         @endforeach

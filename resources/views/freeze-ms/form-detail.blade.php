@@ -17,6 +17,15 @@
         <input class="form-control" name="workhour"  id="workhour" value="{{ $freezed->workhour or '0' }}" >
         {!! $errors->first('workhour', '<p class="help-block">:message</p>') !!}
     </div>
+    <div class="form-group col-md-4 {{ $errors->has('iqf_job_id') ? 'has-error' : ''}}">
+        <label for="iqf_job_id" class="control-label">{{ 'งาน' }}</label>
+        <select name="iqf_job_id" class="form-control" id="iqf_job_id">
+        @foreach ($iqfjoblist as $optionKey => $optionValue)
+            <option value="{{ $optionKey }}" {{ (isset($freezed->iqf_job_id) && $freezed->iqf_job_id == $optionKey) ? 'selected' : ''}}>{{ $optionValue }}</option>
+   @endforeach
+    </select>
+        {!! $errors->first('iqf_job_id', '<p class="help-block">:message</p>') !!}
+    </div>
 </div>
 <div class="row">
     @php
