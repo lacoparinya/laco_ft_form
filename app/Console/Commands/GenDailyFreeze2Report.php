@@ -79,7 +79,7 @@ class GenDailyFreeze2Report extends Command
             foreach ($rawdata as $rptObj) {
                 $sumAll += $rptObj->output_sum;
                 $sumRemain -= $rptObj->output_sum;
-                $data1x[] = substr($rptObj->process_time, 0, 5);
+                $data1x[] =  \Carbon\Carbon::parse($rptObj->process_datetime)->format('H:i')."\n".$rptObj->iqfjob->name;
                 $data1y[] = $rptObj->output_sum;
                 $data2y[] = $sumAll;
                 $data3y[] = $sumRemain;

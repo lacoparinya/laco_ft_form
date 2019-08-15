@@ -9,6 +9,7 @@ use App\FreezeM;
 use App\FreezeD;
 use App\IqfMapCol;
 use App\IqfJob;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class FreezeMsController extends Controller
@@ -238,7 +239,16 @@ class FreezeMsController extends Controller
 
     public function graph($freeze_m_id){
         $freezem = FreezeM::findOrFail($freeze_m_id);
-        return view('dashboards.chartfreeze2', compact('freezem'));
+        $groupdata = $rawdata = DB::table('freeze_ms')
+            ->join('freeze_ds', 'freeze_ds.freeze_m_id', '=', 'freeze_ms.id')
+            ->join('iqf_jobs', 'iqf_jobs.id', '=', 'freeze_ds.iqf_job_id')
+            ->select(DB::raw('freeze_ds.iqf_job_id,iqf_jobs.name as job,sum(freeze_ds.output_sum)  as sunfreeze'))
+            ->where('freeze_ms.id', $freeze_m_id)
+            ->groupBy(DB::raw('freeze_ds.iqf_job_id,iqf_jobs.name'))
+            ->orderBy(DB::raw('iqf_jobs.name'))
+            ->get();
+
+        return view('dashboards.chartfreeze2', compact('freezem', 'groupdata'));
     }
 
     public function deleteDetail($id, $freeze_m_id){
