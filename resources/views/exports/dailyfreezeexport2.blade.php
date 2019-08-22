@@ -78,7 +78,7 @@
                         <td>{{ $itemmaster->process_date }}</td>
                         <td>{{ $item->process_datetime }}</td>
                         <td>{{ $itemmaster->targets }}</td>
-                        <td>{{ $itemmaster->iqfjob->name }}</td>
+                        <td>{{ $item->iqfjob->name }}</td>
                         @foreach ($iqfmapcollist as $key2=>$item2)
                         <td>{{ $item->$key2 }}</td>
                         @endforeach

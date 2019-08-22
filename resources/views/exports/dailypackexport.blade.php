@@ -62,11 +62,11 @@
             @foreach($data as $item)
                     <tr>
                         <td>{{ $item->process_date }}</td>
-                        <td>{{ $item->timeslot->name }}</td>
-                        <td>{{ $item->shift->name }}</td>
-                        <td>{{ $item->method->name }}</td>
-                        <td>{{ $item->package->name }}</td>
-                        <td>{{ $item->order->order_no }}</td>
+                        <td>{{ $item->timeslot->name or '' }}</td>
+                        <td>{{ $item->shift->name or ''}}</td>
+                        <td>{{ $item->method->name or ''}}</td>
+                        <td>{{ $item->package->name or '' }}</td>
+                        <td>{{ $item->order->order_no or ''}}</td>
                         <td>{{ $item->order->loading_date }}</td>
                         <td>{{ $item->output_pack }}</td>
                         <td>{{ $item->output_pack_sum }}</td>
