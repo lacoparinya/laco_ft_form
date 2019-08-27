@@ -8,6 +8,7 @@ use App\FtLogPack;
 use App\FtLogFreeze;
 use App\FtLogPre;
 use App\FreezeM;
+use App\LogPrepareM;
 
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -261,6 +262,43 @@ class ReportsController extends Controller
     public function rangefreeze2()
     {
         return view('reports.rangefreeze2');
+    }
+
+    public function dailypreprod2()
+    {
+        return view('reports.dailypreprod2');
+    }
+
+    public function rangepreprod2()
+    {
+        return view('reports.rangepreprod2');
+    }
+
+    public function reportPreprod2Action(Request $request)
+    {
+        $requestData = $request->all();
+
+        if ($requestData['action_type'] == 'daily') {
+            $data = LogPrepareM::where('process_date', $requestData['process_date'])->get();
+
+            $filename = "ft_preprod_report_" . date('ymdHi');
+
+            Excel::create($filename, function ($excel) use ($data) {
+                $excel->sheet('งานเตรียมการ', function ($sheet) use ($data) {
+                    $sheet->loadView('exports.dailypreprodexport2')->with('data', $data);
+                });
+            })->export('xlsx');
+        } elseif ($requestData['action_type'] == 'range') {
+            $data = LogPrepareM::whereBetween('process_date', [$requestData['from_date'], $requestData['to_date']])->get();
+
+            $filename = "ft_preprod_report_" . date('ymdHi');
+
+            Excel::create($filename, function ($excel) use ($data) {
+                $excel->sheet('งานเตรียมการ', function ($sheet) use ($data) {
+                    $sheet->loadView('exports.dailypreprodexport2')->with('data', $data);
+                });
+            })->export('xlsx');
+        }
     }
 
 }

@@ -61,6 +61,9 @@ Route::post('/reports/reportPreprodAction', 'ReportsController@reportPreprodActi
 Route::get('/reports/dailyfreeze2', 'ReportsController@dailyfreeze2')->name('reports.dailyfreeze2');
 Route::get('/reports/rangefreeze2', 'ReportsController@rangefreeze2')->name('reports.rangefreeze2');
 Route::post('/reports/reportFreeze2Action', 'ReportsController@reportFreeze2Action');
+Route::get('/reports/dailypreprod2', 'ReportsController@dailypreprod2')->name('reports.dailypreprod2');
+Route::get('/reports/rangepreprod2', 'ReportsController@rangepreprod2')->name('reports.rangepreprod2');
+Route::post('/reports/reportPreprod2Action', 'ReportsController@reportPreprod2Action');
 
 Route::get('/dashboard', 'DashboardController@home');
 Route::get('/chart/{selecteddate}', 'DashboardController@datechart');

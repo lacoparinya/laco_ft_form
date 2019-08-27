@@ -104,7 +104,9 @@
                                     <li>
                                     <a href="{{route('ft-log-pres.index')}}">FT Prepare Logs</a>
                                     </li>
-                                     
+                                     <li>
+                                    <a href="{{route('log-prepare-ms.index')}}">New Prepare Logs</a>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -136,6 +138,12 @@
                                     <li>
                                     <a href="{{route('reports.rangepreprod')}}">Prepare Range Report</a>
                                     </li>
+                                    <li>
+                                        <a href="{{route('reports.dailypreprod2')}}">New Prepare Daily Report</a>
+                                        </li>
+                                        <li>
+                                        <a href="{{route('reports.rangepreprod2')}}">New Prepare Range Report</a>
+                                        </li>
                                     <li>
                                     <a href="{{route('reports.orderreport')}}">Order Report</a>
                                     </li>
@@ -203,12 +211,21 @@
                                         <li>
                                         <a href="{{route('ft-log-pres.index')}}">FT Prepare Logs</a>
                                         </li>
+                                        <li>
+                                    <a href="{{route('log-prepare-ms.index')}}">New Prepare Logs</a>
+                                    </li>
                                         <li><hr/></li>
                                         <li>
                                         <a href="{{route('reports.dailypreprod')}}">Prepare Daily Report</a>
                                         </li>
                                         <li>
                                         <a href="{{route('reports.rangepreprod')}}">Prepare Range Report</a>
+                                        </li>
+                                        <li>
+                                        <a href="{{route('reports.dailypreprod2')}}">New Prepare Daily Report</a>
+                                        </li>
+                                        <li>
+                                        <a href="{{route('reports.rangepreprod2')}}">New Prepare Range Report</a>
                                         </li>
                                         <li>
                                             <a href="{{ route('logout') }}"

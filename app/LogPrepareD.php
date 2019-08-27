@@ -17,6 +17,12 @@ class LogPrepareD extends Model
         return $this->hasOne('App\PreProd', 'id', 'pre_prod_id');
     }
 
+    
+    public function shift()
+    {
+        return $this->hasOne('App\Shift', 'id', 'shift_id');
+    }
+    
     public function logpreparem()
     {
         return $this->hasOne('App\LogPrepareM', 'id', 'log_prepare_m_id');
