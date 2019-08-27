@@ -43,6 +43,7 @@ Route::resource('pre-prods', 'PreProdsController');
 Route::resource('std-pre-prods', 'StdPreProdsController');
 Route::resource('ft-log-pres', 'FtLogPresController');
 Route::resource('freeze-ms','FreezeMsController');
+Route::resource('log-prepare-ms', 'LogPrepareMsController');
 
 Route::get('/import', 'AutoImportController@test');
 Route::get('/reports/daily', 'ReportsController@daily')->name('reports.daily');
@@ -100,3 +101,11 @@ Route::post('/freeze-ms/updateDetail/{id}', 'FreezeMsController@updateDetail');
 Route::get('/freeze-ms/deleteDetail/{id}/{order_id}', 'FreezeMsController@deleteDetail');
 Route::get('/freeze-ms/graph/{freeze_m_id}', 'FreezeMsController@graph');
 Route::get('/freeze-ms/changestatus/{freeze_m_id}', 'FreezeMsController@changestatus');
+
+Route::get('/log-prepare-ms/createDetail/{log_prepare_m_id}', 'LogPrepareMsController@createDetail');
+Route::post('/log-prepare-ms/storeDetail/{log_prepare_m_id}', 'LogPrepareMsController@storeDetail');
+Route::get('/log-prepare-ms/editDetail/{id}', 'LogPrepareMsController@editDetail');
+Route::post('/log-prepare-ms/updateDetail/{id}', 'LogPrepareMsController@updateDetail');
+Route::get('/log-prepare-ms/deleteDetail/{id}/{log_prepare_m_id}', 'LogPrepareMsController@deleteDetail');
+Route::get('/log-prepare-ms/graph/{log_prepare_m_id}', 'LogPrepareMsController@graph');
+Route::get('/log-prepare-ms/changestatus/{log_prepare_m_id}', 'LogPrepareMsController@changestatus');
