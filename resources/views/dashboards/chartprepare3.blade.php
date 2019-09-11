@@ -31,7 +31,7 @@
   function drawVisualization2() {
     // Some raw data (not necessarily accurate)
     var data2 = google.visualization.arrayToDataTable([
-      ['Time', 'Target', 'Input หรือ Output', 'สะสม'],
+      ['Time', 'Target', 'Input หรือ Output', 'Forecast', 'สะสม+forecast'],
       @foreach($logpreparem->logprepared()->orderBy('process_datetime')->get() as $item)[
         '{{ date("H:i",strtotime($item->process_datetime)) }}', 
         {{ $item->targets }},
@@ -39,6 +39,7 @@
           {{ $item->input }},
         @else 
           {{ $item->output }},
+          0,
         @endif @if($item->input_sum > 0) 
           {{ $item->input_sum }},
         @else 
@@ -49,6 +50,7 @@
       @foreach($estimateData as $item2)
       [
         'ชม.ที่ {{$item2['time']}}',
+        0,
         0,
         {{ $item2['realrate'] }},
         {{ $item2['realtotal'] }}
@@ -104,8 +106,11 @@
           type: 'bar',
           targetAxisIndex: 0
         },
-
         2: {
+          type: 'bar',
+          targetAxisIndex: 0
+        },
+        3: {
           type: 'line',
           targetAxisIndex: 1,
 
@@ -135,6 +140,13 @@
       {
         calc: "stringify",
         sourceColumn: 3,
+        type: "string",
+        role: "annotation"
+      },
+      4,
+      {
+        calc: "stringify",
+        sourceColumn: 4,
         type: "string",
         role: "annotation"
       }
