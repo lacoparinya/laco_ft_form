@@ -15,17 +15,17 @@
         {!! $errors->first('pre_prod_id', '<p class="help-block">:message</p>') !!}
     </div>
     <div class="form-group col-md-3 {{ $errors->has('targetperhr') ? 'has-error' : ''}}">
-        <label for="targetperhr" class="control-label">{{ 'จำนวน ชม.' }}</label>
+        <label for="targetperhr" class="control-label">{{ 'แผนการทำงานต่อชม.(kg/hr/คน)' }}</label>
         <input class="form-control" name="targetperhr" type="text" id="targetperhr" value="{{ $logpreparem->targetperhr or '1' }}" >
         {!! $errors->first('targetperhr', '<p class="help-block">:message</p>') !!}
     </div>
     <div class="form-group col-md-3 {{ $errors->has('target_result') ? 'has-error' : ''}}">
-        <label for="target_result" class="control-label">{{ 'จำนวน ชม.' }}</label>
+        <label for="target_result" class="control-label">{{ 'เป้าที่ต้องผลิตได้ (kg)' }}</label>
         <input class="form-control" name="target_result" type="text" id="target_result" value="{{ $logpreparem->target_result or '1' }}" >
         {!! $errors->first('target_result', '<p class="help-block">:message</p>') !!}
     </div>
     <div class="form-group col-md-3 {{ $errors->has('target_workhours') ? 'has-error' : ''}}">
-        <label for="target_workhours" class="control-label">{{ 'จำนวน ชม.' }}</label>
+        <label for="target_workhours" class="control-label">{{ 'เป้าชม.ที่ใช้ผลิตเสร็จ (hrs)' }}</label>
         <input class="form-control" name="target_workhours" type="text" id="target_workhours" value="{{ $logpreparem->target_workhours or '1' }}" >
         {!! $errors->first('target_workhours', '<p class="help-block">:message</p>') !!}
     </div>

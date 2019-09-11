@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Logpreparems</div>
+                    <div class="card-header">งานเตรียมการ</div>
                     <div class="card-body">
                         <a href="{{ url('/log-prepare-ms/create') }}" class="btn btn-success btn-sm" title="Add New LogPrepareM">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New
