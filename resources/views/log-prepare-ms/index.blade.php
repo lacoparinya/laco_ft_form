@@ -76,6 +76,8 @@
                                             <a href="{{ url('/log-prepare-ms/' . $item->id) }}" title="Manage LogPrepareM"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> Manage</button></a>
                                             <a href="{{ url('/log-prepare-ms/' . $item->id . '/edit') }}" title="Edit LogPrepareM"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
  <a href="{{ url('/log-prepare-ms/graph/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> Graph</button></a>
+ 
+                                            <a href="{{ url('/log-prepare-ms/graph2/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-danger btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> Forecast</button></a>
          <a href="{{ url('/log-prepare-ms/changestatus/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> {{ $item->status }}</button></a>
                                                                             
                                             <form method="POST" action="{{ url('/log-prepare-ms' . '/' . $item->id) }}" accept-charset="UTF-8" style="display:inline">

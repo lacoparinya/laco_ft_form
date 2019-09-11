@@ -262,4 +262,73 @@ class LogPrepareMsController extends Controller
 
         return redirect('log-prepare-ms/' . $log_prepare_m_id)->with('flash_message', ' deleted!');
     }
+
+    public function graph2($log_prepare_m_id)
+    {
+        $logpreparem = LogPrepareM::findOrFail($log_prepare_m_id);
+
+        $detailData = $logpreparem->logprepared()->orderBy('process_datetime')->get();
+
+        $totalTime = 0;
+        $remainTime = 0;
+        $totalinput = 0;
+        $totaloutput = 0;
+        $totalsum = 0;
+        $ratePerHr = 0;
+        foreach ($detailData as $key => $value) {
+            $totalTime += $value->workhours;
+            $totalinput += $value->input;
+            $totaloutput += $value->output;
+        }
+
+        $remainTime = $logpreparem->target_workhours - $totalTime;
+        $targetResult = $logpreparem->target_result;
+
+        if($remainTime > 0){
+            if ($totalinput > 0) {
+                $totalsum = $totalinput;
+                $ratePerHr = ($targetResult - $totalinput) / $remainTime;
+            } else {
+
+                $totalsum = $totaloutput;
+                $ratePerHr = ($targetResult - $totaloutput) / $remainTime;
+            }
+        }
+
+        $loop = 0;
+        $loopSum = $totalsum;
+        $estimateData = array();
+        while ($loop < $remainTime) {
+            $tmpArray = array();
+
+            if(($remainTime - $loop) > 1){
+                $loop++;
+                $tmpArray['time'] = $loop;
+                $tmpArray['realrate'] = $ratePerHr;
+                $loopSum += $ratePerHr;
+                $tmpArray['realtotal'] = $loopSum;
+                $estimateData[] = $tmpArray;
+            }else{
+                if (($remainTime - $loop) > 0) {
+                    $tmpArray['realrate'] = $targetResult - $loopSum;
+
+                    $loop = $remainTime;
+                    $tmpArray['time'] = $remainTime;
+                    
+                    
+                    
+                    $tmpArray['realtotal'] = $targetResult;
+                    $estimateData[] = $tmpArray;
+                }
+            }
+
+            
+        }
+
+      //  echo  $totalTime ."-". $remainTime ."-". $totalinput . "-" . $totaloutput . "-" . $ratePerHr;
+
+
+
+        return view('dashboards.chartprepare3', compact('logpreparem', 'estimateData'));
+    }
 }

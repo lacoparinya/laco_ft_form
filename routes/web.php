@@ -112,3 +112,4 @@ Route::post('/log-prepare-ms/updateDetail/{id}', 'LogPrepareMsController@updateD
 Route::get('/log-prepare-ms/deleteDetail/{id}/{log_prepare_m_id}', 'LogPrepareMsController@deleteDetail');
 Route::get('/log-prepare-ms/graph/{log_prepare_m_id}', 'LogPrepareMsController@graph');
 Route::get('/log-prepare-ms/changestatus/{log_prepare_m_id}', 'LogPrepareMsController@changestatus');
+Route::get('/log-prepare-ms/graph2/{log_prepare_m_id}', 'LogPrepareMsController@graph2');
