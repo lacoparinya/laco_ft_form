@@ -39,8 +39,10 @@
           {{ $item->input }},
         @else 
           {{ $item->output }},
-          0,
-        @endif @if($item->input_sum > 0) 
+          
+        @endif 
+        0,
+        @if($item->input_sum > 0) 
           {{ $item->input_sum }},
         @else 
           {{ $item->output_sum }},
