@@ -207,7 +207,7 @@ class GenDailyPre2Report extends Command
             $b3plot = new \BarPlot($data3y);
             $l1plot = new \LinePlot($data4y);
 
-            $gbplot = new \GroupBarPlot(array($b3plot,$b1plot));
+            $gbplot = new \GroupBarPlot(array($b1plot,$b2plot,$b3plot));
 
             $graph->title->Set($logpreparem->preprod->name . " - อัตราการเตรียมการ วันที่ " . $selecteddate);
             $graph->title->SetFont(FF_CORDIA, FS_BOLD, 14);
@@ -238,20 +238,20 @@ class GenDailyPre2Report extends Command
             $b3plot->value->Show();
             $b3plot->value->SetFormat('%d');
             $b3plot->value->SetColor('black', 'darkred');
-            $b3plot->SetLegend("Target");
+            $b3plot->SetLegend("Forecast");
             $b2plot->value->Show();
             $b2plot->value->SetFormat('%d');
             $b2plot->value->SetColor('black', 'darkred');
-            $b3plot->SetLegend("Input or Output");
+            $b2plot->SetLegend("Input or Output");
             $b1plot->value->Show();
             $b1plot->value->SetFormat('%d');
             $b1plot->value->SetColor('black', 'darkred');
-            $b1plot->SetLegend("Input or Output");
+            $b1plot->SetLegend("Target");
 
             
 
             $graph->legend->SetPos(0.4, 0.05, 'left', 'top');
-            $graph->legend->SetColumns(3);
+            $graph->legend->SetColumns(4);
 
             $date = date('ymdHis');
 
