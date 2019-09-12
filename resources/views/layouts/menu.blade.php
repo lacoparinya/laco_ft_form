@@ -102,10 +102,7 @@
                                     <a href="{{route('freeze-ms.index')}}">FT Freeze Logs</a>
                                     </li>
                                     <li>
-                                    <a href="{{route('ft-log-pres.index')}}">FT Prepare Logs</a>
-                                    </li>
-                                     <li>
-                                    <a href="{{route('log-prepare-ms.index')}}">New Prepare Logs</a>
+                                    <a href="{{route('log-prepare-ms.index')}}">FT Prepare Logs</a>
                                     </li>
                                 </ul>
                             </li>
@@ -209,10 +206,7 @@
                                     @if ( App\User::find(Auth::user()->id)->group->name == 'user_prepare' )
                                     <ul class="dropdown-menu" role="menu">
                                         <li>
-                                        <a href="{{route('ft-log-pres.index')}}">FT Prepare Logs</a>
-                                        </li>
-                                        <li>
-                                    <a href="{{route('log-prepare-ms.index')}}">New Prepare Logs</a>
+                                    <a href="{{route('log-prepare-ms.index')}}">FT Prepare Logs</a>
                                     </li>
                                         <li><hr/></li>
                                         <li>

@@ -70,9 +70,12 @@
                                         </td>
                                         <td>{{ $item->logprepared->count() }}</td>
                                         <td>
-                                            <a href="{{ url('/log-prepare-ms/createDetail/'.$item->id) }}" class="btn btn-success btn-sm" title="Add New LogPrepareM">
+                                            @if ($item->status == 'Active')
+                                                <a href="{{ url('/log-prepare-ms/createDetail/'.$item->id) }}" class="btn btn-success btn-sm" title="Add New LogPrepareM">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add Detail
-                        </a>
+                        </a>    
+                                            @endif
+                                            
                                             <a href="{{ url('/log-prepare-ms/' . $item->id) }}" title="Manage LogPrepareM"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> Manage</button></a>
                                             <a href="{{ url('/log-prepare-ms/' . $item->id . '/edit') }}" title="Edit LogPrepareM"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
  <a href="{{ url('/log-prepare-ms/graph/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> Graph</button></a>

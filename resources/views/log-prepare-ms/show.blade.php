@@ -9,8 +9,11 @@
                     <div class="card-body">
 
                         <a href="{{ url('/log-prepare-ms') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
-                        <a href="{{ url('/log-prepare-ms/createDetail/' . $logpreparem->id ) }}" title="Add FreezeM"><button class="btn btn-primary btn-sm"><i class="fa fa-plus" aria-hidden="true"></i> Add</button></a>
-
+                        @if ($logpreparem->status == 'Active' )
+                          <a href="{{ url('/log-prepare-ms/createDetail/' . $logpreparem->id ) }}" title="Add FreezeM"><button class="btn btn-primary btn-sm"><i class="fa fa-plus" aria-hidden="true"></i> Add</button></a>
+                        @endif
+                        
+                        
                         <br/>
                         <div class="row">
                             <div class="col-md-3">
