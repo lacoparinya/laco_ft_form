@@ -93,7 +93,7 @@
                                 @endforeach
                                 </tbody>
                             </table>
-                            <div class="pagination-wrapper"> {!! $logpreparems->appends(['search' => Request::get('search')])->render() !!} </div>
+                            <div class="pagination-wrapper"> {!! $logpreparems->appends(['search' => Request::get('search'),'status'=>$status])->render() !!} </div>
                         </div>
 
                     </div>

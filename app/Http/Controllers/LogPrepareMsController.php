@@ -30,9 +30,9 @@ class LogPrepareMsController extends Controller
         $perPage = 25;
 
         if (!empty($status)) {
-            $logpreparems = LogPrepareM::where('status', $status)->latest()->paginate($perPage);
+            $logpreparems = LogPrepareM::where('status', $status)->orderBy('process_date','DESC')->paginate($perPage);
         } else {
-            $logpreparems = LogPrepareM::latest()->paginate($perPage);
+            $logpreparems = LogPrepareM::orderBy('process_date','DESC')->paginate($perPage);
         }
 
         return view('log-prepare-ms.index', compact('logpreparems', 'status'));
@@ -221,7 +221,7 @@ class LogPrepareMsController extends Controller
 
         $logprepared->update($requestData);
 
-        $logprepared->recalculate($id);
+        $logprepared->recalculate($logprepared->log_prepare_m_id);
 
         return redirect('log-prepare-ms/' . $logprepared->log_prepare_m_id)->with('flash_message', ' updated!');
     }
