@@ -104,6 +104,10 @@
                                     <li>
                                     <a href="{{route('log-prepare-ms.index')}}">FT Prepare Logs</a>
                                     </li>
+                                    <li>
+                                    <a href="{{route('log-pack-ms.index')}}">New FT Pack Logs</a>
+                                    </li>
+                                    
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -124,6 +128,12 @@
                                     <a href="{{route('reports.rangepack')}}">Pack Range Report</a>
                                     </li>
                                      <li>
+                                        <a href="{{route('reports.dailypack2')}}">New Pack Daily Report</a>
+                                        </li>
+                                        <li>
+                                        <a href="{{route('reports.rangepack2')}}">New Pack Range Report</a>
+                                        </li>
+                                     <li>
                                         <a href="{{route('reports.dailyfreeze2')}}">Freeze Daily Report</a>
                                         </li>
                                         <li>
@@ -141,6 +151,7 @@
                                         <li>
                                         <a href="{{route('reports.rangepreprod2')}}">New Prepare Range Report</a>
                                         </li>
+                                        
                                     <li>
                                     <a href="{{route('reports.orderreport')}}">Order Report</a>
                                     </li>
@@ -157,12 +168,21 @@
                                         <li>
                                         <a href="{{route('ft-log-packs.index')}}">FT Pack Logs</a>
                                         </li>
+                                        <li>
+                                    <a href="{{route('log-pack-ms.index')}}">New FT Pack Logs</a>
+                                    </li>
                                         <li><hr/></li>
                                         <li>
                                         <a href="{{route('reports.dailypack')}}">Pack Daily Report</a>
                                         </li>
                                         <li>
                                         <a href="{{route('reports.rangepack')}}">Pack Range Report</a>
+                                        </li>
+                                        <li>
+                                        <a href="{{route('reports.dailypack2')}}">New Pack Daily Report</a>
+                                        </li>
+                                        <li>
+                                        <a href="{{route('reports.rangepack2')}}">New Pack Range Report</a>
                                         </li>
                                         <li>
                                             <a href="{{ route('logout') }}"

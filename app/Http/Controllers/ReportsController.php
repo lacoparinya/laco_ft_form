@@ -9,6 +9,7 @@ use App\FtLogFreeze;
 use App\FtLogPre;
 use App\FreezeM;
 use App\LogPrepareM;
+use App\LogPackM;
 
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -29,6 +30,12 @@ class ReportsController extends Controller
     {
         return view('reports.dailypack');
     }
+
+    public function dailypack2()
+    {
+        return view('reports.dailypack2');
+    }
+
 
     public function dailyfreeze()
     {
@@ -93,6 +100,34 @@ class ReportsController extends Controller
             })->export('xlsx');
         }
     }
+
+    public function reportPack2Action(Request $request)
+    {
+        $requestData = $request->all();
+
+        if ($requestData['action_type'] == 'daily') {
+            $data = LogPackM::where('process_date', $requestData['process_date'])->orderBy('process_date')->get();
+
+            $filename = "ft_report_" . date('ymdHi');
+
+            Excel::create($filename, function ($excel) use ($data) {
+                $excel->sheet('งานคัด', function ($sheet) use ($data) {
+                    $sheet->loadView('exports.dailypackexport2')->with('data', $data);
+                });
+            })->export('xlsx');
+        } elseif ($requestData['action_type'] == 'range') {
+            $data = LogPackM::whereBetween('process_date', [$requestData['from_date'], $requestData['to_date']])->orderBy('process_date')->orderBy('process_date')->get();
+
+            $filename = "ft_report_" . date('ymdHi');
+
+            Excel::create($filename, function ($excel) use ($data) {
+                $excel->sheet('งานคัด', function ($sheet) use ($data) {
+                    $sheet->loadView('exports.dailypackexport2')->with('data', $data);
+                });
+            })->export('xlsx');
+        }
+    }
+
 
     public function reportFreezeAction(Request $request)
     {
@@ -166,6 +201,11 @@ class ReportsController extends Controller
     public function rangepack()
     {
         return view('reports.rangepack');
+    }
+
+    public function rangepack2()
+    {
+        return view('reports.rangepack2');
     }
 
     public function rangefreeze()
