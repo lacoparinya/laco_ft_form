@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class LogPackD extends Model
 {
     protected $fillable = [
-        'log_pack_m_id', 'shift_id', 'process_datetime', 'workhours',
+        'log_pack_m_id', 'process_datetime', 'workhours',
         'output_pack', 'output_pack_sum', 'input_kg', 'output_kg', 'input_kg_sum', 'output_kg_sum', 'productivity',
         'yeild_percent', 'num_pack', 'note',
     ];
@@ -17,10 +17,7 @@ class LogPackD extends Model
         return $this->hasOne('App\LogPackM', 'log_pack_m_id');
     }
 
-    public function shift()
-    {
-        return $this->hasOne('App\Shift', 'id', 'shift_id');
-    }
+    
 
     public function recalculate($log_pack_m_id)
     {

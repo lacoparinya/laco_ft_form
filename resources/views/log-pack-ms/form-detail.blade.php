@@ -11,16 +11,6 @@
         @endphp" >
         {!! $errors->first('process_datetime', '<p class="help-block">:message</p>') !!}
     </div>
-    <div class="form-group col-md-3 {{ $errors->has('shift_id') ? 'has-error' : ''}}">
-        <label for="shift_id" class="control-label">{{ 'กะ' }}</label>
-        <select name="shift_id" class="form-control dynamic" id="shift_id" required>
-            <option value="">-</option>
-        @foreach ($shiftlist as $optionKey => $optionValue)logpackd
-            <option value="{{ $optionKey }}" {{ (isset($logpackd->shift_id) && $logpackd->shift_id == $optionKey) ? 'selected' : ''}}>{{ $optionValue }}</option>
-        @endforeach
-    </select>
-        {!! $errors->first('pre_prod_id', '<p class="help-block">:message</p>') !!}
-    </div>
     
    
     <div class="form-group col-md-3 {{ $errors->has('workhours') ? 'has-error' : ''}}">

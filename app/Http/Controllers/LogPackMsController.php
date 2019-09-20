@@ -49,7 +49,9 @@ class LogPackMsController extends Controller
     {
         $methodlist = Method::pluck('name', 'id');
         $packagelist = Package::where('status', 'Active')->orderBy('name', 'asc')->pluck('name', 'id');
-        return view('log-pack-ms.create',compact('methodlist', 'packagelist'));
+
+        $shiftlist = Shift::orderBy('name')->pluck('name', 'id');
+        return view('log-pack-ms.create',compact('methodlist', 'packagelist', 'shiftlist'));
     }
 
     /**
@@ -87,11 +89,10 @@ class LogPackMsController extends Controller
             }
         } else {
             $package = Package::findOrFail($requestData['package_id']);
-       /*     if ($package->kgsperpack <> $requestData['kgsperpack']) {
+            if ($package->kgsperpack <> $requestData['kgsperpack']) {
                 $package->kgsperpack = $requestData['kgsperpack'];
                 $package->update();
             }
-        */
         }
 
         $chk = LogPackM::where('process_date', $requestData['process_date'])
@@ -190,8 +191,9 @@ class LogPackMsController extends Controller
 
         $methodlist = Method::pluck('name', 'id');
         $packagelist = Package::where('status', 'Active')->orderBy('name', 'asc')->pluck('name', 'id');
+        $shiftlist = Shift::orderBy('name')->pluck('name', 'id');
 
-        return view('log-pack-ms.edit', compact('logpackm', 'methodlist', 'packagelist'));
+        return view('log-pack-ms.edit', compact('logpackm', 'methodlist', 'packagelist', 'shiftlist'));
     }
 
     /**
@@ -232,11 +234,11 @@ class LogPackMsController extends Controller
                 $requestData['package_id'] = $package->id;
             }
         } else {
-           /// $package = Package::findOrFail($requestData['package_id']);
-          ///  if ($package->kgsperpack <> $requestData['kgsperpack']) {
-          //      $package->kgsperpack = $requestData['kgsperpack'];
-          //      $package->update();
-         //   }
+            $package = Package::findOrFail($requestData['package_id']);
+            if ($package->kgsperpack <> $requestData['kgsperpack']) {
+                $package->kgsperpack = $requestData['kgsperpack'];
+                $package->update();
+            }
         }
 
         $chk = LogPackM::where('process_date', $requestData['process_date'])

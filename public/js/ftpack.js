@@ -8,6 +8,40 @@ $(document).ready(function () {
         caloutput();
     });
 
+    $('#order_name').autocomplete(
+        {
+            position: { my: "left top", at: "left bottom" },
+            source: function (request, response) {
+                $.ajax({
+                    url: "/ft_form/dynamic-list/getorder",
+                    dataType: "jsonp",
+                    data: {
+                        q: request.term
+                    },
+                    success: function (data) {
+                        $('#order_id').val('');
+                        response($.map(data, function (item) {
+                            console.log(item);
+                            return {
+                                label: item.order_no,
+                                value: item.order_no,
+                                realv: item.id,
+                                reald: item.loading_date
+                            }
+                        }));
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        alert("error: " + errorThrown);
+                    }
+                });
+            },
+            minLength: 3,
+            select: function (event, ui) {
+                $('#order_id').val(ui.item.realv);
+                $('#order_date').val(ui.item.reald);
+            }
+        });
+
 });
 
 function calpercent() {

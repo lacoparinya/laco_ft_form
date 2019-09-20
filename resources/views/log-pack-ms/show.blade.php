@@ -84,7 +84,7 @@
                                 <thead>
                                     <tr>
                                         <th rowspan="2">Time</th>
-                                        <th rowspan="2">กะ / ชม.</th>
+                                        <th rowspan="2">ชม.</th>
                                         <th colspan="2">ผล</th>
                                         <th colspan="2">สะสม</th>
                                         <th rowspan="2">Yeild / Productivity</th>
@@ -102,12 +102,12 @@
                                     @foreach ($logpackm->logpackd()->orderBy('process_datetime')->get() as $item)
                                     <tr>
                                         <td>{{ date('H:i',strtotime($item->process_datetime)) }}</td>
-                                        <td>{{ $item->shift->name }} / {{ $item->workhours }}</td>
+                                        <td>{{ $item->workhours }}</td>
                                         <td>{{ $item->input_kg }} / {{ $item->output_kg }}</td>
                                         <td>{{ $item->output_pack }}</td>
                                         <td>{{ $item->input_kg_sum }} / {{ $item->output_kg_sum }}</td>
                                         <td>{{ $item->output_pack_sum }}</td>
-                                        <td>{{ $item->yeild_percent }} / {{ $item->productivity }}</td>
+                                        <td>{{ round($item->yeild_percent,2) }} / {{ round($item->productivity,2) }}</td>
                                         <td>{{ $item->note }}</td>
                                         <td><a href="{{ url('/log-pack-ms/editDetail/' . $item->id) }}" title="Edit FreezeM"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
                                             <a href="{{ url('/log-pack-ms/deleteDetail/' . $item->id . '/'. $item->log_pack_m_id) }}" title="Delete FreezeM"><button class="btn btn-danger btn-sm"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button></a>
