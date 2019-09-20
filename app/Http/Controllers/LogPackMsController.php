@@ -396,7 +396,68 @@ class LogPackMsController extends Controller
     }
 
     public function graph($log_pack_m_id){
+        $logpackm = LogPackM::findOrFail($log_pack_m_id);
 
+        return view('dashboards.chartpacknew', compact('logpackm'));
+    }
+
+    public function forecast($log_pack_m_id)
+    {
+        $logpackm = LogPackM::findOrFail($log_pack_m_id);
+
+        $detailData = $logpackm->logpackd()->orderBy('process_datetime')->get();
+
+        $totalTime = 0;
+        $remainTime = 0;
+        $totalinput = 0;
+        $totaloutput = 0;
+        $totaloutputpack = 0;
+        $totalsum = 0;
+        $ratePerHr = 0;
+        foreach ($detailData as $key => $value) {
+            $totalTime += $value->workhours;
+            $totalinput += $value->input_kg;
+            $totaloutput += $value->output_kg;
+            $totaloutputpack += $value->output_pack;
+        }
+
+        $remainTime = $logpackm->hourperday - $totalTime;
+        $targetResult = $logpackm->targetperday;
+
+        if ($remainTime > 0) {
+                $totalsum = $totaloutputpack;
+                $ratePerHr = ($targetResult - $totaloutputpack) / $remainTime;
+        }
+
+        $loop = 0;
+        $loopSum = $totalsum;
+        $estimateData = array();
+        while ($loop < $remainTime) {
+            $tmpArray = array();
+
+            if (($remainTime - $loop) > 1) {
+                $loop++;
+                $tmpArray['time'] = $loop;
+                $tmpArray['realrate'] = $ratePerHr;
+                $loopSum += $ratePerHr;
+                $tmpArray['realtotal'] = $loopSum;
+                $estimateData[] = $tmpArray;
+            } else {
+                if (($remainTime - $loop) > 0) {
+                    $tmpArray['realrate'] = $targetResult - $loopSum;
+
+                    $loop = $remainTime;
+                    $tmpArray['time'] = $remainTime;
+
+
+
+                    $tmpArray['realtotal'] = $targetResult;
+                    $estimateData[] = $tmpArray;
+                }
+            }
+        }
+
+        return view('dashboards.chartpackforecast', compact('logpackm', 'estimateData'));
     }
 
     public function deleteDetail($id, $log_pack_m_id){

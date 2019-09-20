@@ -58,6 +58,22 @@ class DynamicListController extends Controller
         echo $callback. "(" . json_encode( $data) . ")";
     }
 
+    public function getpackageById(Request $request)
+    {
+
+        $value = $request->get('q');
+        $callback = $request->get('callback');
+
+        $data = DB::table('packages')->where('status', 'Active')->where('id',$value)->get();
+
+
+        header('Content-Type: application/json; charset=utf8');
+
+        //echo json_encode( $result);
+        echo $callback . "(" . json_encode($data) . ")";
+    }
+
+
     public function getorder(Request $request)
     {
 

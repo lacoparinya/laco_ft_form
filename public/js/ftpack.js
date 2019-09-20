@@ -8,6 +8,22 @@ $(document).ready(function () {
         caloutput();
     });
 
+    $('#package_id').change(function(){
+        $.ajax({
+            url: "/ft_form/dynamic-list/getpackageById",
+            dataType: "jsonp",
+            data: {
+                q: $(this).val()
+            },
+            success: function (data) {
+                $('#kgsperpack').val(data[0].kgsperpack);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                alert("error: " + errorThrown);
+            }
+        });
+    });
+
     $('#order_name').autocomplete(
         {
             position: { my: "left top", at: "left bottom" },

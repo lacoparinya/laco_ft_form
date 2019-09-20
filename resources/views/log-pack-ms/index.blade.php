@@ -41,8 +41,8 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>Date</th>
-                                        <th>Order</th>
+                                        <th>Date / Shift</th>
+                                        <th>Order / Loading Date</th>
                                         <th>Methode / Product</th>
                                          <th>รายการ</th>
                                         <th>Actual</th>
@@ -53,7 +53,7 @@
                                 <tbody>
                                 @foreach($logpackms as $item)
                                     <tr>
-                                        <td>{{ $item->process_date }}</td>
+                                        <td>{{ $item->process_date }} / {{ $item->shift->name }} </td>
                                         <td>{{ $item->order->order_no }} / {{ $item->order->loading_date }}</td>
                                         <td>{{ $item->method->name }} / {{ $item->package->name }}</td>
                                         @if (count($item->logpackd))
@@ -77,6 +77,7 @@
                                             <a href="{{ url('/log-pack-ms/' . $item->id) }}" title="View LogPackM"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> Manage</button></a>
                                            
  <a href="{{ url('/log-pack-ms/graph/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> Graph</button></a>
+  <a href="{{ url('/log-pack-ms/forecast/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> Forecast</button></a>
  
          <a href="{{ url('/log-pack-ms/changestatus/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> {{ $item->status }}</button></a>
                         <br/>  <a href="{{ url('/log-pack-ms/' . $item->id . '/edit') }}" title="Edit LogPackM"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>

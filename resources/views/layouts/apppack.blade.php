@@ -12,6 +12,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
         <!-- Styles -->
 <!-- Latest compiled and minified CSS -->
@@ -57,6 +58,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/jquery-ui/jquery-ui.js') }}" ></script>
     <script src="{{ asset('js/ftpack.js?var=1') }}"></script>
 </body>
 </html>

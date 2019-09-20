@@ -77,6 +77,7 @@ Route::get('/charttimeproductshift/{selecteddate}/{product_id}/{shift_id}', 'Das
 Route::post('dynamic-list/shiftfetch', 'DynamicListController@shiftfetch')->name('dynamic-list.fetch');
 Route::post('dynamic-list/stdpackfetch', 'DynamicListController@stdpackfetch')->name( 'dynamic-list.stdpackfetch');
 Route::get('dynamic-list/getpackage', 'DynamicListController@getpackage');
+Route::get('dynamic-list/getpackageById', 'DynamicListController@getpackageById');
 Route::get('dynamic-list/getorder', 'DynamicListController@getorder');
 Route::get('/summary/{date}', 'DashboardController@summary');
 Route::get('/main', 'DashboardController@main');
@@ -124,3 +125,5 @@ Route::get('/log-pack-ms/editDetail/{id}', 'LogPackMsController@editDetail');
 Route::post('/log-pack-ms/updateDetail/{id}', 'LogPackMsController@updateDetail');
 Route::get('/log-pack-ms/deleteDetail/{id}/{log_pack_m_id}', 'LogPackMsController@deleteDetail');
 Route::get('/log-pack-ms/changestatus/{log_pack_m_id}', 'LogPackMsController@changestatus');
+Route::get('/log-pack-ms/graph/{log_pack_m_id}', 'LogPackMsController@graph');
+Route::get('/log-pack-ms/forecast/{log_pack_m_id}', 'LogPackMsController@forecast');

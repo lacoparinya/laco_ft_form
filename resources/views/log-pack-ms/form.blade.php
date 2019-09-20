@@ -50,7 +50,7 @@
 </div>
 
 <div class="form-group col-md-4 {{ $errors->has('kgsperpack') ? 'has-error' : ''}}">
-    <label for="kgsperpack" class="control-label">{{ 'kg per pack' }}</label>
+    <label for="kgsperpack" class="control-label">{{ 'หน่วย ต่อ pack' }}</label>
     <input class="form-control" name="kgsperpack" id="kgsperpack" value={{ $logpackm->package->kgsperpack or '' }}  >
     {!! $errors->first('kgsperpack', '<p class="help-block">:message</p>') !!}
 </div>
