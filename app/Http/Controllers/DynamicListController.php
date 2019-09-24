@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Timeslot;
 use App\StdPack;
+use App\Package;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;

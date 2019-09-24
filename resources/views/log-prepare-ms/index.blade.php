@@ -21,8 +21,6 @@
                                 </span>
                             </div>
                         </form>
-
-                        <br/>
                        <br/>
                         @if ($status == 'Active')
                             <a href="{{ url('/log-prepare-ms/?status=Active') }}" class="btn btn-primary btn-sm" title="Status Active">
