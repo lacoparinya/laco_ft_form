@@ -87,7 +87,12 @@
       function drawVisualization2() {
         // Some raw data (not necessarily accurate)
         var data2 = google.visualization.arrayToDataTable([
-          ['Time-Product', 'Plan','Actual','Forecast','Actual สะสม','Remain' ],
+           ['Time-Product', 
+          {label: 'Plan', type: 'number'},
+          {label: 'Actual', type: 'number'},
+          {label: 'Forecast', type: 'number'},
+          {label: 'Actual สะสม', type: 'number'},
+          {label: 'Remain', type: 'number'}],
           @php
               $sum = 0; 
               $remain = 0;
@@ -121,7 +126,7 @@
         ]);
 
         var max1 = {{ $sum }} ;
-        var max2 = 500  ;
+        var max2 = {{ $sum }}  ;
 
         var options = {
           displayAnnotations: true,

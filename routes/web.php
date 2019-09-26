@@ -45,6 +45,7 @@ Route::resource('ft-log-pres', 'FtLogPresController');
 Route::resource('freeze-ms','FreezeMsController');
 Route::resource('log-prepare-ms', 'LogPrepareMsController');
 Route::resource('log-pack-ms', 'LogPackMsController');
+Route::resource('log-select-ms', 'LogSelectMsController');
 
 Route::get('/import', 'AutoImportController@test');
 Route::get('/reports/daily', 'ReportsController@daily')->name('reports.daily');
@@ -127,3 +128,12 @@ Route::get('/log-pack-ms/deleteDetail/{id}/{log_pack_m_id}', 'LogPackMsControlle
 Route::get('/log-pack-ms/changestatus/{log_pack_m_id}', 'LogPackMsController@changestatus');
 Route::get('/log-pack-ms/graph/{log_pack_m_id}', 'LogPackMsController@graph');
 Route::get('/log-pack-ms/forecast/{log_pack_m_id}', 'LogPackMsController@forecast');
+
+Route::get('/log-select-ms/createDetail/{log_select_m_id}', 'LogSelectMsController@createDetail');
+Route::post('/log-select-ms/storeDetail/{log_select_m_id}', 'LogSelectMsController@storeDetail');
+Route::get('/log-select-ms/editDetail/{id}', 'LogSelectMsController@editDetail');
+Route::post('/log-select-ms/updateDetail/{id}', 'LogSelectMsController@updateDetail');
+Route::get('/log-select-ms/deleteDetail/{id}/{log_select_m_id}', 'LogSelectMsController@deleteDetail');
+Route::get('/log-select-ms/changestatus/{log_select_m_id}', 'LogSelectMsController@changestatus');
+Route::get('/log-select-ms/graph/{log_pack_m_id}', 'LogSelectMsController@graph');
+Route::get('/log-select-ms/forecast/{log_select_m_id}', 'LogSelectMsController@forecast');
