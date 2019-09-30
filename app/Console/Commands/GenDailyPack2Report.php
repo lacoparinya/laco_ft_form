@@ -2,10 +2,12 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-
 use App\LogPackM;
 
+use App\Mail\PackRptMail;
+
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Mail;
 class GenDailyPack2Report extends Command
 {
     /**
@@ -211,6 +213,6 @@ class GenDailyPack2Report extends Command
         $mailObj['graph'] = $fileList;
         $mailObj['subject'] = " อัตราการแพ็คสะสม " . $selecteddate;
 
-       // Mail::to($ftStaff)->send(new PackRptMail($mailObj));//
+        Mail::to($ftStaff)->send(new PackRptMail($mailObj));//
     }
 }
