@@ -6,7 +6,7 @@
             <div class="panel panel-default">
             <div class="panel-heading">FT Form Application - {{ $logpackm->method->name }} - {{ $logpackm->package->name }}</div>
   <br />
-            <a href="{{ url('/log-pack-ms') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="glyphicon glyphicon-arrow-left" aria-hidden="true"></i> Back</button></a>
+            <a href="{{ url('/log-pack-ms/?status='.$logpackm->status) }}" title="Back"><button class="btn btn-warning btn-sm"><i class="glyphicon glyphicon-arrow-left" aria-hidden="true"></i> Back</button></a>
                        
                         <br />
                 <div class="panel-body">
