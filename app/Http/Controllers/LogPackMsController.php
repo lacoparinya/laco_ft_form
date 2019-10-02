@@ -100,7 +100,7 @@ class LogPackMsController extends Controller
             ->where('package_id', $requestData['package_id'])
             ->first();
         if (!empty($chk)) {
-            return redirect('log-pack-ms')->with('flash_message', 'Duplicate Data')->with('alert_message', 'alert');
+         //   return redirect('log-pack-ms')->with('flash_message', 'Duplicate Data')->with('alert_message', 'alert');
         }
 
         if (empty($requestData['order_id'])) {
@@ -247,7 +247,7 @@ class LogPackMsController extends Controller
             ->where('id', '!=', $id)
             ->first();
         if (!empty($chk)) {
-            return redirect('ft-log-packs')->with('flash_message', 'Duplicate Data')->with('alert_message', 'alert');
+        //    return redirect('ft-log-packs')->with('flash_message', 'Duplicate Data')->with('alert_message', 'alert');
         }
 
         if (empty($requestData['order_id'])) {
