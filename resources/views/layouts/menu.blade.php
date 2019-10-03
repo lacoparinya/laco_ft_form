@@ -96,7 +96,7 @@
                                     <a href="{{route('ft_logs.index')}}">FT Select Logs</a>
                                     </li>
                                     <li>
-                                    <a href="{{route('ft-log-packs.index')}}">FT Pack Logs</a>
+                                    <a href="{{route('log-pack-ms.index')}}">FT Pack Logs</a>
                                     </li>
                                     <li>
                                     <a href="{{route('freeze-ms.index')}}">FT Freeze Logs</a>
@@ -104,10 +104,6 @@
                                     <li>
                                     <a href="{{route('log-prepare-ms.index')}}">FT Prepare Logs</a>
                                     </li>
-                                    <li>
-                                    <a href="{{route('log-pack-ms.index')}}">New FT Pack Logs</a>
-                                    </li>
-                                    
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -165,11 +161,8 @@
                                 </a>
                                     @if ( App\User::find(Auth::user()->id)->group->name == 'user_pack' )
                                     <ul class="dropdown-menu" role="menu">
-                                        <li>
-                                        <a href="{{route('ft-log-packs.index')}}">FT Pack Logs</a>
-                                        </li>
-                                        <li>
-                                    <a href="{{route('log-pack-ms.index')}}">New FT Pack Logs</a>
+                                        <<li>
+                                    <a href="{{route('log-pack-ms.index')}}">FT Pack Logs</a>
                                     </li>
                                         <li><hr/></li>
                                         <li>
