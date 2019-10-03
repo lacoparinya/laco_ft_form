@@ -17,6 +17,11 @@ class LogSelectD extends Model
         return $this->hasOne('App\LogSelectM', 'id', 'log_select_m_id');
     }
 
+    public function classifyunit()
+    {
+        return $this->hasOne('App\Unit', 'id', 'line_classify_unit');
+    }
+
     public function recalculate($log_select_m_id)
     {
         $data = self::where('log_select_m_id', $log_select_m_id)

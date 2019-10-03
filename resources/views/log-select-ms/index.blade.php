@@ -8,7 +8,7 @@
                     <div class="card-header">Logselectms</div>
                     <div class="card-body">
                         <a href="{{ url('/log-select-ms/create') }}" class="btn btn-success btn-sm" title="Add New LogSelectM">
-                            <i class="fa fa-plus" aria-hidden="true"></i> Add New
+                            <i class="fa fa-plus" aria-hidden="true"></i> สร้างรายการใหม่
                         </a>
 
                         <form method="GET" action="{{ url('/log-select-ms') }}" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
@@ -43,6 +43,7 @@
                                     <tr>
                                         <th>วันที่ / กะ</th>
                                         <th>คัดผลิตภัณท์</th>
+                                        <th>ยอดที่ผลิดได้</th>
                                         <th>เป้าที่ต้องผลิต</th>
                                         <th>จำนวน</th>
                                         <th>Actions</th>
@@ -53,18 +54,19 @@
                                     <tr>
                                         <td>{{ $item->process_date }} / {{ $item->shift->name }}</td>
                                         <td>{{ $item->product->name }}</td>
+                                        <td>{{ $item->logselectd->sum('output_kg') }}</td>
                                         <td>{{ $item->targetperday }}</td>
                                         <td>{{ $item->logselectd->count() }}</td>
                                         <td>
                                             @if ($item->status == 'Active')
                                                 <a href="{{ url('/log-select-ms/createDetail/'.$item->id) }}" class="btn btn-success btn-sm" title="Add New LogPrepareM">
-                            <i class="fa fa-plus" aria-hidden="true"></i> Add Detail
+                            <i class="fa fa-plus" aria-hidden="true"></i> เพิ่มข้อมูล
                         </a>    
                                             @endif
-                                            <a href="{{ url('/log-select-ms/' . $item->id) }}" title="View LogPackM"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> Manage</button></a>
+                                            <a href="{{ url('/log-select-ms/' . $item->id) }}" title="View LogPackM"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> จัดการ</button></a>
                                            
- <a href="{{ url('/log-select-ms/graph/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> Graph</button></a>
-  <a href="{{ url('/log-select-ms/forecast/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> Forecast</button></a>
+ <a href="{{ url('/log-select-ms/graph/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> กราฟ</button></a>
+  <a href="{{ url('/log-select-ms/forecast/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> ประเมิน</button></a>
  
          <a href="{{ url('/log-select-ms/changestatus/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> {{ $item->status }}</button></a>
                         <br/>  <a href="{{ url('/log-select-ms/' . $item->id . '/edit') }}" title="Edit LogPackM"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>

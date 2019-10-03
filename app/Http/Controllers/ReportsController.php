@@ -10,6 +10,7 @@ use App\FtLogPre;
 use App\FreezeM;
 use App\LogPrepareM;
 use App\LogPackM;
+use App\LogSelectM;
 
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -340,5 +341,44 @@ class ReportsController extends Controller
             })->export('xlsx');
         }
     }
+
+    public function dailyselect2()
+    {
+        return view('reports.dailyselect2');
+    }
+
+    public function rangeselect2()
+    {
+        return view('reports.rangeselect2');
+    }
+    
+    public function reportSelect2Action(Request $request){
+        $requestData = $request->all();
+        
+        if($requestData['action_type'] == 'daily')
+        {
+            $data = LogSelectM::where('process_date', $requestData['process_date'])->get();
+
+            $filename = "ft_select_report_" . date('ymdHi');
+
+            Excel::create($filename, function ($excel) use ($data) {
+                $excel->sheet('งานคัด', function ($sheet) use ($data) {
+                    $sheet->loadView('exports.dailyselect2export')->with('data', $data);
+                });
+            })->export('xlsx');
+        }elseif($requestData ['action_type'] == 'range'){
+            $data = LogSelectM::whereBetween('process_date', [$requestData['from_date'], $requestData['to_date']])->get();
+
+            $filename = "ft_select_report_" . date('ymdHi');
+
+            Excel::create($filename, function ($excel) use ($data) {
+                $excel->sheet('งานคัด', function ($sheet) use ($data) {
+                    $sheet->loadView('exports.dailyselect2export')->with('data', $data);
+                });
+            })->export('xlsx');
+        }
+    }
+
+    
 
 }

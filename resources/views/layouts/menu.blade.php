@@ -104,6 +104,9 @@
                                     <li>
                                     <a href="{{route('log-prepare-ms.index')}}">FT Prepare Logs</a>
                                     </li>
+                                    <li>
+                                    <a href="{{route('log-select-ms.index')}}">New FT Select Logs</a>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -111,47 +114,51 @@
                                         Reports <span class="caret"></span>
                                     </a>
                                 <ul class="dropdown-menu" role="menu">       
-                                    <li>
-                                    <a href="{{route('reports.daily')}}">Select Daily Report</a>
-                                    </li>
-                                    <li>
-                                    <a href="{{route('reports.range')}}">Select Range Report</a>
-                                    </li>
-                                    <li>
-                                    <a href="{{route('reports.dailypack')}}">Pack Daily Report</a>
-                                    </li>
-                                    <li>
-                                    <a href="{{route('reports.rangepack')}}">Pack Range Report</a>
-                                    </li>
-                                     <li>
-                                        <a href="{{route('reports.dailypack2')}}">New Pack Daily Report</a>
-                                        </li>
-                                        <li>
-                                        <a href="{{route('reports.rangepack2')}}">New Pack Range Report</a>
-                                        </li>
-                                     <li>
-                                        <a href="{{route('reports.dailyfreeze2')}}">Freeze Daily Report</a>
-                                        </li>
-                                        <li>
-                                        <a href="{{route('reports.rangefreeze2')}}">Freeze Range Report</a>
-                                        </li>
-                                    <li>
-                                    <a href="{{route('reports.dailypreprod')}}">Prepare Daily Report</a>
-                                    </li>
-                                    <li>
-                                    <a href="{{route('reports.rangepreprod')}}">Prepare Range Report</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{route('reports.dailypreprod2')}}">New Prepare Daily Report</a>
-                                        </li>
-                                        <li>
-                                        <a href="{{route('reports.rangepreprod2')}}">New Prepare Range Report</a>
-                                        </li>
-                                        
-                                    <li>
-                                    <a href="{{route('reports.orderreport')}}">Order Report</a>
-                                    </li>
-                                   
+                                <li>
+                                <a href="{{route('reports.daily')}}">Select Daily Report</a>
+                                </li>
+                                <li>
+                                <a href="{{route('reports.range')}}">Select Range Report</a>
+                                </li>
+                                <li>
+                                <a href="{{route('reports.dailypack')}}">Pack Daily Report</a>
+                                </li>
+                                <li>
+                                <a href="{{route('reports.rangepack')}}">Pack Range Report</a>
+                                </li>
+                                <li>
+                                <a href="{{route('reports.dailypack2')}}">New Pack Daily Report</a>
+                                </li>
+                                <li>
+                                <a href="{{route('reports.rangepack2')}}">New Pack Range Report</a>
+                                </li>
+                                <li>
+                                <a href="{{route('reports.dailyfreeze2')}}">Freeze Daily Report</a>
+                                </li>
+                                <li>
+                                <a href="{{route('reports.rangefreeze2')}}">Freeze Range Report</a>
+                                </li>
+                                <li>
+                                <a href="{{route('reports.dailypreprod')}}">Prepare Daily Report</a>
+                                </li>
+                                <li>
+                                <a href="{{route('reports.rangepreprod')}}">Prepare Range Report</a>
+                                </li>
+                                <li>
+                                <a href="{{route('reports.dailypreprod2')}}">New Prepare Daily Report</a>
+                                </li>
+                                <li>
+                                <a href="{{route('reports.rangepreprod2')}}">New Prepare Range Report</a>
+                                </li>
+                                <li>
+                                <a href="{{route('reports.dailyselect2')}}">New Select Daily Report</a>
+                                </li>
+                                <li>
+                                <a href="{{route('reports.rangeselect2')}}">New Select Range Report</a>
+                                </li>
+                                <li>
+                                <a href="{{route('reports.orderreport')}}">Order Report</a>
+                                </li>
                                 </ul>
                             </li>
                                 @else
@@ -254,12 +261,21 @@
                                         <li>
                                         <a href="{{route('ft_logs.index')}}">FT Select Logs</a>
                                         </li>
+                                        <li>
+                                        <a href="{{route('log-select-ms.index')}}">New FT Select Logs</a>
+                                        </li>
                                         <li><hr/></li>
                                         <li>
                                         <a href="{{route('reports.daily')}}">Select Daily Report</a>
                                         </li>
                                         <li>
                                         <a href="{{route('reports.range')}}">Select Range Report</a>
+                                        </li>
+                                        <li>
+                                        <a href="{{route('reports.dailyselect2')}}">New Select Daily Report</a>
+                                        </li>
+                                        <li>
+                                        <a href="{{route('reports.rangeselect2')}}">New Select Range Report</a>
                                         </li>
                                         <li>
                                             <a href="{{ route('logout') }}"

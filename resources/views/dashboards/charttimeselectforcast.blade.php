@@ -7,7 +7,7 @@
             <div class="panel-heading">FT Form Application - {{ $logselectm->product->name  }}</div>
 
                 <div class="panel-body">
-                  <a href="{{ url('/log-select-ms') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
+                  <a href="{{ url('/log-select-ms/?status='.$logselectm->status) }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
                         
                     <div class="row">
                     <div class="col-md-12">
@@ -47,6 +47,21 @@
                           <td>{{ number_format($sum,0,".",",") }}</td>
                           <td>{{ $item->ref_note }}</td>
                           <td>{{ $item->grade }}</td>
+                          </tr>
+                          @endforeach
+                          @foreach ($estimateData as $item)
+                           @php
+                               $sum += $item['realrate'];
+                           @endphp
+                          <tr>
+                          <td>ชม.ที่ {{ $item['time'] }}</td>
+                          <td>{{ $logselectm->shift->name }}</td>
+                          <td>{{ $logselectm->product->name }}</td>
+                          <td> 0 / 0</td>
+                          <td>{{ number_format($item['realrate'],0,".",",") }}</td>
+                          <td>{{ number_format($sum,0,".",",") }}</td>
+                          <td> - </td>
+                          <td> - </td>
                           </tr>
                           @endforeach
                         </tbody>
@@ -175,16 +190,27 @@ var container = document.getElementById('chart_div');
       function drawVisualization2() {
         // Some raw data (not necessarily accurate)
         var data2 = google.visualization.arrayToDataTable([
-          ['Time-Product', 'Output (kg)','Actual สะสม' ],
+          ['Time-Product', { label:'Output (kg)',type:'number'}, { label:'Forecast (kg)',type:'number'},'Actual สะสม' ],
           @php
               $sum = 0; 
           @endphp
           @foreach ($logselectm->logselectd()->orderBy('process_datetime')->get() as $item)
           @php
             $sum += $item->output_kg;
-        @endphp
-            ['{{ date('H:i',strtotime($item->process_datetime)) }}',  
+          @endphp
+            ['{{ date('H:i',strtotime($item->process_datetime)) }}',
             {{ $item->output_kg }}, 
+            null,
+            {{ $sum }}, 
+            ],
+          @endforeach
+          @foreach ($estimateData as $item)
+          @php
+            $sum += $item['realrate'];
+          @endphp
+            ['ชมที่. {{ $item['time'] }}',  
+            null,
+            {{ $item['realrate'] }}, 
             {{ $sum }}, 
             ],
           @endforeach
@@ -227,11 +253,13 @@ var container = document.getElementById('chart_div');
           seriesType: 'bars',
           series: {
             0: {
-            
         targetAxisIndex: 0
-      },
+        },
+        1: {
+        targetAxisIndex: 0
+        },
 
-            1: {
+            2: {
             type: 'line',
             targetAxisIndex:1,
             }
@@ -254,6 +282,13 @@ var container = document.getElementById('chart_div');
     {
       calc: "stringify",
       sourceColumn: 2,
+      type: "string",
+      role: "annotation"
+    },
+    3,
+    {
+      calc: "stringify",
+      sourceColumn: 3,
       type: "string",
       role: "annotation",
       pointShape: 'square',

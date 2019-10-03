@@ -7,7 +7,7 @@
             <div class="panel-heading">FT Form Application - {{ $logselectm->product->name  }}</div>
 
                 <div class="panel-body">
-                  <a href="{{ url('/log-select-ms') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
+                  <a href="{{ url('/log-select-ms/?status='.$logselectm->status) }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
                         
                     <div class="row">
                     <div class="col-md-12">

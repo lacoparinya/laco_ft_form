@@ -69,6 +69,9 @@ Route::post('/reports/reportPreprod2Action', 'ReportsController@reportPreprod2Ac
 Route::get('/reports/dailypack2', 'ReportsController@dailypack2')->name('reports.dailypack2');
 Route::get('/reports/rangepack2', 'ReportsController@rangepack2')->name('reports.rangepack2');
 Route::post('/reports/reportPack2Action', 'ReportsController@reportPack2Action');
+Route::get('/reports/dailyselect2', 'ReportsController@dailyselect2')->name('reports.dailyselect2');
+Route::get('/reports/rangeselect2', 'ReportsController@rangeselect2')->name('reports.rangeselect2');
+Route::post('/reports/reportSelect2Action', 'ReportsController@reportSelect2Action');
 
 Route::get('/dashboard', 'DashboardController@home');
 Route::get('/chart/{selecteddate}', 'DashboardController@datechart');

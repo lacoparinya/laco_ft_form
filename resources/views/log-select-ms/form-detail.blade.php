@@ -49,8 +49,8 @@
     
     
     <div class="form-group col-md-3 {{ $errors->has('num_pk') ? 'has-error' : ''}}">
-    <label required for="num_pk" class="control-label">{{ 'PK' }}</label>
-    <input class="form-control calselectnum" name="num_pk" type="number" id="num_pk" value="{{ $logselectd->num_pk or ''}}" >
+    <label for="num_pk" class="control-label">{{ 'PK' }}</label>
+    <input required class="form-control calselectnum" name="num_pk" type="number" id="num_pk" value="{{ $logselectd->num_pk or ''}}" >
     {!! $errors->first('num_pk', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group col-md-3 {{ $errors->has('num_pf') ? 'has-error' : ''}}">
@@ -80,7 +80,7 @@
 </div>
 <div class="form-group col-md-3 {{ $errors->has('line_classify') ? 'has-error' : ''}}">
     <label for="line_classify" class="control-label">{{ 'เปิดไลน์คัด' }}</label>
-    <input required class="form-control" name="line_classify" type="number" readonly id="line_classify" value="{{ $logselectd->line_classify or ''}}" >
+    <input class="form-control" name="line_classify" type="number" readonly id="line_classify" value="{{ $logselectd->line_classify or ''}}" >
     {!! $errors->first('line_classify', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group col-md-3 {{ $errors->has('line_classify_unit') ? 'has-error' : ''}}">
