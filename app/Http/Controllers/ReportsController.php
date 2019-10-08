@@ -117,7 +117,7 @@ class ReportsController extends Controller
                 });
             })->export('xlsx');
         } elseif ($requestData['action_type'] == 'range') {
-            $data = LogPackM::whereBetween('process_date', [$requestData['from_date'], $requestData['to_date']])->orderBy('process_date')->orderBy('process_date')->get();
+            $data = LogPackM::whereBetween('process_date', [$requestData['from_date'], $requestData['to_date']])->orderBy('process_date')->get();
 
             $filename = "ft_report_" . date('ymdHi');
 
