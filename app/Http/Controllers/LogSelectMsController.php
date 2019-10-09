@@ -12,6 +12,7 @@ use App\Shift;
 use App\Unit;
 use App\StdProcess;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LogSelectMsController extends Controller
 {
@@ -28,6 +29,17 @@ class LogSelectMsController extends Controller
 
     public function index(Request $request)
     {
+
+        $user = Auth::user();
+
+        if ($user->group->name == 'user_pack') {
+            return redirect('log-pack-ms');
+        } elseif ($user->group->name == 'user_freeze') {
+            return redirect('freeze-ms');
+        } elseif ($user->group->name == 'user_prepare') {
+            return redirect('log-prepare-ms');
+        }
+
         $status = 'Active';
         $keyword = $request->get('search');
         if (!empty($request->get('status'))) {

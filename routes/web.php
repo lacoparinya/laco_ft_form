@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'FtLogsController@index');
+Route::get('/', 'LogSelectMsController@index');
 
 Auth::routes();
 

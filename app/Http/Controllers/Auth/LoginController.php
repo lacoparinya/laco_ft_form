@@ -26,7 +26,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/ft_logs';
+    protected $redirectTo = '/log-select-ms';
 
     /**
      * Create a new controller instance.
