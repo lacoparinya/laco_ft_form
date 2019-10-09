@@ -46,21 +46,25 @@ class GenDailyFreeze2Report extends Command
         $diff = $this->argument('diff');
 
         $selecteddate = date('Y-m-d');
+        $loopData = FreezeM::where('process_date', $selecteddate)->get();
+        $current_date = $selecteddate;
         if ($diff == 'Y') {
-            $selecteddate = date('Y-m-d', strtotime("-1 days"));
+            $selecteddate2 = date('Y-m-d', strtotime("-1 days"));
+            $loopData = FreezeM::whereBetween('process_date', [$selecteddate2, $selecteddate])->get();
+            $current_date = $selecteddate2." - ".$selecteddate;
         }
         //selecteddate = '2019-08-11';
         require_once app_path() . '/jpgraph/jpgraph.php';
         require_once app_path() . '/jpgraph/jpgraph_bar.php';
         require_once app_path() . '/jpgraph/jpgraph_line.php';
 
-        $current_date = $selecteddate;
+        
 
         $fileList = array();
 
-        $loopData = FreezeM::where('process_date', $current_date)->get();
+        
 
-        //echo "Number OF Loop" . $loopData->count() . "\n\r";
+        echo "Number OF Loop" . $loopData->count() . "\n\r";
 
         foreach ($loopData as $loopObj) {
             //echo "Test".$loopObj->master_code."\n\r";
@@ -116,7 +120,7 @@ class GenDailyFreeze2Report extends Command
 
             // $gbplot = new \GroupBarPlot(array($b1plot, $b2plot));
 
-            $graph->title->Set($productName . " - อัตราการฟรีสสะสม " . $selecteddate);
+            $graph->title->Set($productName . " - อัตราการฟรีสสะสม " . $current_date);
             $graph->title->SetFont(FF_CORDIA, FS_BOLD, 14);
 
 
@@ -179,7 +183,7 @@ class GenDailyFreeze2Report extends Command
             $ftStaff = config('myconfig.emaillist');
 
             $mailObj['graph'] = $fileList;
-            $mailObj['subject'] = " อัตราการฟรีสสะสม " . $selecteddate;
+            $mailObj['subject'] = " อัตราการฟรีสสะสม " . $current_date;
 
             Mail::to($ftStaff)->send(new FreezeRptMail($mailObj));
         }
