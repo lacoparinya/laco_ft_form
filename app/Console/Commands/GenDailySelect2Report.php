@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 
 use App\LogSelectM;
 use App\Shift;
+use App\Product;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\FtDataEmail;
@@ -66,7 +67,10 @@ class GenDailySelect2Report extends Command
 
         $shiftObj = Shift::findOrFail($shiftId);
 
-        $loopData = LogSelectM::where('process_date', $current_date)->select('id')->get();
+        $loopData = LogSelectM::where('process_date', $current_date)
+            ->where('shift_id', $shiftId)
+            ->select('id')
+            ->get();
 
         foreach ($loopData as $valueLoop) {
 
@@ -161,8 +165,20 @@ class GenDailySelect2Report extends Command
 
                 $fileList[] = $filename;
             }
+        }
 
-            $logselectm = LogSelectM::findOrFail($valueLoop['id']);
+        $loopData = LogSelectM::where('process_date', $current_date)
+            ->select('process_date','product_id')
+            ->groupBy('process_date', 'product_id')
+            ->get();
+
+        foreach ($loopData as $valueLoop) {
+
+            $productObj = Product::findOrFail($valueLoop['product_id']);
+            
+            $logselectmA = LogSelectM::where('process_date',$valueLoop['process_date'])
+                            ->where('product_id', $valueLoop['product_id'])
+                            ->get();
 
 
                 $data1y = array();
@@ -179,20 +195,30 @@ class GenDailySelect2Report extends Command
             $totalsum = 0;
             $ratePerHr = 0;
 
-            foreach ($logselectm->logselectd()->orderBy('process_datetime')->get() as $valueObj) {
-                $sum += $valueObj->output_kg;
-                $data1y[] = $valueObj->output_kg;
-                $data2y[] = 0;
-                $data3y[] = $sum;
-                $data1x[] = date('H:i',strtotime($valueObj->process_datetime));
+            $targetResult = 0;
+            $sumtotalhruse = 0;
 
-                $totalTime += $valueObj->workhours;
-                $totalinput += $valueObj->input_kg;
-                $totaloutput += $valueObj->output_kg;
+            foreach ($logselectmA as $logselectm) {
+
+                $sumtotalhruse += $logselectm->hourperday;
+                $targetResult += $logselectm->targetperday;
+
+                foreach ($logselectm->logselectd()->orderBy('process_datetime')->get() as $valueObj) {
+                    $sum += $valueObj->output_kg;
+                    $data1y[] = $valueObj->output_kg;
+                    $data2y[] = 0;
+                    $data3y[] = $sum;
+                    $data1x[] = date('H:i',strtotime($valueObj->process_datetime));
+
+                    $totalTime += $valueObj->workhours;
+                    $totalinput += $valueObj->input_kg;
+                    $totaloutput += $valueObj->output_kg;
+                }
+
             }
 
-            $remainTime = $logselectm->hourperday - $totalTime;
-            $targetResult = $logselectm->targetperday;
+            $remainTime = $sumtotalhruse - $totalTime;
+            
 
             if ($remainTime > 0) {
                 $totalsum = $totaloutput;
@@ -266,7 +292,7 @@ class GenDailySelect2Report extends Command
 
                 $gbplot = new \GroupBarPlot(array($b1plot, $b2plot));
 
-                $graph->title->Set($logselectm->product->name . " อัตราการคัดสะสมทั้งหมด " . $selecteddate);
+                $graph->title->Set($productObj->name . " อัตราการคัดสะสมทั้งหมด " . $selecteddate);
                 $graph->title->SetFont(FF_CORDIA, FS_BOLD, 14);
 
                 $graph->Add($gbplot);
@@ -304,9 +330,9 @@ class GenDailySelect2Report extends Command
 
                 $date = date('ymdHis');
 
-                $filename2 = "graph/selects/ft_log_select_all_" . $current_date . "-" . $logselectm->product_id . "-" . $date . ".jpg";
+                $filename2 = "graph/selects/ft_log_select_all_" . $current_date . "-" . $productObj->id . "-" . $date . ".jpg";
 
-                $filename11 = public_path() . "/graph/selects/ft_log_select_all_" . $current_date . "-" . $logselectm->product_id . "-" . $date . ".jpg";
+                $filename11 = public_path() . "/graph/selects/ft_log_select_all_" . $current_date . "-" . $productObj->id . "-" . $date . ".jpg";
 
 
                 $graph->Stroke($filename11);
