@@ -31,11 +31,21 @@ class LogPackMsController extends Controller
 
         $perPage = 25;
 
-        if (!empty($status)) {
-            $logpackms = LogPackM::where('status', $status)->orderBy('process_date', 'DESC')->paginate($perPage);
+        if (!empty($keyword)) {
+            $products = Package::where('name', 'like', '%' . $keyword . '%')->pluck('id')->toArray();
+            if (empty($products)) {
+                $logpackms = LogPackM::where('note', 'like', '%' . $keyword . '%')
+                    ->orderBy('process_date', 'DESC')
+                    ->paginate($perPage);
+            } else {
+                $logpackms = LogPackM::where('note', 'like', '%' . $keyword . '%')
+                    ->orWhereIn('package_id', $products)
+                    ->orderBy('process_date', 'DESC')
+                    ->paginate($perPage);
+            }
         } else {
-            $logpackms = LogPackM::orderBy('process_date', 'DESC')->paginate($perPage);
-        }
+            $logpackms = LogPackM::where('status', $status)->orderBy('process_date', 'DESC')->paginate($perPage);
+        } 
 
         return view('log-pack-ms.index', compact('logpackms', 'status'));
     }

@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Edit LogPackM #{{ $logpackm->id }}</div>
+                    <div class="card-header"><h3>แก้ไขงานแพ็ค #{{ $logpackm->id }}</h3></div>
                     <div class="card-body">
                         <a href="{{ url('/log-pack-ms') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
                         <br />

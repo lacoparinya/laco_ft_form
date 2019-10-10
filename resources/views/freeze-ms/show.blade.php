@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">FreezeM {{ $freezem->id }}</div>
+                    <div class="card-header"><h3>รายการงานฟรีส {{ $freezem->id }}</h3></div>
                     <div class="card-body">
 
                         <a href="{{ url('/freeze-ms') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
@@ -48,10 +48,10 @@
                                     <tr>
                                         <td>{{ $freezeditem->process_datetime }} / {{ $freezeditem->iqfjob->name or '' }}</td>
                                         @foreach ($iqfmapcollist as $key=>$item)
-                                        <td>{{ $freezeditem->$key }}</td>
+                                        <td>{{ number_format($freezeditem->$key,2,".",",") }}</td>
                                         @endforeach
-                                        <td>{{ $freezeditem->output_sum }}</td>
-                                        <td>{{ $freezeditem->current_RM }}</td>
+                                        <td>{{ number_format($freezeditem->output_sum,2,".",",") }}</td>
+                                        <td>{{ number_format($freezeditem->current_RM,2,".",",") }}</td>
                                         <td>
                                             <a href="{{ url('/freeze-ms/editDetail/' . $freezeditem->id) }}" title="Edit FreezeM"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
                                             <a href="{{ url('/freeze-ms/deleteDetail/' . $freezeditem->id . '/'. $freezeditem->freeze_m_id) }}" title="Delete FreezeM"><button class="btn btn-danger btn-sm"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button></a>

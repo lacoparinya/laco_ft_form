@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">งานเตรียมการ {{ $logpreparem->id }}</div>
+                    <div class="card-header"><h3>งานเตรียมการ #{{ $logpreparem->id }}</h3></div>
                     <div class="card-body">
 
                         <a href="{{ url('/log-prepare-ms') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>

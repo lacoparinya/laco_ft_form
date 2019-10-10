@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Create New LogPackM</div>
+                    <div class="card-header"><h3>สร้างงานแพ็คใหม่</h3></div>
                     <div class="card-body">
                         <a href="{{ url('/log-pack-ms') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
                         <br />

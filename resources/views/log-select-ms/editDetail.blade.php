@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">สร้างรายการในงานคัด #{{ $logselectd->id }}</div>
+                    <div class="card-header"><h3>แก้ไขรายการในงานคัด #{{ $logselectd->id }}</h3></div>
                     <div class="card-body">
                         <a href="{{ url('/log-select-ms/'.$logselectm->id) }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
                         <div class="row">

@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Freezems</div>
+                    <div class="card-header"><h3>งานฟรีส</h3></div>
                     <div class="card-body">
                         <a href="{{ url('/freeze-ms/create') }}" class="btn btn-success btn-sm" title="Add New FreezeM">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New
@@ -61,14 +61,14 @@
                                         <td>{{ $item->process_date }}</td>
                                         <td>{{ $item->iqfjob->name }}</td>
                                         <td>{{ $item->targets }}</td>
-                                        <td>{{ $item->start_RM }}</td>
+                                        <td>{{ number_format($item->start_RM,2,".",",") }}</td>
                                         <td>
                                         @php
                                             //echo $item->freezed->count();
                                             if($item->freezed->count() > 0){
-                                               echo $item->freezed()->orderBy('process_datetime','desc')->first()->current_RM;
+                                               echo number_format($item->freezed()->orderBy('process_datetime','desc')->first()->current_RM,2,".",",");
                                             }else{
-                                                echo $item->start_RM;
+                                                echo number_format($item->start_RM,2,".",",");
                                                }
                                         @endphp
                                         </td>

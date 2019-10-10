@@ -48,10 +48,22 @@ class LogSelectMsController extends Controller
 
         $perPage = 25;
 
-        if (!empty($status)) {
-            $logselectms = LogSelectM::where('status', $status)->orderBy('process_date', 'DESC')->paginate($perPage);
+        if (!empty($keyword)) {
+            $products = Product::where('name', 'like', '%' . $keyword . '%')->pluck('id')->toArray();
+            if (empty($products)) {
+                $logselectms = LogSelectM::where('note', 'like', '%' . $keyword . '%')
+                    ->orWhere('ref_note', 'like', '%' . $keyword . '%')
+                    ->orderBy('process_date', 'DESC')
+                    ->paginate($perPage);
+            } else {
+                $logselectms = LogSelectM::where('note', 'like', '%' . $keyword . '%')
+                    ->orWhere('ref_note', 'like', '%' . $keyword . '%')
+                    ->orWhereIn('product_id', $products)
+                    ->orderBy('process_date', 'DESC')
+                    ->paginate($perPage);
+            }
         } else {
-            $logselectms = LogSelectM::orderBy('process_date', 'DESC')->paginate($perPage);
+            $logselectms = LogSelectM::where('status', $status)->orderBy('process_date', 'DESC')->paginate($perPage);
         }
 
         return view('log-select-ms.index', compact('logselectms','status'));

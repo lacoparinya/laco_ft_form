@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Logpackms</div>
+                    <div class="card-header"><h3>งานแพ็ค</h3></div>
                     <div class="card-body">
                         <a href="{{ url('/log-pack-ms/create') }}" class="btn btn-success btn-sm" title="Add New LogPackM">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New

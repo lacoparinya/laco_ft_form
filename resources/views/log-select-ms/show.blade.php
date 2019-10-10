@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">งานคัด {{ $logselectm->id }}</div>
+                    <div class="card-header"><h3>งานคัด {{ $logselectm->id }}</h3></div>
                     <div class="card-body">
 
                         <a href="{{ url('/log-select-ms') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
@@ -79,7 +79,7 @@
                                             <td>{{ $item->process_datetime }}</td>
                                             <td>{{ $item->input_kg }}</td>
                                             <td>{{ $item->output_kg }}</td>
-                                            <td>{{ $item->yeild_percent }}</td>
+                                            <td>{{ round($item->yeild_percent,2) }}</td>
                                             <td>{{ $item->sum_in_kg }}</td>
                                             <td>{{ $item->sum_kg }}</td>
                                             <td>{{ $item->num_pk }}</td>

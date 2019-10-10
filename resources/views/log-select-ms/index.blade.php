@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Logselectms</div>
+                    <div class="card-header"><h3>งานคัด</h3></div>
                     <div class="card-body">
                         <a href="{{ url('/log-select-ms/create') }}" class="btn btn-success btn-sm" title="Add New LogSelectM">
                             <i class="fa fa-plus" aria-hidden="true"></i> สร้างรายการใหม่
