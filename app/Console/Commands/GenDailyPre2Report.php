@@ -44,6 +44,7 @@ class GenDailyPre2Report extends Command
      */
     public function handle()
     {
+        ini_set('memory_limit', '256M');
         $diff = $this->argument('diff');
 
         $selecteddate = date('Y-m-d');

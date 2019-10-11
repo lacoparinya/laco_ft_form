@@ -44,6 +44,7 @@ class GenDailySelect2Report extends Command
      */
     public function handle()
     {
+        ini_set('memory_limit', '256M');
         $shiftId = $this->argument('shift_id');
         $diff = $this->argument('diff');
 

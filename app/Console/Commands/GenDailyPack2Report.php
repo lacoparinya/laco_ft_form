@@ -41,6 +41,8 @@ class GenDailyPack2Report extends Command
      */
     public function handle()
     {
+        ini_set('memory_limit', '256M');
+
         $diff = $this->argument('diff');
 
         $selecteddate = date('Y-m-d');
@@ -117,7 +119,7 @@ class GenDailyPack2Report extends Command
                     }
                 }
 
-
+                
                 $graph = new \Graph(900, 400);
                 $graph->SetScale('intlin');
                 $graph->SetYScale(0, 'lin');
@@ -145,14 +147,10 @@ class GenDailyPack2Report extends Command
                 $b3plot = new \BarPlot($data3y);
                 $l1plot = new \LinePlot($data4y);
 
-
-
-
                 $gbplot = new \GroupBarPlot(array($b1plot, $b2plot, $b3plot));
 
                 $graph->title->Set($logpackm->method->name . " - " . $logpackm->package->name . " อัตราการแพ็คสะสม " . $selecteddate . " กะ " . $logpackm->shift->name);
                 $graph->title->SetFont(FF_CORDIA, FS_BOLD, 14);
-
 
                 $graph->Add($gbplot);
                 $graph->AddY(0, $l1plot);
@@ -161,12 +159,9 @@ class GenDailyPack2Report extends Command
 
                 $gbplot->SetColor("white");
                 $gbplot->SetFillColor("#22ff11");
-                //$gbplot->value->SetFormat( '%01.0f');
-                //$gbplot->value->Show();
 
                 $l1plot->SetColor("red");
                 $l1plot->SetLegend("Sum");
-                //$b2plot->legend->SetFont(FF_FONT2, FS_NORMAL);
 
                 $l1plot->mark->SetType(MARK_X, '', 1.0);
                 $l1plot->mark->setColor("red");

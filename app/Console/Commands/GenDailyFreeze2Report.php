@@ -43,6 +43,7 @@ class GenDailyFreeze2Report extends Command
      */
     public function handle()
     {
+        ini_set('memory_limit', '256M');
         $diff = $this->argument('diff');
 
         $selecteddate = date('Y-m-d');
@@ -62,23 +63,24 @@ class GenDailyFreeze2Report extends Command
 
         $fileList = array();
 
-        
-
-        echo "Number OF Loop" . $loopData->count() . "\n\r";
-
         foreach ($loopData as $loopObj) {
-            //echo "Test".$loopObj->master_code."\n\r";
+            if($loopObj->freezed->count() > 0){
             $rawdata = $loopObj
                 ->freezed()
                 ->orderBy('process_datetime','asc')
                 ->get();
+
+            
 
             $data1y = array();
             $data2y = array();
             $data3y = array();
             $data1x = array();
             $sumAll = 0;
-            $sumRemain = $rawdata[0]->current_RM + $rawdata[0]->output_sum;
+            $sumRemain = 0;
+            if(!empty($rawdata)){
+                $sumRemain = $rawdata[0]->current_RM + $rawdata[0]->output_sum;
+            }
             $productName = $loopObj->iqfjob->name;
             foreach ($rawdata as $rptObj) {
                 $sumAll += $rptObj->output_sum;
@@ -115,11 +117,6 @@ class GenDailyFreeze2Report extends Command
             $l1plot = new \LinePlot($data2y);
             $l2plot = new \LinePlot($data3y);
 
-
-
-
-            // $gbplot = new \GroupBarPlot(array($b1plot, $b2plot));
-
             $graph->title->Set($productName . " - อัตราการฟรีสสะสม " . $current_date);
             $graph->title->SetFont(FF_CORDIA, FS_BOLD, 14);
 
@@ -130,12 +127,7 @@ class GenDailyFreeze2Report extends Command
             $graph->ynaxis[0]->SetColor('black');
             $graph->ynaxis[0]->title->Set('Y-title');
 
-
-            //$gbplot->value->SetFormat( '%01.0f');
-            //$gbplot->value->Show();
-
             $l1plot->SetColor("red");
-            //$b2plot->legend->SetFont(FF_FONT2, FS_NORMAL);
 
             $l1plot->mark->SetType(MARK_X, '', 1.0);
             $l1plot->mark->setColor("red");
@@ -147,7 +139,6 @@ class GenDailyFreeze2Report extends Command
             $l1plot->SetLegend("Freeze Summary");
 
             $l2plot->SetColor("green");
-            //$b2plot->legend->SetFont(FF_FONT2, FS_NORMAL);
 
             $l2plot->mark->SetType(MARK_X, '', 1.0);
             $l2plot->mark->setColor("green");
@@ -169,14 +160,15 @@ class GenDailyFreeze2Report extends Command
 
             $date = date('ymdHis');
 
-            $filename = "graph/freezes/ft_log_freeze_" . $current_date . "-" . md5($loopObj->master_code) . "-" . $date . ".jpg";
+            $filename = "graph/freezes/ft_log_freeze_" . $current_date . "-" . md5($loopObj->id) . "-" . $date . ".jpg";
 
-            $filename1 = public_path() . "/graph/freezes/ft_log_freeze_" . $current_date . "-" . md5($loopObj->master_code) . "-" . $date . ".jpg";
+            $filename1 = public_path() . "/graph/freezes/ft_log_freeze_" . $current_date . "-" . md5($loopObj->id) . "-" . $date . ".jpg";
 
 
             $graph->Stroke($filename1);
 
             $fileList[] = $filename;
+        }
         }
 
         if (!empty($fileList)) {
