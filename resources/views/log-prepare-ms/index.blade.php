@@ -8,7 +8,7 @@
                     <div class="card-header"><h3>งานเตรียมการ</h3></div>
                     <div class="card-body">
                         <a href="{{ url('/log-prepare-ms/create') }}" class="btn btn-success btn-sm" title="Add New LogPrepareM">
-                            <i class="fa fa-plus" aria-hidden="true"></i> Add New
+                            <i class="fa fa-plus" aria-hidden="true"></i> สร้างรายการใหม่
                         </a>
 
                         <form method="GET" action="{{ url('/log-prepare-ms') }}" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
@@ -69,22 +69,19 @@
                                         <td>{{ $item->logprepared->count() }}</td>
                                         <td>
                                             @if ($item->status == 'Active')
-                                                <a href="{{ url('/log-prepare-ms/createDetail/'.$item->id) }}" class="btn btn-success btn-sm" title="Add New LogPrepareM">
-                            <i class="fa fa-plus" aria-hidden="true"></i> Add Detail
-                        </a>    
+                                            <a href="{{ url('/log-prepare-ms/createDetail/'.$item->id) }}" class="btn btn-success btn-sm" title="Add New LogPrepareM">
+                                            <i class="fa fa-plus" aria-hidden="true"></i> เพิ่มข้อมูล
+                                            </a>    
                                             @endif
-                                            
-                                            <a href="{{ url('/log-prepare-ms/' . $item->id) }}" title="Manage LogPrepareM"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> Manage</button></a>
-                                            <a href="{{ url('/log-prepare-ms/' . $item->id . '/edit') }}" title="Edit LogPrepareM"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
- <a href="{{ url('/log-prepare-ms/graph/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> Graph</button></a>
- 
-                                            <a href="{{ url('/log-prepare-ms/graph2/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-danger btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> Forecast</button></a>
-         <a href="{{ url('/log-prepare-ms/changestatus/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> {{ $item->status }}</button></a>
-                                                                            
+                                            <a href="{{ url('/log-prepare-ms/' . $item->id) }}" title="Manage LogPrepareM"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> จัดการ</button></a>
+                                            <a href="{{ url('/log-prepare-ms/graph/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> กราฟ</button></a>
+                                            <a href="{{ url('/log-prepare-ms/graph2/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-danger btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> ประเมิน</button></a>
+                                            <a href="{{ url('/log-prepare-ms/changestatus/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> {{ $item->status }}</button></a>
+                                            <a href="{{ url('/log-prepare-ms/' . $item->id . '/edit') }}" title="Edit LogPrepareM"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>                                
                                             <form method="POST" action="{{ url('/log-prepare-ms' . '/' . $item->id) }}" accept-charset="UTF-8" style="display:inline">
-                                                {{ method_field('DELETE') }}
-                                                {{ csrf_field() }}
-                                                <button type="submit" class="btn btn-danger btn-sm" title="Delete LogPrepareM" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+                                            {{ method_field('DELETE') }}
+                                            {{ csrf_field() }}
+                                            <button type="submit" class="btn btn-danger btn-sm" title="Delete LogPrepareM" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                             </form>
                                         </td>
                                     </tr>

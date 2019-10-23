@@ -8,7 +8,7 @@
                     <div class="card-header"><h3>งานแพ็ค</h3></div>
                     <div class="card-body">
                         <a href="{{ url('/log-pack-ms/create') }}" class="btn btn-success btn-sm" title="Add New LogPackM">
-                            <i class="fa fa-plus" aria-hidden="true"></i> Add New
+                            <i class="fa fa-plus" aria-hidden="true"></i> สร้างรายการใหม่
                         </a>
 
                         <form method="GET" action="{{ url('/log-pack-ms') }}" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
@@ -69,26 +69,21 @@
                                         
                                         
                                         <td>
-                                            @if ($item->status == 'Active')
-                                                <a href="{{ url('/log-pack-ms/createDetail/'.$item->id) }}" class="btn btn-success btn-sm" title="Add New LogPrepareM">
-                            <i class="fa fa-plus" aria-hidden="true"></i> Add Detail
-                        </a>    
-                                            @endif
-                                            <a href="{{ url('/log-pack-ms/' . $item->id) }}" title="View LogPackM"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> Manage</button></a>
-                                           
- <a href="{{ url('/log-pack-ms/graph/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> Graph</button></a>
-  <a href="{{ url('/log-pack-ms/forecast/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> Forecast</button></a>
- 
-         <a href="{{ url('/log-pack-ms/changestatus/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> {{ $item->status }}</button></a>
-                        <br/>  <a href="{{ url('/log-pack-ms/' . $item->id . '/edit') }}" title="Edit LogPackM"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
-                                          
-                            <form method="POST" action="{{ url('/log-pack-ms' . '/' . $item->id) }}" accept-charset="UTF-8" style="display:inline">
-                                                {{ method_field('DELETE') }}
-                                                {{ csrf_field() }}
-                                                <button type="submit" class="btn btn-danger btn-sm" title="Delete LogPackM" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                                            </form>
-                     
-                        
+                                        @if ($item->status == 'Active')
+                                        <a href="{{ url('/log-pack-ms/createDetail/'.$item->id) }}" class="btn btn-success btn-sm" title="Add New LogPrepareM">
+                                        <i class="fa fa-plus" aria-hidden="true"></i> เพิ่มข้อมูล
+                                        </a>    
+                                        @endif
+                                        <a href="{{ url('/log-pack-ms/' . $item->id) }}" title="View LogPackM"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> จัดการ</button></a>
+                                        <a href="{{ url('/log-pack-ms/graph/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> กราฟ</button></a>
+                                        <a href="{{ url('/log-pack-ms/forecast/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> ประเมิน</button></a>
+                                        <a href="{{ url('/log-pack-ms/changestatus/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> {{ $item->status }}</button></a>
+                                        <a href="{{ url('/log-pack-ms/' . $item->id . '/edit') }}" title="Edit LogPackM"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
+                                        <form method="POST" action="{{ url('/log-pack-ms' . '/' . $item->id) }}" accept-charset="UTF-8" style="display:inline">
+                                        {{ method_field('DELETE') }}
+                                        {{ csrf_field() }}
+                                        <button type="submit" class="btn btn-danger btn-sm" title="Delete LogPackM" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                        </form>                 
                                         </td>
                                     </tr>
                                 @endforeach

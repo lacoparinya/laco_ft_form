@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class FreezeM extends Model
 {
     protected $fillable = [
-        'process_date', 'targets', 'iqf_job_id', 'start_RM', 'recv_RM', 'note','status'
+        'process_date', 'targets', 'iqf_job_id', 'start_RM', 'recv_RM', 'note','status','target_hr'
     ];
 
     public function iqfjob()

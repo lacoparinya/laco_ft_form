@@ -60,22 +60,19 @@
                                         <td>
                                             @if ($item->status == 'Active')
                                                 <a href="{{ url('/log-select-ms/createDetail/'.$item->id) }}" class="btn btn-success btn-sm" title="Add New LogPrepareM">
-                            <i class="fa fa-plus" aria-hidden="true"></i> เพิ่มข้อมูล
-                        </a>    
+                                                <i class="fa fa-plus" aria-hidden="true"></i> เพิ่มข้อมูล
+                                                </a>    
                                             @endif
-                                            <a href="{{ url('/log-select-ms/' . $item->id) }}" title="View LogPackM"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> จัดการ</button></a>
-                                           
- <a href="{{ url('/log-select-ms/graph/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> กราฟ</button></a>
-  <a href="{{ url('/log-select-ms/forecast/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> ประเมิน</button></a>
- 
-         <a href="{{ url('/log-select-ms/changestatus/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> {{ $item->status }}</button></a>
-                        <br/>  <a href="{{ url('/log-select-ms/' . $item->id . '/edit') }}" title="Edit LogPackM"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
-                          
-                                            <form method="POST" action="{{ url('/log-select-ms' . '/' . $item->id) }}" accept-charset="UTF-8" style="display:inline">
+                                                <a href="{{ url('/log-select-ms/' . $item->id) }}" title="View LogPackM"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> จัดการ</button></a>
+                                                <a href="{{ url('/log-select-ms/graph/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> กราฟ</button></a>
+                                                <a href="{{ url('/log-select-ms/forecast/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> ประเมิน</button></a>
+                                                <a href="{{ url('/log-select-ms/changestatus/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> {{ $item->status }}</button></a>
+                                                <a href="{{ url('/log-select-ms/' . $item->id . '/edit') }}" title="Edit LogPackM"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
+                                                <form method="POST" action="{{ url('/log-select-ms' . '/' . $item->id) }}" accept-charset="UTF-8" style="display:inline">
                                                 {{ method_field('DELETE') }}
                                                 {{ csrf_field() }}
-                                                <button type="submit" class="btn btn-danger btn-sm" title="Delete LogSelectM" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
-                                            </form>
+                                                <button type="submit" class="btn btn-danger btn-sm" title="Delete LogSelectM" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                                </form>
                                         </td>
                                     </tr>
                                 @endforeach

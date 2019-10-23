@@ -8,7 +8,7 @@
                     <div class="card-header"><h3>งานฟรีส</h3></div>
                     <div class="card-body">
                         <a href="{{ url('/freeze-ms/create') }}" class="btn btn-success btn-sm" title="Add New FreezeM">
-                            <i class="fa fa-plus" aria-hidden="true"></i> Add New
+                            <i class="fa fa-plus" aria-hidden="true"></i> สร้างรายการใหม่
                         </a>
 
                         <form method="GET" action="{{ url('/freeze-ms') }}" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
@@ -79,26 +79,26 @@
                                                 if($item->freezed->count() > 0){
                                                     if ($item->freezed()->orderBy('process_datetime','desc')->first()->current_RM > 0){
                                             @endphp
-                                            <a href="{{ url('/freeze-ms/createDetail/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-plus" aria-hidden="true"></i> ADD</button></a>
+                                            <a href="{{ url('/freeze-ms/createDetail/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-plus" aria-hidden="true"></i> เพิ่ม</button></a>
                                             @php       
                                                     }
                                                 }else{
                                             @endphp
-                                            <a href="{{ url('/freeze-ms/createDetail/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-plus" aria-hidden="true"></i> ADD</button></a>
+                                            <a href="{{ url('/freeze-ms/createDetail/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-plus" aria-hidden="true"></i> เพิ่ม</button></a>
                                             @php 
                                                 }
                                             }
                                             @endphp
-                                            <a href="{{ url('/freeze-ms/graph/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> Graph</button></a>
+                                            <a href="{{ url('/freeze-ms/graph/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> กราฟ</button></a>
                                           
-                                            <a href="{{ url('/freeze-ms/' . $item->id) }}" title="View FreezeM"><button class="btn btn-info btn-sm"><i class="fa fa-gears" aria-hidden="true"></i> Manage</button></a>
-                                            <a href="{{ url('/freeze-ms/' . $item->id . '/edit') }}" title="Edit FreezeM"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
+                                            <a href="{{ url('/freeze-ms/' . $item->id) }}" title="View FreezeM"><button class="btn btn-info btn-sm"><i class="fa fa-gears" aria-hidden="true"></i> จัดการ</button></a>
+                                            <a href="{{ url('/freeze-ms/' . $item->id . '/edit') }}" title="Edit FreezeM"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> แก้ไข</button></a>
                                             <a href="{{ url('/freeze-ms/changestatus/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> {{ $item->status }}</button></a>
                                             @if ($item->freezed->count() == 0)
                                                 <form method="POST" action="{{ url('/freeze-ms' . '/' . $item->id) }}" accept-charset="UTF-8" style="display:inline">
                                                 {{ method_field('DELETE') }}
                                                 {{ csrf_field() }}
-                                                <button type="submit" class="btn btn-danger btn-sm" title="Delete FreezeM" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+                                                <button type="submit" class="btn btn-danger btn-sm" title="Delete FreezeM" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i> ลบ</button>
                                             </form>
                                             @endif
                                             

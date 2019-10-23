@@ -140,3 +140,5 @@ Route::get('/log-select-ms/deleteDetail/{id}/{log_select_m_id}', 'LogSelectMsCon
 Route::get('/log-select-ms/changestatus/{log_select_m_id}', 'LogSelectMsController@changestatus');
 Route::get('/log-select-ms/graph/{log_pack_m_id}', 'LogSelectMsController@graph');
 Route::get('/log-select-ms/forecast/{log_select_m_id}', 'LogSelectMsController@forecast');
+
+Route::get('/mains/index/{date}', 'MainsController@index');

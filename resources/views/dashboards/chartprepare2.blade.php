@@ -31,14 +31,16 @@
   function drawVisualization2() {
     // Some raw data (not necessarily accurate)
     var data2 = google.visualization.arrayToDataTable([
-      ['Time', 'Target', 'Input หรือ Output', 'สะสม'],
+      ['Time', 'Target', 'Input หรือ Output', 'Productivity' , 'สะสม'],
       @foreach($logpreparem->logprepared()->orderBy('process_datetime')->get() as $item)[
         '{{ date("H:i",strtotime($item->process_datetime)) }}', 
         {{ $item->targets }},
         @if($item->input > 0) 
           {{ $item->input }},
+          {{ $item->input / ( ($item->num_pre + $item->num_iqf) * $item->workhours) }},
         @else 
           {{ $item->output }},
+          {{ $item->output / ( ($item->num_pre + $item->num_iqf) * $item->workhours) }},
         @endif @if($item->input_sum > 0) 
           {{ $item->input_sum }},
         @else 
@@ -96,8 +98,11 @@
           type: 'bar',
           targetAxisIndex: 0
         },
-
         2: {
+          type: 'line',
+          targetAxisIndex: 0
+        },
+        3: {
           type: 'line',
           targetAxisIndex: 1,
 
@@ -127,6 +132,13 @@
       {
         calc: "stringify",
         sourceColumn: 3,
+        type: "string",
+        role: "annotation"
+      },
+      4,
+      {
+        calc: "stringify",
+        sourceColumn: 4,
         type: "string",
         role: "annotation"
       }

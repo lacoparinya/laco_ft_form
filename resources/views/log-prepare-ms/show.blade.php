@@ -91,7 +91,7 @@
                                             <td>{{ $item->preprod->name }}</td>
                                             <td>{{ $item->input }} / {{ $item->output }}</td>
                                             <td>{{ $item->input_sum }} / {{ $item->output_sum }}</td>
-                                            <td>{{ $item->num_pre }} / {{ $item->num_iqf }} / {{ $item->num_all }}</td>
+                                            <td>{{ $item->num_pre }} / {{ $item->num_iqf }} / {{ $item->num_pre + $item->num_iqf }}</td>
                                             <td>{{ $item->note }}</td>
                                             <td>
                                             <a href="{{ url('/log-prepare-ms/editDetail/' . $item->id) }}" title="Edit FreezeM"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>

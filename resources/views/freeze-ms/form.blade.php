@@ -25,7 +25,12 @@
         <input class="form-control" name="start_RM"  id="start_RM" value="{{ $freezem->start_RM or '0' }}" >
         {!! $errors->first('start_RM', '<p class="help-block">:message</p>') !!}
     </div>
-    <div class="form-group col-md-8 {{ $errors->has('note') ? 'has-error' : ''}}">
+    <div class="form-group col-md-2 {{ $errors->has('target_hr') ? 'has-error' : ''}}">
+        <label for="target_hr" class="control-label">{{ 'เป้าจำนวน ชม.' }}</label>
+        <input class="form-control" name="target_hr"  id="target_hr" value="{{ $freezem->target_hr or '0' }}" >
+        {!! $errors->first('target_hr', '<p class="help-block">:message</p>') !!}
+    </div>
+    <div class="form-group col-md-6 {{ $errors->has('note') ? 'has-error' : ''}}">
         <label for="note" class="control-label">{{ 'Note' }}</label>
         <input class="form-control" name="note"  id="note" value="{{ $freezem->note or '' }}" >
         {!! $errors->first('note', '<p class="help-block">:message</p>') !!}
