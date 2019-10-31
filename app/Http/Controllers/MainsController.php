@@ -8,7 +8,16 @@ use App\FreezeM;
 
 class MainsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index($date){
+
+        if($date == 'today'){
+            $date = date('Y-m-d');
+        }
 
         $rawfreezedata = DB::table('freeze_ms')
                         ->join('iqf_jobs', 'iqf_jobs.id','=', 'freeze_ms.iqf_job_id')
@@ -82,7 +91,97 @@ class MainsController extends Controller
                 )
             )
             ->get();
-            
-        return view('mains.index', compact('rawfreezedata', 'rawpreparedata'));
+
+        $rawselectdata = DB::table('log_select_ms')
+            ->join('products', 'log_select_ms.product_id', '=', 'products.id')
+            ->join('log_select_ds', 'log_select_ds.log_select_m_id', '=', 'log_select_ms.id')
+            ->join('std_processes', 'log_select_ms.std_process_id', '=', 'std_processes.id')
+            ->select(
+                DB::raw(
+                '
+                log_select_ms.process_date,
+                products.id as product_id,
+                products.name as product_name,
+                log_select_ms.hourperday,
+                log_select_ms.targetperday,
+                std_processes.std_rate,
+                log_select_ms.status,
+                sum(log_select_ds.workhours) as sum_use_hour,
+                sum(log_select_ds.input_kg) as sum_kg_input,
+                sum(log_select_ds.output_kg) as sum_kg_output,
+                sum(log_select_ds.output_kg) /sum(log_select_ds.input_kg) as avg_yeild,
+                log_select_ms.hourperday - sum(log_select_ds.workhours) as diffhour,
+                log_select_ms.targetperday - sum(log_select_ds.output_kg) as difftraget,
+                avg(log_select_ds.num_classify) as avg_selected'
+                )
+            )
+            ->where('log_select_ms.process_date', $date)
+            ->groupBy(
+                DB::raw(
+                'log_select_ms.process_date,
+                products.id,
+                products.name,
+                log_select_ms.hourperday,
+                log_select_ms.targetperday,
+                std_processes.std_rate,
+                log_select_ms.status'
+                )
+            )
+            ->get();
+
+        $rawpackdata = DB::table('log_pack_ms')
+            ->join('methods', 'log_pack_ms.method_id', '=', 'methods.id')
+            ->join('packages', 'log_pack_ms.package_id', '=', 'packages.id')
+            ->join('orders', 'log_pack_ms.order_id', '=', 'orders.id')
+            ->join('std_packs', 'log_pack_ms.std_pack_id', '=', 'std_packs.id')
+            ->join('shifts', 'log_pack_ms.shift_id', '=', 'shifts.id')
+            ->join('log_pack_ds', 'log_pack_ds.log_pack_m_id', '=', 'log_pack_ms.id')
+            ->select(
+                DB::raw(
+                'log_pack_ms.process_date,
+                log_pack_ms.method_id,
+                methods.name as methode_name,
+                log_pack_ms.package_id,
+                packages.name as package_name,
+                log_pack_ms.order_id,
+                orders.order_no,
+                log_pack_ms.shift_id,
+                shifts.name as shift_name,
+                log_pack_ms.std_pack_id,
+                log_pack_ms.hourperday,
+                log_pack_ms.targetperday,
+                log_pack_ms.status,
+                SUM(log_pack_ds.input_kg) as sum_input_kg,
+                SUM(log_pack_ds.output_kg) as sum_output_kg,
+                SUM(log_pack_ds.output_pack) as sum_output_pack,
+                SUM(log_pack_ds.output_kg) * 100 / SUM(log_pack_ds.input_kg) as yeild,
+                avg(log_pack_ds.productivity) as avg_productivity,
+                avg(log_pack_ds.num_pack) as avg_numpack,
+                sum(log_pack_ds.workhours) as sum_hour,
+                log_pack_ms.hourperday - sum(log_pack_ds.workhours) as diffhour,
+                log_pack_ms.targetperday - sum(log_pack_ds.output_pack) as difftarget'
+                )
+            )
+            ->where('log_pack_ms.process_date', $date)
+            ->groupBy(
+                DB::raw(
+                'log_pack_ms.process_date,
+                log_pack_ms.method_id,
+                methods.name,
+                log_pack_ms.package_id,
+                packages.name,
+                log_pack_ms.order_id,
+                orders.order_no,
+                log_pack_ms.shift_id,
+                shifts.name,
+                log_pack_ms.std_pack_id,
+                log_pack_ms.hourperday,
+                log_pack_ms.targetperday,
+                log_pack_ms.status'
+                )
+            )
+            ->get();
+
+        return view('mains.index', compact('rawfreezedata', 'rawpreparedata', 'rawselectdata', 'rawpackdata', 'date'));
     }
 }

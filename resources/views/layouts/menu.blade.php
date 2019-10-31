@@ -11,7 +11,7 @@
                             <li><a href="{{ route('login') }}">Login</a></li>
                         @else
                             @if ( App\User::find(Auth::user()->id)->group->name == 'admin'  )
-                            
+                            <li><a href="{{ url('/mains/index/today') }}">Dashboard</a></li>
                             <li class="dropdown">
                                 
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -88,12 +88,11 @@
                                         Logs <span class="caret"></span>
                                     </a>
                                 <ul class="dropdown-menu" role="menu">       
-                                   
                                     <li>
                                     <a href="{{ url('/main') }}">Main Select</a>
                                     </li>
                                     <li>
-                                    <a href="{{route('ft_logs.index')}}">FT Select Logs</a>
+                                    <a href="{{route('log-select-ms.index')}}">FT Select Logs</a>
                                     </li>
                                     <li>
                                     <a href="{{route('log-pack-ms.index')}}">FT Pack Logs</a>
@@ -104,9 +103,7 @@
                                     <li>
                                     <a href="{{route('log-prepare-ms.index')}}">FT Prepare Logs</a>
                                     </li>
-                                    <li>
-                                    <a href="{{route('log-select-ms.index')}}">New FT Select Logs</a>
-                                    </li>
+                                    
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -259,10 +256,7 @@
                                         <a href="{{ url('/main') }}">Main</a>
                                         </li>
                                         <li>
-                                        <a href="{{route('ft_logs.index')}}">FT Select Logs</a>
-                                        </li>
-                                        <li>
-                                        <a href="{{route('log-select-ms.index')}}">New FT Select Logs</a>
+                                        <a href="{{route('log-select-ms.index')}}">FT Select Logs</a>
                                         </li>
                                         <li><hr/></li>
                                         <li>

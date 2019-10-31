@@ -38,7 +38,8 @@ class LogSelectMsController extends Controller
             return redirect('freeze-ms');
         } elseif ($user->group->name == 'user_prepare') {
             return redirect('log-prepare-ms');
-        }
+        } 
+
 
         $status = 'Active';
         $keyword = $request->get('search');
