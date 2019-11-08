@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.appmain')
 
 @section('content')
 <div class="container">
@@ -6,6 +6,13 @@
         <div class="col-md-12">
                 <div class="card">
                 <div class="card-header"><h3>Main วันที่ {{ $date }}</h3></div>
+                    <div class="row">
+                    <div class="form-group col-md-3 {{ $errors->has('process_datetime') ? 'has-error' : ''}}">
+        <label for="process_datetime" class="control-label">{{ 'วัน-เวลา' }}</label>
+        <input class="form-control" name="process_datetime" type="date" id="process_datetime" 
+                    value = "{{$date}}" >
+        {!! $errors->first('process_datetime', '<p class="help-block">:message</p>') !!}
+    </div></div>
                     <div class="card-body">
                         <h4>งานฟรีส</h4>
                         <div class="col-md-12">
