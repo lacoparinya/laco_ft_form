@@ -41,11 +41,11 @@
           {{ $item->output }},
           
         @endif 
-        0,
+        {{ $forecastloop[$item->process_datetime] }},
         @if($item->input_sum > 0) 
-          {{ $item->input_sum }},
+          {{ $item->input_sum + $forecastloop[$item->process_datetime] }},
         @else 
-          {{ $item->output_sum }},
+          {{ $item->output_sum + $forecastloop[$item->process_datetime] }},
         @endif
       ],
       @endforeach
