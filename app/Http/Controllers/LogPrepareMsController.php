@@ -275,14 +275,24 @@ class LogPrepareMsController extends Controller
         $totaloutput = 0;
         $totalsum = 0;
         $ratePerHr = 0;
+        $forecastloop = array();
         foreach ($detailData as $key => $value) {
             $totalTime += $value->workhours;
             $totalinput += $value->input;
             $totaloutput += $value->output;
         }
 
-        $remainTime = $logpreparem->target_workhours - $totalTime;
         $targetResult = $logpreparem->target_result;
+        foreach ($detailData as $key => $value) {
+            if ($value->input == 0 && $value->output == 0){
+                $forecastloop[$value->process_datetime] = ($targetResult / $logpreparem->target_workhours) * $value->workhours;
+            }else{
+                $forecastloop[$value->process_datetime] = 0;
+            }
+        }
+
+        $remainTime = $logpreparem->target_workhours - $totalTime;
+        
 
         if($remainTime > 0){
             if ($totalinput > 0) {
@@ -329,6 +339,6 @@ class LogPrepareMsController extends Controller
 
 
 
-        return view('dashboards.chartprepare3', compact('logpreparem', 'estimateData'));
+        return view('dashboards.chartprepare3', compact('logpreparem', 'estimateData', 'forecastloop'));
     }
 }

@@ -46,6 +46,8 @@ Route::resource('freeze-ms','FreezeMsController');
 Route::resource('log-prepare-ms', 'LogPrepareMsController');
 Route::resource('log-pack-ms', 'LogPackMsController');
 Route::resource('log-select-ms', 'LogSelectMsController');
+Route::resource('log-pst-selects', 'LogPstSelectsController');
+Route::resource('pst-products', 'PstProductsController');
 
 Route::get('/import', 'AutoImportController@test');
 Route::get('/reports/daily', 'ReportsController@daily')->name('reports.daily');
@@ -140,5 +142,14 @@ Route::get('/log-select-ms/deleteDetail/{id}/{log_select_m_id}', 'LogSelectMsCon
 Route::get('/log-select-ms/changestatus/{log_select_m_id}', 'LogSelectMsController@changestatus');
 Route::get('/log-select-ms/graph/{log_pack_m_id}', 'LogSelectMsController@graph');
 Route::get('/log-select-ms/forecast/{log_select_m_id}', 'LogSelectMsController@forecast');
+
+Route::get('/log-pst-selects/createDetail/{log_pst_select_m_id}', 'LogPstSelectsController@createDetail');
+Route::post('/log-pst-selects/storeDetail/{log_pst_select_m_id}', 'LogPstSelectsController@storeDetail');
+Route::get('/log-pst-selects/editDetail/{id}', 'LogPstSelectsController@editDetail');
+Route::post('/log-pst-selects/updateDetail/{id}', 'LogPstSelectsController@updateDetail');
+Route::get('/log-pst-selects/deleteDetail/{id}/{log_pst_select_m_id}', 'LogPstSelectsController@deleteDetail');
+Route::get('/log-pst-selects/changestatus/{log_pst_select_m_id}', 'LogPstSelectsController@changestatus');
+Route::get('/log-pst-selects/graph/{log_pack_m_id}', 'LogPstSelectsController@graph');
+Route::get('/log-pst-selects/forecast/{log_pst_select_m_id}', 'LogPstSelectsController@forecast');
 
 Route::get('/mains/index/{date}', 'MainsController@index');

@@ -104,6 +104,9 @@
                                     <a href="{{route('log-prepare-ms.index')}}">FT Prepare Logs</a>
                                     </li>
                                     
+                                        <li>
+                                    <a href="{{route('log-pst-selects.index')}}">PST Select Logs</a>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -118,16 +121,10 @@
                                 <a href="{{route('reports.range')}}">Select Range Report</a>
                                 </li>
                                 <li>
-                                <a href="{{route('reports.dailypack')}}">Pack Daily Report</a>
+                                <a href="{{route('reports.dailypack2')}}">Pack Daily Report</a>
                                 </li>
                                 <li>
-                                <a href="{{route('reports.rangepack')}}">Pack Range Report</a>
-                                </li>
-                                <li>
-                                <a href="{{route('reports.dailypack2')}}">New Pack Daily Report</a>
-                                </li>
-                                <li>
-                                <a href="{{route('reports.rangepack2')}}">New Pack Range Report</a>
+                                <a href="{{route('reports.rangepack2')}}">Pack Range Report</a>
                                 </li>
                                 <li>
                                 <a href="{{route('reports.dailyfreeze2')}}">Freeze Daily Report</a>
@@ -251,6 +248,25 @@
                                         </li>
                                     </ul>
                                     @else
+                                    @if ( App\User::find(Auth::user()->id)->group->name == 'user_pst' )
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li>
+                                    <a href="{{route('log-pst-selects.index')}}">PST Select Logs</a>
+                                    </li>
+                                        <li><hr/></li>
+                                        <li>
+                                            <a href="{{ route('logout') }}"
+                                                onclick="event.preventDefault();
+                                                        document.getElementById('logout-form').submit();">
+                                                Logout
+                                            </a>
+
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                                {{ csrf_field() }}
+                                            </form>
+                                        </li>
+                                    </ul>
+                                    @else
                                     <ul class="dropdown-menu" role="menu">
                                         <li>
                                         <a href="{{ url('/main') }}">Main</a>
@@ -283,6 +299,7 @@
                                             </form>
                                         </li>
                                     </ul>
+                                    @endif
                                     @endif
                                     @endif
                                     @endif

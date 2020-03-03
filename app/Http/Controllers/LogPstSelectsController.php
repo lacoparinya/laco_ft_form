@@ -5,16 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\LogSelectM;
-use App\LogSelectD;
-use App\Product;
-use App\Shift;
-use App\Unit;
-use App\StdProcess;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\LogPstSelectM;
+use App\LogPstSelectD;
 
-class LogSelectMsController extends Controller
+use App\PstProduct;
+use App\Shift;
+use Illuminate\Http\Request;
+
+class LogPstSelectsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -29,20 +27,6 @@ class LogSelectMsController extends Controller
 
     public function index(Request $request)
     {
-
-        $user = Auth::user();
-
-        if ($user->group->name == 'user_pack') {
-            return redirect('log-pack-ms');
-        } elseif ($user->group->name == 'user_freeze') {
-            return redirect('freeze-ms');
-        } elseif ($user->group->name == 'user_prepare') {
-            return redirect('log-prepare-ms');
-        } elseif ($user->group->name == 'user_pst') {
-            return redirect('log-pst-selects');
-        } 
-
-
         $status = 'Active';
         $keyword = $request->get('search');
         if (!empty($request->get('status'))) {
@@ -52,24 +36,24 @@ class LogSelectMsController extends Controller
         $perPage = 25;
 
         if (!empty($keyword)) {
-            $products = Product::where('name', 'like', '%' . $keyword . '%')->pluck('id')->toArray();
+            $products = PstProduct::where('name', 'like', '%' . $keyword . '%')->pluck('id')->toArray();
             if (empty($products)) {
-                $logselectms = LogSelectM::where('note', 'like', '%' . $keyword . '%')
+                $logpstselects = LogPstSelectM::where('note', 'like', '%' . $keyword . '%')
                     ->orWhere('ref_note', 'like', '%' . $keyword . '%')
                     ->orderBy('process_date', 'DESC')
                     ->paginate($perPage);
             } else {
-                $logselectms = LogSelectM::where('note', 'like', '%' . $keyword . '%')
+                $logpstselects = LogPstSelectM::where('note', 'like', '%' . $keyword . '%')
                     ->orWhere('ref_note', 'like', '%' . $keyword . '%')
                     ->orWhereIn('product_id', $products)
                     ->orderBy('process_date', 'DESC')
                     ->paginate($perPage);
             }
         } else {
-            $logselectms = LogSelectM::where('status', $status)->orderBy('process_date', 'DESC')->paginate($perPage);
+            $logpstselects = LogPstSelectM::where('status', $status)->orderBy('process_date', 'DESC')->paginate($perPage);
         }
 
-        return view('log-select-ms.index', compact('logselectms','status'));
+        return view('log-pst-selects.index', compact('logpstselects', 'status'));
     }
 
     /**
@@ -79,11 +63,10 @@ class LogSelectMsController extends Controller
      */
     public function create()
     {
-        $productlist = Product::pluck('name', 'id');
+        $productlist = PstProduct::pluck('name', 'id');
         $shiftlist = Shift::pluck('name', 'id');
-        $unitlist = Unit::pluck('name', 'id');
-        
-        return view('log-select-ms.create',compact('productlist', 'shiftlist', 'unitlist', 'gradelist'));
+
+        return view('log-pst-selects.create',compact('shiftlist', 'productlist'));
     }
 
     /**
@@ -98,22 +81,11 @@ class LogSelectMsController extends Controller
         
         $requestData = $request->all();
 
-        $stdData = StdProcess::where('product_id', $requestData['product_id'])->where('status', true)->first();
-
-        if(empty($stdData)){
-            $tmpStdProcess = array();
-            $tmpStdProcess['product_id'] = $requestData['product_id'];
-            $tmpStdProcess['std_rate'] = 1;
-            $tmpStdProcess['status'] = true;
-            $stdData = StdProcess::create($tmpStdProcess);
-        }
-
-        $requestData['std_process_id'] = $stdData->id;
         $requestData['status'] = 'Active';
 
-        LogSelectM::create($requestData);
+        LogPstSelectM::create($requestData);
 
-        return redirect('log-select-ms')->with('flash_message', ' added!');
+        return redirect('log-pst-selects')->with('flash_message', 'LogPstSelectM added!');
     }
 
     /**
@@ -125,9 +97,9 @@ class LogSelectMsController extends Controller
      */
     public function show($id)
     {
-        $logselectm = LogSelectM::findOrFail($id);
+        $logpstselect = LogPstSelectM::findOrFail($id);
 
-        return view('log-select-ms.show', compact('logselectm'));
+        return view('log-pst-selects.show', compact('logpstselect'));
     }
 
     /**
@@ -139,20 +111,11 @@ class LogSelectMsController extends Controller
      */
     public function edit($id)
     {
-        $productlist = Product::pluck('name', 'id');
+        $logpstselect = LogPstSelectM::findOrFail($id);
+        $productlist = PstProduct::pluck('name', 'id');
         $shiftlist = Shift::pluck('name', 'id');
-        
-        $gradelist = array(
-            '-' => '-',
-            'A' => 'A',
-            'B' => 'B',
-            'C' => 'C',
-            'D' => 'D',
-            'DEF' => 'DEF',
-        );
-        $logselectm = LogSelectM::findOrFail($id);
 
-        return view('log-select-ms.edit', compact('logselectm', 'productlist', 'shiftlist', 'gradelist'));
+        return view('log-pst-selects.edit', compact('logpstselect', 'productlist', 'shiftlist'));
     }
 
     /**
@@ -165,25 +128,13 @@ class LogSelectMsController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        
         $requestData = $request->all();
+        
+        $logpstselect = LogPstSelectM::findOrFail($id);
+        $logpstselect->update($requestData);
 
-        $stdData = StdProcess::where('product_id', $requestData['product_id'])->where('status', true)->first();
-
-        if (empty($stdData)) {
-            $tmpStdProcess = array();
-            $tmpStdProcess['product_id'] = $requestData['product_id'];
-            $tmpStdProcess['std_rate'] = 1;
-            $tmpStdProcess['status'] = true;
-            $stdData = StdProcess::create($tmpStdProcess);
-        }
-        $requestData['std_process_id'] = $stdData->id;
-
-
-        $logselectm = LogSelectM::findOrFail($id);
-        $logselectm->update($requestData);
-
-        return redirect('log-select-ms')->with('flash_message', ' updated!');
+        return redirect('log-pst-selects')->with('flash_message', 'LogPstSelectM updated!');
     }
 
     /**
@@ -195,14 +146,14 @@ class LogSelectMsController extends Controller
      */
     public function destroy($id)
     {
-        LogSelectM::destroy($id);
+        LogPstSelectM::destroy($id);
 
-        return redirect('log-select-ms')->with('flash_message', ' deleted!');
+        return redirect('log-pst-selects')->with('flash_message', 'LogPstSelectM deleted!');
     }
 
-    public function createDetail($log_select_m_id){
-        $logselectm = LogSelectM::findOrFail($log_select_m_id);
-        $unitlist = Unit::pluck('name', 'id');
+    public function createDetail($log_select_m_id)
+    {
+        $logpstselectm = LogPstSelectM::findOrFail($log_select_m_id);
         $gradelist = array(
             '-' => '-',
             'A' => 'A',
@@ -215,31 +166,32 @@ class LogSelectMsController extends Controller
         $suminputkg = 0;
         $sumoutputkg = 0;
 
-        foreach ($logselectm->logselectd as $logselectdObj) {
+        foreach ($logpstselectm->logpstselectd as $logselectdObj) {
             $suminputkg += $logselectdObj->input_kg;
             $sumoutputkg += $logselectdObj->output_kg;
         }
 
-        return view('log-select-ms.createDetail', compact('logselectm', 'sumoutputpack', 'suminputkg', 'unitlist', 'gradelist'));
+        return view('log-pst-selects.createDetail', compact('logpstselectm', 'sumoutputpack', 'suminputkg', 'gradelist'));
     }
 
-    public function storeDetail(Request $request, $log_select_m_id){
+    public function storeDetail(Request $request, $log_pst_select_m_id)
+    {
         $requestData = $request->all();
 
         $requestData['process_datetime'] = \Carbon\Carbon::parse($requestData['process_datetime'])->format('Y-m-d H:i');
 
-        LogSelectD::create($requestData);
+        LogPstSelectD::create($requestData);
 
-        $logselectd = new LogSelectD();
-        $logselectd->recalculate($log_select_m_id);
+        $logselectd = new LogPstSelectD();
+        $logselectd->recalculate($log_pst_select_m_id);
 
-        return redirect('log-select-ms/' . $log_select_m_id)->with('flash_message', ' added!');
+        return redirect('log-pst-selects/' . $log_pst_select_m_id)->with('flash_message', ' added!');
     }
-    
-    public function editDetail($id){
-        $logselectd = LogSelectD::findOrFail($id);
-        $logselectm = LogSelectM::findOrFail($logselectd->log_select_m_id);
-        $unitlist = Unit::pluck('name', 'id');
+
+    public function editDetail($id)
+    {
+        $logpstselectd = LogPstSelectD::findOrFail($id);
+        $logpstselectm = LogPstSelectM::findOrFail($logpstselectd->log_pst_select_m_id);
         $gradelist = array(
             '-' => '-',
             'A' => 'A',
@@ -252,31 +204,33 @@ class LogSelectMsController extends Controller
         $suminputkg = 0;
         $sumoutputkg = 0;
 
-        foreach ($logselectm->logselectd as $logselectdObj) {
+        foreach ($logpstselectm->logpstselectd as $logselectdObj) {
             $suminputkg += $logselectdObj->input_kg;
             $sumoutputkg += $logselectdObj->output_kg;
         }
 
-        return view('log-select-ms.editDetail', compact('logselectd', 'logselectm', 'suminputkg', 'sumoutputkg', 'unitlist', 'gradelist'));
+        return view('log-pst-selects.editDetail', compact('logpstselectd', 'logpstselectm', 'suminputkg', 'sumoutputkg', 'gradelist'));
     }
 
-    public function updateDetail(Request $request, $id){
+    public function updateDetail(Request $request, $id)
+    {
         $requestData = $request->all();
 
         $requestData['process_datetime'] = \Carbon\Carbon::parse($requestData['process_datetime'])->format('Y-m-d H:i');
 
 
-        $logselectd = LogSelectD::findOrFail($id);
+        $logselectd = LogPstSelectD::findOrFail($id);
 
         $logselectd->update($requestData);
 
-        $logselectd->recalculate($logselectd->log_select_m_id);
+        $logselectd->recalculate($logselectd->log_pst_select_m_id);
 
-        return redirect('log-select-ms/' . $logselectd->log_select_m_id)->with('flash_message', ' updated!');
+        return redirect('log-pst-selects/' . $logselectd->log_pst_select_m_id)->with('flash_message', ' updated!');
     }
 
-    public function changestatus($log_select_m_id){
-        $logselectm = LogSelectM::findOrFail($log_select_m_id);
+    public function changestatus($log_select_m_id)
+    {
+        $logselectm = LogPstSelectM::findOrFail($log_select_m_id);
 
         $status = 'Active';
         if ($logselectm->status == 'Active') {
@@ -288,17 +242,19 @@ class LogSelectMsController extends Controller
 
         $logselectm->update();
 
-        return redirect('log-select-ms/?status=' . $status)->with('flash_message', ' updated!');
+        return redirect('log-pst-selects/?status=' . $status)->with('flash_message', ' updated!');
     }
 
-    public function graph($log_select_m_id){
-        $logselectm = LogSelectM::findOrFail($log_select_m_id);
+    public function graph($log_select_m_id)
+    {
+        $logselectm = LogPstSelectM::findOrFail($log_select_m_id);
 
         return view('dashboards.charttimeproduct2', compact('logselectm'));
     }
 
-    public function forecast($log_select_m_id){
-        $logselectm = LogSelectM::findOrFail($log_select_m_id);
+    public function forecast($log_select_m_id)
+    {
+        $logselectm = LogPstSelectM::findOrFail($log_select_m_id);
         $detailData = $logselectm->logselectd()->orderBy('process_datetime')->get();
 
         $totalTime = 0;
@@ -352,16 +308,16 @@ class LogSelectMsController extends Controller
         return view('dashboards.charttimeselectforcast', compact('logselectm', 'estimateData'));
     }
 
-    public function deleteDetail($id, $log_select_m_id)
+    public function deleteDetail($id, $log_pst_select_m_id)
     {
-        LogSelectD::destroy($id);
+        LogPstSelectD::destroy($id);
 
-        $logselectm = LogSelectM::findOrFail($log_select_m_id);
+        $logselectm = LogPstSelectM::findOrFail($log_pst_select_m_id);
 
-        $logselectd = new LogSelectD();
+        $logselectd = new LogPstSelectD();
         $logselectd->recalculate($logselectm->id);
 
-        return redirect('log-select-ms/' . $log_select_m_id)->with('flash_message', ' deleted!');
+        return redirect('log-pst-selects/' . $log_pst_select_m_id)->with('flash_message', ' deleted!');
     }
 
 }

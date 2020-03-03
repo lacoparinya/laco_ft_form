@@ -9,7 +9,7 @@ return [
         'PCH' => 'Pikul@Lannaagro.com',
         'WJ' => 'Warangkana@Lannaagro.com',
         'AY' => 'Akkarapon@Lannaagro.com',
-        'PG' => 'Phadnithi@Lannaagro.com',
+        'DN' => 'Daraporn@Lannaagro.com',
         'WW' => 'Wanwalee@Lannaagro.com',
         'VW' => 'Varut@lannaagro.com',
         'OC' => 'Oraphan@Lannaagro.com',
