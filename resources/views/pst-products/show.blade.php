@@ -2,12 +2,9 @@
 
 @section('content')
     <div class="container">
-        <div class="row">
-            @include('admin.sidebar')
-
-            <div class="col-md-9">
+        <div class="row"><div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">PstProduct {{ $pstproduct->id }}</div>
+                    <div class="card-header">รายการสินค้า PST {{ $pstproduct->id }}</div>
                     <div class="card-body">
 
                         <a href="{{ url('/pst-products') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
@@ -27,7 +24,12 @@
                                     <tr>
                                         <th>ID</th><td>{{ $pstproduct->id }}</td>
                                     </tr>
-                                    
+                                    <tr>
+                                        <th>Name</th><td>{{ $pstproduct->name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Desc</th><td>{{ $pstproduct->desc }}</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>

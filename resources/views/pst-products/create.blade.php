@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Create New PstProduct</div>
+                    <div class="card-header">สร้างรายการสินค้า PST</div>
                     <div class="card-body">
                         <a href="{{ url('/pst-products') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
                         <br />

@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Pstproducts</div>
+                    <div class="card-header">รายการสินค้า PST</div>
                     <div class="card-body">
                         <a href="{{ url('/pst-products/create') }}" class="btn btn-success btn-sm" title="Add New PstProduct">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New

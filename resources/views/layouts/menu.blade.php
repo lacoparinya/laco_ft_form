@@ -31,6 +31,10 @@
                                     <a href="{{route('products.index')}}">Product</a>
                                     </li>
                                     <li>
+                                    <a href="{{route('pst-products.index')}}">PST Product</a>
+                                    </li>
+                                    
+                                    <li>
                                     <a href="{{route('orders.index')}}">Order</a>
                                     </li>
                                     <li>
@@ -250,6 +254,11 @@
                                     @else
                                     @if ( App\User::find(Auth::user()->id)->group->name == 'user_pst' )
                                     <ul class="dropdown-menu" role="menu">
+                                        
+                                    <li>
+                                    <a href="{{route('pst-products.index')}}">PST Product</a>
+                                    </li>
+                                    <li><hr/></li>
                                         <li>
                                     <a href="{{route('log-pst-selects.index')}}">PST Select Logs</a>
                                     </li>
