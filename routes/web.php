@@ -48,6 +48,8 @@ Route::resource('log-pack-ms', 'LogPackMsController');
 Route::resource('log-select-ms', 'LogSelectMsController');
 Route::resource('log-pst-selects', 'LogPstSelectsController');
 Route::resource('pst-products', 'PstProductsController');
+Route::resource('std-select-psts', 'StdSelectPstsController');
+
 
 Route::get('/import', 'AutoImportController@test');
 Route::get('/reports/daily', 'ReportsController@daily')->name('reports.daily');

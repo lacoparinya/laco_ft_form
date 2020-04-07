@@ -10,6 +10,7 @@ use App\LogPstSelectD;
 
 use App\PstProduct;
 use App\Shift;
+use App\StdSelectPst;
 use Illuminate\Http\Request;
 
 class LogPstSelectsController extends Controller
@@ -83,6 +84,15 @@ class LogPstSelectsController extends Controller
 
         $requestData['status'] = 'Active';
 
+        $stdselectpst = StdSelectPst::where('pst_product_id', $requestData['product_id'])
+        ->where('status',1)
+        ->orderBy('id','desc')
+        ->first();
+
+        if(isset($stdselectpst->id)){
+            $requestData['std_process_id'] = $stdselectpst->id;
+        }
+        
         LogPstSelectM::create($requestData);
 
         return redirect('log-pst-selects')->with('flash_message', 'LogPstSelectM added!');
@@ -130,7 +140,17 @@ class LogPstSelectsController extends Controller
     {
         
         $requestData = $request->all();
-        
+
+        $stdselectpst = StdSelectPst::where('pst_product_id', $requestData['product_id'])
+            ->where('status', 1)
+            ->orderBy('id', 'desc')
+            ->first();
+
+        if (isset($stdselectpst->id)) {
+            $requestData['std_process_id'] = $stdselectpst->id;
+        }
+
+
         $logpstselect = LogPstSelectM::findOrFail($id);
         $logpstselect->update($requestData);
 

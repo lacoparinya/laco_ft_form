@@ -70,6 +70,9 @@
                                     <li>
                                     <a href="{{route('std-pre-prods.index')}}">Std Prepare Prod</a>
                                     </li>
+                                    <li>
+                                    <a href="{{route('std-select-psts.index')}}">Std Selected PST</a>
+                                    </li>
                                     <li><hr/></li>
                                     <li>
 
@@ -254,12 +257,11 @@
                                     @else
                                     @if ( App\User::find(Auth::user()->id)->group->name == 'user_pst' )
                                     <ul class="dropdown-menu" role="menu">
-                                        
                                     <li>
                                     <a href="{{route('pst-products.index')}}">PST Product</a>
                                     </li>
                                     <li><hr/></li>
-                                        <li>
+                                    <li>
                                     <a href="{{route('log-pst-selects.index')}}">PST Select Logs</a>
                                     </li>
                                         <li><hr/></li>
