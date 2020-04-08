@@ -53,9 +53,9 @@
                                 <tbody>
                                 @foreach($logpackms as $item)
                                     <tr>
-                                        <td>{{ $item->process_date }} / {{ $item->shift->name }} </td>
-                                        <td>{{ $item->order->order_no }} / {{ $item->order->loading_date }}</td>
-                                        <td>{{ $item->method->name }} / {{ $item->package->name }}</td>
+                                        <td>{{ $item->process_date or '' }} / {{ $item->shift->name or '' }} </td>
+                                        <td>{{ $item->order->order_no or '' }} / {{ $item->order->loading_date or ''}}</td>
+                                        <td>{{ $item->method->name or ''}} / {{ $item->package->name or ''}}</td>
                                         @if (count($item->logpackd))
                                         <td>{{ $item->logpackd->count() }}</td>
                                         <td>{{ $item->logpackd()->orderBy('process_datetime','DESC')->first()->input_kg_sum or '' }} / 

@@ -24,4 +24,10 @@ class LogPstSelectM extends Model
     {
         return $this->hasMany('App\LogPstSelectD', 'log_pst_select_m_id');
     }
+
+    public function stdselectpst()
+    {
+        return $this->hasOne('App\StdSelectPst', 'id', 'std_process_id');
+    }
+
 }

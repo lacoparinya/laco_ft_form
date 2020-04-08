@@ -269,13 +269,13 @@ class LogPstSelectsController extends Controller
     {
         $logselectm = LogPstSelectM::findOrFail($log_select_m_id);
 
-        return view('dashboards.charttimeproduct2', compact('logselectm'));
+        return view('dashboards.charttimeproductpst', compact('logselectm'));
     }
 
     public function forecast($log_select_m_id)
     {
         $logselectm = LogPstSelectM::findOrFail($log_select_m_id);
-        $detailData = $logselectm->logselectd()->orderBy('process_datetime')->get();
+        $detailData = $logselectm->logpstselectd()->orderBy('process_datetime')->get();
 
         $totalTime = 0;
         $remainTime = 0;
@@ -325,7 +325,7 @@ class LogPstSelectsController extends Controller
             }
         }
 
-        return view('dashboards.charttimeselectforcast', compact('logselectm', 'estimateData'));
+        return view('dashboards.charttimeselectforcastpst', compact('logselectm', 'estimateData'));
     }
 
     public function deleteDetail($id, $log_pst_select_m_id)
