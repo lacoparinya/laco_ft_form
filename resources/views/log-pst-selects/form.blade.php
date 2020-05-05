@@ -3,7 +3,7 @@
     <input class="form-control" name="process_date" type="date" id="process_date" value="{{ $logpstselect->process_date or \Carbon\Carbon::now()->format('Y-m-d') }}" >
     {!! $errors->first('process_date', '<p class="help-block">:message</p>') !!}
 </div>
-<div class="form-group col-md-4 {{ $errors->has('shift_id') ? 'has-error' : ''}}">
+<div class="form-group col-md-2 {{ $errors->has('shift_id') ? 'has-error' : ''}}">
     <label for="shift_id" class="control-label">{{ 'Shift' }}</label>
     <select name="shift_id" class="form-control" id="product_id" >
     @foreach ($shiftlist as $optionKey => $optionValue)
@@ -11,6 +11,15 @@
     @endforeach
 </select>
     {!! $errors->first('shift_id', '<p class="help-block">:message</p>') !!}
+</div>
+<div class="form-group col-md-2 {{ $errors->has('pst_type_id') ? 'has-error' : ''}}">
+    <label for="pst_type_id" class="control-label">{{ 'Type' }}</label>
+    <select name="pst_type_id" class="form-control" id="pst_type_id" >
+    @foreach ($psttypelist as $optionKey => $optionValue)
+        <option value="{{ $optionKey }}" {{ (isset($logpstselect->pst_type_id) && $logpstselect->shift_id == $optionKey) ? 'selected' : ''}}>{{ $optionValue }}</option>
+    @endforeach
+</select>
+    {!! $errors->first('pst_type_id', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group col-md-4 {{ $errors->has('product_id') ? 'has-error' : ''}}">
     <label for="product_id" class="control-label">{{ 'คัดผลิตภัณท์' }}</label>
@@ -36,7 +45,7 @@
 </div>
 <div class="form-group col-md-4 {{ $errors->has('ref_note') ? 'has-error' : ''}}">
     <label for="ref_note" class="control-label">{{ 'SAP REF' }}</label>
-    <input required class="form-control" name="ref_note" type="numtextber" id="ref_note" value="{{ $logpstselect->ref_note or ''}}" >
+    <input class="form-control" name="ref_note" type="numtextber" id="ref_note" value="{{ $logpstselect->ref_note or ''}}" >
     {!! $errors->first('input_kg', '<p class="help-block">:message</p>') !!}
 </div>
 

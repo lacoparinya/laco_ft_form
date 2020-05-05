@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class LogPstSelectM extends Model
 {
     protected $fillable = [
-        'process_date', 'product_id', 'shift_id', 'std_process_id', 'hourperday', 'targetperday', 'ref_note', 'note', 'status'
+        'process_date', 'product_id', 'shift_id', 'pst_type_id', 'std_process_id', 'hourperday', 'targetperday', 'ref_note', 'note', 'status'
     ];
 
     public function pstproduct()
@@ -30,4 +30,8 @@ class LogPstSelectM extends Model
         return $this->hasOne('App\StdSelectPst', 'id', 'std_process_id');
     }
 
+    public function psttype()
+    {
+        return $this->hasOne('App\PstType', 'id', 'pst_type_id');
+    }
 }

@@ -10,11 +10,11 @@
                   <a href="{{ url('/log-pst-selects/?status='.$logselectm->status) }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
                         
                     <div class="row">
-                    <div class="col-md-12">
-                    <div id="chart_div" style=" height: 600px;"></div>
+                      <div class="col-md-12">
+                    <div id="chart_div2" style=" height: 600px;"></div>
                     </div>
                     <div class="col-md-12">
-                    <div id="chart_div2" style=" height: 600px;"></div>
+                    <div id="chart_div" style=" height: 600px;"></div>
                     </div>
                     <div class="col-md-12">
                       <table class='table'>

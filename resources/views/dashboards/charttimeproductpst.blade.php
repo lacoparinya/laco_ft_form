@@ -25,12 +25,8 @@
                             <th>Product</th>
                             <th>Input/Output</th>
                             <th>สะสมรวม</th>
-                            <th>PK/PF/PST</th>
                             <th>Total</th>
-                            <th>LINE A/B</th>
-                            <th>TOTAL LINE</th>
                             <th>SAP REF</th>
-                            <th>Grade</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -47,12 +43,8 @@
                           <td>{{ $logselectm->pstproduct->name }}</td>
                           <td>{{ number_format($item->input_kg,0,".",",") }}/{{ number_format($item->output_kg,0,".",",") }}</td>
                           <td>{{ number_format($sum,0,".",",") }}</td>
-                          <td>{{ $item->num_pk }}/{{ $item->num_pf }}/{{ $item->num_pst }}</td>
                           <td>{{ $item->num_classify }}</td>
-                          <td>{{ $item->line_a }}/{{ $item->line_b }}</td>
-                          <td>{{ $item->line_classify }} {{ $item->line_unit }}</td>
                           <td>{{ $item->ref_note }}</td>
-                          <td>{{ $item->grade }}</td>
                           </tr>
                           @endforeach
                         </tbody>

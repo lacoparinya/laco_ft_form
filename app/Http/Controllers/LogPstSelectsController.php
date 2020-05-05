@@ -9,6 +9,7 @@ use App\LogPstSelectM;
 use App\LogPstSelectD;
 
 use App\PstProduct;
+use App\PstType;
 use App\Shift;
 use App\StdSelectPst;
 use Illuminate\Http\Request;
@@ -64,10 +65,14 @@ class LogPstSelectsController extends Controller
      */
     public function create()
     {
-        $productlist = PstProduct::pluck('name', 'id');
-        $shiftlist = Shift::pluck('name', 'id');
 
-        return view('log-pst-selects.create',compact('shiftlist', 'productlist'));
+        $productlist = PstProduct::pluck('name', 'id');
+        //$shiftlist = Shift::pluck('name', 'id');
+        $shiftlist = array('2'=>'B');
+        $psttypelist = PstType::pluck('name', 'id');
+        
+
+        return view('log-pst-selects.create',compact('shiftlist', 'productlist', 'psttypelist'));
     }
 
     /**
@@ -123,9 +128,11 @@ class LogPstSelectsController extends Controller
     {
         $logpstselect = LogPstSelectM::findOrFail($id);
         $productlist = PstProduct::pluck('name', 'id');
-        $shiftlist = Shift::pluck('name', 'id');
+        //$shiftlist = Shift::pluck('name', 'id');
+        $shiftlist = array('2' => 'B');
+        $psttypelist = PstType::pluck('name', 'id');
 
-        return view('log-pst-selects.edit', compact('logpstselect', 'productlist', 'shiftlist'));
+        return view('log-pst-selects.edit', compact('logpstselect', 'productlist', 'shiftlist', 'psttypelist'));
     }
 
     /**
