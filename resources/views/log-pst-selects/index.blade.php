@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header"><h3>งานคัดของ PST</h3></div>
+                    <div class="card-header"><h3>งานของ PST</h3></div>
                     <div class="card-body">
                         <a href="{{ url('/log-pst-selects/create') }}" class="btn btn-success btn-sm" title="Add New LogPstSelect">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New
@@ -42,7 +42,7 @@
                                 <thead>
                                     <tr>
                                         <th>วันที่ / กะ</th>
-                                        <th>คัดผลิตภัณท์</th>
+                                        <th>ประเภทงาน / ผลิตภัณท์</th>
                                         <th>ยอดที่ผลิดได้</th>
                                         <th>เป้าที่ต้องผลิต</th>
                                         <th>จำนวน</th>
@@ -53,7 +53,7 @@
                                 @foreach($logpstselects as $item)
                                     <tr>
                                         <td>{{ $item->process_date }} / {{ $item->shift->name }}</td>
-                                        <td>{{ $item->pstproduct->name }}</td>
+                                        <td>{{ $item->psttype->name or ''}}  / {{ $item->pstproduct->name }}</td>
                                         <td>{{ $item->logpstselectd->sum('output_kg') }}</td>
                                         <td>{{ $item->targetperday }}</td>
                                         <td>{{ $item->logpstselectd->count() }}</td>

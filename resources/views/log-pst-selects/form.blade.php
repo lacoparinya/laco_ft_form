@@ -16,7 +16,7 @@
     <label for="pst_type_id" class="control-label">{{ 'Type' }}</label>
     <select name="pst_type_id" class="form-control" id="pst_type_id" >
     @foreach ($psttypelist as $optionKey => $optionValue)
-        <option value="{{ $optionKey }}" {{ (isset($logpstselect->pst_type_id) && $logpstselect->shift_id == $optionKey) ? 'selected' : ''}}>{{ $optionValue }}</option>
+        <option value="{{ $optionKey }}" {{ (isset($logpstselect->pst_type_id) && $logpstselect->pst_type_id == $optionKey) ? 'selected' : ''}}>{{ $optionValue }}</option>
     @endforeach
 </select>
     {!! $errors->first('pst_type_id', '<p class="help-block">:message</p>') !!}
