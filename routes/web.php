@@ -153,5 +153,6 @@ Route::get('/log-pst-selects/deleteDetail/{id}/{log_pst_select_m_id}', 'LogPstSe
 Route::get('/log-pst-selects/changestatus/{log_pst_select_m_id}', 'LogPstSelectsController@changestatus');
 Route::get('/log-pst-selects/graph/{log_pack_m_id}', 'LogPstSelectsController@graph');
 Route::get('/log-pst-selects/forecast/{log_pst_select_m_id}', 'LogPstSelectsController@forecast');
+Route::get('/log-pst-selects/groupgraph/{date}/{pst_type_id}', 'LogPstSelectsController@groupgraph');
 
 Route::get('/mains/index/{date}', 'MainsController@index');

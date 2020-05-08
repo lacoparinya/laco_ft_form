@@ -272,6 +272,17 @@ class LogPstSelectsController extends Controller
         return redirect('log-pst-selects/?status=' . $status)->with('flash_message', ' updated!');
     }
 
+    public function groupgraph($date,$pst_type_id)
+    {
+        if($pst_type_id == 3){
+            $logselectids = LogPstSelectM::where('process_date',$date)->where('pst_type_id', $pst_type_id)->pluck( 'id');
+            // /var_dump($logselectids);
+            $logselectds = LogPstSelectD::whereIn('log_pst_select_m_id', $logselectids)->orderBy('process_datetime')->get();
+            
+            return view('dashboards.charttimeprocessproductpst', compact('logselectds','date'));
+        }
+    }
+
     public function graph($log_select_m_id)
     {
         $logselectm = LogPstSelectM::findOrFail($log_select_m_id);

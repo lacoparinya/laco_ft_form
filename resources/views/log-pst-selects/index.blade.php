@@ -68,6 +68,9 @@
                                                 <a href="{{ url('/log-pst-selects/' . $item->id) }}" title="View LogPackM"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> จัดการ</button></a>
                                                 <a href="{{ url('/log-pst-selects/graph/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> กราฟ</button></a>
                                                 <a href="{{ url('/log-pst-selects/forecast/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> ประเมิน</button></a>
+                                                @if ($item->pst_type_id == '3')
+                                                <a href="{{ url('/log-pst-selects/groupgraph/' . $item->process_date .'/'. $item->pst_type_id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> กราฟรายวัน</button></a>
+                                                @endif
                                                 <a href="{{ url('/log-pst-selects/changestatus/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> {{ $item->status }}</button></a>
                                                 <a href="{{ url('/log-pst-selects/' . $item->id . '/edit') }}" title="Edit LogPackM"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
                                                 <form method="POST" action="{{ url('/log-pst-selects' . '/' . $item->id) }}" accept-charset="UTF-8" style="display:inline">
