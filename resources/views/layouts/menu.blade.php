@@ -158,6 +158,12 @@
                                 <a href="{{route('reports.rangeselect2')}}">New Select Range Report</a>
                                 </li>
                                 <li>
+                                        <a href="{{route('reports.dailypst')}}">PST Daily Report</a>
+                                        </li>
+                                        <li>
+                                        <a href="{{route('reports.rangepst')}}">PST Range Report</a>
+                                        </li>
+                                <li>
                                 <a href="{{route('reports.orderreport')}}">Order Report</a>
                                 </li>
                                 </ul>
@@ -287,16 +293,10 @@
                                         </li>
                                         <li><hr/></li>
                                         <li>
-                                        <a href="{{route('reports.daily')}}">Select Daily Report</a>
+                                        <a href="{{route('reports.dailypst')}}">PST Daily Report</a>
                                         </li>
                                         <li>
-                                        <a href="{{route('reports.range')}}">Select Range Report</a>
-                                        </li>
-                                        <li>
-                                        <a href="{{route('reports.dailyselect2')}}">New Select Daily Report</a>
-                                        </li>
-                                        <li>
-                                        <a href="{{route('reports.rangeselect2')}}">New Select Range Report</a>
+                                        <a href="{{route('reports.rangepst')}}">PST Range Report</a>
                                         </li>
                                         <li>
                                             <a href="{{ route('logout') }}"

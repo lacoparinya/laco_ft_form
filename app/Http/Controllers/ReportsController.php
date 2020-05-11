@@ -11,6 +11,7 @@ use App\FreezeM;
 use App\LogPrepareM;
 use App\LogPackM;
 use App\LogSelectM;
+use App\LogPstSelectM;
 
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -46,6 +47,11 @@ class ReportsController extends Controller
     public function dailypreprod()
     {
         return view('reports.dailypreprod');
+    }
+
+    public function dailypst()
+    {
+        return view('reports.dailypst');
     }
 
     public function reportAction(Request $request){
@@ -219,6 +225,11 @@ class ReportsController extends Controller
         return view( 'reports.rangepreprod');
     }
 
+    public function rangepst()
+    {
+        return view('reports.rangepst');
+    }
+
     public function orderreport(){
 
         $perPage = 25;
@@ -379,6 +390,32 @@ class ReportsController extends Controller
         }
     }
 
-    
+    public function reportPstAction(Request $request)
+    {
+        $requestData = $request->all();
+
+        if ($requestData['action_type'] == 'daily') {
+
+            $data = LogPstSelectM::where('process_date', $requestData['process_date'])->get();
+
+            $filename = "ft_pst_report_" . date('ymdHi');
+
+            Excel::create($filename, function ($excel) use ($data) {
+                $excel->sheet('งานpst', function ($sheet) use ($data) {
+                    $sheet->loadView('exports.dailypstexport')->with('data', $data);
+                });
+            })->export('xlsx');
+        } elseif ($requestData['action_type'] == 'range') {
+            $data = LogPstSelectM::whereBetween('process_date', [$requestData['from_date'], $requestData['to_date']])->get();
+
+            $filename = "ft_pst_report_" . date('ymdHi');
+
+            Excel::create($filename, function ($excel) use ($data) {
+                $excel->sheet('งานpst', function ($sheet) use ($data) {
+                    $sheet->loadView('exports.dailypstexport')->with('data', $data);
+                });
+            })->export('xlsx');
+        }
+    }
 
 }

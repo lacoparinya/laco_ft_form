@@ -88,7 +88,11 @@
             ['{{ date('H:i',strtotime($item->process_datetime)) }}',  
             {{ $item->output_kg }}, 
             {{$logselectm->stdselectpst->std_rate_per_h_m}}, 
+            @if($item->num_classify > 0 && $item->workhours > 0)
             {{ round(($item->output_kg/$item->num_classify)/$item->workhours,2) }},
+            @else
+            0,
+            @endif
             ],
           @endforeach
         ]);
