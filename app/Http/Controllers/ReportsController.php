@@ -418,4 +418,107 @@ class ReportsController extends Controller
         }
     }
 
+    public function reportPL($type){
+
+        return view('reports.report_pl',compact('type'));
+    }
+
+    public function reportPLAction($type, Request $request){
+        $requestData = $request->all();
+
+        if($type == 'pk'){
+            $dataPack = DB::table('log_pack_ms')
+            ->join('shifts', 'shifts.id', '=', 'log_pack_ms.shift_id')
+            ->join('methods', 'methods.id', '=', 'log_pack_ms.method_id')
+            ->join('packages', 'packages.id', '=', 'log_pack_ms.package_id')
+            ->join('orders', 'orders.id', '=', 'log_pack_ms.order_id')
+            ->join('std_packs', 'std_packs.id', '=', 'log_pack_ms.std_pack_id')
+            ->join('log_pack_ds', 'log_pack_ds.log_pack_m_id', '=', 'log_pack_ms.id')
+            ->select(DB::raw("
+            log_pack_ms.process_date,
+            shifts.name as shiiftname,
+    methods.name as 'methodname',
+    log_pack_ms.staff_target ,
+    log_pack_ms.staff_operate,
+    log_pack_ms.staff_pk,
+    log_pack_ms.staff_pf,
+    log_pack_ms.staff_pst,
+    ISNULL(log_pack_ms.staff_target,0) - (ISNULL(log_pack_ms.staff_pk,0)+ISNULL(log_pack_ms.staff_pf,0)+ISNULL(log_pack_ms.staff_pst,0))  as 'staff_diff',
+    packages.name as 'packagename',
+    '-' as 'unit',
+    log_pack_ms.targetperday as 'Plan',
+    sum(log_pack_ds.[output_pack]) as 'Actual',
+    log_pack_ms.targetperday - sum(log_pack_ds.[output_pack]) as diff,
+    orders.order_no as 'Shipment',
+    log_pack_ms.note as 'Remark'"))
+            ->whereBetween('log_pack_ms.process_date', [$requestData['from_date'], $requestData['to_date']])
+            ->groupBy(DB::raw('log_pack_ms.process_date,shifts.name,methods.name,packages.name,orders.order_no,
+    log_pack_ms.targetperday,packages.kgsperpack,log_pack_ms.note,
+    log_pack_ms.staff_target,log_pack_ms.staff_operate,
+    log_pack_ms.staff_pf,log_pack_ms.staff_pk,log_pack_ms.staff_pst'))
+            ->orderBy('shifts.name', 'asc')
+            ->orderBy('methods.name', 'asc')
+            ->orderBy('packages.name', 'asc')
+            ->get();
+
+            $dataSelect = DB::table('log_select_ms')
+            ->join('shifts', 'shifts.id', '=', 'log_select_ms.shift_id')
+            ->join('products', 'products.id', '=', 'log_select_ms.product_id')
+            ->join('log_select_ds', 'log_select_ds.log_select_m_id', '=', 'log_select_ms.id')
+            ->select(DB::raw("
+            log_select_ms.process_date,
+            shifts.name as shiiftname,
+            '-' as 'methodname',
+            log_select_ms.staff_target,
+            log_select_ms.staff_operate,
+            (select top 1 pk.num_pk from log_select_ds as pk where pk.log_select_m_id = log_select_ms.id order by pk.process_datetime)  as 'staff_pk',
+            (select top 1 pf.num_pf from log_select_ds as pf where pf.log_select_m_id = log_select_ms.id order by pf.process_datetime)   as 'staff_pf',
+            (select top 1 pst.num_pst from log_select_ds as pst where pst.log_select_m_id = log_select_ms.id order by pst.process_datetime)  as 'staff_pst',
+            ISNULL(log_select_ms.staff_target,0) - 
+            (ISNULL((select top 1 pk.num_pk from log_select_ds as pk where pk.log_select_m_id = log_select_ms.id order by pk.process_datetime),0)
+            +ISNULL((select top 1 pf.num_pf from log_select_ds as pf where pf.log_select_m_id = log_select_ms.id order by pf.process_datetime),0)
+            +ISNULL((select top 1 pst.num_pst from log_select_ds as pst where pst.log_select_m_id = log_select_ms.id order by pst.process_datetime),0)) 
+            as 'staff_diff',
+            products.name as 'packagename',
+            '-' as 'unit',
+            log_select_ms.targetperday as 'Plan',
+            sum(log_select_ds.output_kg) as 'Actual',
+            log_select_ms.targetperday - sum(log_select_ds.output_kg) as diff,
+            '-' as 'Shipment',
+            log_select_ms.note as 'Remark'"))
+            ->whereBetween('log_select_ms.process_date', [$requestData['from_date'], $requestData['to_date']])
+            ->groupBy(DB::raw('log_select_ms.process_date,
+            shifts.name,
+            log_select_ms.id,
+            log_select_ms.staff_target,log_select_ms.staff_operate,
+            log_select_ms.targetperday,
+            log_select_ms.note,
+            products.name'))
+            ->orderBy('shifts.name', 'asc')
+            ->orderBy('products.name', 'asc')
+            ->get();
+
+            $data = array();
+
+            foreach ($dataPack as $dataPackObj) {
+                $data[$dataPackObj->process_date]['Pack'][] = $dataPackObj;
+            }
+
+            foreach ($dataSelect as $dataSelectObj) {
+                $data[$dataSelectObj->process_date]['Select'][] = $dataSelectObj;
+            }
+
+
+            $filename = "ft_pl_pk_report_" . date('ymdHi');
+
+            Excel::create($filename, function ($excel) use ($data) {
+                $excel->sheet('งานpst', function ($sheet) use ($data) {
+                    $sheet->loadView('exports.pl_pk_export')->with('data', $data);
+                });
+            })->export('xlsx');
+
+            //return view('exports.pl_pk_export', compact('data'));
+        }
+    }
+
 }

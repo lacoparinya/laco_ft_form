@@ -8,7 +8,11 @@ class LogPackM extends Model
 {
     protected $fillable = [
         'process_date', 'method_id', 'package_id', 'order_id','shift_id',
-        'std_pack_id', 'overalltargets', 'targetperday', 'houroverall', 'hourperday', 'note', 'status'
+        'std_pack_id', 'overalltargets', 'targetperday', 'houroverall', 'hourperday', 'note',
+        'status', 'staff_target',
+        'staff_operate',
+        'staff_pf',
+        'staff_pk', 'staff_pst'
     ];
 
     public function method()

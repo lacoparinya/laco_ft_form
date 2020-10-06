@@ -78,6 +78,31 @@
     <input class="form-control" name="hourperday" id="hourperday" value={{ $logpackm->hourperday or '' }}  >
     {!! $errors->first('hourperday', '<p class="help-block">:message</p>') !!}
 </div>
+<div class="form-group col-md-4 {{ $errors->has('staff_target') ? 'has-error' : ''}}">
+    <label for="staff_target" class="control-label">{{ 'เป้าพนักงาน' }}</label>
+    <input required class="form-control" name="staff_target" type="number" id="staff_target" value="{{ $logselectm->staff_target or ''}}" >
+    {!! $errors->first('staff_target', '<p class="help-block">:message</p>') !!}
+</div>
+<div class="form-group col-md-4 {{ $errors->has('staff_operate') ? 'has-error' : ''}}">
+    <label for="staff_operate" class="control-label">{{ 'Staff ผู้ดูแล' }}</label>
+    <input required class="form-control" name="staff_operate" type="text" id="staff_operate" value="{{ $logselectm->staff_operate or ''}}" >
+    {!! $errors->first('staff_operate', '<p class="help-block">:message</p>') !!}
+</div>
+<div class="form-group col-md-4 {{ $errors->has('staff_pk') ? 'has-error' : ''}}">
+    <label for="staff_pk" class="control-label">{{ 'พนักงาน PK' }}</label>
+    <input required class="form-control" name="staff_pk" type="number" id="staff_pk" value="{{ $logselectm->staff_pk or ''}}" >
+    {!! $errors->first('staff_pk', '<p class="help-block">:message</p>') !!}
+</div>
+<div class="form-group col-md-4 {{ $errors->has('staff_pf') ? 'has-error' : ''}}">
+    <label for="staff_pf" class="control-label">{{ 'พนักงานช่วยงานจาก PK' }}</label>
+    <input required class="form-control" name="staff_pf" type="number" id="staff_pf" value="{{ $logselectm->staff_pf or ''}}" >
+    {!! $errors->first('staff_pf', '<p class="help-block">:message</p>') !!}
+</div>
+<div class="form-group col-md-4 {{ $errors->has('staff_pst') ? 'has-error' : ''}}">
+    <label for="staff_pst" class="control-label">{{ 'พนักงานช่วยงานจาก PST' }}</label>
+    <input required class="form-control" name="staff_pst" type="number" id="staff_pst" value="{{ $logselectm->staff_pst or ''}}" >
+    {!! $errors->first('staff_pst', '<p class="help-block">:message</p>') !!}
+</div>
 
 <div class="form-group col-md-8 {{ $errors->has('note') ? 'has-error' : ''}}">
     <label for="yeild_percent" class="control-label">{{ 'Note' }}</label>

@@ -79,6 +79,8 @@ Route::post('/reports/reportSelect2Action', 'ReportsController@reportSelect2Acti
 Route::get('/reports/dailypst', 'ReportsController@dailypst')->name('reports.dailypst');
 Route::get('/reports/rangepst', 'ReportsController@rangepst')->name('reports.rangepst');
 Route::post('/reports/reportPstAction', 'ReportsController@reportPstAction');
+Route::get('/reports/report_pl/{type}', 'ReportsController@reportPL');
+Route::post('/reports/reportPlAction/{type}', 'ReportsController@reportPLAction');
 
 Route::get('/dashboard', 'DashboardController@home');
 Route::get('/chart/{selecteddate}', 'DashboardController@datechart');

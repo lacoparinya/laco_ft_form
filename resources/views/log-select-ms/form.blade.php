@@ -33,10 +33,19 @@
 </div>
 <div class="form-group col-md-4 {{ $errors->has('ref_note') ? 'has-error' : ''}}">
     <label for="ref_note" class="control-label">{{ 'SAP REF' }}</label>
-    <input required class="form-control" name="ref_note" type="numtextber" id="ref_note" value="{{ $logselectm->ref_note or ''}}" >
+    <input required class="form-control" name="ref_note" type="text" id="ref_note" value="{{ $logselectm->ref_note or ''}}" >
     {!! $errors->first('input_kg', '<p class="help-block">:message</p>') !!}
 </div>
-
+<div class="form-group col-md-4 {{ $errors->has('staff_target') ? 'has-error' : ''}}">
+    <label for="staff_target" class="control-label">{{ 'เป้าพนักงาน' }}</label>
+    <input required class="form-control" name="staff_target" type="number" id="staff_target" value="{{ $logselectm->staff_target or ''}}" >
+    {!! $errors->first('staff_target', '<p class="help-block">:message</p>') !!}
+</div>ผู
+<div class="form-group col-md-4 {{ $errors->has('staff_operate') ? 'has-error' : ''}}">
+    <label for="staff_operate" class="control-label">{{ 'Staff ผู้ดูแล' }}</label>
+    <input required class="form-control" name="staff_operate" type="text" id="staff_operate" value="{{ $logselectm->staff_operate or ''}}" >
+    {!! $errors->first('staff_operate', '<p class="help-block">:message</p>') !!}
+</div>
 <div class="form-group col-md-12 {{ $errors->has('note') ? 'has-error' : ''}}">
     <label for="note" class="control-label">{{ 'Note' }}</label>
     <textarea class="form-control" rows="5" name="note" type="textarea" id="note" >{{ $logselectm->note or ''}}</textarea>
