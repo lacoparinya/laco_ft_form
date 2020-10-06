@@ -166,7 +166,9 @@
                                 <li>
                                 <a href="{{route('reports.orderreport')}}">Order Report</a>
                                 </li>
-                                </ul>
+                                <li>
+                                <a href="{{ url('/reports/report_pl/pk') }}">PL-PK report</a>
+                                </li>
                             </li>
                                 @else
                                 <li class="dropdown">
