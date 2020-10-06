@@ -169,6 +169,12 @@
                                 <li>
                                 <a href="{{ url('/reports/report_pl/pk') }}">PL-PK report</a>
                                 </li>
+                                <li>
+                                <a href="{{route('reports.dailypreprod3')}}">Prepare With Summary Daily Report</a>
+                                </li>
+                                <li>
+                                <a href="{{route('reports.rangepreprod3')}}">Prepare With Summary Range Report</a>
+                                </li>
                             </li>
                                 @else
                                 <li class="dropdown">
@@ -250,6 +256,12 @@
                                         <li>
                                         <a href="{{route('reports.rangepreprod2')}}">New Prepare Range Report</a>
                                         </li>
+                                <li>
+                                <a href="{{route('reports.dailypreprod3')}}">Prepare With Summary Daily Report</a>
+                                </li>
+                                <li>
+                                <a href="{{route('reports.rangepreprod3')}}">Prepare With Summary Range Report</a>
+                                </li>
                                         <li>
                                             <a href="{{ route('logout') }}"
                                                 onclick="event.preventDefault();

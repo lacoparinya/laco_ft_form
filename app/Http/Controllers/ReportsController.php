@@ -521,4 +521,91 @@ class ReportsController extends Controller
         }
     }
 
+    public function dailypreprod3()
+    {
+        return view('reports.dailypreprod3');
+    }
+
+    public function rangepreprod3()
+    {
+        return view('reports.rangepreprod3');
+    }
+
+    public function reportPreprod3Action(Request $request)
+    {
+        $requestData = $request->all();
+
+        if ($requestData['action_type'] == 'daily') {
+            $data = LogPrepareM::where('process_date', $requestData['process_date'])->get();
+
+            $dataSum = DB::table('log_prepare_ms')
+            ->join('log_prepare_ds', 'log_prepare_ms.id', '=', 'log_prepare_ds.log_prepare_m_id')
+            ->join('pre_prods', 'pre_prods.id', '=', 'log_prepare_ms.pre_prod_id')
+            ->join('shifts', 'shifts.id', '=', 'log_prepare_ds.shift_id')
+            ->select(DB::raw("log_prepare_ms.process_date,
+            shifts.name as shiftname,
+            pre_prods.name as preprodname,
+            max(log_prepare_ds.input_sum) as inputsum,
+            max(log_prepare_ds.output_sum) as outputsum,
+            CASE WHEN max(log_prepare_ds.input_sum) > 0 THEN max(log_prepare_ds.input_sum) ELSE max(log_prepare_ds.output_sum) END as resultsum,
+            sum(log_prepare_ds.workhours) as sumworkhours,
+            sum((log_prepare_ds.num_iqf + log_prepare_ds.num_pre)*log_prepare_ds.workhours) as sumMH"))
+            ->where('log_prepare_ms.process_date', $requestData['process_date'])
+            ->groupBy(DB::raw('log_prepare_ms.process_date,
+            shifts.name,
+            pre_prods.name'))
+            ->orderBy('log_prepare_ms.process_date', 'asc')
+            ->orderBy('shifts.name', 'asc')
+            ->orderBy('pre_prods.name', 'asc')
+            ->get();
+
+
+            $filename = "ft_preprod_report_" . date('ymdHi');
+
+            Excel::create($filename, function ($excel) use ($data, $dataSum) {
+                $excel->sheet('งานเตรียมการ', function ($sheet) use ($data) {
+                    $sheet->loadView('exports.dailypreprodexport3')->with('data', $data);
+                });
+                $excel->sheet('งานเตรียมการสรุป', function ($sheet) use ($dataSum) {
+                    $sheet->loadView('exports.dailypreprodsumexport3')->with('dataSum', $dataSum);
+                });
+            })->export('xlsx');
+            
+        } elseif ($requestData['action_type'] == 'range') {
+            $data = LogPrepareM::whereBetween('process_date', [$requestData['from_date'], $requestData['to_date']])->get();
+
+            $dataSum = DB::table('log_prepare_ms')
+            ->join('log_prepare_ds', 'log_prepare_ms.id', '=', 'log_prepare_ds.log_prepare_m_id')
+            ->join('pre_prods', 'pre_prods.id', '=', 'log_prepare_ms.pre_prod_id')
+            ->join('shifts', 'shifts.id', '=', 'log_prepare_ds.shift_id')
+            ->select(DB::raw("log_prepare_ms.process_date,
+            shifts.name as shiftname,
+            pre_prods.name as preprodname,
+            max(log_prepare_ds.input_sum) as inputsum,
+            max(log_prepare_ds.output_sum) as outputsum,
+            CASE WHEN max(log_prepare_ds.input_sum) > 0 THEN max(log_prepare_ds.input_sum) ELSE max(log_prepare_ds.output_sum) END as resultsum,
+            sum(log_prepare_ds.workhours) as sumworkhours,
+            sum((log_prepare_ds.num_iqf + log_prepare_ds.num_pre)*log_prepare_ds.workhours) as sumMH"))
+            ->whereBetween('log_prepare_ms.process_date', [$requestData['from_date'], $requestData['to_date']])
+            ->groupBy(DB::raw('log_prepare_ms.process_date,
+            shifts.name,
+            pre_prods.name'))
+            ->orderBy('log_prepare_ms.process_date', 'asc')
+            ->orderBy('shifts.name', 'asc')
+            ->orderBy('pre_prods.name', 'asc')
+            ->get();
+
+            $filename = "ft_preprod_report_" . date('ymdHi');
+
+            Excel::create($filename, function ($excel) use ($data, $dataSum) {
+                $excel->sheet('งานเตรียมการ', function ($sheet) use ($data) {
+                    $sheet->loadView('exports.dailypreprodexport3')->with('data', $data);
+                });
+                $excel->sheet('งานเตรียมการสรุป', function ($sheet) use ($dataSum) {
+                    $sheet->loadView('exports.dailypreprodsumexport3')->with('dataSum', $dataSum);
+                });
+            })->export('xlsx');
+        }
+    }
+
 }

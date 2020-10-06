@@ -81,6 +81,9 @@ Route::get('/reports/rangepst', 'ReportsController@rangepst')->name('reports.ran
 Route::post('/reports/reportPstAction', 'ReportsController@reportPstAction');
 Route::get('/reports/report_pl/{type}', 'ReportsController@reportPL');
 Route::post('/reports/reportPlAction/{type}', 'ReportsController@reportPLAction');
+Route::get('/reports/dailypreprod3', 'ReportsController@dailypreprod3')->name('reports.dailypreprod3');
+Route::get('/reports/rangepreprod3', 'ReportsController@rangepreprod3')->name('reports.rangepreprod3');
+Route::post('/reports/reportPreprod3Action', 'ReportsController@reportPreprod3Action');
 
 Route::get('/dashboard', 'DashboardController@home');
 Route::get('/chart/{selecteddate}', 'DashboardController@datechart');
