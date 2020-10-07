@@ -94,7 +94,7 @@
     {!! $errors->first('staff_pk', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group col-md-4 {{ $errors->has('staff_pf') ? 'has-error' : ''}}">
-    <label for="staff_pf" class="control-label">{{ 'พนักงานช่วยงานจาก PK' }}</label>
+    <label for="staff_pf" class="control-label">{{ 'พนักงานช่วยงานจาก PF' }}</label>
     <input required class="form-control" name="staff_pf" type="number" id="staff_pf" value="{{ $logselectm->staff_pf or ''}}" >
     {!! $errors->first('staff_pf', '<p class="help-block">:message</p>') !!}
 </div>
