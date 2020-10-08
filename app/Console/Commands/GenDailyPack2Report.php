@@ -225,11 +225,11 @@ class GenDailyPack2Report extends Command
             }
         }
 
-        $ftStaff = config('myconfig.emailtestlist');
+        $ftStaff = config('myconfig.emaillist');
 
         $mailObj['graph'] = $fileList;
         $mailObj['result'] = $resultList;
-        $mailObj['subject'] = " อัตราการแพ็คสะสม " . $selecteddate;
+        $mailObj['subject'] = "ทดสอบ อัตราการแพ็คสะสม " . $selecteddate;
 
         Mail::to($ftStaff)->send(new Pack3RptMail($mailObj));//
     }

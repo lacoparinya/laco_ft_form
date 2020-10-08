@@ -266,11 +266,11 @@ class GenDailyPre2Report extends Command
         }
 
         if(!empty( $fileList)){
-            $ftStaff = config('myconfig.emailtestlist');
+            $ftStaff = config('myconfig.emaillist');
 
             $mailObj['graph'] = $fileList;
             $mailObj['result'] = $resultList;
-            $mailObj['subject'] = " อัตราการเตรียมการสะสม " . $selecteddate;
+            $mailObj['subject'] = "ทดสอบ อัตราการเตรียมการสะสม " . $selecteddate;
 
             Mail::to($ftStaff)->send(new FtPre2RptMail($mailObj));
         }

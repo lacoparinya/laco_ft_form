@@ -387,13 +387,13 @@ class GenDailySelect2Report extends Command
         }
         
 
-        $ftStaff = config('myconfig.emailtestlist');
+        $ftStaff = config('myconfig.emaillist');
 
         $mailObj['graph'] = $fileList;
         $mailObj['graph2'] = $fileList2;
         $mailObj['shift'] = $shiftObj;
         $mailObj['result'] = $resultList;
-        $mailObj['subject'] = " อัตราการคัดสะสม " . $selecteddate;
+        $mailObj['subject'] = "ทดสอบ อัตราการคัดสะสม " . $selecteddate;
 
         Mail::to($ftStaff)->send(new FtSelect3DataEmail($mailObj));
     }
