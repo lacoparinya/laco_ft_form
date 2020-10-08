@@ -89,6 +89,11 @@
         <input class="form-control" name="note" type="text" id="note" value="{{ $logprepared->note or '' }}" >
         {!! $errors->first('note', '<p class="help-block">:message</p>') !!}
     </div>
+    <div class="form-group col-md-12 {{ $errors->has('problem') ? 'has-error' : ''}}">
+        <label for="problem" class="control-label">{{ 'ปัญหาที่พบ' }}</label>
+        <input class="form-control" name="problem"  id="problem" value="{{ $logprepared->problem or '' }}" >
+        {!! $errors->first('problem', '<p class="help-block">:message</p>') !!}
+    </div>
 </div>
 <div class="form-group">
     <input class="btn btn-primary" type="submit" value="{{ $formMode === 'edit' ? 'Update' : 'Create' }}">

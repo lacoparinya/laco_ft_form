@@ -15,7 +15,7 @@ return [
         'OC' => 'Oraphan@Lannaagro.com',
         'PKP' => 'parinya.k@lannaagro.com',
     ],
-    'emailpacklist' => [
+    'emailtestlist' => [
         'PKP' => 'parinya.k@lannaagro.com',
     ]
 ];

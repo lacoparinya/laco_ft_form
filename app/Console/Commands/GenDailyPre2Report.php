@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use App\LogPrepareM;
 use App\Shift;
 use App\PreProd;
-use App\Mail\FtPreRptMail;
+use App\Mail\FtPre2RptMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 
@@ -60,6 +60,8 @@ class GenDailyPre2Report extends Command
 
         $fileList = array();
 
+        $resultList = array();
+
         $loopData = LogPrepareM::where('process_date', $current_date)->get();
         /*
         $loopData = FtLogPre::where('process_date', $current_date)
@@ -80,6 +82,9 @@ class GenDailyPre2Report extends Command
             $totaloutput = 0;
             $totalsum = 0;
             $ratePerHr = 0;
+            $totalAct = 0;
+            $totalPlan = 0;
+            $resultar = array();
             foreach ($detailData as $key => $value) {
                 $totalTime += $value->workhours;
                 $totalinput += $value->input;
@@ -137,10 +142,13 @@ class GenDailyPre2Report extends Command
             foreach ($logpreparem->logprepared()->orderBy('process_datetime')->get() as $item){
                 $data1x[] = date('H:i', strtotime($item->process_datetime));
                 $data1y[] = $item->targets;
+                $totalPlan += $item->targets;
                 if ($item->input > 0){
                     $data2y[] = $item->input;
+                    $totalAct += $item->input;
                 }else{
                     $data2y[] = $item->output;
+                    $totalAct += $item->output;
                 }
                 $data3y[] = 0;
                 if($item->input_sum > 0) {
@@ -148,7 +156,10 @@ class GenDailyPre2Report extends Command
                 }else{
                     $data4y[] = $item->output_sum;
                 }
-
+                if(!empty($item->problem)){
+                    $resultar['problem'][] = date('H:i', strtotime($item->process_datetime)) . " - " . $item->problem;
+                }
+                
             }
 
             foreach ($estimateData as $item2){
@@ -159,26 +170,13 @@ class GenDailyPre2Report extends Command
                 $data4y[] = $item2['realtotal'];
             }
 
-
-/*
-
-            foreach ($rawdata as $rptObj) {
-                $data1x[] = date("H:i", strtotime($item->process_datetime));
-                if($rptObj->input > 0){
-                    $data1y[] = $rptObj->input;
-                    $data2y[] = $rptObj->input_sum;
-                }else{
-                    $data1y[] = $rptObj->output;
-                    $data2y[] = $rptObj->output_sum;
-                }
-
-               // $data3y[] = $rptObj->output;
-               // $data4y[] = $rptObj->output_sum;
-                
-                
-                $dataty[] = $rptObj->targets;
+            if ($totalPlan == $totalAct) {
+                $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:yellow;">ผลิตได้ตามป้าหมาย</span>';
+            } elseif ($totalPlan > $totalAct) {
+                $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:red;">ผลิตได้ต่ำกว่าเป้าหมาย ' . round(((($totalPlan - $totalAct) * 100) / $totalPlan), 2) . "%</span>";
+            } else {
+                $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:green;">ผลิตได้มากกว่าเป้าหมาย ' . round(((($totalAct - $totalPlan) * 100) / $totalPlan), 2) . "%</span>";
             }
-            */
 
             $graph = new \Graph(900, 400);
             $graph->SetScale('intlin');
@@ -264,15 +262,17 @@ class GenDailyPre2Report extends Command
             $graph->Stroke($filename1);
 
             $fileList[] = $filename;
+            $resultList[] = $resultar;
         }
 
         if(!empty( $fileList)){
-            $ftStaff = config( 'myconfig.emaillist');
+            $ftStaff = config('myconfig.emailtestlist');
 
             $mailObj['graph'] = $fileList;
+            $mailObj['result'] = $resultList;
             $mailObj['subject'] = " อัตราการเตรียมการสะสม " . $selecteddate;
 
-            Mail::to($ftStaff)->send(new FtPreRptMail($mailObj));
+            Mail::to($ftStaff)->send(new FtPre2RptMail($mailObj));
         }
     }
 }

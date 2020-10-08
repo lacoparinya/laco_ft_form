@@ -72,12 +72,18 @@
     <input class="form-control" name="yeild_percent" type="text" readonly id="yeild_percent" value="{{ $logpackd->yeild_percent or ''}}" >
     {!! $errors->first('yeild_percent', '<p class="help-block">:message</p>') !!}
 </div>
-    <div class="form-group col-md-9 {{ $errors->has('note') ? 'has-error' : ''}}">
+    <div class="form-group col-md-6 {{ $errors->has('note') ? 'has-error' : ''}}">
         <label for="note" class="control-label">{{ 'Note' }}</label>
         <input class="form-control" name="note" type="text" id="note" value="{{ $logpackd->note or '' }}" >
         <input type='hidden' name='kgsperpack' id='kgsperpack' value='{{ $logpackm->package->kgsperpack }}' >
         <input type='hidden' name='log_pack_m_id' id='log_pack_m_id' value='{{ $logpackm->id }}' >
         {!! $errors->first('note', '<p class="help-block">:message</p>') !!}
+    </div>
+    
+    <div class="form-group col-md-6 {{ $errors->has('problem') ? 'has-error' : ''}}">
+        <label for="problem" class="control-label">{{ 'ปัญหาที่พบ' }}</label>
+        <input class="form-control" name="problem"  id="problem" value="{{ $logpackd->problem or '' }}" >
+        {!! $errors->first('problem', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 <div class="form-group">

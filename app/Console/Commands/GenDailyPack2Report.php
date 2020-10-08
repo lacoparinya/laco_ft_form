@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\LogPackM;
 
-use App\Mail\PackRptMail;
+use App\Mail\Pack3RptMail;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
@@ -58,6 +58,8 @@ class GenDailyPack2Report extends Command
 
         $fileList = array();
 
+        $resultList = array();
+
         $loopData = LogPackM::where('process_date', $current_date)
             ->get();
 
@@ -74,6 +76,10 @@ class GenDailyPack2Report extends Command
             $sum = 0;
             $totalsum = 0;
             $ratePerHr = 0;
+            $totalAct = 0;
+            $totalPlan = 0;
+            $resultar = array();
+
             if($logpackm->logpackd->count() > 0){
                 foreach ($logpackm->logpackd()->orderBy('process_datetime')->get() as $valueObj) {
                     $totalTime += $valueObj->workhours;
@@ -83,6 +89,22 @@ class GenDailyPack2Report extends Command
                     $data3y[] = 0;
                     $data4y[] = $sum;
                     $data1x[] = date('H:i',strtotime($valueObj->process_datetime));
+
+                    $totalPlan += $logpackm->stdpack->packperhour * $valueObj->workhours;
+                    $totalAct += $valueObj->output_pack;
+
+                    if(!empty($valueObj->problem)){
+                        $resultar['problem'][] = date('H:i', strtotime($valueObj->process_datetime)) . " - " . $valueObj->problem;
+                    }
+                    
+                }
+
+                if ($totalPlan == $totalAct) {
+                    $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:yellow;">ผลิตได้ตามป้าหมาย</span>';
+                } elseif ($totalPlan > $totalAct) {
+                    $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:red;">ผลิตได้ต่ำกว่าเป้าหมาย ' . round(((($totalPlan - $totalAct) * 100) / $totalPlan), 2) . "%</span>";
+                } else {
+                    $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:green;">ผลิตได้มากกว่าเป้าหมาย ' . round(((($totalAct - $totalPlan) * 100) / $totalPlan), 2) . "%</span>";
                 }
 
                 $remainTime = $logpackm->hourperday - $totalTime;
@@ -198,14 +220,17 @@ class GenDailyPack2Report extends Command
 
                 $fileList[$logpackm->method_id][$logpackm->package_id][] = $filename;
 
+                $resultList[$logpackm->method_id][$logpackm->package_id][] = $resultar;
+
             }
         }
 
-        $ftStaff = config('myconfig.emaillist');
+        $ftStaff = config('myconfig.emailtestlist');
 
         $mailObj['graph'] = $fileList;
+        $mailObj['result'] = $resultList;
         $mailObj['subject'] = " อัตราการแพ็คสะสม " . $selecteddate;
 
-        Mail::to($ftStaff)->send(new PackRptMail($mailObj));//
+        Mail::to($ftStaff)->send(new Pack3RptMail($mailObj));//
     }
 }

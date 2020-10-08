@@ -9,7 +9,7 @@ use App\Shift;
 use App\Product;
 
 use Illuminate\Support\Facades\Mail;
-use App\Mail\FtDataEmail;
+use App\Mail\FtSelect3DataEmail;
 
 class GenDailySelect2Report extends Command
 {
@@ -65,6 +65,7 @@ class GenDailySelect2Report extends Command
 
         $fileList = array();
         $fileList2 = array();
+        $resultList = array();
 
         $shiftObj = Shift::findOrFail($shiftId);
 
@@ -81,13 +82,36 @@ class GenDailySelect2Report extends Command
             $data1y = array();
             $data2y = array();
             $data3y = array();
+            $data4y = array();
             $data1x = array();
             $sum = 0;
+            $totalAct = 0;
+            $totalPlan = 0;
+            $resultar = array();
+            $rateperhour = $logselectm->targetperday / $logselectm->hourperday;
+
             foreach ($logselectm->logselectd()->orderBy('process_datetime')->get() as $valueObj) {
                 $sum += $valueObj->output_kg;
                 $data1y[] = $valueObj->output_kg;
                 $data2y[] = $sum;
+                $data3y[] = $valueObj->workhours * ($rateperhour);
                 $data1x[] = date('H:i',strtotime($valueObj->process_datetime));
+
+                $totalAct += $valueObj->output_kg;
+                $totalPlan += $valueObj->workhours * ($rateperhour);
+
+                if (!empty($valueObj->problem)) {
+                    $resultar['problem'][] = date('H:i', strtotime($valueObj->process_datetime)) . " - " . $valueObj->problem;
+                }
+
+            }
+
+            if ($totalPlan == $totalAct) {
+                $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:yellow;">ผลิตได้ตามป้าหมาย</span>';
+            } elseif ($totalPlan > $totalAct) {
+                $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:red;">ผลิตได้ต่ำกว่าเป้าหมาย ' . round(((($totalPlan - $totalAct) * 100) / $totalPlan), 2) . "%</span>";
+            } else {
+                $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:green;">ผลิตได้มากกว่าเป้าหมาย ' . round(((($totalAct - $totalPlan) * 100) / $totalPlan), 2) . "%</span>";
             }
 
             if (!empty($data1x)) {
@@ -122,21 +146,30 @@ class GenDailySelect2Report extends Command
                 //$graph->yaxis->HideTicks(false, false);
 
                 $b1plot = new \BarPlot($data1y);
+                $b3plot = new \BarPlot($data3y);
                 $b2plot = new \LinePlot($data2y);
 
+                $gbplot = new \GroupBarPlot(array( $b3plot, $b1plot));
 
                 $graph->title->Set($logselectm->product->name . " อัตราการคัดสะสม " . $selecteddate . " กะ " . $shiftObj->name);
                 $graph->title->SetFont(FF_CORDIA, FS_BOLD, 14);
 
-                $graph->Add($b1plot);
+                $graph->Add($gbplot);
                 $graph->AddY(0, $b2plot);
                 $graph->ynaxis[0]->SetColor('black');
                 $graph->ynaxis[0]->title->Set('Y-title');
 
-                $b1plot->SetColor("white");
-                $b1plot->SetFillColor("#22ff11");
-                $b1plot->value->SetFormat('%d');
+                $gbplot->SetColor("white");
+                $gbplot->SetFillColor("#22ff11");
+
+                $b3plot->value->Show();
+                $b3plot->value->SetFormat('%d');
+                $b3plot->value->SetColor('black', 'darkred');
+                $b3plot->SetLegend("Planning");
                 $b1plot->value->Show();
+                $b1plot->value->SetFormat('%d');
+                $b1plot->value->SetColor('black', 'darkred');
+                $b1plot->SetLegend("Actual");
 
                 //$b2plot->SetBarCenter();
                 $b2plot->SetColor("red");
@@ -147,8 +180,12 @@ class GenDailySelect2Report extends Command
                 $b2plot->value->SetFormat('%d');
                 $b2plot->value->Show();
                 $b2plot->value->SetColor('red');
+                $b2plot->SetLegend("Sum");
 
                 $b2plot->mark->setFillColor("red");
+
+                $graph->legend->SetPos(0.4, 0.05, 'left', 'top');
+                $graph->legend->SetColumns(4);
 
                 $date = date('ymdHis');
 
@@ -165,6 +202,7 @@ class GenDailySelect2Report extends Command
                 //}
 
                 $fileList[] = $filename;
+                $resultList[] = $resultar;
             }
         }
 
@@ -181,10 +219,10 @@ class GenDailySelect2Report extends Command
                             ->where('product_id', $valueLoop['product_id'])
                             ->get();
 
-
                 $data1y = array();
                 $data2y = array();
                 $data3y = array();
+                $data4y = array();
                 $data1x = array();
                 $sum = 0;
            
@@ -209,6 +247,7 @@ class GenDailySelect2Report extends Command
                     $data1y[] = $valueObj->output_kg;
                     $data2y[] = 0;
                     $data3y[] = $sum;
+                    $data4y[] = $sum;
                     $data1x[] = date('H:i',strtotime($valueObj->process_datetime));
 
                     $totalTime += $valueObj->workhours;
@@ -348,13 +387,14 @@ class GenDailySelect2Report extends Command
         }
         
 
-        $ftStaff = config('myconfig.emaillist');
+        $ftStaff = config('myconfig.emailtestlist');
 
         $mailObj['graph'] = $fileList;
         $mailObj['graph2'] = $fileList2;
         $mailObj['shift'] = $shiftObj;
+        $mailObj['result'] = $resultList;
         $mailObj['subject'] = " อัตราการคัดสะสม " . $selecteddate;
 
-        Mail::to($ftStaff)->send(new FtDataEmail($mailObj));
+        Mail::to($ftStaff)->send(new FtSelect3DataEmail($mailObj));
     }
 }

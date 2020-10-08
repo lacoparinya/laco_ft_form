@@ -9,7 +9,7 @@ class LogPackD extends Model
     protected $fillable = [
         'log_pack_m_id', 'process_datetime', 'workhours',
         'output_pack', 'output_pack_sum', 'input_kg', 'output_kg', 'input_kg_sum', 'output_kg_sum', 'productivity',
-        'yeild_percent', 'num_pack', 'note',
+        'yeild_percent', 'num_pack', 'note','problem'
     ];
 
     public function logpackm()
