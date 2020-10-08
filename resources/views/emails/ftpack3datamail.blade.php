@@ -28,11 +28,8 @@
             @foreach($item1 as $key3 => $item)
             <p>
                         <img src="{{ url('/') }}/ft_form/{{ $item }}" alt="">
-                        <br>
                         <h3>{!! $packdataobj['result'][$key1][$key2][$key3]['txt'] !!}</h3>
-                        <br/>
-                        <h3>{!! $packdataobj['result'][$key1][$key2][$key3]['txt'] !!}</h3>
-                        <br/><h3>ปัญหาที่พบ : 
+                        <h3>ปัญหาที่พบ : 
                         @if (!empty($packdataobj['result'][$key1][$key2][$key3]['problem']))                            
                            @foreach ($packdataobj['result'][$key1][$key2][$key3]['problem'] as $problem)
                                {{ $problem }} , 

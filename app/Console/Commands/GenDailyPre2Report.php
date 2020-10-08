@@ -270,7 +270,7 @@ class GenDailyPre2Report extends Command
 
             $mailObj['graph'] = $fileList;
             $mailObj['result'] = $resultList;
-            $mailObj['subject'] = "ทดสอบ อัตราการเตรียมการสะสม " . $selecteddate;
+            $mailObj['subject'] = "อัตราการเตรียมการสะสม " . $selecteddate;
 
             Mail::to($ftStaff)->send(new FtPre2RptMail($mailObj));
         }

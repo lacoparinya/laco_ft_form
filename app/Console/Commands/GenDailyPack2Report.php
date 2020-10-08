@@ -229,7 +229,7 @@ class GenDailyPack2Report extends Command
 
         $mailObj['graph'] = $fileList;
         $mailObj['result'] = $resultList;
-        $mailObj['subject'] = "ทดสอบ อัตราการแพ็คสะสม " . $selecteddate;
+        $mailObj['subject'] = "อัตราการแพ็คสะสม " . $selecteddate;
 
         Mail::to($ftStaff)->send(new Pack3RptMail($mailObj));//
     }

@@ -26,9 +26,9 @@
             @foreach($ftdataobj['graph'] as $key =>$item)
             <p>
                         <img src="{{ url('/') }}/ft_form/{{ $item }}" alt="">
-                        <br/>
+                        
                         <h3>{!! $ftdataobj['result'][$key]['txt'] !!}</h3>
-                        <br/><h3>ปัญหาที่พบ : 
+                        <h3>ปัญหาที่พบ : 
                         @if (!empty($ftdataobj['result'][$key]['problem']))                            
                            @foreach ($ftdataobj['result'][$key]['problem'] as $problem)
                                {{ $problem }} , 

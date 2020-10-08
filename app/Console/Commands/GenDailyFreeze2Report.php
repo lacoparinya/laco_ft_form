@@ -8,7 +8,7 @@ use App\FreezeD;
 
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
-use App\Mail\FreezeRptMail;
+use App\Mail\Freeze2RptMail;
 
 class GenDailyFreeze2Report extends Command
 {
@@ -47,6 +47,7 @@ class GenDailyFreeze2Report extends Command
         $diff = $this->argument('diff');
 
         $selecteddate = date('Y-m-d');
+        //$selecteddate = '2020-10-07';
         $loopData = FreezeM::where('process_date', $selecteddate)->get();
         $current_date = $selecteddate;
         if ($diff == 'Y') {
@@ -54,7 +55,7 @@ class GenDailyFreeze2Report extends Command
             $loopData = FreezeM::whereBetween('process_date', [$selecteddate2, $selecteddate])->get();
             $current_date = $selecteddate2." - ".$selecteddate;
         }
-        //selecteddate = '2019-08-11';
+        
         require_once app_path() . '/jpgraph/jpgraph.php';
         require_once app_path() . '/jpgraph/jpgraph_bar.php';
         require_once app_path() . '/jpgraph/jpgraph_line.php';
@@ -62,6 +63,7 @@ class GenDailyFreeze2Report extends Command
         
 
         $fileList = array();
+        $resultList = array();
 
         foreach ($loopData as $loopObj) {
             if($loopObj->freezed->count() > 0){
@@ -70,14 +72,19 @@ class GenDailyFreeze2Report extends Command
                 ->orderBy('process_datetime','asc')
                 ->get();
 
-            
-
             $data1y = array();
             $data2y = array();
             $data3y = array();
+            $data4y = array();
             $data1x = array();
             $sumAll = 0;
             $sumRemain = 0;
+            $totalAct = 0;
+            $totalPlan = 0;
+            $resultar = array();
+
+            $rateperhour = $loopObj->targets;
+
             if(!empty($rawdata)){
                 $sumRemain = $rawdata[0]->current_RM + $rawdata[0]->output_sum;
             }
@@ -89,6 +96,22 @@ class GenDailyFreeze2Report extends Command
                 $data1y[] = $rptObj->output_sum;
                 $data2y[] = $sumAll;
                 $data3y[] = $sumRemain;
+                $data4y[] = $rptObj->workhour * $rateperhour;
+
+                $totalAct += $rptObj->output_sum;
+                $totalPlan += $rptObj->workhour * $rateperhour;
+
+                if (!empty($rptObj->problem)) {
+                    $resultar['problem'][] = \Carbon\Carbon::parse($rptObj->process_datetime)->format('H:i') . " - " . $rptObj->problem;
+                }
+            }
+
+            if ($totalPlan == $totalAct) {
+                $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:yellow;">ผลิตได้ตามป้าหมาย</span>';
+            } elseif ($totalPlan > $totalAct) {
+                $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:red;">ผลิตได้ต่ำกว่าเป้าหมาย ' . round(((($totalPlan - $totalAct) * 100) / $totalPlan), 2) . "%</span>";
+            } else {
+                $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:green;">ผลิตได้มากกว่าเป้าหมาย ' . round(((($totalAct - $totalPlan) * 100) / $totalPlan), 2) . "%</span>";
             }
 
             $graph = new \Graph(900, 400);
@@ -114,18 +137,25 @@ class GenDailyFreeze2Report extends Command
             $graph->yaxis->title->SetFont(FF_CORDIA, FS_NORMAL, 14);
 
             $b1plot = new \BarPlot($data1y);
+            $b2plot = new \BarPlot($data4y);
+
             $l1plot = new \LinePlot($data2y);
             $l2plot = new \LinePlot($data3y);
+
+            $gbplot = new \GroupBarPlot(array($b2plot, $b1plot));
 
             $graph->title->Set($productName . " - อัตราการฟรีสสะสม " . $current_date);
             $graph->title->SetFont(FF_CORDIA, FS_BOLD, 14);
 
 
-            $graph->Add($b1plot);
+            $graph->Add($gbplot);
             $graph->AddY(0, $l1plot);
             $graph->AddY(0, $l2plot);
             $graph->ynaxis[0]->SetColor('black');
             $graph->ynaxis[0]->title->Set('Y-title');
+
+            $gbplot->SetColor("white");
+            $gbplot->SetFillColor("#22ff11");
 
             $l1plot->SetColor("red");
 
@@ -149,14 +179,20 @@ class GenDailyFreeze2Report extends Command
             $l2plot->mark->setFillColor("green");
             $l2plot->SetLegend("RM Remain");
 
+            $b2plot->value->Show();
+            $b2plot->value->SetFormat('%d');
+            $b2plot->value->SetColor('black', 'darkred');
+            $b2plot->SetLegend("Planning");
+
             $b1plot->value->Show();
-            $b1plot->SetColor("#61a9f3");
-            $b1plot->SetFillColor("#61a9f3");
+            //$b1plot->SetColor("#61a9f3");
+            //$b1plot->SetFillColor("#61a9f3");
             $b1plot->value->SetFormat('%d');
             $b1plot->value->SetColor('black', 'darkred');
             $b1plot->SetLegend("Freeze");
 
             $graph->legend->SetPos(0.6, 0.05, 'left', 'top');
+            $graph->legend->SetColumns(4);
 
             $date = date('ymdHis');
 
@@ -168,6 +204,7 @@ class GenDailyFreeze2Report extends Command
             $graph->Stroke($filename1);
 
             $fileList[] = $filename;
+                $resultList[] = $resultar;
         }
         }
 
@@ -175,9 +212,10 @@ class GenDailyFreeze2Report extends Command
             $ftStaff = config('myconfig.emaillist');
 
             $mailObj['graph'] = $fileList;
-            $mailObj['subject'] = " อัตราการฟรีสสะสม " . $current_date;
+            $mailObj['result'] = $resultList;
+            $mailObj['subject'] = "อัตราการฟรีสสะสม " . $current_date;
 
-            Mail::to($ftStaff)->send(new FreezeRptMail($mailObj));
+            Mail::to($ftStaff)->send(new Freeze2RptMail($mailObj));
         }
     }
 }
