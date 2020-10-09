@@ -71,10 +71,17 @@
         <input class="form-control" name="note"  id="note" value="{{ $freezem->note or '' }}" >
         {!! $errors->first('note', '<p class="help-block">:message</p>') !!}
     </div>
-    <div class="form-group col-md-12 {{ $errors->has('problem') ? 'has-error' : ''}}">
+    <div class="form-group col-md-8 {{ $errors->has('problem') ? 'has-error' : ''}}">
         <label for="problem" class="control-label">{{ 'ปัญหาที่พบ' }}</label>
         <input class="form-control" name="problem"  id="problem" value="{{ $freezed->problem or '' }}" >
         {!! $errors->first('problem', '<p class="help-block">:message</p>') !!}
+    </div>
+    <div class="form-group col-md-4 {{ $errors->has('problem_img') ? 'has-error' : ''}}">
+        <label for="problem_img" class="control-label">{{ 'ภาพปัญหาที่พบ' }}</label>
+        {!! Form::file('problem_img', $attributes = ['accept'=>'image/jpeg , image/jpg, image/gif, image/png']); !!}   
+        @if (isset($freezed->img_path))
+            <a href="{{ url($freezed->img_path) }}" target="_blank"><img height="50px" src="{{ url($freezed->img_path) }}" ></a>            
+        @endif          
     </div>
 </div>
 

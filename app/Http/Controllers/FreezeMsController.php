@@ -170,6 +170,16 @@ class FreezeMsController extends Controller
             $requestData['output_sum'] += $requestData[$key];
         }
 
+        if ($request->hasFile('problem_img')) {
+            $image = $request->file('problem_img');
+            $name = md5($image->getClientOriginalName() . time()) . '.' . $image->getClientOriginalExtension();
+            $destinationPath = public_path('images/freeze/' . $freeze_m_id);
+            $image->move($destinationPath, $name);
+
+            $requestData['img_path'] = 'images/freeze/' . $freeze_m_id  . "/" . $name;
+        }
+
+
         FreezeD::create($requestData);
 
         $freezed = new FreezeD();
@@ -207,9 +217,18 @@ class FreezeMsController extends Controller
             $requestData['output_sum'] += $requestData[$key];
         }
 
-
-
         $freezed = FreezeD::findOrFail($id);
+
+        if ($request->hasFile('problem_img')) {
+            $image = $request->file('problem_img');
+            $name = md5($image->getClientOriginalName() . time()) . '.' . $image->getClientOriginalExtension();
+            $destinationPath = public_path('images/freeze/' . $freezed->freeze_m_id);
+            $image->move($destinationPath, $name);
+
+            $requestData['img_path'] = 'images/freeze/' . $freezed->freeze_m_id  . "/" . $name;
+        }
+
+        
 
        // $requestData['current_RM'] = $freezed->current_RM;
 

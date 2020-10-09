@@ -9,6 +9,8 @@ use App\FreezeD;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use App\Mail\Freeze2RptMail;
+use Illuminate\Support\Facades\File;
+
 
 class GenDailyFreeze2Report extends Command
 {
@@ -104,6 +106,9 @@ class GenDailyFreeze2Report extends Command
                 if (!empty($rptObj->problem)) {
                     $resultar['problem'][] = \Carbon\Carbon::parse($rptObj->process_datetime)->format('H:i') . " - " . $rptObj->problem;
                 }
+                if (!empty($rptObj->img_path)) {
+                    $resultar['problem_img'][] = $rptObj->img_path;
+                }
             }
 
             if ($totalPlan == $totalAct) {
@@ -196,9 +201,14 @@ class GenDailyFreeze2Report extends Command
 
             $date = date('ymdHis');
 
-            $filename = "graph/freezes/ft_log_freeze_" . $current_date . "-" . md5($loopObj->id) . "-" . $date . ".jpg";
+            $path = public_path() . '/graph/'. date('Ym'). '/freezes';
+            if (!File::exists($path)) {
+                File::makeDirectory($path,  0777, true, true);
+            }
 
-            $filename1 = public_path() . "/graph/freezes/ft_log_freeze_" . $current_date . "-" . md5($loopObj->id) . "-" . $date . ".jpg";
+            $filename = "graph/".date('Ym')."/freezes/ft_log_freeze_" . $current_date . "-" . md5($loopObj->id) . "-" . $date . ".jpg";
+
+            $filename1 = $path . "/ft_log_freeze_" . $current_date . "-" . md5($loopObj->id) . "-" . $date . ".jpg";
 
 
             $graph->Stroke($filename1);

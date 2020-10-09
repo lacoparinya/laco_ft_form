@@ -89,10 +89,18 @@
         <input class="form-control" name="note" type="text" id="note" value="{{ $logprepared->note or '' }}" >
         {!! $errors->first('note', '<p class="help-block">:message</p>') !!}
     </div>
-    <div class="form-group col-md-12 {{ $errors->has('problem') ? 'has-error' : ''}}">
+    <div class="form-group col-md-6 {{ $errors->has('problem') ? 'has-error' : ''}}">
         <label for="problem" class="control-label">{{ 'ปัญหาที่พบ' }}</label>
         <input class="form-control" name="problem"  id="problem" value="{{ $logprepared->problem or '' }}" >
         {!! $errors->first('problem', '<p class="help-block">:message</p>') !!}
+    </div>
+    
+    <div class="form-group col-md-6 {{ $errors->has('problem_img') ? 'has-error' : ''}}">
+        <label for="problem_img" class="control-label">{{ 'ภาพปัญหาที่พบ' }}</label>
+        {!! Form::file('problem_img', $attributes = ['accept'=>'image/jpeg , image/jpg, image/gif, image/png']); !!}   
+        @if (isset($logprepared->img_path))
+            <a href="{{ url($logprepared->img_path) }}" target="_blank"><img height="50px" src="{{ url($logprepared->img_path) }}" ></a>            
+        @endif          
     </div>
 </div>
 <div class="form-group">

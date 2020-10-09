@@ -347,6 +347,15 @@ class LogPackMsController extends Controller
 
         $requestData['process_datetime'] = \Carbon\Carbon::parse($requestData['process_datetime'])->format('Y-m-d H:i');
 
+        if ($request->hasFile('problem_img')) {
+            $image = $request->file('problem_img');
+            $name = md5($image->getClientOriginalName() . time()) . '.' . $image->getClientOriginalExtension();
+            $destinationPath = public_path('images/pack/' . $log_pack_m_id);
+            $image->move($destinationPath, $name);
+
+            $requestData['img_path'] = 'images/pack/' . $log_pack_m_id  . "/" . $name;
+        }
+
         LogPackD::create($requestData);
 
         $logpackd = new LogPackD();
@@ -380,6 +389,15 @@ class LogPackMsController extends Controller
 
 
         $logpackd = LogPackD::findOrFail($id);
+
+        if ($request->hasFile('problem_img')) {
+            $image = $request->file('problem_img');
+            $name = md5($image->getClientOriginalName() . time()) . '.' . $image->getClientOriginalExtension();
+            $destinationPath = public_path('images/pack/' . $logpackd->log_pack_m_id);
+            $image->move($destinationPath, $name);
+
+            $requestData['img_path'] = 'images/pack/' . $logpackd->log_pack_m_id  . "/" . $name;
+        }
 
         $logpackd->update($requestData);
 

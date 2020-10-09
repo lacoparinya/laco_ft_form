@@ -228,6 +228,15 @@ class LogSelectMsController extends Controller
 
         $requestData['process_datetime'] = \Carbon\Carbon::parse($requestData['process_datetime'])->format('Y-m-d H:i');
 
+        if ($request->hasFile('problem_img')) {
+            $image = $request->file('problem_img');
+            $name = md5($image->getClientOriginalName() . time()) . '.' . $image->getClientOriginalExtension();
+            $destinationPath = public_path('images/select/' . $log_select_m_id);
+            $image->move($destinationPath, $name);
+
+            $requestData['img_path'] = 'images/select/' . $log_select_m_id  . "/" . $name;
+        }
+
         LogSelectD::create($requestData);
 
         $logselectd = new LogSelectD();
@@ -267,6 +276,15 @@ class LogSelectMsController extends Controller
 
 
         $logselectd = LogSelectD::findOrFail($id);
+
+        if ($request->hasFile('problem_img')) {
+            $image = $request->file('problem_img');
+            $name = md5($image->getClientOriginalName() . time()) . '.' . $image->getClientOriginalExtension();
+            $destinationPath = public_path('images/select/' . $logselectd->log_select_m_id);
+            $image->move($destinationPath, $name);
+
+            $requestData['img_path'] = 'images/select/' . $logselectd->log_select_m_id  . "/" . $name;
+        }
 
         $logselectd->update($requestData);
 

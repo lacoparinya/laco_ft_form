@@ -159,7 +159,9 @@ class GenDailyPre2Report extends Command
                 if(!empty($item->problem)){
                     $resultar['problem'][] = date('H:i', strtotime($item->process_datetime)) . " - " . $item->problem;
                 }
-                
+                if (!empty($item->img_path)) {
+                    $resultar['problem_img'][] = $item->img_path;
+                }
             }
 
             foreach ($estimateData as $item2){
@@ -254,9 +256,14 @@ class GenDailyPre2Report extends Command
 
             $date = date('ymdHis');
 
-            $filename = "graph/prepare/ft_log_pre_" . $current_date . "-" . $logpreparem->preprod->name . "-" . $logpreparem->id . "-" . $date . ".jpg";
+            $path = public_path() . '/graph/' . date('Ym') . '/prepares';
+            if (!File::exists($path)) {
+                File::makeDirectory($path,  0777, true, true);
+            }
 
-            $filename1 = public_path() . "/graph/prepare/ft_log_pre_" . $current_date . "-" . $logpreparem->preprod->name . "-" . $logpreparem->id . "-" . $date . ".jpg";
+            $filename = 'graph/' . date('Ym'). "/prepares/ft_log_pre_" . $current_date . "-" . $logpreparem->preprod->name . "-" . $logpreparem->id . "-" . $date . ".jpg";
+
+            $filename1 = $path . "/ft_log_pre_" . $current_date . "-" . $logpreparem->preprod->name . "-" . $logpreparem->id . "-" . $date . ".jpg";
 
 
             $graph->Stroke($filename1);

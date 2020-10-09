@@ -104,6 +104,10 @@ class GenDailySelect2Report extends Command
                     $resultar['problem'][] = date('H:i', strtotime($valueObj->process_datetime)) . " - " . $valueObj->problem;
                 }
 
+                if (!empty($valueObj->img_path)) {
+                    $resultar['problem_img'][] = $valueObj->img_path;
+                }
+
             }
 
             if ($totalPlan == $totalAct) {
@@ -189,9 +193,14 @@ class GenDailySelect2Report extends Command
 
                 $date = date('ymdHis');
 
-                $filename = "graph/selects/ft_log_select_" . $current_date . "-" . $shiftId . "-" . $logselectm->product_id . "-" . $date . ".jpg";
+                $path = public_path() . '/graph/' . date('Ym') . '/selects';
+                if (!File::exists($path)) {
+                    File::makeDirectory($path,  0777, true, true);
+                }
 
-                $filename1 = public_path() . "/graph/selects/ft_log_select_" . $current_date . "-" . $shiftId . "-" . $logselectm->product_id . "-" . $date . ".jpg";
+                $filename = 'graph/' . date('Ym') . "/selects/ft_log_select_" . $current_date . "-" . $shiftId . "-" . $logselectm->product_id . "-" . $date . ".jpg";
+
+                $filename1 = $path . "/ft_log_select_" . $current_date . "-" . $shiftId . "-" . $logselectm->product_id . "-" . $date . ".jpg";
 
 
                 $graph->Stroke($filename1);
@@ -370,9 +379,15 @@ class GenDailySelect2Report extends Command
 
                 $date = date('ymdHis');
 
-                $filename2 = "graph/selects/ft_log_select_all_" . $current_date . "-" . $productObj->id . "-" . $date . ".jpg";
+                $path = public_path() . '/graph/' . date('Ym') . '/selects';
+                if (!File::exists($path)) {
+                    File::makeDirectory($path,  0777, true, true);
+                }
 
-                $filename11 = public_path() . "/graph/selects/ft_log_select_all_" . $current_date . "-" . $productObj->id . "-" . $date . ".jpg";
+
+                $filename2 = 'graph/' . date('Ym') . "/selects/ft_log_select_all_" . $current_date . "-" . $productObj->id . "-" . $date . ".jpg";
+
+                $filename11 = $path . "/ft_log_select_all_" . $current_date . "-" . $productObj->id . "-" . $date . ".jpg";
 
 
                 $graph->Stroke($filename11);

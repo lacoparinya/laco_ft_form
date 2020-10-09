@@ -191,6 +191,16 @@ class LogPrepareMsController extends Controller
         $requestData['input_sum'] = 0;
         $requestData['output_sum'] = 0;
 
+
+        if ($request->hasFile('problem_img')) {
+            $image = $request->file('problem_img');
+            $name = md5($image->getClientOriginalName() . time()) . '.' . $image->getClientOriginalExtension();
+            $destinationPath = public_path('images/freeze/' . $log_prepare_m_id);
+            $image->move($destinationPath, $name);
+
+            $requestData['img_path'] = 'images/freeze/' . $log_prepare_m_id  . "/" . $name;
+        }
+
         LogPrepareD::create($requestData);
 
         $logprepared = new LogPrepareD();
@@ -218,6 +228,15 @@ class LogPrepareMsController extends Controller
 
 
         $logprepared = LogPrepareD::findOrFail($id);
+
+        if ($request->hasFile('problem_img')) {
+            $image = $request->file('problem_img');
+            $name = md5($image->getClientOriginalName() . time()) . '.' . $image->getClientOriginalExtension();
+            $destinationPath = public_path('images/prepare/' . $logprepared->log_prepare_m_id);
+            $image->move($destinationPath, $name);
+
+            $requestData['img_path'] = 'images/prepare/' . $logprepared->log_prepare_m_id  . "/" . $name;
+        }
 
         $logprepared->update($requestData);
 

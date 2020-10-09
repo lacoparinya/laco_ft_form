@@ -10,7 +10,8 @@ class LogSelectD extends Model
         'log_select_m_id', 'process_datetime', 'workhours', 'input_kg', 'output_kg', 
         'sum_in_kg', 'sum_kg', 'yeild_percent', 'num_pk', 'num_pf', 'num_pst', 'num_classify', 
         'line_a', 'line_b', 'line_classify', 'line_classify_unit', 'grade', 'ref_note',
-        'note', 'problem'
+        'note',
+        'problem', 'img_path'
     ];
 
     public function logpreparem()

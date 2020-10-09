@@ -207,6 +207,15 @@ class LogPstSelectsController extends Controller
 
         $requestData['process_datetime'] = \Carbon\Carbon::parse($requestData['process_datetime'])->format('Y-m-d H:i');
 
+        if ($request->hasFile('problem_img')) {
+            $image = $request->file('problem_img');
+            $name = md5($image->getClientOriginalName() . time()) . '.' . $image->getClientOriginalExtension();
+            $destinationPath = public_path('images/pst/' . $log_pst_select_m_id);
+            $image->move($destinationPath, $name);
+
+            $requestData['img_path'] = 'images/pst/' . $log_pst_select_m_id  . "/" . $name;
+        }
+
         LogPstSelectD::create($requestData);
 
         $logselectd = new LogPstSelectD();
@@ -247,6 +256,15 @@ class LogPstSelectsController extends Controller
 
 
         $logselectd = LogPstSelectD::findOrFail($id);
+
+        if ($request->hasFile('problem_img')) {
+            $image = $request->file('problem_img');
+            $name = md5($image->getClientOriginalName() . time()) . '.' . $image->getClientOriginalExtension();
+            $destinationPath = public_path('images/pst/' . $logselectd->log_pst_select_m_id);
+            $image->move($destinationPath, $name);
+
+            $requestData['img_path'] = 'images/pst/' . $logselectd->log_pst_select_m_id  . "/" . $name;
+        }
 
         $logselectd->update($requestData);
 

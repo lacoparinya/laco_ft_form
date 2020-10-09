@@ -38,7 +38,11 @@
                             ไม่พบปัญหา
                         @endif
                         </h3>
-                       
+                       @if (!empty($packdataobj['result'][$key1][$key2][$key3]['problem_img']))                            
+                           @foreach ($packdataobj['result'][$key1][$key2][$key3]['problem_img'] as $problemimg)
+                               <a href="{{ url('/') }}/ft_form/{{ $problemimg }}" target="_blank">{{ HTML::image('/ft_form/'.$problemimg, 'alt', array( 'height' => 200 )) }}</a>                                
+                            @endforeach 
+                        @endif
  <br/></p>
  @endforeach
             @endforeach

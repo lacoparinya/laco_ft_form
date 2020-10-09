@@ -107,16 +107,23 @@
     {!! $errors->first('input_kg', '<p class="help-block">:message</p>') !!}
 </div>
 
-    <div class="form-group col-md-6 {{ $errors->has('note') ? 'has-error' : ''}}">
+    <div class="form-group col-md-4 {{ $errors->has('note') ? 'has-error' : ''}}">
         <label for="note" class="control-label">{{ 'Note' }}</label>
         <input class="form-control" name="note" type="text" id="note" value="{{ $logselectd->note or '' }}" >
         <input type='hidden' name='log_select_m_id' id='log_select_m_id' value='{{ $logselectm->id }}' >
         {!! $errors->first('note', '<p class="help-block">:message</p>') !!}
     </div>
-    <div class="form-group col-md-6 {{ $errors->has('problem') ? 'has-error' : ''}}">
+    <div class="form-group col-md-4 {{ $errors->has('problem') ? 'has-error' : ''}}">
         <label for="problem" class="control-label">{{ 'ปัญหาที่พบ' }}</label>
         <input class="form-control" name="problem"  id="problem" value="{{ $logselectd->problem or '' }}" >
         {!! $errors->first('problem', '<p class="help-block">:message</p>') !!}
+    </div>
+    <div class="form-group col-md-4 {{ $errors->has('problem_img') ? 'has-error' : ''}}">
+        <label for="problem_img" class="control-label">{{ 'ภาพปัญหาที่พบ' }}</label>
+        {!! Form::file('problem_img', $attributes = ['accept'=>'image/jpeg , image/jpg, image/gif, image/png']); !!}   
+        @if (isset($logselectd->img_path))
+            <a href="{{ url($logselectd->img_path) }}" target="_blank"><img height="50px" src="{{ url($logselectd->img_path) }}" ></a>            
+        @endif          
     </div>
 </div>
 <div class="form-group">

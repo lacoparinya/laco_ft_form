@@ -9,7 +9,8 @@ class LogPrepareD extends Model
     protected $fillable = [
         'log_prepare_m_id', 'pre_prod_id', 'process_datetime', 'shift_id',
         'workhours', 'targets', 'input', 'output', 'input_sum', 'output_sum', 'num_pre',
-        'num_iqf', 'num_all', 'note','problem'
+        'num_iqf', 'num_all', 'note',
+        'problem', 'img_path'
     ];
 
     public function preprod()

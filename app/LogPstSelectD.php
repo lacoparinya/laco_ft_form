@@ -8,7 +8,8 @@ class LogPstSelectD extends Model
 {
     protected $fillable = [
         'log_pst_select_m_id', 'process_datetime', 'workhours', 'input_kg', 'output_kg',
-        'sum_in_kg', 'sum_kg', 'yeild_percent', 'num_classify', 'grade', 'ref_note', 'note','problem'
+        'sum_in_kg', 'sum_kg', 'yeild_percent', 'num_classify', 'grade', 'ref_note', 'note',
+        'problem', 'img_path'
     ];
 
     public function logpstselectm()

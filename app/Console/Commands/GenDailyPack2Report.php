@@ -96,6 +96,10 @@ class GenDailyPack2Report extends Command
                     if(!empty($valueObj->problem)){
                         $resultar['problem'][] = date('H:i', strtotime($valueObj->process_datetime)) . " - " . $valueObj->problem;
                     }
+
+                    if (!empty($valueObj->img_path)) {
+                        $resultar['problem_img'][] = $valueObj->img_path;
+                    }
                     
                 }
 
@@ -211,9 +215,14 @@ class GenDailyPack2Report extends Command
 
                 $date = date('ymdHis');
 
-                $filename = "graph/packs/ft_log_pack_" . $current_date . "-" . $logpackm->shift->id . "-" . $logpackm->method_id . "-" . $logpackm->package_id . "-" . $date . ".jpg";
+                $path = public_path() . '/graph/' . date('Ym') . '/packs';
+                if (!File::exists($path)) {
+                    File::makeDirectory($path,  0777, true, true);
+                }
 
-                $filename1 = public_path() . "/graph/packs/ft_log_pack_" . $current_date . "-" . $logpackm->shift->id . "-" . $logpackm->method_id . "-" . $logpackm->package_id . "-" . $date . ".jpg";
+                $filename = 'graph/' . date('Ym') . "/packs/ft_log_pack_" . $current_date . "-" . $logpackm->shift->id . "-" . $logpackm->method_id . "-" . $logpackm->package_id . "-" . $date . ".jpg";
+
+                $filename1 = $path. "/ft_log_pack_" . $current_date . "-" . $logpackm->shift->id . "-" . $logpackm->method_id . "-" . $logpackm->package_id . "-" . $date . ".jpg";
 
 
                 $graph->Stroke($filename1);

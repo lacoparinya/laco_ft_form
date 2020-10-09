@@ -37,6 +37,11 @@
                             ไม่พบปัญหา
                         @endif
                         </h3>
+                        @if (!empty($ftdataobj['result'][$key]['problem_img']))                            
+                           @foreach ($ftdataobj['result'][$key]['problem_img'] as $problemimg)
+                               <a href="{{ url('/') }}/ft_form/{{ $problemimg }}" target="_blank">{{ HTML::image('/ft_form/'.$problemimg, 'alt', array( 'height' => 200 )) }}</a>                                
+                            @endforeach 
+                        @endif
  <br/></p>
             @endforeach
 
