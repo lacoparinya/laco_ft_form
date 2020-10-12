@@ -79,7 +79,7 @@
                                             เตรียมการ / IQF / รวม
                                         </th>
                                         <th>
-                                            Note
+                                            Note / ปัญหา
                                         </th>
                                         <th>Action</th>
                                     </tr>
@@ -92,7 +92,16 @@
                                             <td>{{ $item->input }} / {{ $item->output }}</td>
                                             <td>{{ $item->input_sum }} / {{ $item->output_sum }}</td>
                                             <td>{{ $item->num_pre }} / {{ $item->num_iqf }} / {{ $item->num_pre + $item->num_iqf }}</td>
-                                            <td>{{ $item->note }}</td>
+                                            <td>{{ $item->note }}
+                                        @if (!empty($item->problem))
+                                                <br/>{{ $item->problem }}
+                                            @endif 
+                                               
+                                            @if (isset($item->img_path))
+                                                <br/><a href="{{ url($item->img_path) }}" target="_blank"><img height="50px" src="{{ url($item->img_path) }}" ></a>            
+                                            @endif 
+                                        </td>
+                                            
                                             <td>
                                             <a href="{{ url('/log-prepare-ms/editDetail/' . $item->id) }}" title="Edit FreezeM"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
                                             <a href="{{ url('/log-prepare-ms/deleteDetail/' . $item->id . '/'. $item->log_prepare_m_id) }}" title="Delete FreezeM"><button class="btn btn-danger btn-sm"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button></a>

@@ -88,7 +88,7 @@
                                         <th colspan="2">ผล</th>
                                         <th colspan="2">สะสม</th>
                                         <th rowspan="2">Yeild / Productivity</th>
-                                        <th rowspan="2">Note</th>
+                                        <th rowspan="2">Note / ปัญหา</th>
                                         <th rowspan="2"></th>
                                     </tr>
                                      <tr>
@@ -108,7 +108,15 @@
                                         <td>{{ $item->input_kg_sum }} / {{ $item->output_kg_sum }}</td>
                                         <td>{{ $item->output_pack_sum }}</td>
                                         <td>{{ round($item->yeild_percent,2) }} / {{ round($item->productivity,2) }}</td>
-                                        <td>{{ $item->note }}</td>
+                                        <td>{{ $item->note }}
+                                        @if (!empty($item->problem))
+                                                <br/>{{ $item->problem }}
+                                            @endif 
+                                               
+                                            @if (isset($item->img_path))
+                                                <br/><a href="{{ url($item->img_path) }}" target="_blank"><img height="50px" src="{{ url($item->img_path) }}" ></a>            
+                                            @endif 
+                                        </td>
                                         <td><a href="{{ url('/log-pack-ms/editDetail/' . $item->id) }}" title="Edit FreezeM"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
                                             <a href="{{ url('/log-pack-ms/deleteDetail/' . $item->id . '/'. $item->log_pack_m_id) }}" title="Delete FreezeM"><button class="btn btn-danger btn-sm"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button></a>
                                        </td>

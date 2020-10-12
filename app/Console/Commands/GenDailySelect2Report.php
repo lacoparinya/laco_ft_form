@@ -400,16 +400,18 @@ class GenDailySelect2Report extends Command
                 $fileList2[] = $filename2;
             }
         }
-        
 
-        $ftStaff = config('myconfig.emaillist');
+        if (!empty($fileList)) {
 
-        $mailObj['graph'] = $fileList;
-        $mailObj['graph2'] = $fileList2;
-        $mailObj['shift'] = $shiftObj;
-        $mailObj['result'] = $resultList;
-        $mailObj['subject'] = "อัตราการคัดสะสม " . $selecteddate;
+            $ftStaff = config('myconfig.emaillist');
 
-        Mail::to($ftStaff)->send(new FtSelect3DataEmail($mailObj));
+            $mailObj['graph'] = $fileList;
+            $mailObj['graph2'] = $fileList2;
+            $mailObj['shift'] = $shiftObj;
+            $mailObj['result'] = $resultList;
+            $mailObj['subject'] = "อัตราการคัดสะสม " . $selecteddate;
+
+            Mail::to($ftStaff)->send(new FtSelect3DataEmail($mailObj));
+        }
     }
 }

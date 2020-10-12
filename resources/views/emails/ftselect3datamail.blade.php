@@ -31,7 +31,7 @@
                         <h3>ปัญหาที่พบ : 
                         @if (!empty($ftdataobj['result'][$key]['problem']))                            
                            @foreach ($ftdataobj['result'][$key]['problem'] as $problem)
-                               {{ $problem }} , 
+                               {{ $problem }} <br/>  
                            @endforeach 
                         @else
                             ไม่พบปัญหา

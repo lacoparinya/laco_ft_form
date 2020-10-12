@@ -59,7 +59,7 @@
                                         <th colspan="2">สะสม kg</th>
                                         <th colspan="4">คนคัด</th>
                                         <th rowspan="2">เกรด</th>
-                                        <th rowspan="2">SAP Code<br/>หมายเหตุ</th>
+                                        <th rowspan="2">SAP Code<br/>หมายเหตุ<br/>ปัญหา</th>
                                         <th rowspan="2"></th>
                                     </tr>
                                     <tr>
@@ -87,7 +87,17 @@
                                             <td>{{ $item->num_pst }}</td>
                                             <td>{{ $item->num_classify }}</td>
                                             <td>{{ $item->grade }}</td>
-                                            <td>{{ $item->ref_note }}<br/>{{ $item->note }}</td>
+                                            <td>{{ $item->ref_note }}
+                                            @if (!empty($item->note))
+                                                <br/>{{ $item->note }}
+                                            @endif
+                                            @if (!empty($item->problem))
+                                                <br/>{{ $item->problem }}
+                                            @endif    
+                                            @if (isset($item->img_path))
+                                                <br/><a href="{{ url($item->img_path) }}" target="_blank"><img height="50px" src="{{ url($item->img_path) }}" ></a>            
+                                            @endif  
+                                            </td>
                                             <td><a href="{{ url('/log-select-ms/editDetail/' . $item->id) }}" title="Edit FreezeM"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
                                             <a href="{{ url('/log-select-ms/deleteDetail/' . $item->id . '/'. $item->log_select_m_id) }}" title="Delete FreezeM"><button class="btn btn-danger btn-sm"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button></a>
                                        </td>

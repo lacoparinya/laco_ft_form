@@ -14,6 +14,7 @@ return [
         'VW' => 'Varut@lannaagro.com',
         'OC' => 'Oraphan@Lannaagro.com',
         'PKP' => 'parinya.k@lannaagro.com',
+        'PC' => 'Pimchanok@Lannaagro.com',
     ],
     'emailtestlist' => [
         'PKP' => 'parinya.k@lannaagro.com',

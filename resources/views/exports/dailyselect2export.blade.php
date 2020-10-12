@@ -60,6 +60,7 @@
                 <th>REF SAP</th>
                 <th>เกรดถั่วแระ</th>
                 <th>สถานการณ์คัด</th>
+                <th>ปัญหา</th>
             </tr>
         </thead>
         <tbody>
@@ -91,6 +92,7 @@
                         <td>{{ $item->ref_note }}</td>
                         <td>{{ $item->grade }}</td>
                         <td>{{ $item->note }}</td>
+                        <td>{{ $item->problem }}</td>
                     </tr>
             @endforeach
             @endforeach

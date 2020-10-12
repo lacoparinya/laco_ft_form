@@ -51,6 +51,7 @@
                 <th>จำนวนเตรียมการ</th>
                 <th>จำนวน IQF/F</th>
                 <th>หมายเหตุ</th>
+                <th>ปัญหา</th>
             </tr>
         </thead>
         <tbody>
@@ -69,6 +70,7 @@
                         <td>{{ $itemd->num_pre }}</td>
                         <td>{{ $itemd->num_iqf }}</td>
                         <td>{{ $itemd->note }}</td>
+                        <td>{{ $itemd->problem }}</td>
                     </tr>
                 @endforeach
             @endforeach

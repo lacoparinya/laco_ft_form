@@ -40,6 +40,7 @@
                                         @endforeach
                                         <th>Total</th>
                                         <th>Remain</th>
+                                        <th>Note / ปัญหา</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -52,6 +53,16 @@
                                         @endforeach
                                         <td>{{ number_format($freezeditem->output_sum,2,".",",") }}</td>
                                         <td>{{ number_format($freezeditem->current_RM,2,".",",") }}</td>
+                                        <td>{{ $freezeditem->note }}
+                                        @if (!empty($freezeditem->problem))
+                                                <br/>{{ $freezeditem->problem }}
+                                            @endif 
+
+                                               
+                                            @if (isset($freezeditem->img_path))
+                                                <br/><a href="{{ url($freezeditem->img_path) }}" target="_blank"><img height="50px" src="{{ url($freezeditem->img_path) }}" ></a>            
+                                            @endif 
+                                        </td>
                                         <td>
                                             <a href="{{ url('/freeze-ms/editDetail/' . $freezeditem->id) }}" title="Edit FreezeM"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
                                             <a href="{{ url('/freeze-ms/deleteDetail/' . $freezeditem->id . '/'. $freezeditem->freeze_m_id) }}" title="Delete FreezeM"><button class="btn btn-danger btn-sm"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button></a>

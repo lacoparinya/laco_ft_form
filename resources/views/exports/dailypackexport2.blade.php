@@ -56,6 +56,7 @@
                 <th>% yield</th>
                 <th>จำนวนคน</th>
                 <th>หมายเหตุ</th>
+                <th>ปัญหา</th>
             </tr>
         </thead>
         <tbody>
@@ -79,6 +80,7 @@
                         <td>{{ $item->yeild_percent }}</td>
                         <td>{{ $item->num_pack }}</td>
                         <td>{{ $item->note }}</td>
+                        <td>{{ $item->problem }}</td>
                     </tr>
             @endforeach
             @endforeach

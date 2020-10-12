@@ -56,6 +56,7 @@
                 <th>RATE เฉลี่ย/กะ</th>
                 <th>Produtivity</th>
                 <th>หมายเหตุ</th>
+                <th>ปัญหา</th>
             </tr>
         </thead>
         <tbody>
@@ -101,6 +102,7 @@
                         @endif
                         
                         <td>{{ $itemd->note }}</td>
+                        <td>{{ $itemd->problem }}</td>
                     </tr>
 
                 @endforeach

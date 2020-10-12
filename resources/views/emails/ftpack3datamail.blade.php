@@ -32,7 +32,7 @@
                         <h3>ปัญหาที่พบ : 
                         @if (!empty($packdataobj['result'][$key1][$key2][$key3]['problem']))                            
                            @foreach ($packdataobj['result'][$key1][$key2][$key3]['problem'] as $problem)
-                               {{ $problem }} , 
+                               {{ $problem }} <br/> 
                            @endforeach 
                         @else
                             ไม่พบปัญหา

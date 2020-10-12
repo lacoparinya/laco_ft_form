@@ -66,6 +66,7 @@
                 <th>ปริมาณ RM รับเข้า</th>
                 <th>รีฟรีส (kg.)</th>
                 <th>หมายเหตุ</th>
+                <th>ปัญหา</th>
             </tr>
         </thead>
         <tbody>
@@ -94,7 +95,8 @@
                         @endphp
                         </td>                 
                         <td></td>
-                    <td>{{$item->note}}</td>
+                        <td>{{$item->note}}</td>
+                        <td>{{$item->problem}}</td>
                     </tr>
                     @php
                         $lp++;

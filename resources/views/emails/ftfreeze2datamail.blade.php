@@ -30,7 +30,7 @@
                         <h3>ปัญหาที่พบ : 
                         @if (!empty($freezedataobj['result'][$key]['problem']))                            
                            @foreach ($freezedataobj['result'][$key]['problem'] as $problem)
-                               {{ $problem }} , 
+                               {{ $problem }} <br/>
                            @endforeach 
                         @else
                             ไม่พบปัญหา
