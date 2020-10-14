@@ -8,6 +8,7 @@ use App\Mail\Pack3RptMail;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\File;
 class GenDailyPack2Report extends Command
 {
     /**
@@ -234,12 +235,14 @@ class GenDailyPack2Report extends Command
             }
         }
 
-        $ftStaff = config('myconfig.emaillist');
+        if (!empty($fileList)) {
+            $ftStaff = config('myconfig.emaillist');
 
-        $mailObj['graph'] = $fileList;
-        $mailObj['result'] = $resultList;
-        $mailObj['subject'] = "อัตราการแพ็คสะสม " . $selecteddate;
+            $mailObj['graph'] = $fileList;
+            $mailObj['result'] = $resultList;
+            $mailObj['subject'] = "อัตราการแพ็คสะสม " . $selecteddate;
 
-        Mail::to($ftStaff)->send(new Pack3RptMail($mailObj));//
+            Mail::to($ftStaff)->send(new Pack3RptMail($mailObj));
+        }
     }
 }

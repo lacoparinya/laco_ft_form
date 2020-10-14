@@ -10,6 +10,7 @@ use App\Product;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\FtSelect3DataEmail;
+use Illuminate\Support\Facades\File;
 
 class GenDailySelect2Report extends Command
 {
