@@ -9,6 +9,7 @@ use App\FreezeM;
 use App\FreezeD;
 use App\IqfMapCol;
 use App\IqfJob;
+use App\Shift;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -145,6 +146,7 @@ class FreezeMsController extends Controller
         $freezem = FreezeM::findOrFail($freeze_m_id);
         $iqfmapcollist = IqfMapCol::pluck('name', 'col_name');
         $iqfjoblist = IqfJob::pluck('name', 'id');
+        $shiftlist = Shift::orderBy('name')->pluck('name', 'id');
 
         $freezeall = 0;
 
@@ -152,7 +154,7 @@ class FreezeMsController extends Controller
             $freezeall += $freezedobj->output_sum;
         }
 
-        return view('freeze-ms.createDetail', compact('freezem', 'iqfjoblist', 'iqfmapcollist', 'freezeall'));
+        return view('freeze-ms.createDetail', compact('freezem', 'iqfjoblist', 'iqfmapcollist','freezeall', 'shiftlist'));
     }
 
     public function storeDetail(Request $request, $freeze_m_id)
@@ -194,6 +196,7 @@ class FreezeMsController extends Controller
         $freezem = FreezeM::findOrFail($freezed->freeze_m_id);
         $iqfmapcollist = IqfMapCol::pluck('name', 'col_name');
         $iqfjoblist = IqfJob::pluck('name', 'id');
+        $shiftlist = Shift::orderBy('name')->pluck('name', 'id');
 
         $freezeall = 0;
 
@@ -201,7 +204,7 @@ class FreezeMsController extends Controller
             $freezeall += $freezedobj->output_sum;
         }
 
-        return view('freeze-ms.editDetail', compact('freezem', 'iqfmapcollist', 'iqfjoblist', 'freezed', 'freezeall'));
+        return view('freeze-ms.editDetail', compact('freezem', 'iqfmapcollist', 'iqfjoblist', 'freezed', 'freezeall', 'shiftlist'));
     }
 
     public function updateDetail(Request $request, $id)

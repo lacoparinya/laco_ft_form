@@ -18,7 +18,7 @@ class GenDailyPre2Report extends Command
      *
      * @var string
      */
-    protected $signature = 'gen:dailypre2report {diff}';
+    protected $signature = 'gen:dailypre2report {diff} {shift_id} {plan_flag}';
 
     /**
      * The console command description.
@@ -47,10 +47,46 @@ class GenDailyPre2Report extends Command
     {
         ini_set('memory_limit', '256M');
         $diff = $this->argument('diff');
+        $shiftId = $this->argument('shift_id');
+        $plan_flag = $this->argument('plan_flag');
 
         $selecteddate = date('Y-m-d');
         if ($diff == 'Y') {
             $selecteddate = date('Y-m-d', strtotime("-1 days"));
+        }
+
+        $datapl = array();
+        if ($plan_flag == 'Y') {
+            $datapl = DB::table('log_prepare_ms')
+            ->leftjoin('log_prepare_ds', 'log_prepare_ms.id', '=', 'log_prepare_ds.log_prepare_m_id')
+            ->leftjoin('pre_prods', 'pre_prods.id', '=', 'log_prepare_ms.pre_prod_id')
+            ->leftjoin('shifts', 'shifts.id', '=', 'log_prepare_ds.shift_id')
+            ->select(DB::raw("log_prepare_ms.process_date,
+shifts.name as shiftname,
+log_prepare_ms.staff_target,
+log_prepare_ms.staff_operate,
+log_prepare_ms.staff_pf,
+log_prepare_ms.staff_pk,
+log_prepare_ms.staff_pst,
+ISNULL(log_prepare_ms.staff_target,0) - (ISNULL(log_prepare_ms.staff_pk,0)+ISNULL(log_prepare_ms.staff_pf,0)+ISNULL(log_prepare_ms.staff_pst,0))  as 'staff_diff',   
+pre_prods.name as productname,
+log_prepare_ms.targetperhr * sum(log_prepare_ds.workhours) as 'Plan',
+CASE WHEN max(log_prepare_ds.input_sum) > 0 THEN max(log_prepare_ds.input_sum) ELSE max(log_prepare_ds.output_sum) END as 'Actual',
+log_prepare_ms.targetperhr * sum(log_prepare_ds.workhours) - CASE WHEN max(log_prepare_ds.input_sum) > 0 THEN max(log_prepare_ds.input_sum) ELSE max(log_prepare_ds.output_sum) END as 'diff',
+log_prepare_ms.note as Remark"))
+            ->where('log_prepare_ms.process_date', $selecteddate)
+                ->where('log_prepare_ds.shift_id', $shiftId)
+                ->groupBy(DB::raw('log_prepare_ms.process_date,
+shifts.name,
+log_prepare_ms.staff_target,
+log_prepare_ms.staff_operate,
+log_prepare_ms.staff_pf,
+log_prepare_ms.staff_pk,
+log_prepare_ms.staff_pst,
+pre_prods.name,
+log_prepare_ms.targetperhr,
+log_prepare_ms.note'))
+                ->get();
         }
 
         require_once app_path() . '/jpgraph/jpgraph.php';
@@ -274,10 +310,11 @@ class GenDailyPre2Report extends Command
         }
 
         if(!empty( $fileList)){
-            $ftStaff = config('myconfig.emaillist');
+            $ftStaff = config('myconfig.emailtestlist');
 
             $mailObj['graph'] = $fileList;
             $mailObj['result'] = $resultList;
+            $mailObj['datapl'] = $datapl;
             $mailObj['subject'] = "อัตราการเตรียมการสะสม " . $selecteddate;
 
             Mail::to($ftStaff)->send(new FtPre2RptMail($mailObj));

@@ -19,7 +19,7 @@ class GenDailyFreeze2Report extends Command
      *
      * @var string
      */
-    protected $signature = 'gen:dailyfreeze2report {diff}';
+    protected $signature = 'gen:dailyfreeze2report {diff} {shift_id} {plan_flag}';
 
     /**
      * The console command description.
@@ -47,6 +47,8 @@ class GenDailyFreeze2Report extends Command
     {
         ini_set('memory_limit', '256M');
         $diff = $this->argument('diff');
+        $shiftId = $this->argument('shift_id');
+        $plan_flag = $this->argument('plan_flag');
 
         $selecteddate = date('Y-m-d');
         //$selecteddate = '2020-10-07';
@@ -56,6 +58,75 @@ class GenDailyFreeze2Report extends Command
             $selecteddate2 = date('Y-m-d', strtotime("-1 days"));
             $loopData = FreezeM::whereBetween('process_date', [$selecteddate2, $selecteddate])->get();
             $current_date = $selecteddate2." - ".$selecteddate;
+        }
+
+        $datapl = array();
+        if ($plan_flag == 'Y') {
+            if ($diff == 'Y') {
+
+                $selecteddate2 = date('Y-m-d', strtotime("-1 days"));
+                    $datapl = DB::table('freeze_ms')
+                    ->leftjoin('freeze_ds', 'freeze_ms.id', '=', 'freeze_ds.freeze_m_id')
+                    ->leftjoin('iqf_jobs', 'iqf_jobs.id', '=', 'freeze_ms.iqf_job_id')
+                    ->leftjoin('shifts', 'shifts.id', '=', 'freeze_ds.shift_id')
+                    ->select(DB::raw("freeze_ms.process_date,
+                    shifts.name as shiftname,
+                    freeze_ms.staff_target,
+                    freeze_ms.staff_operate,
+                    freeze_ms.staff_pf,
+                    freeze_ms.staff_pk,
+                    freeze_ms.staff_pst,
+                    ISNULL(freeze_ms.staff_target,0) - (ISNULL(freeze_ms.staff_pk,0)+ISNULL(freeze_ms.staff_pf,0)+ISNULL(freeze_ms.staff_pst,0))  as 'staff_diff',   
+                    iqf_jobs.name as productname,
+                    freeze_ms.targets * sum(freeze_ds.workhour)  as 'Plan',
+                    sum(freeze_ds.output_sum) as 'Actual',
+                    (freeze_ms.targets * sum(freeze_ds.workhour)) - sum(freeze_ds.output_sum) as 'diff',
+                    freeze_ms.note as Remark"))
+                                ->whereBetween('freeze_ms.process_date', [$selecteddate2, $selecteddate])
+                                    ->where('freeze_ds.shift_id', $shiftId)
+                                    ->groupBy(DB::raw('freeze_ms.process_date,
+                    shifts.name,
+                    freeze_ms.staff_target,
+                    freeze_ms.staff_operate,
+                    freeze_ms.staff_pf,
+                    freeze_ms.staff_pk,
+                    freeze_ms.staff_pst,
+                    iqf_jobs.name,
+                    freeze_ms.targets,
+                    freeze_ms.note'))
+                    ->get();
+            }else{
+                $datapl = DB::table('freeze_ms')
+                ->leftjoin('freeze_ds', 'freeze_ms.id', '=', 'freeze_ds.freeze_m_id')
+                ->leftjoin('iqf_jobs', 'iqf_jobs.id', '=', 'freeze_ms.iqf_job_id')
+                ->leftjoin('shifts', 'shifts.id', '=', 'freeze_ds.shift_id')
+                ->select(DB::raw("freeze_ms.process_date,
+shifts.name as shiftname,
+freeze_ms.staff_target,
+freeze_ms.staff_operate,
+freeze_ms.staff_pf,
+freeze_ms.staff_pk,
+freeze_ms.staff_pst,
+ISNULL(freeze_ms.staff_target,0) - (ISNULL(freeze_ms.staff_pk,0)+ISNULL(freeze_ms.staff_pf,0)+ISNULL(freeze_ms.staff_pst,0))  as 'staff_diff',   
+iqf_jobs.name as productname,
+freeze_ms.targets * sum(freeze_ds.workhour)  as 'Plan',
+sum(freeze_ds.output_sum) as 'Actual',
+(freeze_ms.targets * sum(freeze_ds.workhour)) - sum(freeze_ds.output_sum) as 'diff',
+freeze_ms.note as Remark"))
+                ->where('freeze_ms.process_date', $selecteddate)
+                ->where('freeze_ds.shift_id', $shiftId)
+                ->groupBy(DB::raw('freeze_ms.process_date,
+shifts.name,
+freeze_ms.staff_target,
+freeze_ms.staff_operate,
+freeze_ms.staff_pf,
+freeze_ms.staff_pk,
+freeze_ms.staff_pst,
+iqf_jobs.name,
+freeze_ms.targets,
+freeze_ms.note'))
+                ->get();
+            }
         }
         
         require_once app_path() . '/jpgraph/jpgraph.php';
@@ -219,10 +290,11 @@ class GenDailyFreeze2Report extends Command
         }
 
         if (!empty($fileList)) {
-            $ftStaff = config('myconfig.emaillist');
+            $ftStaff = config('myconfig.emailtestlist');
 
             $mailObj['graph'] = $fileList;
             $mailObj['result'] = $resultList;
+            $mailObj['datapl'] = $datapl;
             $mailObj['subject'] = "อัตราการฟรีสสะสม " . $current_date;
 
             Mail::to($ftStaff)->send(new Freeze2RptMail($mailObj));

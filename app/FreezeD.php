@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class FreezeD extends Model
 {
     protected $fillable = [
-        'freeze_m_id', 'workhour', 'process_datetime', 'iqf_job_id', 'current_RM', 'use_RM', 'output_custom1', 'output_custom2', 
+        'freeze_m_id', 'workhour', 'process_datetime',
+        'iqf_job_id', 'shift_id', 'current_RM', 'use_RM', 'output_custom1', 'output_custom2', 
         'output_custom3', 'output_custom4', 'output_custom5', 'output_custom6', 'output_custom7', 'output_custom8', 
         'output_sum', 'output_all_sum', 'note' ,'problem' ,'img_path'
     ];
