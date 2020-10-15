@@ -9,6 +9,7 @@ use App\Mail\Pack3RptMail;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
 class GenDailyPack2Report extends Command
 {
     /**
@@ -16,7 +17,7 @@ class GenDailyPack2Report extends Command
      *
      * @var string
      */
-    protected $signature = 'gen:dailypack2report {diff}';
+    protected $signature = 'gen:dailypack2report {diff} {shift_id} {plan_flag}';
 
     /**
      * The console command description.
@@ -45,10 +46,48 @@ class GenDailyPack2Report extends Command
         ini_set('memory_limit', '256M');
 
         $diff = $this->argument('diff');
+        $shiftId = $this->argument('shift_id');
+        $plan_flag = $this->argument('plan_flag');
 
         $selecteddate = date('Y-m-d');
         if ($diff == 'Y') {
             $selecteddate = date('Y-m-d', strtotime("-1 days"));
+        }
+
+        //PL Part
+        $datapl = array();
+        if ($plan_flag == 'Y') {
+            $datapl = DB::table('log_pack_ms')
+            ->leftjoin('log_pack_ds', 'log_pack_ms.id', '=', 'log_pack_ds.log_pack_m_id')
+            ->leftjoin('methods', 'methods.id', '=', 'log_pack_ms.method_id')
+            ->leftjoin('shifts', 'shifts.id', '=', 'log_pack_ms.shift_id')
+                ->leftjoin('packages', 'packages.id', '=', 'log_pack_ms.package_id')
+                ->leftjoin('orders', 'orders.id', '=', 'log_pack_ms.order_id')
+                ->leftjoin('std_packs', 'std_packs.id', '=', 'log_pack_ms.std_pack_id')
+            ->select(DB::raw("log_pack_ms.process_date,
+    shifts.name as 'shiftname',
+    methods.name as 'methodname',
+    log_pack_ms.staff_target as 'staff_target',
+    log_pack_ms.staff_operate as 'staff_operate',
+    log_pack_ms.staff_pk  as 'staff_pk',
+    log_pack_ms.staff_pf  as 'staff_pf',
+    log_pack_ms.staff_pst  as 'staff_pst',
+    ISNULL(log_pack_ms.staff_target,0) - (ISNULL(log_pack_ms.staff_pk,0)+ISNULL(log_pack_ms.staff_pf,0)+ISNULL(log_pack_ms.staff_pst,0))  as 'staff_diff',
+    packages.name as 'packagename',
+    '-' as 'unit',
+    log_pack_ms.targetperday as 'Plan',
+    sum(log_pack_ds.[output_pack]) as 'Actual',
+    log_pack_ms.targetperday - sum(log_pack_ds.[output_pack]) as 'diff',
+    orders.order_no as 'Shipment',
+    log_pack_ms.note as 'Remark'"))
+            ->where('log_pack_ms.process_date', $selecteddate)
+            ->where('log_pack_ms.shift_id', $shiftId)
+            ->groupBy(DB::raw('log_pack_ms.process_date,
+    shifts.name,methods.name,packages.name,orders.order_no,
+    log_pack_ms.targetperday,packages.kgsperpack,log_pack_ms.note,
+    log_pack_ms.staff_target,log_pack_ms.staff_operate,
+    log_pack_ms.staff_pf,log_pack_ms.staff_pk,log_pack_ms.staff_pst'))
+            ->get();
         }
 
         require_once app_path() . '/jpgraph/jpgraph.php';
@@ -240,6 +279,9 @@ class GenDailyPack2Report extends Command
 
             $mailObj['graph'] = $fileList;
             $mailObj['result'] = $resultList;
+            $mailObj['datapl'] = $datapl;
+
+            //var_dump($datapl);
             $mailObj['subject'] = "อัตราการแพ็คสะสม " . $selecteddate;
 
             Mail::to($ftStaff)->send(new Pack3RptMail($mailObj));

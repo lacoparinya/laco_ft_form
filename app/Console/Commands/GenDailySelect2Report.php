@@ -11,6 +11,7 @@ use App\Product;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\FtSelect3DataEmail;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
 
 class GenDailySelect2Report extends Command
 {
@@ -19,7 +20,7 @@ class GenDailySelect2Report extends Command
      *
      * @var string
      */
-    protected $signature = 'gen:dailyselect2report {shift_id} {diff}';
+    protected $signature = 'gen:dailyselect2report {shift_id} {diff} {plan_flag}';
 
     /**
      * The console command description.
@@ -48,6 +49,7 @@ class GenDailySelect2Report extends Command
         ini_set('memory_limit', '256M');
         $shiftId = $this->argument('shift_id');
         $diff = $this->argument('diff');
+        $plan_flag = $this->argument('plan_flag');
 
         //echo $shiftId;
 
@@ -55,8 +57,46 @@ class GenDailySelect2Report extends Command
         if ($diff == 'Y') {
             $selecteddate = date('Y-m-d', strtotime("-1 days"));
         }
-        //
 
+        //PL Part
+        $datapl = array();
+        if($plan_flag == 'Y'){
+            $datapl = DB::table('log_select_ms')
+            ->leftjoin('log_select_ds', 'log_select_ms.id', '=', 'log_select_ds.log_select_m_id')
+            ->leftjoin('products', 'products.id', '=', 'log_select_ms.product_id')
+            ->leftjoin('shifts', 'shifts.id', '=', 'log_select_ms.shift_id')
+            ->select(DB::raw("log_select_ms.process_date,
+    shifts.name as shiiftname,
+    '-' as jobtype,
+    log_select_ms.staff_target as staff_target,
+    log_select_ms.staff_operate as staff_operate,
+    (select top 1 pk.num_pk from log_select_ds as pk where pk.log_select_m_id = log_select_ms.id order by pk.process_datetime)  as staff_pk,
+    (select top 1 pf.num_pf from log_select_ds as pf where pf.log_select_m_id = log_select_ms.id order by pf.process_datetime)   as staff_pf,
+    (select top 1 pst.num_pst from log_select_ds as pst where pst.log_select_m_id = log_select_ms.id order by pst.process_datetime)  as staff_pst,
+    ISNULL(log_select_ms.staff_target,0) - 
+    (ISNULL((select top 1 pk.num_pk from log_select_ds as pk where pk.log_select_m_id = log_select_ms.id order by pk.process_datetime),0)
+    +ISNULL((select top 1 pf.num_pf from log_select_ds as pf where pf.log_select_m_id = log_select_ms.id order by pf.process_datetime),0)
+    +ISNULL((select top 1 pst.num_pst from log_select_ds as pst where pst.log_select_m_id = log_select_ms.id order by pst.process_datetime),0)) 
+    as staff_diff,
+    products.name as productname,
+    'kg' as unit,
+    log_select_ms.targetperday as 'Plan',
+    sum(log_select_ds.output_kg) as Actual,
+    log_select_ms.targetperday - sum(log_select_ds.output_kg) as diff,
+    '-'  as Shipment,
+    log_select_ms.note as Remark"))
+            ->where('log_select_ms.process_date', $selecteddate)
+            ->where('log_select_ms.shift_id', $shiftId)
+            ->groupBy(DB::raw('log_select_ms.process_date,
+    shifts.name,
+    log_select_ms.id,
+    log_select_ms.staff_target,log_select_ms.staff_operate,
+    log_select_ms.targetperday,
+    log_select_ms.note,
+    products.name'))
+            ->get();    
+        }
+        
 
         require_once app_path() . '/jpgraph/jpgraph.php';
         require_once app_path() . '/jpgraph/jpgraph_bar.php';
@@ -410,6 +450,7 @@ class GenDailySelect2Report extends Command
             $mailObj['graph2'] = $fileList2;
             $mailObj['shift'] = $shiftObj;
             $mailObj['result'] = $resultList;
+            $mailObj['datapl'] = $datapl;
             $mailObj['subject'] = "อัตราการคัดสะสม " . $selecteddate;
 
             Mail::to($ftStaff)->send(new FtSelect3DataEmail($mailObj));

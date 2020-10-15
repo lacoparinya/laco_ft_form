@@ -9,7 +9,9 @@ class LogPrepareM extends Model
     protected $fillable = [
         'pre_prod_id', 'std_pre_prod_id', 'process_date',
         'targetperhr', 'target_result', 'target_workhours',
-        'note', 'status'
+        'note',
+        'status', 'staff_target',
+        'staff_operate', 'staff_pk', 'staff_pf', 'staff_pst'
     ];
 
     public function preprod()

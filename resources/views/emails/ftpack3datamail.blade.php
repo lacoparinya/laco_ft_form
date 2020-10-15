@@ -22,6 +22,51 @@
 <body>
     <p><strong>TO..ALL</strong></p>
     <p><strong>FT Form Alert System</strong></p>
+    @if (!empty($packdataobj['datapl']))
+        <p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>วันที่</th>
+                        <th>เครื่อง</th>
+                        <th>กะ</th>
+                        <th>เป้าพนักงาน</th>
+                        <th>ผู้ดูแล</th>
+                        <th>พนักงาน PK</th>
+                        <th>ผู้ช่วยงานจาก PF</th>
+                        <th>ผู้ช่วยงานจาก PST</th>
+                        <th>ผลต่างจำนวนคน</th>
+                        <th>สินค้า</th>
+                        <th>Plan</th>
+                        <th>Actual</th>
+                        <th>Diff</th>
+                        <th>Remark</th>
+                    </tr>
+                </thead>
+                <tbody>
+                     @foreach ($packdataobj['datapl'] as $item)
+                    <tr>
+                        <td>{{  $item->process_date }}</td>
+                        <td>{{  $item->methodname }}</td>
+                        <td>{{  $item->shiftname }}</td>
+                        <td>{{  $item->staff_target }}</td>
+                        <td>{{  $item->staff_operate }}</td>
+                        <td>{{  $item->staff_pk }}</td>
+                        <td>{{  $item->staff_pf }}</td>
+                        <td>{{  $item->staff_pst }}</td>
+                        <td>{{  $item->staff_diff }}</td>
+                        <td>{{  $item->packagename }}</td>
+                        <td>{{  $item->Plan }}</td>
+                        <td>{{  $item->Actual }}</td>
+                        <td>{{  $item->diff }}</td>
+                        <td>{{  $item->Remark }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </p>
+    @endif
+            
   
             @foreach($packdataobj['graph'] as $key1 => $item2)
             @foreach($item2 as $key2 => $item1)
