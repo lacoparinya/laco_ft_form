@@ -310,7 +310,7 @@ log_prepare_ms.note'))
         }
 
         if(!empty( $fileList)){
-            $ftStaff = config('myconfig.emailtestlist');
+            $ftStaff = config('myconfig.emaillist');
 
             $mailObj['graph'] = $fileList;
             $mailObj['result'] = $resultList;
