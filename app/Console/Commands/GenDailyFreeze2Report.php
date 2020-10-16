@@ -76,7 +76,9 @@ class GenDailyFreeze2Report extends Command
                     freeze_ms.staff_pf,
                     freeze_ms.staff_pk,
                     freeze_ms.staff_pst,
-                    ISNULL(freeze_ms.staff_target,0) - (ISNULL(freeze_ms.staff_pk,0)+ISNULL(freeze_ms.staff_pf,0)+ISNULL(freeze_ms.staff_pst,0))  as 'staff_diff',   
+                    (ISNULL(freeze_ms.staff_pk,0)+ISNULL(freeze_ms.staff_pf,0)+ISNULL(freeze_ms.staff_pst,0)) 
+                    - ISNULL(freeze_ms.staff_target,0)
+                     as 'staff_diff',   
                     iqf_jobs.name as productname,
                     freeze_ms.targets * sum(freeze_ds.workhour)  as 'Plan',
                     sum(freeze_ds.output_sum) as 'Actual',
@@ -106,8 +108,10 @@ freeze_ms.staff_target,
 freeze_ms.staff_operate,
 freeze_ms.staff_pf,
 freeze_ms.staff_pk,
-freeze_ms.staff_pst,
-ISNULL(freeze_ms.staff_target,0) - (ISNULL(freeze_ms.staff_pk,0)+ISNULL(freeze_ms.staff_pf,0)+ISNULL(freeze_ms.staff_pst,0))  as 'staff_diff',   
+freeze_ms.staff_pst, 
+(ISNULL(freeze_ms.staff_pk,0)+ISNULL(freeze_ms.staff_pf,0)+ISNULL(freeze_ms.staff_pst,0)) 
+- ISNULL(freeze_ms.staff_target,0)
+ as 'staff_diff',   
 iqf_jobs.name as productname,
 freeze_ms.targets * sum(freeze_ds.workhour)  as 'Plan',
 sum(freeze_ds.output_sum) as 'Actual',

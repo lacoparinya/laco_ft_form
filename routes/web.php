@@ -49,6 +49,9 @@ Route::resource('log-select-ms', 'LogSelectMsController');
 Route::resource('log-pst-selects', 'LogPstSelectsController');
 Route::resource('pst-products', 'PstProductsController');
 Route::resource('std-select-psts', 'StdSelectPstsController');
+Route::resource('stamp-machines', 'StampMachinesController');
+Route::resource('mat-packs', 'MatPacksController');
+Route::resource('mat-pack-rates', 'MatPackRatesController');
 
 
 Route::get('/import', 'AutoImportController@test');

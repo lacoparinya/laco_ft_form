@@ -68,7 +68,9 @@ log_prepare_ms.staff_operate,
 log_prepare_ms.staff_pf,
 log_prepare_ms.staff_pk,
 log_prepare_ms.staff_pst,
-ISNULL(log_prepare_ms.staff_target,0) - (ISNULL(log_prepare_ms.staff_pk,0)+ISNULL(log_prepare_ms.staff_pf,0)+ISNULL(log_prepare_ms.staff_pst,0))  as 'staff_diff',   
+(ISNULL(log_prepare_ms.staff_pk,0)+ISNULL(log_prepare_ms.staff_pf,0)+ISNULL(log_prepare_ms.staff_pst,0)) 
+- ISNULL(log_prepare_ms.staff_target,0)
+ as 'staff_diff',   
 pre_prods.name as productname,
 log_prepare_ms.targetperhr * sum(log_prepare_ds.workhours) as 'Plan',
 CASE WHEN max(log_prepare_ds.input_sum) > 0 THEN max(log_prepare_ds.input_sum) ELSE max(log_prepare_ds.output_sum) END as 'Actual',

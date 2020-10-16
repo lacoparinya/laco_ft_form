@@ -72,7 +72,9 @@ class GenDailyPack2Report extends Command
     log_pack_ms.staff_pk  as 'staff_pk',
     log_pack_ms.staff_pf  as 'staff_pf',
     log_pack_ms.staff_pst  as 'staff_pst',
-    ISNULL(log_pack_ms.staff_target,0) - (ISNULL(log_pack_ms.staff_pk,0)+ISNULL(log_pack_ms.staff_pf,0)+ISNULL(log_pack_ms.staff_pst,0))  as 'staff_diff',
+    (ISNULL(log_pack_ms.staff_pk,0)+ISNULL(log_pack_ms.staff_pf,0)+ISNULL(log_pack_ms.staff_pst,0)) 
+    - ISNULL(log_pack_ms.staff_target,0)
+    as 'staff_diff',
     packages.name as 'packagename',
     '-' as 'unit',
     log_pack_ms.targetperday as 'Plan',

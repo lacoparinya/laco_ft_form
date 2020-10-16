@@ -73,11 +73,11 @@ class GenDailySelect2Report extends Command
     (select top 1 pk.num_pk from log_select_ds as pk where pk.log_select_m_id = log_select_ms.id order by pk.process_datetime)  as staff_pk,
     (select top 1 pf.num_pf from log_select_ds as pf where pf.log_select_m_id = log_select_ms.id order by pf.process_datetime)   as staff_pf,
     (select top 1 pst.num_pst from log_select_ds as pst where pst.log_select_m_id = log_select_ms.id order by pst.process_datetime)  as staff_pst,
-    ISNULL(log_select_ms.staff_target,0) - 
+    (
     (ISNULL((select top 1 pk.num_pk from log_select_ds as pk where pk.log_select_m_id = log_select_ms.id order by pk.process_datetime),0)
     +ISNULL((select top 1 pf.num_pf from log_select_ds as pf where pf.log_select_m_id = log_select_ms.id order by pf.process_datetime),0)
     +ISNULL((select top 1 pst.num_pst from log_select_ds as pst where pst.log_select_m_id = log_select_ms.id order by pst.process_datetime),0)) 
-    as staff_diff,
+    ) - ISNULL(log_select_ms.staff_target,0) as staff_diff,
     products.name as productname,
     'kg' as unit,
     log_select_ms.targetperday as 'Plan',
