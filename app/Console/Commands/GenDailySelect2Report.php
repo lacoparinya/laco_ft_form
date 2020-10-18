@@ -58,6 +58,7 @@ class GenDailySelect2Report extends Command
             $selecteddate = date('Y-m-d', strtotime("-1 days"));
         }
 
+        $plan_flag = "Y";
         //PL Part
         $datapl = array();
         if($plan_flag == 'Y'){
@@ -82,7 +83,7 @@ class GenDailySelect2Report extends Command
     'kg' as unit,
     log_select_ms.targetperday as 'Plan',
     sum(log_select_ds.output_kg) as Actual,
-    log_select_ms.targetperday - sum(log_select_ds.output_kg) as diff,
+    sum(log_select_ds.output_kg) - log_select_ms.targetperday as diff,
     '-'  as Shipment,
     log_select_ms.note as Remark"))
             ->where('log_select_ms.process_date', $selecteddate)

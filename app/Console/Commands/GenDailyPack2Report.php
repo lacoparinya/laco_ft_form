@@ -54,6 +54,8 @@ class GenDailyPack2Report extends Command
             $selecteddate = date('Y-m-d', strtotime("-1 days"));
         }
 
+        $plan_flag = "Y";
+
         //PL Part
         $datapl = array();
         if ($plan_flag == 'Y') {
@@ -79,7 +81,7 @@ class GenDailyPack2Report extends Command
     '-' as 'unit',
     log_pack_ms.targetperday as 'Plan',
     sum(log_pack_ds.[output_pack]) as 'Actual',
-    log_pack_ms.targetperday - sum(log_pack_ds.[output_pack]) as 'diff',
+    sum(log_pack_ds.[output_pack]) - log_pack_ms.targetperday as 'diff',
     orders.order_no as 'Shipment',
     log_pack_ms.note as 'Remark'"))
             ->where('log_pack_ms.process_date', $selecteddate)

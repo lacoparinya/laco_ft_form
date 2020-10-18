@@ -60,6 +60,8 @@ class GenDailyFreeze2Report extends Command
             $current_date = $selecteddate2." - ".$selecteddate;
         }
 
+        $plan_flag = "Y";
+
         $datapl = array();
         if ($plan_flag == 'Y') {
             if ($diff == 'Y') {
@@ -82,7 +84,7 @@ class GenDailyFreeze2Report extends Command
                     iqf_jobs.name as productname,
                     freeze_ms.targets * sum(freeze_ds.workhour)  as 'Plan',
                     sum(freeze_ds.output_sum) as 'Actual',
-                    (freeze_ms.targets * sum(freeze_ds.workhour)) - sum(freeze_ds.output_sum) as 'diff',
+                    sum(freeze_ds.output_sum) - (freeze_ms.targets * sum(freeze_ds.workhour)) as 'diff',
                     freeze_ms.note as Remark"))
                                 ->whereBetween('freeze_ms.process_date', [$selecteddate2, $selecteddate])
                                     ->where('freeze_ds.shift_id', $shiftId)

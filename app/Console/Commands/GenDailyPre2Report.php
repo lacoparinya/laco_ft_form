@@ -55,6 +55,8 @@ class GenDailyPre2Report extends Command
             $selecteddate = date('Y-m-d', strtotime("-1 days"));
         }
 
+        $plan_flag = "Y";
+
         $datapl = array();
         if ($plan_flag == 'Y') {
             $datapl = DB::table('log_prepare_ms')
@@ -74,7 +76,7 @@ log_prepare_ms.staff_pst,
 pre_prods.name as productname,
 log_prepare_ms.targetperhr * sum(log_prepare_ds.workhours) as 'Plan',
 CASE WHEN max(log_prepare_ds.input_sum) > 0 THEN max(log_prepare_ds.input_sum) ELSE max(log_prepare_ds.output_sum) END as 'Actual',
-log_prepare_ms.targetperhr * sum(log_prepare_ds.workhours) - CASE WHEN max(log_prepare_ds.input_sum) > 0 THEN max(log_prepare_ds.input_sum) ELSE max(log_prepare_ds.output_sum) END as 'diff',
+CASE WHEN max(log_prepare_ds.input_sum) > 0 THEN max(log_prepare_ds.input_sum) ELSE max(log_prepare_ds.output_sum) END - (log_prepare_ms.targetperhr * sum(log_prepare_ds.workhours)) as 'diff',
 log_prepare_ms.note as Remark"))
             ->where('log_prepare_ms.process_date', $selecteddate)
                 ->where('log_prepare_ds.shift_id', $shiftId)

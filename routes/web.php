@@ -52,6 +52,7 @@ Route::resource('std-select-psts', 'StdSelectPstsController');
 Route::resource('stamp-machines', 'StampMachinesController');
 Route::resource('mat-packs', 'MatPacksController');
 Route::resource('mat-pack-rates', 'MatPackRatesController');
+Route::resource('stamp-ms', 'StampMsController');
 
 
 Route::get('/import', 'AutoImportController@test');
@@ -167,3 +168,8 @@ Route::get('/log-pst-selects/forecast/{log_pst_select_m_id}', 'LogPstSelectsCont
 Route::get('/log-pst-selects/groupgraph/{date}/{pst_type_id}', 'LogPstSelectsController@groupgraph');
 
 Route::get('/mains/index/{date}', 'MainsController@index');
+Route::post('/mat-pack-rates/getrate', 'MatPackRatesController@getrate');
+Route::get('/stamp-ms/createDetail/{stamp_m_id}', 'StampMsController@createDetail');
+Route::post('/stamp-ms/storeDetail/{stamp_m_id}', 'StampMsController@storeDetail');
+Route::get('/stamp-ms/editDetail/{id}', 'StampMsController@editDetail');
+Route::post('/stamp-ms/updateDetail/{id}', 'StampMsController@updateDetail');

@@ -123,4 +123,22 @@ class MatPackRatesController extends Controller
 
         return redirect('mat-pack-rates')->with('flash_message', ' deleted!');
     }
+
+    public function getrate(Request $request)
+    {
+        $matpackid = $request->get('matpackid');
+        $stampmachineid = $request->get('stampmachineid');
+
+        $matpackrate = MatPackRate::where('mat_pack_id', $matpackid)
+        ->where('stamp_machine_id', $stampmachineid)
+        ->where('status', 'Active')
+        ->first();
+        
+        $output['value'] = 0;
+        if(!empty($matpackrate)){
+            $output['value'] = $matpackrate->rateperhr;
+        }
+        
+        echo json_encode($output);
+    }
 }
