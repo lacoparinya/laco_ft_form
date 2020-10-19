@@ -173,3 +173,6 @@ Route::get('/stamp-ms/createDetail/{stamp_m_id}', 'StampMsController@createDetai
 Route::post('/stamp-ms/storeDetail/{stamp_m_id}', 'StampMsController@storeDetail');
 Route::get('/stamp-ms/editDetail/{id}', 'StampMsController@editDetail');
 Route::post('/stamp-ms/updateDetail/{id}', 'StampMsController@updateDetail');
+Route::get('/stamp-ms/changestatus/{stamp_m_id}', 'StampMsController@changestatus');
+Route::get('/stamp-ms/graph/{stamp_m_id}', 'StampMsController@graph');
+Route::get('/stamp-ms/forecast/{stamp_m_id}', 'StampMsController@forecast');

@@ -216,4 +216,78 @@ class StampMsController extends Controller
         // return redirect('freeze-ms?status='. $status, compact('freezem'));
         return redirect('stamp-ms/?status=' . $status)->with('flash_message', ' updated!');
     }
+
+    public function graph($stamp_m_id)
+    {
+        $stampm = StampM::findOrFail($stamp_m_id);
+
+        return view('dashboards.chartstamp', compact('stampm'));
+    }
+
+    public function forecast($log_pack_m_id)
+    {
+        $logpackm = LogPackM::findOrFail($log_pack_m_id);
+
+        $detailData = $logpackm->logpackd()->orderBy('process_datetime')->get();
+
+        $totalTime = 0;
+        $remainTime = 0;
+        //$totalinput = 0;
+        $totaloutput = 0;
+        //$totaloutputpack = 0;
+        $totalsum = 0;
+        $ratePerHr = 0;
+        foreach ($detailData as $key => $value) {
+            $totalTime += $value->workhours;
+           // $totalinput += $value->input_kg;
+            $totaloutput += $value->output;
+           // $totaloutputpack += $value->output_pack;
+        }
+
+        $remainTime = $logpackm->hourperday - $totalTime;
+        $targetResult = $logpackm->targetperday;
+
+        if ($remainTime > 0) {
+            $totalsum = $totaloutput;
+            $ratePerHr = ($targetResult - $totaloutput) / $remainTime;
+        }
+
+        $loop = 0;
+        $loopSum = $totalsum;
+        $estimateData = array();
+        while ($loop < $remainTime) {
+            $tmpArray = array();
+
+            if (($remainTime - $loop) > 1) {
+                $loop++;
+                $tmpArray['time'] = $loop;
+                $tmpArray['realrate'] = $ratePerHr;
+                $loopSum += $ratePerHr;
+                $tmpArray['realtotal'] = $loopSum;
+                $estimateData[] = $tmpArray;
+            } else {
+                if (($remainTime - $loop) > 0) {
+                    $tmpArray['realrate'] = $targetResult - $loopSum;
+
+                    $loop = $remainTime;
+                    $tmpArray['time'] = $remainTime;
+
+                    $tmpArray['realtotal'] = $targetResult;
+                    $estimateData[] = $tmpArray;
+                }
+            }
+        }
+
+        return view('dashboards.chartstampforecast', compact('logpackm', 'estimateData'));
+    }
+
+    public function deleteDetail($id, $stamp_m_id)
+    {
+        StampD::destroy($id);
+
+        $logpackd = new StampD();
+        $logpackd->recalculate($stamp_m_id);
+
+        return redirect('stamp-ms/' . $stamp_m_id)->with('flash_message', ' deleted!');
+    }
 }

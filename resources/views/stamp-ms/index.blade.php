@@ -61,6 +61,10 @@
                                         <td>{{ $item->stampd->count() }}</td>
                                         <td>
                                             <a href="{{ url('/stamp-ms/' . $item->id) }}" title="View StampM"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
+                                            <a href="{{ url('/stamp-ms/graph/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> กราฟ</button></a>
+                                        <a href="{{ url('/stamp-ms/forecast/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-bar-chart" aria-hidden="true"></i> ประเมิน</button></a>
+                                        <a href="{{ url('/stamp-ms/changestatus/' . $item->id) }}" title="Add FreezeM"><button class="btn btn-success btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> {{ $item->status }}</button></a>
+                                      
                                             <a href="{{ url('/stamp-ms/' . $item->id . '/edit') }}" title="Edit StampM"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
 
                                             <form method="POST" action="{{ url('/stamp-ms' . '/' . $item->id) }}" accept-charset="UTF-8" style="display:inline">
