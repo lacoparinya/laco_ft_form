@@ -105,6 +105,9 @@
                                     <a href="{{route('log-pack-ms.index')}}">FT Pack Logs</a>
                                     </li>
                                     <li>
+                                    <a href="{{route('stamp-ms.index')}}">FT Stamp Logs</a>
+                                    </li>
+                                    <li>
                                     <a href="{{route('freeze-ms.index')}}">FT Freeze Logs</a>
                                     </li>
                                     <li>
@@ -185,6 +188,10 @@
                                     <ul class="dropdown-menu" role="menu">
                                         <<li>
                                     <a href="{{route('log-pack-ms.index')}}">FT Pack Logs</a>
+                                    </li>
+                                    
+                                    <li>
+                                    <a href="{{route('stamp-ms.index')}}">FT Stamp Logs</a>
                                     </li>
                                         <li><hr/></li>
                                         <li>

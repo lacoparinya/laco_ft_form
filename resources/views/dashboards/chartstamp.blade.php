@@ -36,7 +36,7 @@
                            @foreach ($stampm->stampd()->orderBy('process_datetime')->get() as $item)
                            @php
                                $sum += $item->output;
-                              $remain = $stampm->stampd->sum('workhours')*$stampm->rateperhr - $sum;
+                              $remain = $stampm->targetperjob - $sum;
                            @endphp
                           <tr>
                           <td>{{ date('d/m/y H:i',strtotime($item->process_datetime)) }}</td>
@@ -74,7 +74,7 @@
           @foreach ($stampm->stampd()->orderBy('process_datetime')->get() as $item)
           @php
             $sum += $item->output;
-            $remain = $stampm->stampd->sum('workhours')*$stampm->rateperhr - $sum;
+            $remain = $stampm->targetperjob - $sum;
         @endphp
             ['{{ date('d/m/y H:i',strtotime($item->process_datetime)) }}',  
             {{ ($stampm->rateperhr)*($item->workhours) }}, 

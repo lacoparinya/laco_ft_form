@@ -22,6 +22,7 @@ class Kernel extends ConsoleKernel
         Commands\GenDailyPre2Report::class,
         Commands\GenDailySelect2Report::class,
         Commands\GenDailyPack2Report::class,
+        Commands\GenDailyStampReport::class,
     ];
 
     /**

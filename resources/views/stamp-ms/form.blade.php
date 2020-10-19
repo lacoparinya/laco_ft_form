@@ -48,7 +48,7 @@
         {!! $errors->first('order_no', '<p class="help-block">:message</p>') !!}
     </div>
 
-    <div class="form-group col-md-3 {{ $errors->has('pack_date') ? 'has-error' : ''}}">
+    <div class="form-group col-md-2 {{ $errors->has('pack_date') ? 'has-error' : ''}}">
         <label for="pack_date" class="control-label">{{ 'Pack Date' }}</label>
         <input class="form-control" name="pack_date" type="date" id="pack_date" value="{{ $stampm->pack_date or \Carbon\Carbon::now()->format('Y-m-d') }}" >
         {!! $errors->first('pack_date', '<p class="help-block">:message</p>') !!}
@@ -56,7 +56,7 @@
 
     
 
-    <div class="form-group col-md-3 {{ $errors->has('staff_target') ? 'has-error' : ''}}">
+    <div class="form-group col-md-2 {{ $errors->has('staff_target') ? 'has-error' : ''}}">
         <label for="staff_target" class="control-label">{{ 'เป้าพนักงาน' }}</label>
         <input class="form-control" name="staff_target"  id="staff_target" value="{{ $stampm->staff_target or '' }}" >
         {!! $errors->first('staff_target', '<p class="help-block">:message</p>') !!}
@@ -67,12 +67,16 @@
         <input class="form-control" name="staff_operate"  id="staff_operate" value="{{ $stampm->staff_operate or '' }}" >
         {!! $errors->first('staff_operate', '<p class="help-block">:message</p>') !!}
     </div>
-    <div class="form-group col-md-3 {{ $errors->has('staff_actual') ? 'has-error' : ''}}">
+    <div class="form-group col-md-2 {{ $errors->has('staff_actual') ? 'has-error' : ''}}">
         <label for="staff_actual" class="control-label">{{ 'พนักงานจริง'}}</label>
         <input class="form-control" name="staff_actual"  id="staff_actual" value="{{ $stampm->staff_actual or '' }}" >
         {!! $errors->first('staff_actual', '<p class="help-block">:message</p>') !!}
     </div>
-
+    <div class="form-group col-md-3 {{ $errors->has('targetperjob') ? 'has-error' : ''}}">
+        <label for="targetperjob" class="control-label">{{ 'เป้าจำนวนที่ต้องทำได้'}}</label>
+        <input class="form-control" name="targetperjob"  id="targetperjob" value="{{ $stampm->targetperjob or '' }}" >
+        {!! $errors->first('targetperjob', '<p class="help-block">:message</p>') !!}
+    </div>
     <div class="form-group col-md-3 {{ $errors->has('status') ? 'has-error' : ''}}">
         <label for="status" class="control-label">{{ 'Status'}}</label>
         <input class="form-control" name="status"  id="status" value="{{ $stampm->status or 'Active' }}" >

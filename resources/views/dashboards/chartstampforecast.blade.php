@@ -4,9 +4,9 @@
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-            <div class="panel-heading">FT Form Application - {{ $logpackm->method->name }} - {{ $logpackm->package->name }}</div>
+            <div class="panel-heading">FT Form Application - {{ $stampm->stampmachine->name }} - {{ $stampm->matpack->matname }}</div>
   <br />
-            <a href="{{ url('/log-pack-ms/?status='.$logpackm->status) }}" title="Back"><button class="btn btn-warning btn-sm"><i class="glyphicon glyphicon-arrow-left" aria-hidden="true"></i> Back</button></a>
+            <a href="{{ url('/stamp-ms/?status='.$stampm->status) }}" title="Back"><button class="btn btn-warning btn-sm"><i class="glyphicon glyphicon-arrow-left" aria-hidden="true"></i> Back</button></a>
                        
                         <br />
                 <div class="panel-body">
@@ -19,9 +19,8 @@
                         <thead>
                           <tr>
                             <th>Time</th>
-                            <th>Shift</th>
-                            <th>Method</th>
-                            <th>Package</th>
+                            <th>เครื่อง</th>
+                            <th>สินค้า</th>
                             <th>Plan</th>
                             <th>Actual</th>
                             <th>forecast</th>
@@ -35,38 +34,41 @@
                               $remain = 0; 
                               
                            @endphp
-                           @foreach ($logpackm->logpackd()->orderBy('process_datetime')->get() as $item)
+                           @foreach ($stampm->stampd()->orderBy('process_datetime')->get() as $item)
                            @php
-                               $sum += $item->output_pack;
-                              $remain = $logpackm->targetperday - $sum;
+                              $sum += $item->output;
+                              $remain = $stampm->targetperjob - $sum;
                            @endphp
                           <tr>
                           <td>{{ date('d/m/y H:i',strtotime($item->process_datetime)) }}</td>
-                          <td>{{ $logpackm->shift->name }}</td>
-                          <td>{{ $logpackm->method->name }}</td>
-                          <td>{{ $logpackm->package->name }}</td>
-                          <td>{{ number_format(($logpackm->stdpack->std_rate)*($item->workhours)*($item->num_pack),0,".",",") }}</td>
-                          <td>{{ number_format($item->output_pack,0,".",",") }}</td>
+                          <td>{{ $stampm->stampmachine->name }}</td>
+                          <td>{{ $stampm->matpack->matname }}</td>
+                          <td>{{ number_format(($stampm->rateperhr)*($item->workhours),0,".",",") }}</td>
+                          <td>{{ number_format($item->output,0,".",",") }}</td>
                           <td>-</td>
                           <td>{{ number_format($sum,0,".",",") }}</td>
-                          <td>{{ number_format($remain,0,".",",") }} {{  $logpackm->targetperday }}</td>
+                          <td>{{ number_format($remain,0,".",",") }} {{  $stampm->rateperhr }}</td>
                           </tr>
                           @endforeach
                           @foreach ($estimateData as $item)
                           @php
                                $sum += $item['realrate'];
-                              $remain = $logpackm->targetperday - $sum;
+                              $remain = $stampm->targetperjob - $sum;
                            @endphp
                           <tr>
                           <td>ชม.ที่ {{ $item['time'] }}</td>
-                          <td>{{ $logpackm->shift->name }}</td>
-                          <td>{{ $logpackm->method->name }}</td>
-                          <td>{{ $logpackm->package->name }}</td>
+                          <td>{{ $stampm->stampmachine->name }}</td>
+                          <td>{{ $stampm->matpack->matname }}</td>
                           <td>-</td>
                           <td>-</td>
                           <td>{{  round($item['realrate'],2) }}</td>
                           <td>{{ number_format($sum,0,".",",") }}</td>
-                          <td>{{ number_format($remain,0,".",",") }} {{  $logpackm->targetperday }}</td>
+                          @if ($remain > 0)
+                            <td>{{ number_format($remain,0,".",",") }} {{  $stampm->rateperhr }}</td>    
+                          @else
+                             <td>{{ number_format($remain,0,".",",") }} {{  $stampm->rateperhr }}</td> 
+                          @endif
+                          
                           </tr>
                           @endforeach
                         </tbody>
@@ -95,16 +97,16 @@
           {label: 'Remain', type: 'number'}],
           @php
               $sum = 0; 
-              $remain = 0;
+              $remain = $stampm->targetperjob;
           @endphp
-          @foreach ($logpackm->logpackd()->orderBy('process_datetime')->get() as $item)
+          @foreach ($stampm->stampd()->orderBy('process_datetime')->get() as $item)
           @php
-            $sum += $item->output_pack;
-            $remain = (empty($logpackm->targetperday) ? 0 : $logpackm->targetperday) - $sum;
+            $sum += $item->output;
+            $remain = $stampm->targetperjob - $sum;
           @endphp
             ['{{ date('d/m/y H:i',strtotime($item->process_datetime)) }}',  
-            {{ ($logpackm->stdpack->std_rate)*($item->workhours)*($item->num_pack) }}, 
-            {{ $item->output_pack }}, 
+            {{ ($stampm->rateperhr)*($item->workhours) }}, 
+            {{ $item->output }}, 
             null,
             {{ $sum }}, 
             {{ $remain }}, 
@@ -113,7 +115,7 @@
           @foreach ($estimateData as $item)
           @php
             $sum += $item['realrate'];
-            $remain = (empty($logpackm->targetperday) ? 0 : $logpackm->targetperday) - $sum;
+            $remain = $stampm->targetperjob - $sum;
           @endphp
             ['ชม.ที่ {{$item['time']}}',  
             null, 
@@ -138,24 +140,21 @@
     annotations: {
         alwaysOutside : false
     },
-    @if(isset($logpackm->shift->name))
-      title : '{{ $logpackm->method->name }} - {{ $logpackm->package->name }} - อัตราการผลิตสะสม และประมาณการ วันที่ {{ $logpackm->process_date }} - กะ {{ $logpackm->shift->name }}',
-    @else 
-      title : '{{ $logpackm->method->name }} - {{ $logpackm->package->name }} - อัตราการผลิตสะสม และประมาณการ วันที่ {{ $logpackm->process_date }}',
-    @endif
+    title : '{{ $stampm->stampmachine->name }} - {{ $stampm->matpack->matname }} - อัตราการStampสะสม และประมาณการ วันที่  {{ $stampm->process_date }}',
+     
           
           legend: { position: 'top', maxLines: 3 },
 
 
           vAxes: {
             0: {
-              title: 'ปริมาณสินค้า (กล่อง หรือ EA)',
+              title: 'ปริมาณสินค้า ',
                 viewWindow: {
                // max : max1 -1500,
               },
             },
               1: {
-                title: 'ปริมาณสินค้า (กล่อง หรือ EA)',
+                title: 'ปริมาณสินค้า  ',
                 viewWindow: {
               //  max : max1 + 100,
               },

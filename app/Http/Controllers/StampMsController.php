@@ -226,9 +226,9 @@ class StampMsController extends Controller
 
     public function forecast($log_pack_m_id)
     {
-        $logpackm = LogPackM::findOrFail($log_pack_m_id);
+        $stampm = StampM::findOrFail($log_pack_m_id);
 
-        $detailData = $logpackm->logpackd()->orderBy('process_datetime')->get();
+        $detailData = $stampm->stampd()->orderBy('process_datetime')->get();
 
         $totalTime = 0;
         $remainTime = 0;
@@ -244,16 +244,15 @@ class StampMsController extends Controller
            // $totaloutputpack += $value->output_pack;
         }
 
-        $remainTime = $logpackm->hourperday - $totalTime;
-        $targetResult = $logpackm->targetperday;
+        //$remainTime = $logpackm->hourperday - ($totalTime* $stampm->rateperhr);
+        $targetResult = $stampm->targetperjob;
 
-        if ($remainTime > 0) {
-            $totalsum = $totaloutput;
-            $ratePerHr = ($targetResult - $totaloutput) / $remainTime;
+        if ($targetResult > 0) {
+            $remainTime = ceil($targetResult/ $stampm->rateperhr);
         }
 
         $loop = 0;
-        $loopSum = $totalsum;
+        $loopSum = $totaloutput;
         $estimateData = array();
         while ($loop < $remainTime) {
             $tmpArray = array();
@@ -261,8 +260,8 @@ class StampMsController extends Controller
             if (($remainTime - $loop) > 1) {
                 $loop++;
                 $tmpArray['time'] = $loop;
-                $tmpArray['realrate'] = $ratePerHr;
-                $loopSum += $ratePerHr;
+                $tmpArray['realrate'] = $stampm->rateperhr;
+                $loopSum += $stampm->rateperhr;
                 $tmpArray['realtotal'] = $loopSum;
                 $estimateData[] = $tmpArray;
             } else {
@@ -272,13 +271,14 @@ class StampMsController extends Controller
                     $loop = $remainTime;
                     $tmpArray['time'] = $remainTime;
 
-                    $tmpArray['realtotal'] = $targetResult;
+                    $tmpArray['realtotal'] = $stampm->targetperjob;
                     $estimateData[] = $tmpArray;
                 }
             }
+            //$loop++;
         }
 
-        return view('dashboards.chartstampforecast', compact('logpackm', 'estimateData'));
+        return view('dashboards.chartstampforecast', compact('stampm', 'estimateData'));
     }
 
     public function deleteDetail($id, $stamp_m_id)
