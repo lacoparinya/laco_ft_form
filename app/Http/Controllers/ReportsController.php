@@ -12,6 +12,7 @@ use App\LogPrepareM;
 use App\LogPackM;
 use App\LogSelectM;
 use App\LogPstSelectM;
+use App\StampM;
 
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -608,4 +609,44 @@ class ReportsController extends Controller
         }
     }
 
+    public function dailystamp()
+    {
+        return view('reports.dailystamp');
+    }
+
+    public function rangestamp()
+    {
+        return view('reports.rangestamp');
+    }
+
+    public function reportStampAction(Request $request)
+    {
+        $requestData = $request->all();
+
+        if ($requestData['action_type'] == 'daily') {
+            $data = StampM::where('process_date', $requestData['process_date'])->get();            
+
+            $filename = "ft_stamp_report_" . date('ymdHi');
+            
+            Excel::create($filename, function ($excel) use ($data) {
+                $excel->sheet('งานStamp', function ($sheet) use ($data) {
+                    $sheet->loadView('exports.dailystampexport')->with('data', $data);
+                });
+            })->export('xlsx');
+
+            ///return view('exports.dailystampexport',compact('data'));     
+        } elseif ($requestData['action_type'] == 'range') {
+            $data = StampM::whereBetween('process_date', [$requestData['from_date'], $requestData['to_date']])->get();            
+
+            $filename = "ft_stamp_report_" . date('ymdHi');
+            
+            Excel::create($filename, function ($excel) use ($data) {
+                $excel->sheet('งานStamp', function ($sheet) use ($data) {
+                    $sheet->loadView('exports.dailystampexport')->with('data', $data);
+                });
+            })->export('xlsx');
+
+            //return view('exports.dailystampexport', compact('data'));            
+        }
+    }
 }

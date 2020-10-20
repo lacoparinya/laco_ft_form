@@ -44,7 +44,7 @@ class StampMsController extends Controller
      */
     public function create()
     {
-        $matpacklist = MatPack::pluck('matname', 'id');
+        $matpacklist = (new MatPack())->getlist();
         $stampmachinelist = StampMachine::pluck('name', 'id');
         $shiftlist = Shift::orderBy('name')->pluck('name', 'id');
         return view('stamp-ms.create', compact('matpacklist', 'stampmachinelist', 'shiftlist'));
@@ -91,7 +91,7 @@ class StampMsController extends Controller
     public function edit($id)
     {
         $stampm = StampM::findOrFail($id);
-        $matpacklist = MatPack::pluck('matname', 'id');
+        $matpacklist = (new MatPack())->getlist();
         $stampmachinelist = StampMachine::pluck('name', 'id');
         $shiftlist = Shift::orderBy('name')->pluck('name', 'id');
 

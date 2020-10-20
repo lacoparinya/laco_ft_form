@@ -9,7 +9,8 @@ class StampM extends Model
 
     protected $fillable = [
         'process_date', 'shift_id', 'mat_pack_id', 'stamp_machine_id', 'rateperhr',
-        'targetperjob', 'order_no', 'pack_date', 
+        'targetperjob', 'order_no', 'pack_date',
+        'loading_date', 
         'staff_target', 'staff_operate', 'staff_actual', 'note', 'status'
     ];
 

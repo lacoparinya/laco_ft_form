@@ -74,6 +74,17 @@
                                     <a href="{{route('std-select-psts.index')}}">Std Selected PST</a>
                                     </li>
                                     <li><hr/></li>
+                                    
+                                    <li>
+                                    <a href="{{route('stamp-machines.index')}}">Stamp Machines</a>
+                                    </li>
+                                    <li>
+                                    <a href="{{route('mat-packs.index')}}">Material/Pakage</a>
+                                    </li>
+                                    <li>
+                                    <a href="{{route('mat-pack-rates.index')}}">Material/Pakage Rate</a>
+                                    </li>
+                                    <li><hr/></li>
                                     <li>
 
                                         <a href="{{ route('logout') }}"
@@ -143,16 +154,10 @@
                                 <a href="{{route('reports.rangefreeze2')}}">Freeze Range Report</a>
                                 </li>
                                 <li>
-                                <a href="{{route('reports.dailypreprod')}}">Prepare Daily Report</a>
+                                <a href="{{route('reports.dailypreprod2')}}">Prepare Daily Report</a>
                                 </li>
                                 <li>
-                                <a href="{{route('reports.rangepreprod')}}">Prepare Range Report</a>
-                                </li>
-                                <li>
-                                <a href="{{route('reports.dailypreprod2')}}">New Prepare Daily Report</a>
-                                </li>
-                                <li>
-                                <a href="{{route('reports.rangepreprod2')}}">New Prepare Range Report</a>
+                                <a href="{{route('reports.rangepreprod2')}}">Prepare Range Report</a>
                                 </li>
                                 <li>
                                 <a href="{{route('reports.dailyselect2')}}">New Select Daily Report</a>
@@ -177,6 +182,12 @@
                                 </li>
                                 <li>
                                 <a href="{{route('reports.rangepreprod3')}}">Prepare With Summary Range Report</a>
+                                </li>
+                                <li>
+                                <a href="{{route('reports.dailystamp')}}">Stamp Daily Report</a>
+                                </li>
+                                <li>
+                                <a href="{{route('reports.rangestamp')}}">Stamp Range Report</a>
                                 </li>
                             </li>
                                 @else
@@ -252,16 +263,10 @@
                                     </li>
                                         <li><hr/></li>
                                         <li>
-                                        <a href="{{route('reports.dailypreprod')}}">Prepare Daily Report</a>
+                                        <a href="{{route('reports.dailypreprod2')}}">Prepare Daily Report</a>
                                         </li>
                                         <li>
-                                        <a href="{{route('reports.rangepreprod')}}">Prepare Range Report</a>
-                                        </li>
-                                        <li>
-                                        <a href="{{route('reports.dailypreprod2')}}">New Prepare Daily Report</a>
-                                        </li>
-                                        <li>
-                                        <a href="{{route('reports.rangepreprod2')}}">New Prepare Range Report</a>
+                                        <a href="{{route('reports.rangepreprod2')}}">Prepare Range Report</a>
                                         </li>
                                 <li>
                                 <a href="{{route('reports.dailypreprod3')}}">Prepare With Summary Daily Report</a>

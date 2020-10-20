@@ -176,3 +176,7 @@ Route::post('/stamp-ms/updateDetail/{id}', 'StampMsController@updateDetail');
 Route::get('/stamp-ms/changestatus/{stamp_m_id}', 'StampMsController@changestatus');
 Route::get('/stamp-ms/graph/{stamp_m_id}', 'StampMsController@graph');
 Route::get('/stamp-ms/forecast/{stamp_m_id}', 'StampMsController@forecast');
+
+Route::get('/reports/dailystamp', 'ReportsController@dailystamp')->name('reports.dailystamp');
+Route::get('/reports/rangestamp', 'ReportsController@rangestamp')->name('reports.rangestamp');
+Route::post('/reports/reportStampAction', 'ReportsController@reportStampAction');
