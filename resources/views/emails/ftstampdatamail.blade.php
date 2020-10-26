@@ -35,6 +35,7 @@
                         <th>พนักงานจริง</th>
                         <th>ผลต่างจำนวนคน</th>
                         <th>สินค้า</th>
+                        <th>บรรจุภัณฑ์</th>
                         <th>Plan</th>
                         <th>Actual</th>
                         <th>Diff</th>
@@ -52,6 +53,7 @@
                         <td>{{  $item->staff_actual }}</td>
                         <td>{{  $item->staff_diff }}</td>
                         <td>{{  $item->matname }}</td>
+                        <td>{{  $item->packname }}</td>
                         <td>{{  $item->targetperjob }}</td>
                         <td>{{  $item->Actual }}</td>
                         <td>{{  $item->diff }}</td>

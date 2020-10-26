@@ -189,6 +189,12 @@
                                 <li>
                                 <a href="{{route('reports.rangestamp')}}">Stamp Range Report</a>
                                 </li>
+                                <li>
+                                <a href="{{ url('/reports/plreportdaily') }}">PL Daily report</a>
+                                </li>
+                                <li>
+                                <a href="{{ url('/reports/plreportrang') }}">PL Range report</a>
+                                </li>
                             </li>
                                 @else
                                 <li class="dropdown">

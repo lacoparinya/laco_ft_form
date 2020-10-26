@@ -91,7 +91,7 @@ class StampMsController extends Controller
     public function edit($id)
     {
         $stampm = StampM::findOrFail($id);
-        $matpacklist = (new MatPack())->getlist();
+        $matpacklist = (new MatPack())->getlist(); 
         $stampmachinelist = StampMachine::pluck('name', 'id');
         $shiftlist = Shift::orderBy('name')->pluck('name', 'id');
 
@@ -245,7 +245,7 @@ class StampMsController extends Controller
         }
 
         //$remainTime = $logpackm->hourperday - ($totalTime* $stampm->rateperhr);
-        $targetResult = $stampm->targetperjob;
+        $targetResult = $stampm->targetperjob - $totaloutput;
 
         if ($targetResult > 0) {
             $remainTime = ceil($targetResult/ $stampm->rateperhr);
@@ -256,7 +256,7 @@ class StampMsController extends Controller
         $estimateData = array();
         while ($loop < $remainTime) {
             $tmpArray = array();
-
+            //echo $loopSum."/";
             if (($remainTime - $loop) > 1) {
                 $loop++;
                 $tmpArray['time'] = $loop;
@@ -266,8 +266,9 @@ class StampMsController extends Controller
                 $estimateData[] = $tmpArray;
             } else {
                 if (($remainTime - $loop) > 0) {
-                    $tmpArray['realrate'] = $targetResult - $loopSum;
 
+                    $tmpArray['realrate'] = $stampm->targetperjob - $loopSum;
+                    
                     $loop = $remainTime;
                     $tmpArray['time'] = $remainTime;
 

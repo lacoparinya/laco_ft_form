@@ -180,3 +180,8 @@ Route::get('/stamp-ms/forecast/{stamp_m_id}', 'StampMsController@forecast');
 Route::get('/reports/dailystamp', 'ReportsController@dailystamp')->name('reports.dailystamp');
 Route::get('/reports/rangestamp', 'ReportsController@rangestamp')->name('reports.rangestamp');
 Route::post('/reports/reportStampAction', 'ReportsController@reportStampAction');
+
+
+Route::get('/reports/plreportdaily', 'ReportsController@plreportdaily')->name('reports.plreportdaily');
+Route::get('/reports/plreportrang', 'ReportsController@plreportrang')->name('reports.plreportrang');
+Route::post('/reports/plreportaction', 'ReportsController@plreportaction');

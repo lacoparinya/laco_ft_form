@@ -54,7 +54,7 @@ class GenDailyStampReport extends Command
             $selecteddate = date('Y-m-d', strtotime("-1 days"));
         }
 
-        $selecteddate = '2020-10-16';
+        //$selecteddate = '2020-10-23';
 
         $plan_flag = "Y";
 
@@ -70,16 +70,16 @@ class GenDailyStampReport extends Command
             shifts.name as shiftname,
     stamp_machines.name as 'stampmachinename',
     mat_packs.matname as 'matname',
+    mat_packs.packname as 'packname',
     stamp_ms.staff_target as 'staff_target',
     stamp_ms.staff_operate as 'staff_operate',
     stamp_ms.staff_actual  as 'staff_actual',
-    ISNULL(stamp_ms.staff_target,0)
-    - ISNULL(stamp_ms.staff_actual,0)
+    ISNULL(stamp_ms.staff_actual,0)
+    - ISNULL(stamp_ms.staff_target,0)
     as 'staff_diff',
     stamp_ms.targetperjob,
     sum(stamp_ds.output) as Actual,
-    stamp_ms.targetperjob -
-    sum(stamp_ds.output) as diff,
+    sum(stamp_ds.output) - stamp_ms.targetperjob as diff,
     stamp_ms.note as 'Remark'"))
                 ->where('stamp_ms.process_date', $selecteddate)
                 ->where('stamp_ms.shift_id', $shiftId)
@@ -87,6 +87,7 @@ class GenDailyStampReport extends Command
             shifts.name,
     stamp_machines.name ,
     mat_packs.matname ,
+    mat_packs.packname,
     stamp_ms.staff_target ,
     stamp_ms.staff_operate ,
     stamp_ms.staff_actual ,

@@ -649,4 +649,415 @@ class ReportsController extends Controller
             //return view('exports.dailystampexport', compact('data'));            
         }
     }
+
+    public function plreportdaily(){
+        return view('reports.plreportdaily');
+
+    }
+
+    public function plreportrang(){
+        return view('reports.plreportrang');
+
+    }
+
+    public function plreportaction(Request $request){
+
+        $requestData = $request->all();
+
+        $data = array();
+
+        $dataplfreeze = array();
+        $dataplprepare = array();
+        $dataplselect = array();
+        $dataplpack = array();
+        $dataplstamp = array();
+
+        if ($requestData['action_type'] == 'daily') {
+
+            // Freeze 
+            $dataplfreeze = DB::table('freeze_ms')
+            ->leftjoin('freeze_ds', 'freeze_ms.id', '=', 'freeze_ds.freeze_m_id')
+            ->leftjoin('iqf_jobs', 'iqf_jobs.id', '=', 'freeze_ms.iqf_job_id')
+            ->leftjoin('shifts', 'shifts.id', '=', 'freeze_ds.shift_id')
+            ->select(DB::raw("freeze_ms.process_date,
+            shifts.name as shiftname,
+            freeze_ms.staff_target,
+            freeze_ms.staff_operate,
+            freeze_ms.staff_pf,
+            freeze_ms.staff_pk,
+            freeze_ms.staff_pst, 
+            (ISNULL(freeze_ms.staff_pk,0)+ISNULL(freeze_ms.staff_pf,0)+ISNULL(freeze_ms.staff_pst,0)) 
+            - ISNULL(freeze_ms.staff_target,0)
+            as 'staff_diff',   
+            iqf_jobs.name as productname,
+            freeze_ms.targets * sum(freeze_ds.workhour)  as 'Plan',
+            sum(freeze_ds.output_sum) as 'Actual',
+            (freeze_ms.targets * sum(freeze_ds.workhour)) - sum(freeze_ds.output_sum) as 'diff',
+            freeze_ms.note as Remark"))
+                        ->where('freeze_ms.process_date', $requestData['process_date'])
+                        ->groupBy(DB::raw('freeze_ms.process_date,
+            shifts.name,
+            freeze_ms.staff_target,
+            freeze_ms.staff_operate,
+            freeze_ms.staff_pf,
+            freeze_ms.staff_pk,
+            freeze_ms.staff_pst,
+            iqf_jobs.name,
+            freeze_ms.targets,
+            freeze_ms.note'))
+            ->get();
+
+            //Prepare
+            $dataplprepare = DB::table('log_prepare_ms')
+            ->leftjoin('log_prepare_ds', 'log_prepare_ms.id', '=', 'log_prepare_ds.log_prepare_m_id')
+            ->leftjoin('pre_prods',
+                'pre_prods.id',
+                '=',
+                'log_prepare_ms.pre_prod_id'
+            )
+            ->leftjoin('shifts', 'shifts.id', '=', 'log_prepare_ds.shift_id')
+            ->select(DB::raw("log_prepare_ms.process_date,
+            shifts.name as shiftname,
+            log_prepare_ms.staff_target,
+            log_prepare_ms.staff_operate,
+            log_prepare_ms.staff_pf,
+            log_prepare_ms.staff_pk,
+            log_prepare_ms.staff_pst,
+            (ISNULL(log_prepare_ms.staff_pk,0)+ISNULL(log_prepare_ms.staff_pf,0)+ISNULL(log_prepare_ms.staff_pst,0)) 
+            - ISNULL(log_prepare_ms.staff_target,0)
+            as 'staff_diff',   
+            pre_prods.name as productname,
+            log_prepare_ms.targetperhr * sum(log_prepare_ds.workhours) as 'Plan',
+            CASE WHEN max(log_prepare_ds.input_sum) > 0 THEN max(log_prepare_ds.input_sum) ELSE max(log_prepare_ds.output_sum) END as 'Actual',
+            CASE WHEN max(log_prepare_ds.input_sum) > 0 THEN max(log_prepare_ds.input_sum) ELSE max(log_prepare_ds.output_sum) END - (log_prepare_ms.targetperhr * sum(log_prepare_ds.workhours)) as 'diff',
+            log_prepare_ms.note as Remark"))
+                        ->where('log_prepare_ms.process_date',  $requestData['process_date'])
+                        ->groupBy(DB::raw('log_prepare_ms.process_date,
+            shifts.name,
+            log_prepare_ms.staff_target,
+            log_prepare_ms.staff_operate,
+            log_prepare_ms.staff_pf,
+            log_prepare_ms.staff_pk,
+            log_prepare_ms.staff_pst,
+            pre_prods.name,
+            log_prepare_ms.targetperhr,
+            log_prepare_ms.note'))
+                ->get();
+
+            //Select 
+            $dataplselect = DB::table('log_select_ms')
+                ->leftjoin('log_select_ds', 'log_select_ms.id', '=', 'log_select_ds.log_select_m_id')
+                ->leftjoin('products', 'products.id', '=', 'log_select_ms.product_id')
+                ->leftjoin('shifts', 'shifts.id', '=', 'log_select_ms.shift_id')
+                ->select(DB::raw("log_select_ms.process_date,
+                shifts.name as shiiftname,
+                '-' as jobtype,
+                log_select_ms.staff_target as staff_target,
+                log_select_ms.staff_operate as staff_operate,
+                (select top 1 pk.num_pk from log_select_ds as pk where pk.log_select_m_id = log_select_ms.id order by pk.process_datetime)  as staff_pk,
+                (select top 1 pf.num_pf from log_select_ds as pf where pf.log_select_m_id = log_select_ms.id order by pf.process_datetime)   as staff_pf,
+                (select top 1 pst.num_pst from log_select_ds as pst where pst.log_select_m_id = log_select_ms.id order by pst.process_datetime)  as staff_pst,
+                (
+                (ISNULL((select top 1 pk.num_pk from log_select_ds as pk where pk.log_select_m_id = log_select_ms.id order by pk.process_datetime),0)
+                +ISNULL((select top 1 pf.num_pf from log_select_ds as pf where pf.log_select_m_id = log_select_ms.id order by pf.process_datetime),0)
+                +ISNULL((select top 1 pst.num_pst from log_select_ds as pst where pst.log_select_m_id = log_select_ms.id order by pst.process_datetime),0)) 
+                ) - ISNULL(log_select_ms.staff_target,0) as staff_diff,
+                products.name as productname,
+                'kg' as unit,
+                log_select_ms.targetperday as 'Plan',
+                sum(log_select_ds.output_kg) as Actual,
+                sum(log_select_ds.output_kg) - log_select_ms.targetperday as diff,
+                '-'  as Shipment,
+                log_select_ms.note as Remark"))
+                            ->where('log_select_ms.process_date', $requestData['process_date'])
+                            ->groupBy(DB::raw('log_select_ms.process_date,
+                shifts.name,
+                log_select_ms.id,
+                log_select_ms.staff_target,log_select_ms.staff_operate,
+                log_select_ms.targetperday,
+                log_select_ms.note,
+                products.name'))
+                            ->get();
+
+            //Pack
+            $dataplpack = DB::table('log_pack_ms')
+            ->leftjoin('log_pack_ds', 'log_pack_ms.id', '=', 'log_pack_ds.log_pack_m_id')
+            ->leftjoin('methods', 'methods.id', '=', 'log_pack_ms.method_id')
+            ->leftjoin('shifts', 'shifts.id', '=', 'log_pack_ms.shift_id')
+            ->leftjoin('packages', 'packages.id', '=', 'log_pack_ms.package_id')
+            ->leftjoin('orders', 'orders.id', '=', 'log_pack_ms.order_id')
+            ->leftjoin('std_packs', 'std_packs.id', '=', 'log_pack_ms.std_pack_id')
+            ->select(DB::raw("log_pack_ms.process_date,
+            shifts.name as 'shiftname',
+            methods.name as 'methodname',
+            log_pack_ms.staff_target as 'staff_target',
+            log_pack_ms.staff_operate as 'staff_operate',
+            log_pack_ms.staff_pk  as 'staff_pk',
+            log_pack_ms.staff_pf  as 'staff_pf',
+            log_pack_ms.staff_pst  as 'staff_pst',
+            (ISNULL(log_pack_ms.staff_pk,0)+ISNULL(log_pack_ms.staff_pf,0)+ISNULL(log_pack_ms.staff_pst,0)) 
+            - ISNULL(log_pack_ms.staff_target,0)
+            as 'staff_diff',
+            packages.name as 'packagename',
+            '-' as 'unit',
+            log_pack_ms.targetperday as 'Plan',
+            sum(log_pack_ds.[output_pack]) as 'Actual',
+            sum(log_pack_ds.[output_pack]) - log_pack_ms.targetperday as 'diff',
+            orders.order_no as 'Shipment',
+            log_pack_ms.note as 'Remark'"))
+                    ->where('log_pack_ms.process_date', $requestData['process_date'])
+                    ->groupBy(DB::raw('log_pack_ms.process_date,
+            shifts.name,methods.name,packages.name,orders.order_no,
+            log_pack_ms.targetperday,packages.kgsperpack,log_pack_ms.note,
+            log_pack_ms.staff_target,log_pack_ms.staff_operate,
+            log_pack_ms.staff_pf,log_pack_ms.staff_pk,log_pack_ms.staff_pst'))
+            ->get();
+
+            //Stamp
+            $dataplstamp = DB::table('stamp_ms')
+            ->leftjoin('stamp_ds', 'stamp_ms.id', '=', 'stamp_ds.stamp_m_id')
+            ->leftjoin('stamp_machines', 'stamp_machines.id', '=', 'stamp_ms.stamp_machine_id')
+            ->leftjoin('shifts', 'shifts.id', '=', 'stamp_ms.shift_id')
+            ->leftjoin('mat_packs', 'mat_packs.id', '=', 'stamp_ms.mat_pack_id')
+            ->select(DB::raw("stamp_ms.process_date,
+            shifts.name as shiftname,
+    stamp_machines.name as 'stampmachinename',
+    mat_packs.matname as 'matname',
+    stamp_ms.staff_target as 'staff_target',
+    stamp_ms.staff_operate as 'staff_operate',
+    stamp_ms.staff_actual  as 'staff_actual',
+    ISNULL(stamp_ms.staff_target,0)
+    - ISNULL(stamp_ms.staff_actual,0)
+    as 'staff_diff',
+    stamp_ms.targetperjob,
+    sum(stamp_ds.output) as Actual,
+    stamp_ms.targetperjob -
+    sum(stamp_ds.output) as diff,
+    stamp_ms.note as 'Remark'"))
+                ->where('stamp_ms.process_date', $requestData['process_date'])
+                ->groupBy(DB::raw('stamp_ms.process_date,
+            shifts.name,
+    stamp_machines.name ,
+    mat_packs.matname ,
+    stamp_ms.staff_target ,
+    stamp_ms.staff_operate ,
+    stamp_ms.staff_actual ,
+    stamp_ms.targetperjob,
+    stamp_ms.note'))
+                ->get();
+        
+        } elseif ($requestData['action_type'] == 'range') {
+
+            // Freeze 
+            $dataplfreeze = DB::table('freeze_ms')
+                ->leftjoin('freeze_ds', 'freeze_ms.id', '=', 'freeze_ds.freeze_m_id')
+                ->leftjoin('iqf_jobs', 'iqf_jobs.id', '=', 'freeze_ms.iqf_job_id')
+                ->leftjoin('shifts', 'shifts.id', '=', 'freeze_ds.shift_id')
+                ->select(DB::raw("freeze_ms.process_date,
+            shifts.name as shiftname,
+            freeze_ms.staff_target,
+            freeze_ms.staff_operate,
+            freeze_ms.staff_pf,
+            freeze_ms.staff_pk,
+            freeze_ms.staff_pst, 
+            (ISNULL(freeze_ms.staff_pk,0)+ISNULL(freeze_ms.staff_pf,0)+ISNULL(freeze_ms.staff_pst,0)) 
+            - ISNULL(freeze_ms.staff_target,0)
+            as 'staff_diff',   
+            iqf_jobs.name as productname,
+            freeze_ms.targets * sum(freeze_ds.workhour)  as 'Plan',
+            sum(freeze_ds.output_sum) as 'Actual',
+            (freeze_ms.targets * sum(freeze_ds.workhour)) - sum(freeze_ds.output_sum) as 'diff',
+            freeze_ms.note as Remark"))
+                ->whereBetween('freeze_ms.process_date', [$requestData['from_date'], $requestData['to_date']])
+                ->groupBy(DB::raw('freeze_ms.process_date,
+            shifts.name,
+            freeze_ms.staff_target,
+            freeze_ms.staff_operate,
+            freeze_ms.staff_pf,
+            freeze_ms.staff_pk,
+            freeze_ms.staff_pst,
+            iqf_jobs.name,
+            freeze_ms.targets,
+            freeze_ms.note'))
+                ->get();
+
+            //Prepare
+            $dataplprepare = DB::table('log_prepare_ms')
+            ->leftjoin('log_prepare_ds', 'log_prepare_ms.id', '=', 'log_prepare_ds.log_prepare_m_id')
+            ->leftjoin(
+                'pre_prods',
+                'pre_prods.id',
+                '=',
+                'log_prepare_ms.pre_prod_id'
+            )
+            ->leftjoin('shifts', 'shifts.id', '=', 'log_prepare_ds.shift_id')
+            ->select(DB::raw("log_prepare_ms.process_date,
+            shifts.name as shiftname,
+            log_prepare_ms.staff_target,
+            log_prepare_ms.staff_operate,
+            log_prepare_ms.staff_pf,
+            log_prepare_ms.staff_pk,
+            log_prepare_ms.staff_pst,
+            (ISNULL(log_prepare_ms.staff_pk,0)+ISNULL(log_prepare_ms.staff_pf,0)+ISNULL(log_prepare_ms.staff_pst,0)) 
+            - ISNULL(log_prepare_ms.staff_target,0)
+            as 'staff_diff',   
+            pre_prods.name as productname,
+            log_prepare_ms.targetperhr * sum(log_prepare_ds.workhours) as 'Plan',
+            CASE WHEN max(log_prepare_ds.input_sum) > 0 THEN max(log_prepare_ds.input_sum) ELSE max(log_prepare_ds.output_sum) END as 'Actual',
+            CASE WHEN max(log_prepare_ds.input_sum) > 0 THEN max(log_prepare_ds.input_sum) ELSE max(log_prepare_ds.output_sum) END - (log_prepare_ms.targetperhr * sum(log_prepare_ds.workhours)) as 'diff',
+            log_prepare_ms.note as Remark"))
+            ->whereBetween('log_prepare_ms.process_date',  [$requestData['from_date'], $requestData['to_date']])
+            ->groupBy(DB::raw('log_prepare_ms.process_date,
+            shifts.name,
+            log_prepare_ms.staff_target,
+            log_prepare_ms.staff_operate,
+            log_prepare_ms.staff_pf,
+            log_prepare_ms.staff_pk,
+            log_prepare_ms.staff_pst,
+            pre_prods.name,
+            log_prepare_ms.targetperhr,
+            log_prepare_ms.note'))
+                ->get();
+
+            //select
+            $dataplselect = DB::table('log_select_ms')
+                ->leftjoin('log_select_ds', 'log_select_ms.id', '=', 'log_select_ds.log_select_m_id')
+                ->leftjoin('products', 'products.id', '=', 'log_select_ms.product_id')
+                ->leftjoin('shifts', 'shifts.id', '=', 'log_select_ms.shift_id')
+                ->select(DB::raw("log_select_ms.process_date,
+                shifts.name as shiiftname,
+                '-' as jobtype,
+                log_select_ms.staff_target as staff_target,
+                log_select_ms.staff_operate as staff_operate,
+                (select top 1 pk.num_pk from log_select_ds as pk where pk.log_select_m_id = log_select_ms.id order by pk.process_datetime)  as staff_pk,
+                (select top 1 pf.num_pf from log_select_ds as pf where pf.log_select_m_id = log_select_ms.id order by pf.process_datetime)   as staff_pf,
+                (select top 1 pst.num_pst from log_select_ds as pst where pst.log_select_m_id = log_select_ms.id order by pst.process_datetime)  as staff_pst,
+                (
+                (ISNULL((select top 1 pk.num_pk from log_select_ds as pk where pk.log_select_m_id = log_select_ms.id order by pk.process_datetime),0)
+                +ISNULL((select top 1 pf.num_pf from log_select_ds as pf where pf.log_select_m_id = log_select_ms.id order by pf.process_datetime),0)
+                +ISNULL((select top 1 pst.num_pst from log_select_ds as pst where pst.log_select_m_id = log_select_ms.id order by pst.process_datetime),0)) 
+                ) - ISNULL(log_select_ms.staff_target,0) as staff_diff,
+                products.name as productname,
+                'kg' as unit,
+                log_select_ms.targetperday as 'Plan',
+                sum(log_select_ds.output_kg) as Actual,
+                sum(log_select_ds.output_kg) - log_select_ms.targetperday as diff,
+                '-'  as Shipment,
+                log_select_ms.note as Remark"))
+                ->whereBetween('log_select_ms.process_date', [$requestData['from_date'], $requestData['to_date']])
+                ->groupBy(DB::raw('log_select_ms.process_date,
+                shifts.name,
+                log_select_ms.id,
+                log_select_ms.staff_target,log_select_ms.staff_operate,
+                log_select_ms.targetperday,
+                log_select_ms.note,
+                products.name'))
+                ->get();
+
+            //Pack
+            $dataplpack = DB::table('log_pack_ms')
+            ->leftjoin('log_pack_ds', 'log_pack_ms.id', '=', 'log_pack_ds.log_pack_m_id')
+            ->leftjoin('methods', 'methods.id', '=', 'log_pack_ms.method_id')
+            ->leftjoin('shifts', 'shifts.id', '=', 'log_pack_ms.shift_id')
+            ->leftjoin('packages', 'packages.id', '=', 'log_pack_ms.package_id')
+            ->leftjoin('orders', 'orders.id', '=', 'log_pack_ms.order_id')
+            ->leftjoin('std_packs', 'std_packs.id', '=', 'log_pack_ms.std_pack_id')
+            ->select(DB::raw("log_pack_ms.process_date,
+            shifts.name as 'shiftname',
+            methods.name as 'methodname',
+            log_pack_ms.staff_target as 'staff_target',
+            log_pack_ms.staff_operate as 'staff_operate',
+            log_pack_ms.staff_pk  as 'staff_pk',
+            log_pack_ms.staff_pf  as 'staff_pf',
+            log_pack_ms.staff_pst  as 'staff_pst',
+            (ISNULL(log_pack_ms.staff_pk,0)+ISNULL(log_pack_ms.staff_pf,0)+ISNULL(log_pack_ms.staff_pst,0)) 
+            - ISNULL(log_pack_ms.staff_target,0)
+            as 'staff_diff',
+            packages.name as 'packagename',
+            '-' as 'unit',
+            log_pack_ms.targetperday as 'Plan',
+            sum(log_pack_ds.[output_pack]) as 'Actual',
+            sum(log_pack_ds.[output_pack]) - log_pack_ms.targetperday as 'diff',
+            orders.order_no as 'Shipment',
+            log_pack_ms.note as 'Remark'"))
+            ->whereBetween('log_pack_ms.process_date',  [$requestData['from_date'], $requestData['to_date']])
+            ->groupBy(DB::raw('log_pack_ms.process_date,
+            shifts.name,methods.name,packages.name,orders.order_no,
+            log_pack_ms.targetperday,packages.kgsperpack,log_pack_ms.note,
+            log_pack_ms.staff_target,log_pack_ms.staff_operate,
+            log_pack_ms.staff_pf,log_pack_ms.staff_pk,log_pack_ms.staff_pst'))
+            ->get();
+
+            //Stamp
+            $dataplstamp = DB::table('stamp_ms')
+            ->leftjoin('stamp_ds', 'stamp_ms.id', '=', 'stamp_ds.stamp_m_id')
+            ->leftjoin('stamp_machines', 'stamp_machines.id', '=', 'stamp_ms.stamp_machine_id')
+            ->leftjoin('shifts', 'shifts.id', '=', 'stamp_ms.shift_id')
+            ->leftjoin('mat_packs', 'mat_packs.id', '=', 'stamp_ms.mat_pack_id')
+            ->select(DB::raw("stamp_ms.process_date,
+            shifts.name as shiftname,
+    stamp_machines.name as 'stampmachinename',
+    mat_packs.matname as 'matname',
+    mat_packs.packname as 'packname',
+    stamp_ms.staff_target as 'staff_target',
+    stamp_ms.staff_operate as 'staff_operate',
+    stamp_ms.staff_actual  as 'staff_actual',
+    ISNULL(stamp_ms.staff_actual,0) -
+    ISNULL(stamp_ms.staff_target,0)
+    as 'staff_diff',
+    stamp_ms.targetperjob,
+    sum(stamp_ds.output) as Actual,
+    sum(stamp_ds.output) - 
+    stamp_ms.targetperjob
+    as diff,
+    stamp_ms.note as 'Remark'"))
+                ->whereBetween('stamp_ms.process_date', [$requestData['from_date'], $requestData['to_date']])
+                ->groupBy(DB::raw('stamp_ms.process_date,
+            shifts.name,
+    stamp_machines.name ,
+    mat_packs.matname ,
+    mat_packs.packname,
+    stamp_ms.staff_target ,
+    stamp_ms.staff_operate ,
+    stamp_ms.staff_actual ,
+    stamp_ms.targetperjob,
+    stamp_ms.note'))
+                ->get();
+
+        }
+
+        foreach ($dataplfreeze as $item) {
+            $data[$item->process_date]["freeze"][] = $item;
+        }
+        foreach ($dataplprepare as $item) {
+            $data[$item->process_date]["prepare"][] = $item;
+        }
+        foreach ($dataplselect as $item) {
+            $data[$item->process_date]["select"][] = $item;
+        }
+        foreach ($dataplpack as $item) {
+            $data[$item->process_date]["pack"][] = $item;
+        }
+        foreach ($dataplstamp as $item) {
+            $data[$item->process_date]["stamp"][] = $item;
+        }
+
+
+        ksort($data);
+
+        //var_dump($data);
+        //return view('exports.plsumexport', compact('data'));
+
+
+        $filename = "ft_pl_report_" . date('ymdHi');
+
+        Excel::create($filename, function ($excel) use ($data) {
+            $excel->sheet('งานFT', function ($sheet) use ($data) {
+                $sheet->loadView('exports.plsumexport')->with('data', $data);
+            });
+        })->export('xlsx');
+
+
+        
+    }
 }
