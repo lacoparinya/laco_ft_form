@@ -159,9 +159,9 @@ class GenDailyPack2Report extends Command
                     if ($logpackm->targetperday == $totalAct) {
                         $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:yellow;">ผลิตได้ตามป้าหมาย</span>';
                     } elseif ($logpackm->targetperday > $totalAct) {
-                        $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:red;">ผลิตได้ต่ำกว่าเป้าหมาย ' . round(((($totalPlan - $totalAct) * 100) / $totalPlan), 2) . "%</span>";
+                        $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:red;">ผลิตได้ต่ำกว่าเป้าหมาย ' . round(((($logpackm->targetperday - $totalAct) * 100) / $logpackm->targetperday), 2) . "%</span>";
                     } else {
-                        $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:green;">ผลิตได้มากกว่าเป้าหมาย ' . round(((($totalAct - $totalPlan) * 100) / $totalPlan), 2) . "%</span>";
+                        $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:green;">ผลิตได้มากกว่าเป้าหมาย ' . round(((($totalAct - $logpackm->targetperday) * 100) / $logpackm->targetperday), 2) . "%</span>";
                     }
                 }
 
