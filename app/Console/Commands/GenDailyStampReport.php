@@ -61,7 +61,7 @@ class GenDailyStampReport extends Command
         //PL Part
         $datapl = array();
         if ($plan_flag == 'Y') {
-                $datapl = DB::table('stamp_ms')
+            $datapl = DB::table('stamp_ms')
                 ->leftjoin('stamp_ds', 'stamp_ms.id', '=', 'stamp_ds.stamp_m_id')
                 ->leftjoin('stamp_machines', 'stamp_machines.id', '=', 'stamp_ms.stamp_machine_id')
                 ->leftjoin('shifts', 'shifts.id', '=', 'stamp_ms.shift_id')
@@ -148,15 +148,25 @@ class GenDailyStampReport extends Command
                     }
                 }
 
-                if ($totalPlan == $totalAct) {
-                    $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:yellow;">ผลิตได้ตามป้าหมาย</span>';
-                } elseif ($totalPlan > $totalAct) {
-                    $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:red;">ผลิตได้ต่ำกว่าเป้าหมาย ' . round(((($totalPlan - $totalAct) * 100) / $totalPlan), 2) . "%</span>";
+                if ($totalPlan <= $stampm->targetperjob) {
+                    if ($totalPlan == $totalAct) {
+                        $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:yellow;">ผลิตได้ตามป้าหมาย</span>';
+                    } elseif ($totalPlan > $totalAct) {
+                        $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:red;">ผลิตได้ต่ำกว่าเป้าหมาย ' . round(((($totalPlan - $totalAct) * 100) / $totalPlan), 2) . "%</span>";
+                    } else {
+                        $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:green;">ผลิตได้มากกว่าเป้าหมาย ' . round(((($totalAct - $totalPlan) * 100) / $totalPlan), 2) . "%</span>";
+                    }
                 } else {
-                    $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:green;">ผลิตได้มากกว่าเป้าหมาย ' . round(((($totalAct - $totalPlan) * 100) / $totalPlan), 2) . "%</span>";
+                    if ($stampm->targetperjob == $totalAct) {
+                        $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:yellow;">ผลิตได้ตามป้าหมาย</span>';
+                    } elseif ($stampm->targetperjob > $totalAct) {
+                        $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:red;">ผลิตได้ต่ำกว่าเป้าหมาย ' . round(((($stampm->targetperjob - $totalAct) * 100) / $stampm->targetperjob), 2) . "%</span>";
+                    } else {
+                        $resultar['txt'] = 'สรุปได้ว่า <span style="background-color:green;">ผลิตได้มากกว่าเป้าหมาย ' . round(((($totalAct - $stampm->targetperjob) * 100) / $stampm->targetperjob), 2) . "%</span>";
+                    }
                 }
 
-                $remainTime = ceil($stampm->targetperjob/ $stampm->rateperhr) - $totalTime;
+                $remainTime = ceil($stampm->targetperjob / $stampm->rateperhr) - $totalTime;
                 $targetResult = $stampm->targetperjob;
                 $totaloutputpack = $sum;
 
@@ -265,9 +275,9 @@ class GenDailyStampReport extends Command
                     File::makeDirectory($path,  0777, true, true);
                 }
 
-                $filename = 'graph/' . date('Ym') . "/stamps/ft_stamp_" . $current_date . "-" . $stampm->shift->id . "-" . $stampm->stamp_machine_id . "-" . $stampm->matpack_id . "-" . $date . ".jpg";
+                $filename = 'graph/' . date('Ym') . "/stamps/ft_stamp_" . $current_date . "-" . $stampm->shift->id . "-" . $stampm->stamp_machine_id . "-" . $stampm->mat_pack_id . "-" . $date . ".jpg";
 
-                $filename1 = $path . "/ft_stamp_" . $current_date . "-" . $stampm->shift->id . "-" . $stampm->stamp_machine_id . "-" . $stampm->matpack_id . "-" . $date . ".jpg";
+                $filename1 = $path . "/ft_stamp_" . $current_date . "-" . $stampm->shift->id . "-" . $stampm->stamp_machine_id . "-" . $stampm->mat_pack_id . "-" . $date . ".jpg";
 
 
                 $graph->Stroke($filename1);
