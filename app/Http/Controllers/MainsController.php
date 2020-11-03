@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\FreezeM;
+use App\WeightReport;
 
 class MainsController extends Controller
 {
@@ -14,6 +15,8 @@ class MainsController extends Controller
     }
 
     public function index($date){
+
+        
 
         if($date == 'today'){
             $date = date('Y-m-d');
@@ -183,5 +186,30 @@ class MainsController extends Controller
             ->get();
 
         return view('mains.index', compact('rawfreezedata', 'rawpreparedata', 'rawselectdata', 'rawpackdata', 'date'));
+    }
+
+    public function weightindex($date)
+    {
+        $last = WeightReport::orderBy('id', 'DESC')->first();
+
+        if ($date == 'today') {
+            $date = date('Y-m-d');
+        }
+
+       
+
+        $dataRw = WeightReport::whereBetween('datetime',[$date." 00:00:00", $date . " 23:59:59"])
+        ->where('prod_name','!=','')
+        ->groupBy('prod_name','cus_name','overall_status')
+        ->select('prod_name', 'cus_name', 'overall_status',db::raw('count(id) as num'))
+
+        ->get();
+
+        $data = array();
+        foreach ($dataRw as $dataObj) {
+            $data[$dataObj->prod_name][$dataObj->cus_name][$dataObj->overall_status] = $dataObj->num;
+        }
+        return view('mains.weight', compact('last', 'data', 'date'));
+ 
     }
 }

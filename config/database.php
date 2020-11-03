@@ -41,17 +41,11 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
-            'unix_socket' => env('DB_SOCKET', ''),
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
-            'prefix' => '',
-            'strict' => true,
-            'engine' => null,
+            'host' => env('DB2_HOST', '10.45.70.100'),
+            'port' => env('DB2_PORT', '3306'),
+            'database' => env('DB2_DATABASE', 'check_weight'),
+            'username' => env('DB2_USERNAME', 'lacouser'),
+            'password' => env('DB2_PASSWORD', 'L@CO1993'),
         ],
 
         'pgsql' => [

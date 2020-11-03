@@ -115,7 +115,9 @@ log_prepare_ms.note'))
 
         foreach ($loopData as $logpreparem) {
             //echo $mpObj->shift_id." - ". $mpObj->pre_prod_id;
-            $detailData = $logpreparem->logprepared()->orderBy('process_datetime')->get();
+            $detailData = $logpreparem->logprepared()->where('shift_id',$shiftId)->orderBy('process_datetime')->get();
+
+            if(!empty($detailData)){
 
             $totalTime = 0;
             $remainTime = 0;
@@ -180,7 +182,7 @@ log_prepare_ms.note'))
             $data4y = array();
             $data1x = array();
 
-            foreach ($logpreparem->logprepared()->orderBy('process_datetime')->get() as $item){
+            foreach ($logpreparem->logprepared()->where('shift_id',$shiftId)->orderBy('process_datetime')->get() as $item){
                 $data1x[] = date('H:i', strtotime($item->process_datetime));
                 $data1y[] = $item->targets;
                 $totalPlan += $item->targets;
@@ -311,6 +313,7 @@ log_prepare_ms.note'))
 
             $fileList[] = $filename;
             $resultList[] = $resultar;
+            }
         }
 
         if(!empty( $fileList)){

@@ -12,6 +12,7 @@
                         @else
                             @if ( App\User::find(Auth::user()->id)->group->name == 'admin'  )
                             <li><a href="{{ url('/mains/index/today') }}">Dashboard</a></li>
+                            <li><a href="{{ url('/mains/weight/today') }}">Check Weight</a></li>
                             <li class="dropdown">
                                 
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">

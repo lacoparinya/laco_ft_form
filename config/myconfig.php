@@ -15,6 +15,14 @@ return [
         'OC' => 'Oraphan@Lannaagro.com',
         'PKP' => 'parinya.k@lannaagro.com',
         'PC' => 'Pimchanok@Lannaagro.com',
+        'SJU' => 'Supattra2@Lannaagro.com', 
+        'PSR' => 'piyawan@lannaagro.com',
+        'PI' => 'Piphop@Lannaagro.com',
+        'PK_STAFF' => 'PK_Staff@Lannaagro.com',
+        'SAN' => 'Supaporn.a@Lannaagro.com',
+        'SJB' => 'Sarawut@Lannaagro.com',
+        'SPT' => 'Supakchaya@Lannaagro.com',
+        'PFIQF_STAFF' => 'PfIQF_Staff@Lannaagro.com'
     ],
     'emailtestlist' => [
         'PKP' => 'parinya.k@lannaagro.com',

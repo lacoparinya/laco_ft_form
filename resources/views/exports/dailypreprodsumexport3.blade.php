@@ -56,8 +56,18 @@
                     <td>{{ $item->preprodname }}</td>
                     <td>{{ $item->sumworkhours }}</td>
                     <td>{{ $item->sumMH }}</td>
-                    <td>{{ round($item->resultsum/$item->sumworkhours,2) }}</td>
-                    <td>{{ round($item->resultsum/$item->sumMH,2) }}</td>                     
+                    <td>@if ($item->sumworkhours != 0)
+                        {{ round($item->resultsum/$item->sumworkhours,2) }}
+                    @else
+                        0
+                    @endif
+                        </td><td>
+                        @if ($item->sumMH != 0)
+                            {{ round($item->resultsum/$item->sumMH,2) }}
+                        @else
+                            0
+                        @endif
+                    </td>                     
                 </tr>
             @endforeach
         </tbody>

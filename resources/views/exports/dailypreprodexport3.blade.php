@@ -90,11 +90,32 @@
                         <td>{{ ($itemd->workhours)*($itemd->num_iqf + $itemd->num_pre) }}</td>
                         @if ($numberItem ==  $loopItem)
                             @if ($itemd->output_sum > 0)
-                                <td>{{ round($itemd->output_sum/$totalHour,2) }}</td>
-                                <td>{{ round($itemd->output_sum/$totalMH,2) }}</td>
+                                <td>@if ($totalHour != 0)
+                                    {{ round($itemd->output_sum/$totalHour,2) }}
+                                @else
+                                    0
+                                @endif
+                                    </td>
+                                <td>
+                                    @if ($totalMH != 0)
+                                        {{ round($itemd->output_sum/$totalMH,2) }}
+                                    @else
+                                        0
+                                    @endif
+                                    </td>
                             @else
-                                <td>{{ round($itemd->input_sum/$totalHour,2) }}</td>
-                                <td>{{ round($itemd->input_sum/$totalMH,2) }}</td>
+                                <td>@if ($totalHour != 0)
+                                    {{ round($itemd->input_sum/$totalHour,2) }}
+                                @else
+                                    0
+                                @endif
+                                    </td>
+                                <td>@if ($totalMH != 0)
+                                    {{ round($itemd->input_sum/$totalMH,2) }}
+                                @else
+                                    0
+                                @endif
+                                    </td>
                             @endif
                         @else
                             <td></td>
