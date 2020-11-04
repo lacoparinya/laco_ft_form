@@ -196,6 +196,12 @@
                                 <li>
                                 <a href="{{ url('/reports/plreportrang') }}">PL Range report</a>
                                 </li>
+                                <li>
+                                <a href="{{ url('/reports/checkweightreportdaily') }}">Check Weight Daily Report</a>
+                                </li>
+                                <li>
+                                <a href="{{ url('/reports/checkweightreportrang') }}">Check Weight Range Report</a>
+                                </li>
                             </li>
                                 @else
                                 <li class="dropdown">
@@ -203,8 +209,11 @@
                                     {{ Auth::user()->laconame }} - {{App\User::find(Auth::user()->id)->group->name}} <span class="caret"></span>
                                 </a>
                                     @if ( App\User::find(Auth::user()->id)->group->name == 'user_pack' )
+                                    
+                            
                                     <ul class="dropdown-menu" role="menu">
-                                        <<li>
+                                        <li><a href="{{ url('/mains/weight/today') }}">Check Weight</a></li>
+                                        <li>
                                     <a href="{{route('log-pack-ms.index')}}">FT Pack Logs</a>
                                     </li>
                                     
@@ -223,6 +232,12 @@
                                         </li>
                                         <li>
                                         <a href="{{route('reports.rangepack2')}}">New Pack Range Report</a>
+                                        </li>
+                                        <li>
+                                        <a href="{{ url('/reports/checkweightreportdaily') }}">Check Weight Daily Report</a>
+                                        </li>
+                                        <li>
+                                        <a href="{{ url('/reports/checkweightreportrang') }}">Check Weight Range Report</a>
                                         </li>
                                         <li>
                                             <a href="{{ route('logout') }}"

@@ -16,16 +16,27 @@
                     <div class="card-body">
                         <h4>กล่องล่าสุด</h4>
                         <div class="col-md-12">
-                            <table class='table'>
+                            <table class='table table-bordered'>
                                 <thead>
                                     <tr>
-                                        <th>Process Date</th>
-                                        <th>ลูกค้า</th>
-                                        <th>สินค้า</th>
-                                        <th>น้ำหนัก</th>
-                                        <th>เลขข้างกล่อง 1</th>
-                                        <th>เลขข้างกล่อง 1</th>
-                                        <th>สถานะ</th>
+                                        <th rowspan="2" class="text-center align-middle">วันเวลา</th>
+                                        <th rowspan="2" class="text-center align-middle">ลูกค้า</th>
+                                        <th rowspan="2" class="text-center align-middle">สินค้า</th>
+                                        <th colspan="3" class="text-center align-middle">น้ำหนัก</th>
+                                        <th colspan="3" class="text-center align-middle">เลขข้างกล่อง 1</th>
+                                        <th colspan="3" class="text-center align-middle">เลขข้างกล่อง 2</th>
+                                        <th rowspan="2" class="text-center align-middle">สถานะรวม</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center align-middle">มาตฐาน</th>
+                                        <th class="text-center align-middle">อ่านได้</th>
+                                        <th class="text-center align-middle">สถานะ</th>
+                                        <th class="text-center align-middle">มาตฐาน</th>
+                                        <th class="text-center align-middle">อ่านได้</th>
+                                        <th class="text-center align-middle">สถานะ</th>
+                                        <th class="text-center align-middle">มาตฐาน</th>
+                                        <th class="text-center align-middle">อ่านได้</th>
+                                        <th class="text-center align-middle">สถานะ</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -33,9 +44,15 @@
                                         <td>{{ $last->datetime }}</td>
                                         <td>{{ $last->cus_name }}</td>
                                         <td>{{ $last->prod_name }}</td>
-                                        <td>{{ $last->weight_st }} / {{ $last->weight_read }} / {{ $last->weight_check }}</td>
-                                        <td>{{ $last->code1_st }} / {{ $last->code1_read }} / {{ $last->code1_check }}</td>
-                                        <td>{{ $last->code2_st }} / {{ $last->code2_read }} / {{ $last->code2_check }}</td>
+                                        <td>{{ $last->weight_st }}</td>
+                                        <td>{{ $last->weight_read }}</td>
+                                        <td>{{ $last->weight_check }}</td>
+                                        <td>{{ $last->code1_st }}</td>
+                                        <td>{{ $last->code1_read }}</td>                                        
+                                        <td>{{ $last->code1_check }}</td>
+                                        <td>{{ $last->code2_st }}</td>
+                                        <td>{{ $last->code2_read }}</td>                                        
+                                        <td>{{ $last->code2_check }}</td>
                                         <td>{{ $last->overall_status }}</td>
                                         </tr>    
                                 </tbody>

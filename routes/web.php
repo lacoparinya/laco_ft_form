@@ -186,3 +186,7 @@ Route::post('/reports/reportStampAction', 'ReportsController@reportStampAction')
 Route::get('/reports/plreportdaily', 'ReportsController@plreportdaily')->name('reports.plreportdaily');
 Route::get('/reports/plreportrang', 'ReportsController@plreportrang')->name('reports.plreportrang');
 Route::post('/reports/plreportaction', 'ReportsController@plreportaction');
+
+Route::get('/reports/checkweightreportdaily', 'ReportsController@checkweightreportdaily')->name('reports.checkweightreportdaily');
+Route::get('/reports/checkweightreportrang', 'ReportsController@checkweightreportrang')->name('reports.checkweightreportrang');
+Route::post('/reports/checkweightreportaction', 'ReportsController@checkweightreportaction');

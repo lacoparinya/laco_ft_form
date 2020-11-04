@@ -13,6 +13,7 @@ use App\LogPackM;
 use App\LogSelectM;
 use App\LogPstSelectM;
 use App\StampM;
+use App\WeightReport;
 
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -1045,9 +1046,6 @@ class ReportsController extends Controller
 
         ksort($data);
 
-        //var_dump($data);
-        //return view('exports.plsumexport', compact('data'));
-
 
         $filename = "ft_pl_report_" . date('ymdHi');
 
@@ -1059,5 +1057,66 @@ class ReportsController extends Controller
 
 
         
+    }
+
+    public function checkweightreportdaily(){
+        return view('reports.checkweightreportdaily');
+
+    }
+
+    public function checkweightreportrang(){
+        return view('reports.checkweightreportrang');
+
+    }
+
+    public function checkweightreportaction(Request $request)
+    {
+
+        $requestData = $request->all();
+
+        $data = array();
+
+        $dataplfreeze = array();
+        $dataplprepare = array();
+        $dataplselect = array();
+        $dataplpack = array();
+        $dataplstamp = array();
+
+        if ($requestData['action_type'] == 'daily') {
+            //$data = StampM::where('datetime', $requestData['process_date'])->get();\
+            $data = WeightReport::whereBetween('datetime', [$requestData['process_date']." 00:00:00", $requestData['process_date'] . " 23:59:59"])
+            ->orderBy('datetime','ASC')
+            ->orderBy('cus_name', 'ASC')
+            ->orderBy('prod_name', 'ASC')
+            ->get();
+
+            
+            $filename = "ft_checkweight_report_" . date('ymdHi');
+
+            Excel::create($filename, function ($excel) use ($data) {
+                $excel->sheet('งานStamp', function ($sheet) use ($data) {
+                    $sheet->loadView('exports.dailycheckweightexport')->with('data', $data);
+                });
+            })->export('xlsx');
+            
+            //return view('exports.dailycheckweightexport',compact('data'));
+        }else{
+            $data = WeightReport::whereBetween('datetime', [$requestData['from_date'] . " 00:00:00", $requestData['to_date'] . " 23:59:59"])
+            ->orderBy('datetime', 'ASC')
+            ->orderBy('cus_name', 'ASC')
+            ->orderBy('prod_name', 'ASC')
+            ->get();
+
+            
+            $filename = "ft_checkweight_report_" . date('ymdHi');
+
+            Excel::create($filename, function ($excel) use ($data) {
+                $excel->sheet('งานStamp', function ($sheet) use ($data) {
+                    $sheet->loadView('exports.dailycheckweightexport')->with('data', $data);
+                });
+            })->export('xlsx');
+            
+            //return view('exports.dailycheckweightexport', compact('data'));
+        }
     }
 }
