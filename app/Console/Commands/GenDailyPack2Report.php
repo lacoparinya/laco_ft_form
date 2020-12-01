@@ -105,6 +105,7 @@ class GenDailyPack2Report extends Command
         $resultList = array();
 
         $loopData = LogPackM::where('process_date', $current_date)
+            ->where('shift_id', $shiftId)
             ->get();
 
         foreach ($loopData as $mpObj) {

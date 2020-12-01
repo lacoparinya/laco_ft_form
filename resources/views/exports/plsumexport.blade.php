@@ -219,7 +219,7 @@
                             <td class="diffred" >
                         @endif
                         {{  $item->staff_diff }}</td>
-                        <td>{{  $item->matname }} / {{  $item->packname }}</td>
+                        <td>{{  $item->matname }} / {{  $item->packname or '' }}</td>
                         <td>{{  $item->targetperjob }}</td>
                         <td>{{  $item->Actual }}</td>
                         @if ($item->diff >= 0)

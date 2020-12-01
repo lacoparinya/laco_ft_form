@@ -288,7 +288,7 @@ class GenDailyStampReport extends Command
             }
         }
 
-        if (!empty($fileList)) {
+        if (!empty($fileList) && !empty($datapl)) {
             $ftStaff = config('myconfig.emaillist');
 
             $mailObj['graph'] = $fileList;

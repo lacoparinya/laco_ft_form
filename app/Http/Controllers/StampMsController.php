@@ -28,10 +28,24 @@ class StampMsController extends Controller
         }
         $perPage = 25;
 
-        if (!empty($status)) {
-            $stampms = StampM::where('status', $status)->orderBy('process_date', 'DESC')->paginate($perPage);
-        } else {
-            $stampms = StampM::orderBy('process_date', 'DESC')->paginate($perPage);
+        if (!empty($keyword)){
+            $matpackid = MatPack::where('matname','like','%'.$keyword.'%')->pluck('id')->toArray();
+            if (!empty($status)) {
+                $stampms = StampM::where('status', $status)
+                ->whereIn('mat_pack_id', $matpackid)
+                ->orderBy('process_date', 'DESC')
+                ->paginate($perPage);
+            } else {
+                $stampms = StampM::whereIn('mat_pack_id', $matpackid)
+                ->orderBy('process_date', 'DESC')
+                ->paginate($perPage);
+            }            
+        }else{
+            if (!empty($status)) {
+                $stampms = StampM::where('status', $status)->orderBy('process_date', 'DESC')->paginate($perPage);
+            } else {
+                $stampms = StampM::orderBy('process_date', 'DESC')->paginate($perPage);
+            }
         }
 
         return view('stamp-ms.index', compact('stampms', 'status'));

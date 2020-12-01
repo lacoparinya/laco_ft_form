@@ -14,6 +14,7 @@
                         <form method="GET" action="{{ url('/stamp-ms') }}" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
                             <div class="input-group">
                                 <input type="text" class="form-control" name="search" placeholder="Search..." value="{{ request('search') }}">
+                            <input type="hidden" name="status" id="status" value="{{ $status }}" />
                                 <span class="input-group-append">
                                     <button class="btn btn-secondary" type="submit">
                                         <i class="fa fa-search"></i>
@@ -77,7 +78,7 @@
                                 @endforeach
                                 </tbody>
                             </table>
-                            <div class="pagination-wrapper"> {!! $stampms->appends(['search' => Request::get('search')])->render() !!} </div>
+                            <div class="pagination-wrapper"> {!! $stampms->appends(['search' => Request::get('search'),'status' => Request::get('status')])->render() !!} </div>
                         </div>
 
                     </div>
