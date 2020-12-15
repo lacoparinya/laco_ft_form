@@ -51,11 +51,12 @@ class GenDailyFreeze2Report extends Command
         $plan_flag = $this->argument('plan_flag');
 
         $selecteddate = date('Y-m-d');
-        //$selecteddate = '2020-10-07';
+        //$selecteddate = '2020-12-13';
         $loopData = FreezeM::where('process_date', $selecteddate)->get();
         $current_date = $selecteddate;
         if ($diff == 'Y') {
             $selecteddate2 = date('Y-m-d', strtotime("-1 days"));
+            //$selecteddate2 = '2020-12-12';
             $loopData = FreezeM::whereBetween('process_date', [$selecteddate2, $selecteddate])->get();
             $current_date = $selecteddate2." - ".$selecteddate;
         }
@@ -148,6 +149,7 @@ freeze_ms.note'))
             if($loopObj->freezed->count() > 0){
             $rawdata = $loopObj
                 ->freezed()
+                ->where('shift_id', $shiftId)
                 ->orderBy('process_datetime','asc')
                 ->get();
 
@@ -164,7 +166,7 @@ freeze_ms.note'))
 
             $rateperhour = $loopObj->targets;
 
-            if(!empty($rawdata)){
+            if(1($rawdata)){
                 $sumRemain = $rawdata[0]->current_RM + $rawdata[0]->output_sum;
             }
             $productName = $loopObj->iqfjob->name;

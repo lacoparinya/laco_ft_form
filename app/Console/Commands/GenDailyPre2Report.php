@@ -117,7 +117,7 @@ log_prepare_ms.note'))
             //echo $mpObj->shift_id." - ". $mpObj->pre_prod_id;
             $detailData = $logpreparem->logprepared()->where('shift_id',$shiftId)->orderBy('process_datetime')->get();
 
-            if(!empty($detailData)){
+            if (sizeof($detailData) > 0) {
 
             $totalTime = 0;
             $remainTime = 0;

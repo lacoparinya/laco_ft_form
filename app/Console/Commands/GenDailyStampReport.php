@@ -107,6 +107,7 @@ class GenDailyStampReport extends Command
         $resultList = array();
 
         $loopData = StampM::where('process_date', $current_date)
+            ->where('shift_id', $shiftId)
             ->get();
 
         foreach ($loopData as $mpObj) {
