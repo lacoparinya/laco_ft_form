@@ -14,8 +14,8 @@
                                 {{ $logpreparem->id }}
                             </div>
                             <div class="col-md-4">
-                                <label for="id">Date</label>
-                                {{ $logpreparem->process_date }}
+                                <label for="id">Date / Shift</label>
+                                {{ $logpreparem->process_date }} /  {{ $logpreparem->shift->name }}
                             </div>
                             <div class="col-md-4">
                                 <label for="id">ผลิตภัณฑ์</label>

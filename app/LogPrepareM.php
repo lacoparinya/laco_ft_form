@@ -11,7 +11,8 @@ class LogPrepareM extends Model
         'targetperhr', 'target_result', 'target_workhours',
         'note',
         'status', 'staff_target',
-        'staff_operate', 'staff_pk', 'staff_pf', 'staff_pst'
+        'staff_operate', 'staff_pk', 'staff_pf', 'staff_pst',
+        'shift_id'
     ];
 
     public function preprod()
@@ -29,5 +30,9 @@ class LogPrepareM extends Model
         return $this->hasMany('App\LogPrepareD', 'log_prepare_m_id');
     }
 
+    public function shift()
+    {
+        return $this->hasOne('App\Shift', 'id', 'shift_id');
+    }
     
 }

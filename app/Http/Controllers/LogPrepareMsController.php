@@ -46,7 +46,8 @@ class LogPrepareMsController extends Controller
     public function create()
     {
         $preprodlist = PreProd::orderBy('name')->pluck('name', 'id');
-        return view('log-prepare-ms.create',compact('preprodlist'));
+        $shiftlist = Shift::orderBy('name')->pluck('name', 'id');
+        return view('log-prepare-ms.create',compact('preprodlist', 'shiftlist'));
     }
 
     /**
@@ -108,9 +109,10 @@ class LogPrepareMsController extends Controller
     public function edit($id)
     {
         $logpreparem = LogPrepareM::findOrFail($id);
+        $shiftlist = Shift::orderBy('name')->pluck('name', 'id');
         $preprodlist = PreProd::orderBy('name')->pluck('name', 'id');
 
-        return view('log-prepare-ms.edit', compact('logpreparem', 'preprodlist'));
+        return view('log-prepare-ms.edit', compact('logpreparem', 'preprodlist', 'shiftlist'));
     }
 
     /**

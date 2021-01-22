@@ -1,8 +1,19 @@
 <div class="row">
-<div class="form-group col-md-3 {{ $errors->has('process_date') ? 'has-error' : ''}}">
+<div class="form-group col-md-2 {{ $errors->has('process_date') ? 'has-error' : ''}}">
         <label for="process_date" class="control-label">{{ 'Process Date' }}</label>
         <input class="form-control" name="process_date" type="date" id="process_date" value="{{ $logpreparem->process_date or \Carbon\Carbon::now()->format('Y-m-d') }}" >
         {!! $errors->first('process_date', '<p class="help-block">:message</p>') !!}
+    </div>
+    
+    <div class="form-group col-md-1 {{ $errors->has('shift_id') ? 'has-error' : ''}}">
+        <label for="shift_id" class="control-label">{{ 'กะ' }}</label>
+        <select name="shift_id" class="form-control dynamic" id="shift_id" required>
+            <option value="">-</option>
+        @foreach ($shiftlist as $optionKey => $optionValue)
+            <option value="{{ $optionKey }}" {{ (isset($logpreparem->shift_id) && $logpreparem->shift_id == $optionKey) ? 'selected' : ''}}>{{ $optionValue }}</option>
+        @endforeach
+    </select>
+        {!! $errors->first('pre_prod_id', '<p class="help-block">:message</p>') !!}
     </div>
     <div class="form-group col-md-3 {{ $errors->has('pre_prod_id') ? 'has-error' : ''}}">
         <label for="pre_prod_id" class="control-label">{{ 'ผลิตภัณฑ์' }}</label>

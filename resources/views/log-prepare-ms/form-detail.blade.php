@@ -12,14 +12,8 @@
         {!! $errors->first('process_datetime', '<p class="help-block">:message</p>') !!}
     </div>
     <div class="form-group col-md-1 {{ $errors->has('shift_id') ? 'has-error' : ''}}">
-        <label for="shift_id" class="control-label">{{ 'กะ' }}</label>
-        <select name="shift_id" class="form-control dynamic" id="shift_id" required>
-            <option value="">-</option>
-        @foreach ($shiftlist as $optionKey => $optionValue)
-            <option value="{{ $optionKey }}" {{ (isset($logprepared->shift_id) && $logprepared->shift_id == $optionKey) ? 'selected' : ''}}>{{ $optionValue }}</option>
-        @endforeach
-    </select>
-        {!! $errors->first('pre_prod_id', '<p class="help-block">:message</p>') !!}
+        <label for="shift_id" class="control-label">{{ 'กะ' }}</label> {{ $logpreparem->shift->name }}
+        <input type="hidden" name="shift_id" value="{{ $logpreparem->shift_id }}">   
     </div>
     
     <div class="form-group col-md-4 {{ $errors->has('pre_prod_id') ? 'has-error' : ''}}">
