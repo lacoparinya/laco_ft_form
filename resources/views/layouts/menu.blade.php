@@ -137,10 +137,10 @@
                                     </a>
                                 <ul class="dropdown-menu" role="menu">       
                                 <li>
-                                <a href="{{route('reports.daily')}}">Select Daily Report</a>
+                                <a href="{{route('reports.dailyselect2')}}">Select Daily Report</a>
                                 </li>
                                 <li>
-                                <a href="{{route('reports.range')}}">Select Range Report</a>
+                                <a href="{{route('reports.rangeselect2')}}">Select Range Report</a>
                                 </li>
                                 <li>
                                 <a href="{{route('reports.dailypack2')}}">Pack Daily Report</a>
@@ -159,12 +159,6 @@
                                 </li>
                                 <li>
                                 <a href="{{route('reports.rangepreprod2')}}">Prepare Range Report</a>
-                                </li>
-                                <li>
-                                <a href="{{route('reports.dailyselect2')}}">New Select Daily Report</a>
-                                </li>
-                                <li>
-                                <a href="{{route('reports.rangeselect2')}}">New Select Range Report</a>
                                 </li>
                                 <li>
                                         <a href="{{route('reports.dailypst')}}">PST Daily Report</a>
@@ -222,16 +216,10 @@
                                     </li>
                                         <li><hr/></li>
                                         <li>
-                                        <a href="{{route('reports.dailypack')}}">Pack Daily Report</a>
+                                        <a href="{{route('reports.dailypack2')}}">Pack Daily Report</a>
                                         </li>
                                         <li>
-                                        <a href="{{route('reports.rangepack')}}">Pack Range Report</a>
-                                        </li>
-                                        <li>
-                                        <a href="{{route('reports.dailypack2')}}">New Pack Daily Report</a>
-                                        </li>
-                                        <li>
-                                        <a href="{{route('reports.rangepack2')}}">New Pack Range Report</a>
+                                        <a href="{{route('reports.rangepack2')}}">Pack Range Report</a>
                                         </li>
                                         <li>
                                         <a href="{{ url('/reports/checkweightreportdaily') }}">Check Weight Daily Report</a>

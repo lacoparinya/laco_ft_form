@@ -166,7 +166,7 @@ freeze_ms.note'))
 
             $rateperhour = $loopObj->targets;
 
-            if(1($rawdata)){
+            if(!empty($rawdata)){
                 $sumRemain = $rawdata[0]->current_RM + $rawdata[0]->output_sum;
             }
             $productName = $loopObj->iqfjob->name;
