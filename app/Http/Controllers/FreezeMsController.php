@@ -264,9 +264,10 @@ class FreezeMsController extends Controller
         $groupdata = $rawdata = DB::table('freeze_ms')
             ->join('freeze_ds', 'freeze_ds.freeze_m_id', '=', 'freeze_ms.id')
             ->join('iqf_jobs', 'iqf_jobs.id', '=', 'freeze_ds.iqf_job_id')
-            ->select(DB::raw('freeze_ds.iqf_job_id,iqf_jobs.name as job,sum(freeze_ds.output_sum)  as sunfreeze'))
+            ->select(DB::raw('freeze_ds.iqf_job_id,iqf_jobs.name as job,sum(freeze_ds.output_sum)  as sunfreeze,
+            freeze_ms.targets * sum(freeze_ds.workhour) as plandata'))
             ->where('freeze_ms.id', $freeze_m_id)
-            ->groupBy(DB::raw('freeze_ds.iqf_job_id,iqf_jobs.name'))
+            ->groupBy(DB::raw('freeze_ds.iqf_job_id,iqf_jobs.name,freeze_ms.targets'))
             ->orderBy(DB::raw('iqf_jobs.name'))
             ->get();
 

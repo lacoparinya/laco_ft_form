@@ -27,6 +27,7 @@
                             <th>Time</th>
                             <th>Product</th>
                             <th>Freeze ได้</th>
+                            <th>แผน Freeze</th>
                             <th>Freeze สะสม</th>
                             <th>RM คงเหลือ</th>
                           </tr>
@@ -38,6 +39,7 @@
                           <td>{{ date('H:i',strtotime($item->process_datetime)) }}</td>
                           <td>{{ $item->iqfjob->name }}</td>
                           <td>{{ number_format($item->output_sum,2,".",",") }}</td>
+                          <td> {{  number_format(($item->workhour * $freezem->targets),2,".",",") }}</td>
                           <td>{{ number_format($item->output_all_sum,2,".",",") }}</td>
                           <td>{{ number_format($item->current_RM,2,".",",") }}</td>
                           </tr>
@@ -61,10 +63,11 @@
       function drawVisualization1() {
         // Some raw data (not necessarily accurate)
         var data2 = google.visualization.arrayToDataTable([
-          ['Product', 'Freeze ได้' ],
+          ['Product', 'Freeze ได้' ,'แผน Freeze'],
           @foreach ($groupdata as $item)
             ['{{ $item->job }}',  
             {{ $item->sunfreeze }}, 
+            {{ $item->plandata }}, 
             ],
           @endforeach
         ]);
@@ -97,6 +100,9 @@
             0: {
             type: 'bar',
         targetAxisIndex: 0
+      },1: {
+            type: 'bar',
+        targetAxisIndex: 0
       }}
         };
 
@@ -108,6 +114,12 @@
     {
       calc: "stringify",
       sourceColumn: 1,
+      type: "string",
+      role: "annotation"
+    },2,
+    {
+      calc: "stringify",
+      sourceColumn: 2,
       type: "string",
       role: "annotation"
     }]);
@@ -127,10 +139,11 @@ var container = document.getElementById('chart_div1');
       function drawVisualization2() {
         // Some raw data (not necessarily accurate)
         var data2 = google.visualization.arrayToDataTable([
-          ['Time/Product', 'Freeze ได้','Freeze สะสม','RM คงเหลือ' ],
+          ['Time/Product', 'Freeze ได้','แผน Freeze','Freeze สะสม','RM คงเหลือ' ],
           @foreach ($freezem->freezed()->orderBy('process_datetime')->get() as $item)
             ['{{ \Carbon\Carbon::parse($item->process_datetime)->format('H:i') }}\n{{ $item->iqfjob->name }}',  
             {{ $item->output_sum }}, 
+            {{ ($item->workhour * $freezem->targets) }}, 
             {{ $item->output_all_sum }}, 
             {{ $item->current_RM }}, 
             ],
@@ -151,7 +164,7 @@ var container = document.getElementById('chart_div1');
     },     title : 'Freeze ถั่วแระ {{ $freezem->iqfjob->name }} - อัตราการผลิตสะสมวันที่ {{ $freezem->process_date }}',
 
           
-          legend: { position: 'top', maxLines: 3 },
+          legend: { position: 'top', maxLines: 4 },
 
 
           vAxes: {
@@ -174,13 +187,16 @@ var container = document.getElementById('chart_div1');
             0: {
             type: 'bar',
         targetAxisIndex: 0
-      },
-
-            1: {
+            },
+      1: {
+                  type: 'bar',
+              targetAxisIndex: 0
+            },
+            2: {
             type: 'line',
             targetAxisIndex:1,
             },
-            2: {
+            3: {
             type: 'line',
             targetAxisIndex:1,
             }
@@ -204,14 +220,21 @@ var container = document.getElementById('chart_div1');
       calc: "stringify",
       sourceColumn: 2,
       type: "string",
-      role: "annotation",
-      pointShape: 'square',
-      pointsVisible: true
+      role: "annotation"
     },
     3,
     {
       calc: "stringify",
       sourceColumn: 3,
+      type: "string",
+      role: "annotation",
+      pointShape: 'square',
+      pointsVisible: true
+    },
+    4,
+    {
+      calc: "stringify",
+      sourceColumn: 4,
       type: "string",
       role: "annotation",
       pointShape: 'square',
