@@ -42,9 +42,11 @@
                 <th>วันที่</th>
                 <th>กะ</th>
                 <th>งาน</th>
+                <th>ปริมาณผลิตได้รวม</th>
                 <th>จำนวนชั่วโมงรวม</th>
                 <th>MH รวม</th>
                 <th>RATE เฉลี่ย/กะ</th>
+                <th>MH เฉลี่ยต่อชั่วโมง</th>
                 <th>Produtivity </th>
             </tr>
         </thead>
@@ -54,6 +56,7 @@
                     <td>{{ $item->process_date }}</td>
                     <td>{{ $item->shiftname }}</td>
                     <td>{{ $item->preprodname }}</td>
+                    <td>{{ $item->resultsum }}</td>
                     <td>{{ $item->sumworkhours }}</td>
                     <td>{{ $item->sumMH }}</td>
                     <td>@if ($item->sumworkhours != 0)
@@ -61,7 +64,15 @@
                     @else
                         0
                     @endif
-                        </td><td>
+                        </td>
+                        <td>
+                            @if ($item->sumworkhours != 0)
+                                {{ round($item->sumMH/$item->sumworkhours,2) }}
+                            @else
+                                0
+                            @endif
+                        </td>
+                        <td>
                         @if ($item->sumMH != 0)
                             {{ round($item->resultsum/$item->sumMH,2) }}
                         @else
