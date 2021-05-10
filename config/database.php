@@ -48,6 +48,33 @@ return [
             'password' => env('DB2_PASSWORD', 'L@CO1993'),
         ],
 
+        'dbweight1' => [
+            'driver' => 'mysql',
+            'host' => env('DBW1_HOST', '10.45.70.101'),
+            'port' => env('DBW1_PORT', '3306'),
+            'database' => env('DBW1_DATABASE', 'check_weight'),
+            'username' => env('DBW1_USERNAME', 'lacouser'),
+            'password' => env('DBW1_PASSWORD', 'L@CO1993'),
+        ],
+
+        'dbweight2' => [
+            'driver' => 'mysql',
+            'host' => env('DBW2_HOST', '10.45.70.102'),
+            'port' => env('DBW2_PORT', '3306'),
+            'database' => env('DBW2_DATABASE', 'check_weight'),
+            'username' => env('DBW2_USERNAME', 'lacouser'),
+            'password' => env('DBW2_PASSWORD', 'L@CO1993'),
+        ],
+
+        'dbweight3' => [
+            'driver' => 'mysql',
+            'host' => env('DBW3_HOST', '10.45.70.103'),
+            'port' => env('DBW3_PORT', '3306'),
+            'database' => env('DBW3_DATABASE', 'check_weight'),
+            'username' => env('DBW3_USERNAME', 'lacouser'),
+            'password' => env('DBW3_PASSWORD', 'L@CO1993'),
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', '127.0.0.1'),

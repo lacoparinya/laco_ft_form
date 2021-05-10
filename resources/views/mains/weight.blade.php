@@ -5,7 +5,7 @@
     <div class='row'>
         <div class="col-md-12">
                 <div class="card">
-                <div class="card-header"><h3>Weight วันที่ {{ $date }}</h3></div>
+                <div class="card-header"><h3>{{ $name }} วันที่ {{ $date }}</h3></div>
                     <div class="row">
                     <div class="form-group col-md-3 {{ $errors->has('process_datetime') ? 'has-error' : ''}}">
         <label for="process_datetime" class="control-label">{{ 'วัน-เวลา' }}</label>

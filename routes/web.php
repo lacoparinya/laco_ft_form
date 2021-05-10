@@ -169,6 +169,10 @@ Route::get('/log-pst-selects/groupgraph/{date}/{pst_type_id}', 'LogPstSelectsCon
 
 Route::get('/mains/index/{date}', 'MainsController@index');
 Route::get('/mains/weight/{date}', 'MainsController@weightindex');
+Route::get('/mains/weight1/{date}', 'MainsController@weight1index');
+Route::get('/mains/weight2/{date}', 'MainsController@weight2index');
+Route::get('/mains/weight3/{date}', 'MainsController@weight3index');
+
 Route::post('/mat-pack-rates/getrate', 'MatPackRatesController@getrate');
 Route::get('/stamp-ms/createDetail/{stamp_m_id}', 'StampMsController@createDetail');
 Route::post('/stamp-ms/storeDetail/{stamp_m_id}', 'StampMsController@storeDetail');

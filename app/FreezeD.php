@@ -3,8 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\BaseModel;
 
-class FreezeD extends Model
+class FreezeD extends BaseModel
 {
     protected $fillable = [
         'freeze_m_id', 'workhour', 'process_datetime',

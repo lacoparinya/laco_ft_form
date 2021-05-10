@@ -12,7 +12,19 @@
                         @else
                             @if ( App\User::find(Auth::user()->id)->group->name == 'admin'  )
                             <li><a href="{{ url('/mains/index/today') }}">Dashboard</a></li>
-                            <li><a href="{{ url('/mains/weight/today') }}">Check Weight</a></li>
+                            <li><a href="{{ url('/mains/index/today') }}">Dashboard</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    Check Weight <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="{{ url('/mains/weight/today') }}">Auto Pack 3</a></li>                               
+                                    <li><a href="{{ url('/mains/weight1/today') }}">Auto 1 + 2</a></li>                        
+                                    <li><a href="{{ url('/mains/weight2/today') }}">Manual Pack </a></li>                               
+                                    <li><a href="{{ url('/mains/weight3/today') }}">Auto PAck 4 + 5</a></li>
+                                </ul>
+                            </li>
+                            
                             <li class="dropdown">
                                 
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">

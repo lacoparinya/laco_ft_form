@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\FreezeM;
 use App\WeightReport;
+use App\Weight1Report;
+use App\Weight2Report;
+use App\Weight3Report;
 
 class MainsController extends Controller
 {
@@ -15,8 +18,6 @@ class MainsController extends Controller
     }
 
     public function index($date){
-
-        
 
         if($date == 'today'){
             $date = date('Y-m-d');
@@ -190,6 +191,7 @@ class MainsController extends Controller
 
     public function weightindex($date)
     {
+        $name = 'Check Weight Carton Auto Pack 3';
         $last = WeightReport::orderBy('id', 'DESC')->first();
 
         if ($date == 'today') {
@@ -209,7 +211,80 @@ class MainsController extends Controller
         foreach ($dataRw as $dataObj) {
             $data[$dataObj->prod_name][$dataObj->cus_name][$dataObj->overall_status] = $dataObj->num;
         }
-        return view('mains.weight', compact('last', 'data', 'date'));
+        return view('mains.weight', compact('last', 'data', 'date','name'));
  
+    }
+
+    public function weight1index($date)
+    {
+        $name = 'Check Weight Carton Auto Pack 1 + 2';
+        $last = Weight1Report::orderBy('id', 'DESC')->first();
+
+        if ($date == 'today') {
+            $date = date('Y-m-d');
+        }
+
+
+
+        $dataRw = Weight1Report::whereBetween('datetime', [$date . " 00:00:00", $date . " 23:59:59"])
+        ->where('prod_name', '!=', '')
+        ->groupBy('prod_name', 'cus_name', 'overall_status')
+        ->select('prod_name', 'cus_name', 'overall_status', db::raw('count(id) as num'))
+
+        ->get();
+
+        $data = array();
+        foreach ($dataRw as $dataObj) {
+            $data[$dataObj->prod_name][$dataObj->cus_name][$dataObj->overall_status] = $dataObj->num;
+        }
+        return view('mains.weight', compact('last', 'data','date', 'name'));
+    }
+
+    public function weight2index($date)
+    {
+        $name = 'Check Weight Carton Manual Pack';
+        $last = Weight2Report::orderBy('id', 'DESC')->first();
+
+        if ($date == 'today') {
+            $date = date('Y-m-d');
+        }
+
+
+
+        $dataRw = Weight2Report::whereBetween('datetime', [$date . " 00:00:00", $date . " 23:59:59"])
+            ->where('prod_name', '!=', '')
+            ->groupBy('prod_name', 'cus_name', 'overall_status')
+            ->select('prod_name', 'cus_name', 'overall_status', db::raw('count(id) as num'))
+
+            ->get();
+
+        $data = array();
+        foreach ($dataRw as $dataObj) {
+            $data[$dataObj->prod_name][$dataObj->cus_name][$dataObj->overall_status] = $dataObj->num;
+        }
+        return view('mains.weight', compact('last', 'data','date', 'name'));
+    }
+
+    public function weight3index($date)
+    {
+        $name = 'Check Weight Carton Auto 4 + 5';
+        $last = Weight3Report::orderBy('id', 'DESC')->first();
+
+        if ($date == 'today') {
+            $date = date('Y-m-d');
+        }
+
+        $dataRw = Weight3Report::whereBetween('datetime', [$date . " 00:00:00", $date . " 23:59:59"])
+        ->where('prod_name', '!=', '')
+        ->groupBy('prod_name', 'cus_name', 'overall_status')
+        ->select('prod_name', 'cus_name', 'overall_status', db::raw('count(id) as num'))
+
+        ->get();
+
+        $data = array();
+        foreach ($dataRw as $dataObj) {
+            $data[$dataObj->prod_name][$dataObj->cus_name][$dataObj->overall_status] = $dataObj->num;
+        }
+        return view('mains.weight', compact('last', 'data','date', 'name'));
     }
 }
