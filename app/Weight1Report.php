@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Weight1Report extends Model
 {
-    protected $connection = 'dbweight2';
+    protected $connection = 'dbweight1';
 
     protected $table = 'report';
 
