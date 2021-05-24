@@ -13,6 +13,12 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::get('/freezem/{id}',  'ListingController@get_freeze_m_data');
+Route::get('/freezemlist/{limit}',  'ListingController@get_freeze_m_list');
+Route::get('/freezed/{id}',  'ListingController@get_freeze_d_data');
+Route::get('/freezedlist/{limit}',  'ListingController@get_freeze_d_list');
+
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });

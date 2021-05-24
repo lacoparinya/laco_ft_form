@@ -53,7 +53,7 @@ Route::resource('stamp-machines', 'StampMachinesController');
 Route::resource('mat-packs', 'MatPacksController');
 Route::resource('mat-pack-rates', 'MatPackRatesController');
 Route::resource('stamp-ms', 'StampMsController');
-
+Route::resource('crops', 'CropsController');
 
 Route::get('/import', 'AutoImportController@test');
 Route::get('/reports/daily', 'ReportsController@daily')->name('reports.daily');

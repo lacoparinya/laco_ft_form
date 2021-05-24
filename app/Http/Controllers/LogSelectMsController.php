@@ -11,6 +11,7 @@ use App\Product;
 use App\Shift;
 use App\Unit;
 use App\StdProcess;
+use App\Crop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -211,6 +212,15 @@ class LogSelectMsController extends Controller
             'D' => 'D',
             'DEF' => 'DEF',
         );
+        $sensorlevellist = array(
+            '-' => '-',
+            'Sensorระดับ 1= 0 cm.' => 'Sensorระดับ 1= 0 cm.',
+            'Sensorระดับ 2= 2 cm.' => 'Sensorระดับ 2= 2 cm.',
+            'Sensorระดับ 3= 4 cm.' => 'Sensorระดับ 3= 4 cm.',
+            'Sensorระดับ 4= 6 cm.' => 'Sensorระดับ 4= 6 cm.',
+        );
+        $croplist = Crop::pluck('name', 'id');
+
 
         $suminputkg = 0;
         $sumoutputkg = 0;
@@ -220,7 +230,7 @@ class LogSelectMsController extends Controller
             $sumoutputkg += $logselectdObj->output_kg;
         }
 
-        return view('log-select-ms.createDetail', compact('logselectm', 'sumoutputpack', 'suminputkg', 'unitlist', 'gradelist'));
+        return view('log-select-ms.createDetail', compact('logselectm', 'sumoutputpack', 'suminputkg', 'unitlist','gradelist', 'sensorlevellist', 'croplist'));
     }
 
     public function storeDetail(Request $request, $log_select_m_id){
@@ -258,6 +268,16 @@ class LogSelectMsController extends Controller
             'DEF' => 'DEF',
         );
 
+        $sensorlevellist = array(
+            '-' => '-',
+            'Sensorระดับ 1= 0 cm.' => 'Sensorระดับ 1= 0 cm.',
+            'Sensorระดับ 2= 2 cm.' => 'Sensorระดับ 2= 2 cm.',
+            'Sensorระดับ 3= 4 cm.' => 'Sensorระดับ 3= 4 cm.',
+            'Sensorระดับ 4= 6 cm.' => 'Sensorระดับ 4= 6 cm.',
+        );
+
+        $croplist = Crop::pluck('name', 'id');
+
         $suminputkg = 0;
         $sumoutputkg = 0;
 
@@ -266,7 +286,7 @@ class LogSelectMsController extends Controller
             $sumoutputkg += $logselectdObj->output_kg;
         }
 
-        return view('log-select-ms.editDetail', compact('logselectd', 'logselectm', 'suminputkg', 'sumoutputkg', 'unitlist', 'gradelist'));
+        return view('log-select-ms.editDetail', compact('logselectd', 'logselectm', 'suminputkg', 'sumoutputkg', 'unitlist', 'gradelist','sensorlevellist', 'croplist'));
     }
 
     public function updateDetail(Request $request, $id){

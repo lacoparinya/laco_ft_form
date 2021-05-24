@@ -11,7 +11,13 @@ $(document).ready(function () {
         calLine();
     });
 
+    $('.calhold').change(function () {
+        calhold();
+    });
+
 });
+
+
 
 function calpercent() {
     var inp = $('#input_kg').val();
@@ -61,4 +67,16 @@ function calLine() {
         $('#line_classify').removeAttr('readonly');
         $('#line_classify').val('');
     }
+}
+
+function calhold() {
+    var bags = $('#hold_bag').val();
+
+    var kgperbag = 26;
+    
+    var kgs = 0;
+    if (bags > 0) {
+        kgs = (bags * kgperbag).toFixed(0);
+    }
+    $('#hold_kg').val(kgs);
 }

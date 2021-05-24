@@ -12,26 +12,43 @@
         {!! $errors->first('process_datetime', '<p class="help-block">:message</p>') !!}
     </div>
     
-   
-    <div class="form-group col-md-3 {{ $errors->has('workhours') ? 'has-error' : ''}}">
+   <div class="form-group col-md-3 {{ $errors->has('crop_id') ? 'has-error' : ''}}">
+    <label for="crop_id" class="control-label">{{ 'Crop' }}</label>
+    <select name="crop_id" class="form-control" id="shift_id" >
+    @foreach ($croplist as $optionKey => $optionValue)
+        <option value="{{ $optionKey }}" {{ (isset($logselectd->crop_id) && $logselectd->crop_id == $optionKey) ? 'selected' : ''}}>{{ $optionValue }}</option>
+    @endforeach
+</select>
+    {!! $errors->first('crop_id', '<p class="help-block">:message</p>') !!}
+</div>
+    <div class="form-group col-md-2 {{ $errors->has('workhours') ? 'has-error' : ''}}">
         <label for="workhours" class="control-label">{{ 'ชม.' }}</label>
         <input class="form-control" name="workhours" type="text" id="workhours" value="{{ $logselectd->workhours or '1' }}" >
         {!! $errors->first('workhours', '<p class="help-block">:message</p>') !!}
     </div>
     
-    <div class="form-group col-md-3 {{ $errors->has('input_kg') ? 'has-error' : ''}}">
+    <div class="form-group col-md-2 {{ $errors->has('input_kg') ? 'has-error' : ''}}">
         <label for="input_kg" class="control-label">{{ 'Input (kg)' }}</label>
         <input class="form-control calpercent" name="input_kg" type="text" id="input_kg" value="{{ $logselectd->input_kg or '0' }}" >
         {!! $errors->first('input_kg', '<p class="help-block">:message</p>') !!}
     </div>
-     <div class="form-group col-md-3 {{ $errors->has('output_kg') ? 'has-error' : ''}}">
+     <div class="form-group col-md-2 {{ $errors->has('output_kg') ? 'has-error' : ''}}">
         <label for="output_kg" class="control-label">{{ 'Output (kg)' }}</label>
         <input class="form-control calpercent calpack" name="output_kg" type="text" id="output_kg" value="{{ $logselectd->output_kg or '0' }}" >
         {!! $errors->first('output_kg', '<p class="help-block">:message</p>') !!}
     </div>
-    <div class="form-group col-md-3">
+    <div class="form-group col-md-2">
+    <label for="hold_kg" class="control-label">{{ 'ปริมาณ Hold (กระสอบ)' }}</label> 
+    <input class="form-control calhold" name="hold_bag" type="text"  id="hold_bag" value="{{ $logselectd->hold_bag or '0'}}" >
+    {!! $errors->first('hold_bag', '<p class="help-block">:message</p>') !!}    
     </div>
-    <div class="form-group col-md-3 {{ $errors->has('yeild_percent') ? 'has-error' : ''}}">
+    <div class="form-group col-md-2">
+    <label for="hold_kg" class="control-label">{{ 'ปริมาณ Hold (kg)' }}</label>
+    <input class="form-control " name="hold_kg" type="text" readonly  id="hold_kg" value="{{ $logselectd->hold_kg or '0'}}" >
+    {!! $errors->first('hold_kg', '<p class="help-block">:message</p>') !!}     
+    </div>
+    
+    <div class="form-group col-md-2 {{ $errors->has('yeild_percent') ? 'has-error' : ''}}">
     <label for="yeild_percent" class="control-label">{{ 'Yeild %' }}</label>
     <input class="form-control" name="yeild_percent" type="text" readonly id="yeild_percent" value="{{ $logselectd->yeild_percent or ''}}" >
     {!! $errors->first('yeild_percent', '<p class="help-block">:message</p>') !!}
@@ -101,10 +118,19 @@
 </select>
     {!! $errors->first('grade', '<p class="help-block">:message</p>') !!}
 </div>
-<div class="form-group col-md-9 {{ $errors->has('ref_note') ? 'has-error' : ''}}">
+<div class="form-group col-md-6 {{ $errors->has('ref_note') ? 'has-error' : ''}}">
     <label for="ref_note" class="control-label">{{ 'SAP REF' }}</label>
     <input required class="form-control" name="ref_note" type="numtextber" id="ref_note" value="{{ $logselectd->ref_note or ''}}" >
     {!! $errors->first('input_kg', '<p class="help-block">:message</p>') !!}
+</div>
+<div class="form-group col-md-3 {{ $errors->has('sensor_level') ? 'has-error' : ''}}">
+    <label for="sensor_level" class="control-label">{{ 'ระดับ Sensor' }}</label>
+    <select name="sensor_level" class="form-control calLine" id="sensor_level" >
+    @foreach ($sensorlevellist as $optionKey => $optionValue)
+        <option value="{{ $optionKey }}" {{ (isset($logselectd->sensor_level) && $logselectd->sensor_level == $optionKey) ? 'selected' : ''}}>{{ $optionValue }}</option>
+    @endforeach
+</select>
+    {!! $errors->first('line_classify_unit', '<p class="help-block">:message</p>') !!}
 </div>
 
     <div class="form-group col-md-4 {{ $errors->has('note') ? 'has-error' : ''}}">

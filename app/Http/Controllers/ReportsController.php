@@ -14,6 +14,9 @@ use App\LogSelectM;
 use App\LogPstSelectM;
 use App\StampM;
 use App\WeightReport;
+use App\Weight1Report;
+use App\Weight2Report;
+use App\Weight3Report;
 
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -1092,12 +1095,30 @@ class ReportsController extends Controller
             ->orderBy('prod_name', 'ASC')
             ->get();
 
+            $data1 = Weight1Report::whereBetween('datetime', [$requestData['process_date'] . " 00:00:00", $requestData['process_date'] . " 23:59:59"])
+            ->orderBy('datetime', 'ASC')
+            ->orderBy('cus_name', 'ASC')
+            ->orderBy('prod_name', 'ASC')
+            ->get();
+
+            $data2 = Weight2Report::whereBetween('datetime', [$requestData['process_date'] . " 00:00:00", $requestData['process_date'] . " 23:59:59"])
+            ->orderBy('datetime', 'ASC')
+            ->orderBy('cus_name', 'ASC')
+            ->orderBy('prod_name', 'ASC')
+            ->get();
+
+            $data3 = array();
+
             
             $filename = "ft_checkweight_report_" . date('ymdHi');
 
-            Excel::create($filename, function ($excel) use ($data) {
-                $excel->sheet('งานStamp', function ($sheet) use ($data) {
-                    $sheet->loadView('exports.dailycheckweightexport')->with('data', $data);
+            Excel::create($filename, function ($excel) use ($data, $data1, $data2, $data3) {
+                $excel->sheet('งานStamp', function ($sheet) use ($data, $data1, $data2, $data3) {
+                    $sheet->loadView('exports.dailycheckweightexport')
+                    ->with('data', $data)
+                    ->with('data1', $data1)
+                    ->with('data2', $data2)
+                    ->with('data3', $data3);
                 });
             })->export('xlsx');
             
@@ -1109,12 +1130,30 @@ class ReportsController extends Controller
             ->orderBy('prod_name', 'ASC')
             ->get();
 
+            $data1 = Weight1Report::whereBetween('datetime', [$requestData['from_date'] . " 00:00:00", $requestData['to_date'] . " 23:59:59"])
+            ->orderBy('datetime', 'ASC')
+            ->orderBy('cus_name', 'ASC')
+            ->orderBy('prod_name', 'ASC')
+            ->get();
+
+            $data2 = Weight2Report::whereBetween('datetime', [$requestData['from_date'] . " 00:00:00", $requestData['to_date'] . " 23:59:59"])
+            ->orderBy('datetime', 'ASC')
+            ->orderBy('cus_name', 'ASC')
+            ->orderBy('prod_name', 'ASC')
+            ->get();
+
+            $data3 = array();
+
             
             $filename = "ft_checkweight_report_" . date('ymdHi');
 
-            Excel::create($filename, function ($excel) use ($data) {
-                $excel->sheet('งานStamp', function ($sheet) use ($data) {
-                    $sheet->loadView('exports.dailycheckweightexport')->with('data', $data);
+            Excel::create($filename, function ($excel) use ($data,$data1,$data2, $data3) {
+                $excel->sheet('งานStamp', function ($sheet) use ($data, $data1, $data2, $data3) {
+                    $sheet->loadView('exports.dailycheckweightexport')
+                    ->with('data', $data)
+                    ->with('data1', $data1)
+                    ->with('data2', $data2)
+                    ->with('data3', $data3);
                 });
             })->export('xlsx');
             
