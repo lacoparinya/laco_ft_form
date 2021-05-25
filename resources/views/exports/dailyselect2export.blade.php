@@ -43,9 +43,12 @@
                 <th>เวลา</th>
                 <th>กะ</th>
                 <th>คัดผลิตภัณฑ์</th>
+                <th>Crop</th>
                 <th>Input/kg.</th>
                 <th>Output/kg.</th>
                 <th>inputสะสม</th>
+                <th>ปริมาณ Hold (กระสอบ)</th>
+                <th>ปริมาณ Hold (kg)</th>
                 <th>คัดได้สะสม</th>
                 <th>STD Productivity</th>
                 <th>Productivity</th>
@@ -54,6 +57,7 @@
                 <th>PF</th>
                 <th>PST</th>
                 <th>จำนวนคน</th>
+                <th>ระดับ Sensor</th>
                 <th>เปิดไลน์ฝั่ง A</th>
                 <th>เปิดไลน์ฝั่ง B</th>
                 <th>เปิดไลน์คัด</th>
@@ -71,10 +75,13 @@
                         <td>{{ date('H:i',strtotime($item->process_datetime)) }}</td>
                         <td>{{ $datasub->shift->name }}</td>
                         <td>{{ $datasub->product->name }}</td>
+                        <td>{{ $item->crop->name or '' }}</td>
                         <td>{{ $item->input_kg }}</td>
                         <td>{{ $item->output_kg }}</td>
                         <td>{{ $item->sum_in_kg }}</td>
                         <td>{{ $item->sum_kg }}</td>
+                        <td>{{ round($item->hold_bag,0) }}</td>
+                        <td>{{ round($item->hold_kg,0) }}</td>
                         <td>{{ $datasub->stdprocess->std_rate }}</td>
                         <td>{{ round(($item->output_kg/$item->num_classify)/$item->workhours,2)  }}</td>
                         <td>{{ $item->yeild_percent }}</td>
@@ -82,6 +89,7 @@
                         <td>{{ $item->num_pf }}</td>
                         <td>{{ $item->num_pst }}</td>
                         <td>{{ $item->num_classify }}</td>
+                        <td>{{ $item->sensor_level }}</td>
                         <td>{{ $item->line_a }}</td>
                         <td>{{ $item->line_b }}</td>
                         <td>{{ $item->line_classify }} 
