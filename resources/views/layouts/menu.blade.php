@@ -12,7 +12,6 @@
                         @else
                             @if ( App\User::find(Auth::user()->id)->group->name == 'admin'  )
                             <li><a href="{{ url('/mains/index/today') }}">Dashboard</a></li>
-                            <li><a href="{{ url('/mains/index/today') }}">Dashboard</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     Check Weight <span class="caret"></span>
@@ -33,6 +32,9 @@
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
                                     <a href="{{route('users.index')}}">User</a>
+                                    </li>
+                                    <li>
+                                    <a href="{{route('crops.index')}}">Crop</a>
                                     </li>
                                     <li>
                                     <a href="{{route('jobs.index')}}">Job</a>

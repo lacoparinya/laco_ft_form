@@ -79,9 +79,9 @@
                         <td>{{ $item->input_kg }}</td>
                         <td>{{ $item->output_kg }}</td>
                         <td>{{ $item->sum_in_kg }}</td>
-                        <td>{{ $item->sum_kg }}</td>
                         <td>{{ round($item->hold_bag,0) }}</td>
                         <td>{{ round($item->hold_kg,0) }}</td>
+                        <td>{{ $item->sum_kg }}</td>
                         <td>{{ $datasub->stdprocess->std_rate }}</td>
                         <td>{{ round(($item->output_kg/$item->num_classify)/$item->workhours,2)  }}</td>
                         <td>{{ $item->yeild_percent }}</td>
