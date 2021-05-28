@@ -58,61 +58,7 @@
         <tbody>
             @foreach($data as $item)
                 <tr>
-                <td>checkweight 3</td>
-                <td>{{ $item->datetime }}</td>
-                <td>{{ $item->cus_name }}</td>
-                <td>{{ $item->prod_name }}</td>
-                <td>{{ $item->weight_st }}</td>
-                <td>{{ $item->weight_read }}</td>
-                <td>{{ $item->weight_check }}</td>
-                <td>{{ $item->code1_st }}</td>
-                <td>{{ $item->code1_read }}</td>
-                <td>{{ $item->code1_check }}</td>
-                <td>{{ $item->code2_st }}</td>
-                <td>{{ $item->code2_read }}</td>
-                <td>{{ $item->code2_check }}</td>
-                <td>{{ $item->overall_status }}</td>
-                </tr>                                   
-            @endforeach
-            @foreach($data1 as $item)
-                <tr>
-                <td>checkweight 1 + 2</td>
-                <td>{{ $item->datetime }}</td>
-                <td>{{ $item->cus_name }}</td>
-                <td>{{ $item->prod_name }}</td>
-                <td>{{ $item->weight_st }}</td>
-                <td>{{ $item->weight_read }}</td>
-                <td>{{ $item->weight_check }}</td>
-                <td>{{ $item->code1_st }}</td>
-                <td>{{ $item->code1_read }}</td>
-                <td>{{ $item->code1_check }}</td>
-                <td>{{ $item->code2_st }}</td>
-                <td>{{ $item->code2_read }}</td>
-                <td>{{ $item->code2_check }}</td>
-                <td>{{ $item->overall_status }}</td>
-                </tr>                                   
-            @endforeach
-            @foreach($data2 as $item)
-                <tr>
-                <td>checkweight manual</td>
-                <td>{{ $item->datetime }}</td>
-                <td>{{ $item->cus_name }}</td>
-                <td>{{ $item->prod_name }}</td>
-                <td>{{ $item->weight_st }}</td>
-                <td>{{ $item->weight_read }}</td>
-                <td>{{ $item->weight_check }}</td>
-                <td>{{ $item->code1_st }}</td>
-                <td>{{ $item->code1_read }}</td>
-                <td>{{ $item->code1_check }}</td>
-                <td>{{ $item->code2_st }}</td>
-                <td>{{ $item->code2_read }}</td>
-                <td>{{ $item->code2_check }}</td>
-                <td>{{ $item->overall_status }}</td>
-                </tr>                                   
-            @endforeach
-            @foreach($data3 as $item)
-                <tr>
-                <td>checkweight4 + 5</td>
+                <td>{{ $item->mchckweight->name }}</td>
                 <td>{{ $item->datetime }}</td>
                 <td>{{ $item->cus_name }}</td>
                 <td>{{ $item->prod_name }}</td>

@@ -9,6 +9,7 @@ use App\WeightReport;
 use App\Weight1Report;
 use App\Weight2Report;
 use App\Weight3Report;
+use App\Mcheckweight;
 
 class MainsController extends Controller
 {
@@ -287,4 +288,65 @@ class MainsController extends Controller
         }
         return view('mains.weight', compact('last', 'data','date', 'name'));
     }
+
+    public function realtimechart(){
+
+        $mlist = Mcheckweight::pluck('name','id');
+
+        $nowtxt = date('Y-m-d H:i:s');
+        $starttxt = date("Y-m-d H:i:s", strtotime('-4 hours'));
+
+        $rawdata = DB::table('check_weight_datas')
+        ->select(DB::raw(
+                "DATEADD(MINUTE, DATEDIFF(MINUTE, '2000', check_weight_datas.datetime) / 5 * 5, '2000') as datetimevalue,
+                check_weight_datas.[mcheckweight_id],
+                check_weight_datas.prod_name,
+                count(check_weight_datas.id) as value"))
+        ->whereBetween('check_weight_datas.datetime', [$starttxt, $nowtxt])
+        ->groupBy(
+            DB::raw("DATEADD(MINUTE, DATEDIFF(MINUTE, '2000', check_weight_datas.datetime) / 5 * 5, '2000')  ,check_weight_datas.mcheckweight_id,check_weight_datas.prod_name")
+        )->orderBy(DB::raw('datetimevalue'))->get();
+
+        $data = array();
+        $data2 = array();
+        foreach ($rawdata as $dataObj) {
+            $data[$dataObj->mcheckweight_id][$dataObj->prod_name][$dataObj->datetimevalue] = $dataObj->value;
+            $data2[$dataObj->mcheckweight_id][$dataObj->datetimevalue][$dataObj->prod_name] = $dataObj->value;
+        }
+
+        //dd($data);
+        return view('mains.chartweight2', compact('data', 'mlist', 'data2'));
+
+    }
+
+    public function realsummarytimechart(){
+        $mlist = Mcheckweight::pluck('name', 'id');
+
+        $starttxt = date('Y-m-d 00:00:00');
+        $nowtxt = date("Y-m-d 23:59:59");
+
+        $rawdata = DB::table('check_weight_datas')
+        ->select(DB::raw(
+            "check_weight_datas.mcheckweight_id
+      ,check_weight_datas.prod_name
+      ,check_weight_datas.overall_status
+	  ,count(*) as counter"
+        ))
+        ->whereBetween('check_weight_datas.datetime', [$starttxt, $nowtxt])
+        ->groupBy(
+            DB::raw("check_weight_datas.mcheckweight_id
+      ,check_weight_datas.prod_name
+      ,check_weight_datas.overall_status")
+        )->get();
+
+        $data = array();
+        foreach ($rawdata as $dataObj) {
+            $data[$dataObj->mcheckweight_id][$dataObj->prod_name][$dataObj->overall_status] = $dataObj->counter;
+        }
+
+       // dd($data);
+
+        return view('mains.chartweightsummary', compact('data', 'mlist'));
+    }
 }
+

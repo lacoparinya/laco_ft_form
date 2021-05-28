@@ -11,7 +11,16 @@
                             <li><a href="{{ route('login') }}">Login</a></li>
                         @else
                             @if ( App\User::find(Auth::user()->id)->group->name == 'admin'  )
-                            <li><a href="{{ url('/mains/index/today') }}">Dashboard</a></li>
+                            <li>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    Dashboard <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="{{ url('/mains/index/today') }}">Dashboard</a></li>
+                                    <li><a href="{{ url('/mains/realtimechart') }}">Check Weight Real Time</a></li>
+                                    <li><a href="{{ url('/mains/realsummarytimechart') }}">Check Weight Summary</a></li>
+                                </ul>
+                            </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     Check Weight <span class="caret"></span>

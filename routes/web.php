@@ -194,3 +194,6 @@ Route::post('/reports/plreportaction', 'ReportsController@plreportaction');
 Route::get('/reports/checkweightreportdaily', 'ReportsController@checkweightreportdaily')->name('reports.checkweightreportdaily');
 Route::get('/reports/checkweightreportrang', 'ReportsController@checkweightreportrang')->name('reports.checkweightreportrang');
 Route::post('/reports/checkweightreportaction', 'ReportsController@checkweightreportaction');
+
+Route::get('/mains/realtimechart', 'MainsController@realtimechart');
+Route::get('/mains/realsummarytimechart', 'MainsController@realsummarytimechart');
