@@ -16,6 +16,12 @@
     {!! $errors->first('kgsperpack', '<p class="help-block">:message</p>') !!}
 </div>
 
+<div class="form-group {{ $errors->has('numperbox') ? 'has-error' : ''}}">
+    <label for="numperbox" class="control-label">{{ 'Kgs per Pack' }}</label>
+    <input class="form-control" name="numperbox" type="text" id="numperbox" value="{{ $package->numperbox or '0'}}" >
+    {!! $errors->first('numperbox', '<p class="help-block">:message</p>') !!}
+</div>
+
 @php
     $statuslist = array('Active'=>'Active','Inactive'=>'Inactve');
 @endphp
