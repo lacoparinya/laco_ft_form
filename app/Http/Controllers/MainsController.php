@@ -10,6 +10,7 @@ use App\Weight1Report;
 use App\Weight2Report;
 use App\Weight3Report;
 use App\Mcheckweight;
+use App\Package;
 
 class MainsController extends Controller
 {
@@ -340,13 +341,21 @@ class MainsController extends Controller
         )->get();
 
         $data = array();
+        $productList = array();
+        $searchproducts = array();
         foreach ($rawdata as $dataObj) {
             $data[$dataObj->mcheckweight_id][$dataObj->prod_name][$dataObj->overall_status] = $dataObj->counter;
+            $productList[$dataObj->prod_name] = explode("#",$dataObj->prod_name)[0];
+            $searchproducts[] = explode("#", $dataObj->prod_name)[0];
         }
 
-       // dd($data);
+        $packages = array();
+        $packageraws = Package::whereIn('name', $searchproducts)->get();
+        foreach ($packageraws as $package) {
+            $packages[$package->name] = $package;
+        }
 
-        return view('mains.chartweightsummary', compact('data', 'mlist'));
+        return view('mains.chartweightsummary', compact('data', 'mlist', 'packages'));
     }
 }
 

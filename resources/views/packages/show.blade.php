@@ -34,6 +34,10 @@
                                     <tr>
                                         <th>Kgs per Pack</th><td>{{ $package->kgsperpack }}</td>
                                     </tr>
+                                    
+                                    <tr>
+                                        <th>Number per Box</th><td>{{ $package->numperbox }}</td>
+                                    </tr>
                                     <tr>
                                         <th>Status</th><td>{{ $package->status }}</td>
                                     </tr>

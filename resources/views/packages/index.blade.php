@@ -31,7 +31,8 @@
                                         <th>#</th>
                                         <th>Name</th>
                                         <th>Desc</th>
-                                        <th>Kgs Per Pack</th>
+                                        <th>Kgs Per Pack</th>                            
+                                        <th>Number Per Box</th>
                                         <th>Use</th>
                                         <th>Status</th>
                                         <th>Actions</th>
@@ -44,6 +45,7 @@
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->desc }}</td>
                                         <td>{{ number_format($item->kgsperpack,3,".",",") }}</td>
+                                        <td>{{ $item->numperbox or '-' }}</td>
                                         <td>{{ $item->logpack->count() }}</td>
                                         <td>{{ $item->status }}</td>
                                         <td>
