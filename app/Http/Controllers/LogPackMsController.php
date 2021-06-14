@@ -45,7 +45,7 @@ class LogPackMsController extends Controller
             }
         } else {
             $logpackms = LogPackM::where('status', $status)->orderBy('process_date', 'DESC')->paginate($perPage);
-        } 
+        }
 
         return view('log-pack-ms.index', compact('logpackms', 'status'));
     }
@@ -61,7 +61,7 @@ class LogPackMsController extends Controller
         $packagelist = Package::where('status', 'Active')->orderBy('name', 'asc')->pluck('name', 'id');
 
         $shiftlist = Shift::orderBy('name')->pluck('name', 'id');
-        return view('log-pack-ms.create',compact('methodlist', 'packagelist', 'shiftlist'));
+        return view('log-pack-ms.create', compact('methodlist', 'packagelist', 'shiftlist'));
     }
 
     /**
@@ -110,7 +110,7 @@ class LogPackMsController extends Controller
             ->where('package_id', $requestData['package_id'])
             ->first();
         if (!empty($chk)) {
-         //   return redirect('log-pack-ms')->with('flash_message', 'Duplicate Data')->with('alert_message', 'alert');
+            //   return redirect('log-pack-ms')->with('flash_message', 'Duplicate Data')->with('alert_message', 'alert');
         }
 
         if (empty($requestData['order_id'])) {
@@ -257,7 +257,7 @@ class LogPackMsController extends Controller
             ->where('id', '!=', $id)
             ->first();
         if (!empty($chk)) {
-        //    return redirect('ft-log-packs')->with('flash_message', 'Duplicate Data')->with('alert_message', 'alert');
+            //    return redirect('ft-log-packs')->with('flash_message', 'Duplicate Data')->with('alert_message', 'alert');
         }
 
         if (empty($requestData['order_id'])) {
@@ -279,7 +279,7 @@ class LogPackMsController extends Controller
 
         //$timeSlotObj = Timeslot::findOrFail($requestData['timeslot_id']);
 
-      //  $requestData['time_seq'] = $timeSlotObj->seq;
+        //  $requestData['time_seq'] = $timeSlotObj->seq;
 
         $stdObj = StdPack::where('method_id', $requestData['method_id'])
             ->where('package_id', $requestData['package_id'])
@@ -297,11 +297,11 @@ class LogPackMsController extends Controller
 
             $stdObj = StdPack::create($tmp);
         } else {
-           // if ($requestData['kgsperpack'] <> $stdObj->kgsperpack) {
+            // if ($requestData['kgsperpack'] <> $stdObj->kgsperpack) {
 
-          //      $stdObj->kgsperpack = $requestData['kgsperpack'];
-         //       $stdObj->update();
-          //  }
+            //      $stdObj->kgsperpack = $requestData['kgsperpack'];
+            //       $stdObj->update();
+            //  }
         }
         $requestData['std_pack_id'] = $stdObj->id;
 
@@ -325,7 +325,8 @@ class LogPackMsController extends Controller
         return redirect('log-pack-ms')->with('flash_message', ' deleted!');
     }
 
-    public function createDetail($log_pack_m_id){
+    public function createDetail($log_pack_m_id)
+    {
         $logpackm = LogPackM::findOrFail($log_pack_m_id);
         $shiftlist = Shift::orderBy('name')->pluck('name', 'id');
 
@@ -342,7 +343,8 @@ class LogPackMsController extends Controller
         return view('log-pack-ms.createDetail', compact('logpackm', 'shiftlist', 'sumoutputpack', 'suminputkg', 'sumoutputkg'));
     }
 
-    public function storeDetail(Request $request, $log_pack_m_id){
+    public function storeDetail(Request $request, $log_pack_m_id)
+    {
         $requestData = $request->all();
 
         $requestData['process_datetime'] = \Carbon\Carbon::parse($requestData['process_datetime'])->format('Y-m-d H:i');
@@ -364,7 +366,8 @@ class LogPackMsController extends Controller
         return redirect('log-pack-ms/' . $log_pack_m_id)->with('flash_message', ' added!');
     }
 
-    public function editDetail($id){
+    public function editDetail($id)
+    {
         $logpackd = LogPackD::findOrFail($id);
         $logpackm = LogPackM::findOrFail($logpackd->log_pack_m_id);
         $shiftlist = Shift::orderBy('name')->pluck('name', 'id');
@@ -379,10 +382,11 @@ class LogPackMsController extends Controller
             $sumoutputkg += $logpackdObj->output_kg;
         }
 
-        return view('log-pack-ms.editDetail', compact('logpackd','logpackm', 'shiftlist', 'sumoutputpack', 'suminputkg', 'sumoutputkg'));
+        return view('log-pack-ms.editDetail', compact('logpackd', 'logpackm', 'shiftlist', 'sumoutputpack', 'suminputkg', 'sumoutputkg'));
     }
 
-    public function updateDetail(Request $request, $id){
+    public function updateDetail(Request $request, $id)
+    {
         $requestData = $request->all();
 
         $requestData['process_datetime'] = \Carbon\Carbon::parse($requestData['process_datetime'])->format('Y-m-d H:i');
@@ -406,7 +410,8 @@ class LogPackMsController extends Controller
         return redirect('log-pack-ms/' . $logpackd->log_pack_m_id)->with('flash_message', ' updated!');
     }
 
-    public function changestatus($log_pack_m_id){
+    public function changestatus($log_pack_m_id)
+    {
         $logpackm = LogPackM::findOrFail($log_pack_m_id);
 
         $status = 'Active';
@@ -423,7 +428,8 @@ class LogPackMsController extends Controller
         return redirect('log-pack-ms/?status=' . $status)->with('flash_message', ' updated!');
     }
 
-    public function graph($log_pack_m_id){
+    public function graph($log_pack_m_id)
+    {
         $logpackm = LogPackM::findOrFail($log_pack_m_id);
 
         return view('dashboards.chartpacknew', compact('logpackm'));
@@ -453,8 +459,8 @@ class LogPackMsController extends Controller
         $targetResult = $logpackm->targetperday;
 
         if ($remainTime > 0) {
-                $totalsum = $totaloutputpack;
-                $ratePerHr = ($targetResult - $totaloutputpack) / $remainTime;
+            $totalsum = $totaloutputpack;
+            $ratePerHr = ($targetResult - $totaloutputpack) / $remainTime;
         }
 
         $loop = 0;
@@ -488,7 +494,8 @@ class LogPackMsController extends Controller
         return view('dashboards.chartpackforecast', compact('logpackm', 'estimateData'));
     }
 
-    public function deleteDetail($id, $log_pack_m_id){
+    public function deleteDetail($id, $log_pack_m_id)
+    {
         LogPackD::destroy($id);
 
         $logpackm = LogPackM::findOrFail($log_pack_m_id);

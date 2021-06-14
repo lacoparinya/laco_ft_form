@@ -9,8 +9,16 @@
             </div>
              @foreach ($item as $key1=>$item1)
             <h3>แพ็ค {{ $key1 }} ไปแล้วจำนวน 
-            @if (isset($packages[explode("#", $key1)[0]]) && isset($item1['OK']))
-                {{ number_format(($packages[explode("#", $key1)[0]]->numperbox *  $item1['OK']),'0','',',') }} ถุง
+            @if (isset($packages[explode("#", $key1)[0]]) && (isset($item1['OK']) || isset($item1['NG'])))
+                @if(isset($item1['OK']) && isset($item1['NG']))
+                    {{ number_format(($packages[explode("#", $key1)[0]]->numperbox *  ($item1['OK'] + $item1['NG'])),'0','',',') }} ถุง
+                @else
+                    @if(isset($item1['OK']))
+                        {{ number_format(($packages[explode("#", $key1)[0]]->numperbox *  $item1['OK']),'0','',',') }} ถุง
+                    @else
+                        {{ number_format(($packages[explode("#", $key1)[0]]->numperbox *  $item1['NG']),'0','',',') }} ถุง
+                    @endif
+                @endif
             @else
                 @if (isset($item1['OK']))
                     {{ $item1['OK'] }} กล่อง
