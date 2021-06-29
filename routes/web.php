@@ -54,6 +54,8 @@ Route::resource('mat-packs', 'MatPacksController');
 Route::resource('mat-pack-rates', 'MatPackRatesController');
 Route::resource('stamp-ms', 'StampMsController');
 Route::resource('crops', 'CropsController');
+Route::resource('seed-drop-packs', 'SeedDropPacksController');
+Route::resource('seed-drop-selects', 'SeedDropSelectsController');
 
 Route::get('/import', 'AutoImportController@test');
 Route::get('/reports/daily', 'ReportsController@daily')->name('reports.daily');
@@ -88,6 +90,10 @@ Route::post('/reports/reportPlAction/{type}', 'ReportsController@reportPLAction'
 Route::get('/reports/dailypreprod3', 'ReportsController@dailypreprod3')->name('reports.dailypreprod3');
 Route::get('/reports/rangepreprod3', 'ReportsController@rangepreprod3')->name('reports.rangepreprod3');
 Route::post('/reports/reportPreprod3Action', 'ReportsController@reportPreprod3Action');
+Route::get('/reports/rangseeddroppack', 'ReportsController@seedDropPackReport')->name('reports.rangeseeddroppack');
+Route::post('/reports/seedDropPackReportAction', 'ReportsController@seedDropPackReportAction');
+Route::get('/reports/rangseeddropselect', 'ReportsController@seedDropSelectReport')->name('reports.rangeseeddropselect');
+Route::post('/reports/seedDropSelectReportAction', 'ReportsController@seedDropSelectReportAction');
 
 Route::get('/dashboard', 'DashboardController@home');
 Route::get('/chart/{selecteddate}', 'DashboardController@datechart');
