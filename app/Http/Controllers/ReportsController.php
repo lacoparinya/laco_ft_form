@@ -1151,7 +1151,7 @@ class ReportsController extends Controller
             $data[$dataObj->check_date][$dataObj->shift_id][$dataObj->method_id] = $dataObj;
         }
 
-        $methodlist = Method::where('seed_drop_pack_flag', 1)->pluck('name', 'id');
+        $methodlist = Method::where('seed_drop_pack_flag', '>', 0)->orderBy('seed_drop_pack_flag')->pluck('name', 'id');
         $shiftlist = Shift::pluck('name', 'id');
 
         $filename = "ft_seeddroppack_report_" . date('ymdHi');

@@ -35,7 +35,7 @@ class SeedDropPacksController extends Controller
      */
     public function create()
     {
-        $methodlist = Method::where('seed_drop_pack_flag',1)->pluck('name', 'id');
+        $methodlist = Method::where('seed_drop_pack_flag', '>', 0)->orderBy('seed_drop_pack_flag')->pluck('name', 'id');
         $shiftlist = Shift::pluck('name', 'id');
         return view('seed-drop-packs.create', compact('methodlist', 'shiftlist'));
     }
@@ -77,9 +77,18 @@ class SeedDropPacksController extends Controller
     public function edit($id)
     {
         $seeddroppack = SeedDropPack::findOrFail($id);
-        $methodlist = Method::where('seed_drop_pack_flag', 1)->pluck('name', 'id');
+        $methodlist = Method::where('seed_drop_pack_flag', '>', 0)->orderBy('seed_drop_pack_flag')->pluck('name', 'id');
         $shiftlist = Shift::pluck('name', 'id');
-        return view('seed-drop-packs.edit', compact('seeddroppack', 'methodlist', 'shiftlist'));
+
+        $methodeobj =  Method::findOrFail($seeddroppack->method_id);
+
+        $keysarray =array();
+
+        if (!empty($methodeobj)) {
+            $keysarray =  explode(",", $methodeobj->keys);
+        }
+
+        return view('seed-drop-packs.edit', compact('seeddroppack', 'methodlist', 'shiftlist', 'keysarray'));
     }
 
     /**
@@ -92,6 +101,24 @@ class SeedDropPacksController extends Controller
     public function update(Request $request, $id)
     {
         $requestData = $request->all();
+
+
+        $methodeobj =  Method::findOrFail($requestData['method_id']);
+
+        $keysarray = array();
+
+        if (!empty($methodeobj)) {
+            $keysarray =  explode(",", $methodeobj->keys);
+        }
+
+        $allkeys = array(
+            'cabin', 'belt_start', 'belt_Intralox', 'weight_head', 'pack_part', 'shaker', 'table'
+        );
+        foreach ($allkeys as $key => $value) {
+            if (!in_array($value, $keysarray)) {
+                $requestData[$value] = 0;
+            }
+        }        
 
         $seeddroppack = SeedDropPack::findOrFail($id);
         $seeddroppack->update($requestData);
@@ -110,5 +137,20 @@ class SeedDropPacksController extends Controller
         SeedDropPack::destroy($id);
 
         return redirect('seed-drop-packs')->with('flash_message', ' deleted!');
+    }
+
+    public function getkey(Request $request)
+    {
+        $output = '';
+        $methodid = $request->get('method');
+
+        $methodeobj =  Method::findOrFail($methodid);
+
+        if (!empty($methodeobj)) {
+            $keysarray =  explode(",", $methodeobj->keys);
+            $output = $keysarray;
+        }
+
+        echo json_encode($output);
     }
 }

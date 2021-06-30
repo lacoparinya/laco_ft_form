@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app_seed_drop_pack')
 
 @section('content')
     <div class="container">

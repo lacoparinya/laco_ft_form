@@ -15,6 +15,8 @@ Route::get('/', 'LogSelectMsController@index');
 
 Auth::routes();
 
+Route::post('/seed-drop-packs/getkey', 'SeedDropPacksController@getkey');
+
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('groups', 'GroupsController');
 Route::resource('users', 'UsersController');
@@ -203,3 +205,4 @@ Route::post('/reports/checkweightreportaction', 'ReportsController@checkweightre
 
 Route::get('/mains/realtimechart', 'MainsController@realtimechart');
 Route::get('/mains/realsummarytimechart', 'MainsController@realsummarytimechart');
+

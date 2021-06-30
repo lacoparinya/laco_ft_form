@@ -26,43 +26,43 @@
     {!! $errors->first('check_date', '<p class="help-block">:message</p>') !!}
 </div>
 
-<div class="form-group col-md-4 {{ $errors->has('cabin') ? 'has-error' : ''}}">
+<div class="form-group col-md-4 allform dcabin {{ $errors->has('cabin') ? 'has-error' : ''}}">
     <label for="cabin" class="control-label">{{ 'บริเวณลากกระบะ (KG.)' }}</label>
     <input class="form-control" name="cabin" type="text" id="cabin" value="{{ $seeddroppack->cabin or '0'}}" >
     {!! $errors->first('cabin', '<p class="help-block">:message</p>') !!}
 </div>
 
-<div class="form-group col-md-4 {{ $errors->has('belt_start') ? 'has-error' : ''}}">
+<div class="form-group col-md-4 allform dbelt_start {{ $errors->has('belt_start') ? 'has-error' : ''}}">
     <label for="belt_start" class="control-label">{{ 'สายพานจุดปล่อยถั่ว  (KG.)' }}</label>
     <input class="form-control" name="belt_start" type="text" id="belt_start" value="{{ $seeddroppack->belt_start or '0'}}" >
     {!! $errors->first('belt_start', '<p class="help-block">:message</p>') !!}
 </div>
 
-<div class="form-group col-md-4 {{ $errors->has('belt_Intralox') ? 'has-error' : ''}}">
+<div class="form-group col-md-4 allform dbelt_Intralox {{ $errors->has('belt_Intralox') ? 'has-error' : ''}}">
     <label for="belt_Intralox" class="control-label">{{ 'สายพาน Intralox/โครง Z  (KG.)' }}</label>
     <input class="form-control" name="belt_Intralox" type="text" id="belt_Intralox" value="{{ $seeddroppack->belt_Intralox or '0'}}" >
     {!! $errors->first('belt_Intralox', '<p class="help-block">:message</p>') !!}
 </div>
 
-<div class="form-group col-md-4 {{ $errors->has('weight_head') ? 'has-error' : ''}}">
+<div class="form-group col-md-4 allform dweight_head {{ $errors->has('weight_head') ? 'has-error' : ''}}">
     <label for="weight_head" class="control-label">{{ 'หัวชั่ง' }}</label>
     <input class="form-control" name="weight_head" type="text" id="weight_head" value="{{ $seeddroppack->weight_head or '0'}}" >
     {!! $errors->first('weight_head', '<p class="help-block">:message</p>') !!}
 </div>
 
-<div class="form-group col-md-4 {{ $errors->has('pack_part') ? 'has-error' : ''}}">
+<div class="form-group col-md-4 allform dpack_part {{ $errors->has('pack_part') ? 'has-error' : ''}}">
     <label for="pack_part" class="control-label">{{ 'ในเครื่องบรรจุ (KG.)' }}</label>
     <input class="form-control" name="pack_part" type="text" id="pack_part" value="{{ $seeddroppack->pack_part or '0'}}" >
     {!! $errors->first('pack_part', '<p class="help-block">:message</p>') !!}
 </div>
 
-<div class="form-group col-md-4 {{ $errors->has('shaker') ? 'has-error' : ''}}">
+<div class="form-group col-md-4 allform dshaker {{ $errors->has('shaker') ? 'has-error' : ''}}">
     <label for="shaker" class="control-label">{{ 'Shaker' }}</label>
     <input class="form-control" name="shaker" type="text" id="shaker" value="{{ $seeddroppack->shaker or '0'}}" >
     {!! $errors->first('shaker', '<p class="help-block">:message</p>') !!}
 </div>
 
-<div class="form-group col-md-4 {{ $errors->has('table') ? 'has-error' : ''}}">
+<div class="form-group col-md-4 allform dtable {{ $errors->has('table') ? 'has-error' : ''}}">
     <label for="table" class="control-label">{{ 'โต๊ะบรรจุ (KG.)' }}</label>
     <input class="form-control" name="table" type="text" id="table" value="{{ $seeddroppack->table or '0'}}" >
     {!! $errors->first('table', '<p class="help-block">:message</p>') !!}
