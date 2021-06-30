@@ -41,6 +41,8 @@ class LogSelectMsController extends Controller
             return redirect('log-prepare-ms');
         } elseif ($user->group->name == 'user_pst') {
             return redirect('log-pst-selects');
+        } elseif ($user->group->name == 'auditor') {
+            return redirect('mains/realsummarytimechart');
         } 
 
 

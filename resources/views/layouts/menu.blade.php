@@ -159,6 +159,12 @@
                         <li>
                             <a href="{{ route('log-pst-selects.index') }}">PST Select Logs</a>
                         </li>
+                        <li>
+                            <a href="{{ route('seed-drop-selects.index') }}">ถั่วตกไลน์คัด</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('seed-drop-packs.index') }}">ถั่วตกไลน์แพ๊ค</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -226,6 +232,12 @@
                         <li>
                             <a href="{{ url('/reports/checkweightreportrang') }}">Check Weight Range Report</a>
                         </li>
+                        <li>
+                            <a href="{{ url('/reports/rangseeddropselect') }}">Report ถั่วตกไลน์คัด</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('/reports/rangseeddroppack') }}">Report ถั่วตกไลน์แพ็ค</a>
+                        </li>
                 </li>
             @else
                 <li class="dropdown">
@@ -245,6 +257,10 @@
                             <li>
                                 <a href="{{ route('stamp-ms.index') }}">FT Stamp Logs</a>
                             </li>
+
+                            <li>
+                                <a href="{{ route('seed-drop-packs.index') }}">ถั่วตกไลน์แพ๊ค</a>
+                            </li>
                             <li>
                                 <hr />
                             </li>
@@ -259,6 +275,10 @@
                             </li>
                             <li>
                                 <a href="{{ url('/reports/checkweightreportrang') }}">Check Weight Range Report</a>
+                            </li>
+
+                            <li>
+                                <a href="{{ url('/reports/rangseeddroppack') }}">Report ถั่วตกไลน์แพ็ค</a>
                             </li>
                             <li>
                                 <a href="{{ route('logout') }}" onclick="event.preventDefault();
@@ -370,6 +390,10 @@
                                         <li>
                                             <a href="{{ route('log-select-ms.index') }}">FT Select Logs</a>
                                         </li>
+
+                                        <li>
+                                            <a href="{{ route('seed-drop-selects.index') }}">ถั่วตกไลน์คัด</a>
+                                        </li>
                                         <li>
                                             <hr />
                                         </li>
@@ -378,6 +402,11 @@
                                         </li>
                                         <li>
                                             <a href="{{ route('reports.rangepst') }}">PST Range Report</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="{{ url('/reports/rangseeddropselect') }}">Report
+                                                ถั่วตกไลน์คัด</a>
                                         </li>
                                         <li>
                                             <a href="{{ route('logout') }}" onclick="event.preventDefault();
