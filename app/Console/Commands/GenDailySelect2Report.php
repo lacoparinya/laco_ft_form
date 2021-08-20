@@ -129,8 +129,11 @@ class GenDailySelect2Report extends Command
             $sum = 0;
             $totalAct = 0;
             $totalPlan = 0;
-            $resultar = array();
+            $resultar = array();            
             $rateperhour = $logselectm->targetperday / $logselectm->hourperday;
+            if( $logselectm->targetperhr > 0){
+                $rateperhour = $logselectm->targetperhr;
+            }
 
             foreach ($logselectm->logselectd()->orderBy('process_datetime')->get() as $valueObj) {
                 $sum += $valueObj->output_kg;

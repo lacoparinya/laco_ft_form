@@ -24,6 +24,7 @@
                             <th>Shift</th>
                             <th>Product</th>
                             <th>Input/Output</th>
+                            <th>Plan</th>
                             <th>สะสมรวม</th>
                             <th>PK/PF/PST</th>
                             <th>Total</th>
@@ -46,6 +47,7 @@
                           <td>{{ $logselectm->shift->name }}</td>
                           <td>{{ $logselectm->product->name }}</td>
                           <td>{{ number_format($item->input_kg,0,".",",") }}/{{ number_format($item->output_kg,0,".",",") }}</td>
+                          <td>{{ number_format($logselectm->targetperhr * $item->workhours,0,".",",") }}</td>
                           <td>{{ number_format($sum,0,".",",") }}</td>
                           <td>{{ $item->num_pk }}/{{ $item->num_pf }}/{{ $item->num_pst }}</td>
                           <td>{{ $item->num_classify }}</td>
@@ -74,10 +76,11 @@
       function drawVisualization() {
         // Some raw data (not necessarily accurate)
         var data = google.visualization.arrayToDataTable([
-          ['Time-Product', 'Output (kg)','STD Productivity','Productivity (Output/MH)' ],
+          ['Time-Product', 'Output (kgs)','Plan (kgs)','STD Productivity','Productivity (Output/MH)' ],
           @foreach ($logselectm->logselectd()->orderBy('process_datetime')->get() as $item)
             ['{{ date('H:i',strtotime($item->process_datetime)) }}',  
             {{ $item->output_kg }}, 
+            {{ $logselectm->targetperhr *  $item->workhours}}, 
             {{$logselectm->stdprocess->std_rate}}, 
             {{ round(($item->output_kg/$item->num_classify)/$item->workhours,2) }},
             ],
@@ -122,14 +125,18 @@
       },
 
             1: {
-            type: 'line',
-            targetAxisIndex:1,
+            type: 'bars',
+            targetAxisIndex:0,
             },
             2: {
             type: 'line',
             targetAxisIndex:1,
             },
             3: {
+            type: 'line',
+            targetAxisIndex:1,
+            },
+            4: {
             type: 'line',
             targetAxisIndex:1,
             }
@@ -161,6 +168,15 @@
     {
       calc: "stringify",
       sourceColumn: 3,
+      type: "string",
+      role: "annotation",
+      pointShape: 'square',
+      pointsVisible: true
+    },
+    4,
+    {
+      calc: "stringify",
+      sourceColumn: 4,
       type: "string",
       role: "annotation",
       pointShape: 'square',

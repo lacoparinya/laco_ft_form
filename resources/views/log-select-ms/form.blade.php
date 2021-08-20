@@ -31,6 +31,11 @@
     <input required class="form-control" name="targetperday" type="number" id="targetperday" value="{{ $logselectm->targetperday or ''}}" >
     {!! $errors->first('targetperday', '<p class="help-block">:message</p>') !!}
 </div>
+<div class="form-group col-md-4 {{ $errors->has('targetperhr') ? 'has-error' : ''}}">
+    <label for="targetperhr" class="control-label">{{ 'เป้าต่อชม (kgs/hr)' }}</label>
+    <input required class="form-control" name="targetperhr" type="number" id="targetperhr" value="{{ $logselectm->targetperhr or ''}}" >
+    {!! $errors->first('targetperhr', '<p class="help-block">:message</p>') !!}
+</div>
 <div class="form-group col-md-4 {{ $errors->has('ref_note') ? 'has-error' : ''}}">
     <label for="ref_note" class="control-label">{{ 'SAP REF' }}</label>
     <input required class="form-control" name="ref_note" type="text" id="ref_note" value="{{ $logselectm->ref_note or ''}}" >
@@ -40,7 +45,7 @@
     <label for="staff_target" class="control-label">{{ 'เป้าพนักงาน' }}</label>
     <input required class="form-control" name="staff_target" type="number" id="staff_target" value="{{ $logselectm->staff_target or ''}}" >
     {!! $errors->first('staff_target', '<p class="help-block">:message</p>') !!}
-</div>ผู
+</div>
 <div class="form-group col-md-4 {{ $errors->has('staff_operate') ? 'has-error' : ''}}">
     <label for="staff_operate" class="control-label">{{ 'Staff ผู้ดูแล' }}</label>
     <input required class="form-control" name="staff_operate" type="text" id="staff_operate" value="{{ $logselectm->staff_operate or ''}}" >

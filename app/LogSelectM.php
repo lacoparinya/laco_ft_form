@@ -8,7 +8,7 @@ class LogSelectM extends Model
 {
     protected $fillable = [
         'process_date', 'product_id', 'shift_id', 'std_process_id', 'hourperday', 
-        'targetperday', 'ref_note', 'note', 'status', 'staff_target' , 'staff_operate'
+        'targetperday', 'ref_note', 'note', 'status', 'staff_target' , 'staff_operate', 'targetperhr'
     ];
 
     public function product()

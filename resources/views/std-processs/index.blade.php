@@ -36,7 +36,7 @@
                                 @foreach($stdprocesss as $item)
                                     <tr>
                                         <td>{{ $loop->iteration or $item->id }}</td>
-                                        <td>{{ $item->product->name }}</td>
+                                        <td>{{ $item->product->name or '' }}</td>
                                         <td>{{ $item->std_rate }}</td>
                                         <td>{{ $item->status }}</td>
                                         
