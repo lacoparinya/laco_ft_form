@@ -21,20 +21,25 @@
 </select>
     {!! $errors->first('product_id', '<p class="help-block">:message</p>') !!}
 </div>
-<div class="form-group col-md-4 {{ $errors->has('hourperday') ? 'has-error' : ''}}">
+<div class="form-group col-md-3 {{ $errors->has('hourperday') ? 'has-error' : ''}}">
     <label for="hourperday" class="control-label">{{ 'จำนวนชม.ที่ใช้ในการผลิต' }}</label>
     <input required class="form-control" name="hourperday" type="number" id="hourperday" value="{{ $logselectm->hourperday or ''}}" >
     {!! $errors->first('hourperday', '<p class="help-block">:message</p>') !!}
 </div>
-<div class="form-group col-md-4 {{ $errors->has('targetperday') ? 'has-error' : ''}}">
+<div class="form-group col-md-3 {{ $errors->has('targetperday') ? 'has-error' : ''}}">
     <label for="targetperday" class="control-label">{{ 'จำนวนสินค้าที่ต้องผลิต' }}</label>
     <input required class="form-control" name="targetperday" type="number" id="targetperday" value="{{ $logselectm->targetperday or ''}}" >
     {!! $errors->first('targetperday', '<p class="help-block">:message</p>') !!}
 </div>
-<div class="form-group col-md-4 {{ $errors->has('targetperhr') ? 'has-error' : ''}}">
+<div class="form-group col-md-3 {{ $errors->has('targetperhr') ? 'has-error' : ''}}">
     <label for="targetperhr" class="control-label">{{ 'เป้าต่อชม (kgs/hr)' }}</label>
     <input required class="form-control" name="targetperhr" type="number" id="targetperhr" value="{{ $logselectm->targetperhr or ''}}" >
     {!! $errors->first('targetperhr', '<p class="help-block">:message</p>') !!}
+</div>
+<div class="form-group col-md-3 {{ $errors->has('planline') ? 'has-error' : ''}}">
+    <label for="planline" class="control-label">{{ 'จำนวน Line ที่เปิด' }}</label>
+    <input required class="form-control" name="planline" type="number" id="planline" value="{{ $logselectm->planline or ''}}" >
+    {!! $errors->first('planline', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group col-md-4 {{ $errors->has('ref_note') ? 'has-error' : ''}}">
     <label for="ref_note" class="control-label">{{ 'SAP REF' }}</label>

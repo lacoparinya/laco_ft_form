@@ -47,7 +47,14 @@
                           <td>{{ $logselectm->shift->name }}</td>
                           <td>{{ $logselectm->product->name }}</td>
                           <td>{{ number_format($item->input_kg,0,".",",") }}/{{ number_format($item->output_kg,0,".",",") }}</td>
-                          <td>{{ number_format($logselectm->targetperhr * $item->workhours,0,".",",") }}</td>
+                          <td>
+                          @if ($logselectm->planline > 0)
+                              {{ number_format((($logselectm->targetperhr / $logselectm->planline) * $item->line_classify) * $item->workhours,0,".",",") }}
+                          @else
+                              {{ number_format($logselectm->targetperhr * $item->workhours,0,".",",") }}
+                          @endif
+                            
+                          </td>
                           <td>{{ number_format($sum,0,".",",") }}</td>
                           <td>{{ $item->num_pk }}/{{ $item->num_pf }}/{{ $item->num_pst }}</td>
                           <td>{{ $item->num_classify }}</td>
@@ -80,7 +87,11 @@
           @foreach ($logselectm->logselectd()->orderBy('process_datetime')->get() as $item)
             ['{{ date('H:i',strtotime($item->process_datetime)) }}',  
             {{ $item->output_kg }}, 
-            {{ $logselectm->targetperhr *  $item->workhours}}, 
+            @if ($logselectm->planline > 0)
+                {{ (($logselectm->targetperhr / $logselectm->planline) * $item->line_classify) * $item->workhours }},
+            @else
+                  {{ $logselectm->targetperhr *  $item->workhours}}, 
+            @endif           
             {{$logselectm->stdprocess->std_rate}}, 
             {{ round(($item->output_kg/$item->num_classify)/$item->workhours,2) }},
             ],
