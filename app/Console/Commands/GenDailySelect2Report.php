@@ -139,7 +139,12 @@ class GenDailySelect2Report extends Command
                 $sum += $valueObj->output_kg;
                 $data1y[] = $valueObj->output_kg;
                 $data2y[] = $sum;
-                $data3y[] = $valueObj->workhours * ($rateperhour);
+                if($logselectm->planline > 0){
+                    $data3y[] = (($logselectm->targetperhr / $logselectm->planline) * $valueObj->line_classify) * $valueObj->workhours;
+                }else{
+                    $data3y[] = $valueObj->workhours * ($rateperhour);
+                }
+                
                 $data1x[] = date('H:i',strtotime($valueObj->process_datetime));
 
                 $totalAct += $valueObj->output_kg;
