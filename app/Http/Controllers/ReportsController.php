@@ -1113,24 +1113,104 @@ class ReportsController extends Controller
 
             //return view('exports.dailycheckweightexport',compact('data'));
         } else {
-            $data = CheckWeightData::whereBetween('datetime', [$requestData['from_date'] . " 00:00:00", $requestData['to_date'] . " 23:59:59"])
-                ->orderBy('mcheckweight_id', 'ASC')
-                ->orderBy('datetime', 'ASC')
-                ->orderBy('cus_name', 'ASC')
-                ->orderBy('prod_name', 'ASC')
-                ->get();
+            if ($requestData['submitbutton'] == 'Export') {
+                $data = CheckWeightData::whereBetween('datetime', [$requestData['from_date'] . " 00:00:00", $requestData['to_date'] . " 23:59:59"])
+                    ->orderBy('mcheckweight_id', 'ASC')
+                    ->orderBy('datetime', 'ASC')
+                    ->orderBy('cus_name', 'ASC')
+                    ->orderBy('prod_name', 'ASC')
+                    ->get();
 
 
-            $filename = "ft_checkweight_report_" . date('ymdHi');
+                $filename = "ft_checkweight_report_" . date('ymdHi');
 
-            Excel::create($filename, function ($excel) use ($data) {
-                $excel->sheet('งานStamp', function ($sheet) use ($data) {
-                    $sheet->loadView('exports.dailycheckweightexport')
-                        ->with('data', $data);
-                });
-            })->export('xlsx');
+                Excel::create($filename, function ($excel) use ($data) {
+                    $excel->sheet('งานStamp', function ($sheet) use ($data) {
+                        $sheet->loadView('exports.dailycheckweightexport')
+                            ->with('data', $data);
+                    });
+                })->export('xlsx');
+            }else{
+                
+                $datawegihtsumrm = DB::table('check_weight_datas')
+                ->leftjoin('mcheckweights', 'mcheckweights.id', '=', 'check_weight_datas.mcheckweight_id')
+                ->select(DB::raw("mcheckweights.name,
+CAST(check_weight_datas.datetime as date) as check_date,
+check_weight_datas.cus_name,
+check_weight_datas.prod_name,
+check_weight_datas.weight_check as mytype,
+count(check_weight_datas.id) as counting"))
+                    ->whereBetween('check_weight_datas.datetime', [$requestData['from_date'] . " 00:00:00", $requestData['to_date'] . " 23:59:59"])
+                    ->groupBy(DB::raw("mcheckweights.name,
+CAST(check_weight_datas.datetime as date),
+check_weight_datas.cus_name,
+check_weight_datas.prod_name,
+check_weight_datas.weight_check"))->orderBy('mcheckweights.name','asc')->orderBy('check_date','asc')->orderBy('check_weight_datas.prod_name','asc')->get();
 
-            //return view('exports.dailycheckweightexport', compact('data'));
+                $datalabel1sumrm = DB::table('check_weight_datas')
+                ->leftjoin('mcheckweights', 'mcheckweights.id', '=', 'check_weight_datas.mcheckweight_id')
+                ->select(DB::raw("mcheckweights.name,
+CAST(check_weight_datas.datetime as date) as check_date,
+check_weight_datas.cus_name,
+check_weight_datas.prod_name,
+check_weight_datas.code1_check as mytype,
+count(check_weight_datas.id) as counting"))
+                ->whereBetween('check_weight_datas.datetime', [$requestData['from_date'] . " 00:00:00", $requestData['to_date'] . " 23:59:59"])
+                ->groupBy(DB::raw("mcheckweights.name,
+CAST(check_weight_datas.datetime as date),
+check_weight_datas.cus_name,
+check_weight_datas.prod_name,
+check_weight_datas.code1_check"))->orderBy('mcheckweights.name', 'asc')->orderBy('check_date', 'asc')->orderBy('check_weight_datas.prod_name', 'asc')->get();
+
+                $datalabel2sumrm = DB::table('check_weight_datas')
+                ->leftjoin('mcheckweights', 'mcheckweights.id', '=', 'check_weight_datas.mcheckweight_id')
+                ->select(DB::raw("mcheckweights.name,
+CAST(check_weight_datas.datetime as date) as check_date,
+check_weight_datas.cus_name,
+check_weight_datas.prod_name,
+check_weight_datas.code2_check as mytype,
+count(check_weight_datas.id) as counting"))
+                ->whereBetween('check_weight_datas.datetime', [$requestData['from_date'] . " 00:00:00", $requestData['to_date'] . " 23:59:59"])
+                ->groupBy(DB::raw("mcheckweights.name,
+CAST(check_weight_datas.datetime as date),
+check_weight_datas.cus_name,
+check_weight_datas.prod_name,
+check_weight_datas.code2_check"))->orderBy('mcheckweights.name', 'asc')->orderBy('check_date', 'asc')->orderBy('check_weight_datas.prod_name', 'asc')->get();
+        
+
+            $datawegihtsum = array();
+
+            foreach ($datawegihtsumrm as $datawegihtsumObj) {
+                 $datawegihtsum[$datawegihtsumObj->check_date][$datawegihtsumObj->name][$datawegihtsumObj->cus_name][$datawegihtsumObj->prod_name]['WEIGHT'][$datawegihtsumObj->mytype] = $datawegihtsumObj->counting;
+                 if(isset($datawegihtsum[$datawegihtsumObj->check_date][$datawegihtsumObj->name][$datawegihtsumObj->cus_name][$datawegihtsumObj->prod_name]['WEIGHT']["SUM"])){
+                        $datawegihtsum[$datawegihtsumObj->check_date][$datawegihtsumObj->name][$datawegihtsumObj->cus_name][$datawegihtsumObj->prod_name]['WEIGHT']["SUM"] += $datawegihtsumObj->counting;
+                 }else{
+                        $datawegihtsum[$datawegihtsumObj->check_date][$datawegihtsumObj->name][$datawegihtsumObj->cus_name][$datawegihtsumObj->prod_name]['WEIGHT']["SUM"] = $datawegihtsumObj->counting;
+                 }
+            }
+
+            foreach ($datalabel1sumrm as $datawegihtsumObj) {
+                $datawegihtsum[$datawegihtsumObj->check_date][$datawegihtsumObj->name][$datawegihtsumObj->cus_name][$datawegihtsumObj->prod_name]['LABEL1'][$datawegihtsumObj->mytype] = $datawegihtsumObj->counting;
+            }
+
+            foreach ($datalabel2sumrm as $datawegihtsumObj) {
+                $datawegihtsum[$datawegihtsumObj->check_date][$datawegihtsumObj->name][$datawegihtsumObj->cus_name][$datawegihtsumObj->prod_name]['LABEL2'][$datawegihtsumObj->mytype] = $datawegihtsumObj->counting;
+            }
+
+            // /dd($datawegihtsum);
+
+                $filename = "ft_checkweight_summary_report_" . date('ymdHi');
+
+                Excel::create($filename, function ($excel) use ($datawegihtsum) {
+                    $excel->sheet('Checkweight', function ($sheet) use ($datawegihtsum) {
+                        $sheet->loadView('exports.summarycheckweightexport')
+                        ->with('datawegihtsum', $datawegihtsum);
+                    });
+                })->export('xlsx');
+
+       // return view('exports.summarycheckweightexport', compact('datawegihtsum'));
+            }
+            
         }
     }
 

@@ -25,7 +25,8 @@
                             </div>
                             <div class="form-group  col-md-12">
                                 <input type="hidden" name="action_type" id="action_type" value="range">
-                                <input class="btn btn-primary" type="submit" value="Export">
+                                <input class="btn btn-primary" name="submitbutton" type="submit" value="Export">
+                                <input class="btn btn-success" name="submitbutton" type="submit" value="Summary">
                             </div>
                         </div>
                     </form>
