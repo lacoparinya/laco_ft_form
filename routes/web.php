@@ -58,6 +58,7 @@ Route::resource('stamp-ms', 'StampMsController');
 Route::resource('crops', 'CropsController');
 Route::resource('seed-drop-packs', 'SeedDropPacksController');
 Route::resource('seed-drop-selects', 'SeedDropSelectsController');
+Route::resource('plan-rpt', 'PlanRptController');
 
 Route::get('/import', 'AutoImportController@test');
 Route::get('/reports/daily', 'ReportsController@daily')->name('reports.daily');
@@ -205,4 +206,6 @@ Route::post('/reports/checkweightreportaction', 'ReportsController@checkweightre
 
 Route::get('/mains/realtimechart', 'MainsController@realtimechart');
 Route::get('/mains/realsummarytimechart', 'MainsController@realsummarytimechart');
+
+Route::get('/planrpt/getprevdata/{month}/{year}', 'PlanRptController@getprevdata');
 

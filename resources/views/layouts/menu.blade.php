@@ -48,11 +48,12 @@
                                 <a href="{{ route('crops.index') }}">Crop</a>
                             </li>
                             <li>
-                                <a href="{{ route('jobs.index') }}">Job</a>
-                            </li>
-                            <li>
                                 <a href="{{ route('shifts.index') }}">Shift</a>
                             </li>
+                            <li>
+                                <a href="{{ route('jobs.index') }}">Job</a>
+                            </li>
+                            <li><hr></li>                            
                             <li>
                                 <a href="{{ route('products.index') }}">Product</a>
                             </li>
