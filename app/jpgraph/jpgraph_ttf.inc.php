@@ -46,6 +46,9 @@ define("FF_DV_SANSSERIFMONO",49);
 define("FF_DV_SERIFCOND",50);
 define("FF_DV_SANSSERIFCOND",51);
 
+
+
+
 // Extra fonts
 // Download fonts from
 // http://www.webfontlist.com
@@ -152,15 +155,17 @@ define('CORDIAB_TTF_FONT', 'cordiab.ttf');
 define('CORDIAI_TTF_FONT', 'cordiai.ttf');
 define('CORDIAZ_TTF_FONT', 'cordiaz.ttf');
 
-define('ANGSA_TTF_FONT', 'ANGSA.ttf');
-define('ANGSAB_TTF_FONT', 'ANGSAB.ttf');
-define('ANGSAI_TTF_FONT', 'ANGSAI.ttf');
-define('ANGSAZ_TTF_FONT', 'ANGSAZ.ttf');
+define('ANGSA_TTF_FONT', 'angsa.ttf');
+define('ANGSAB_TTF_FONT', 'angsab.ttf');
+define('ANGSAI_TTF_FONT', 'angsai.ttf');
+define('ANGSAZ_TTF_FONT', 'angsaz.ttf');
 
-define('BROWA_TTF_FONT', 'BROWA.ttf');
-define('BROWAB_TTF_FONT', 'BROWAB.ttf');
-define('BROWAI_TTF_FONT', 'BROWAI.ttf');
-define('BROWAZ_TTF_FONT', 'BROWAZ.ttf');
+define('BROWA_TTF_FONT', 'browa.ttf');
+define('BROWAB_TTF_FONT', 'browab.ttf');
+define('BROWAI_TTF_FONT', 'browai.ttf');
+define('BROWAZ_TTF_FONT', 'browaz.ttf');
+
+
 
 //=================================================================
 // CLASS LanguageConv
@@ -292,7 +297,7 @@ class TTF {
 
 	    // File names for available fonts
 	    $this->font_files=array(
-	    FF_COURIER => array(FS_NORMAL =>'cour.ttf',
+            FF_COURIER => array(FS_NORMAL =>'cour.ttf',
 	    	FS_BOLD  =>'courbd.ttf',
 	    	FS_ITALIC =>'couri.ttf',
 	    	FS_BOLDITALIC =>'courbi.ttf' ),
@@ -332,6 +337,7 @@ class TTF {
 	    	FS_BOLD =>'VeraSeBd.ttf',
 	    	FS_ITALIC =>'',
 	    	FS_BOLDITALIC =>'' ) ,
+            
 
 	    /* Chinese fonts */
 	    FF_SIMSUN  =>  array(
@@ -423,7 +429,6 @@ class TTF {
                 FS_BOLDITALIC => BROWAZ_TTF_FONT
             ),
 
-
 	    /* This is an experimental font for the speedometer development
 	    FF_SPEEDO =>    array(
 	    FS_NORMAL =>'Speedo.ttf',
@@ -475,21 +480,32 @@ class TTF {
 	    	FS_ITALIC =>array('DejaVuSerifCondensed-Italic.ttf','DejaVuCondensedSerifItalic.ttf'),
 	    	FS_BOLDITALIC =>array('DejaVuSerifCondensed-BoldItalic.ttf','DejaVuCondensedSerifBoldItalic.ttf') ),
 
+            
 
 	    /* Placeholders for defined fonts */
 	    FF_USERFONT1 => array(
-	    	FS_NORMAL =>'',
-	    	FS_BOLD =>'',
-	    	FS_ITALIC =>'',
-	    	FS_BOLDITALIC =>'' ),
-
+	    	FS_NORMAL => array('tahoma.ttf', 'tahomabd.ttf'),
+	    	FS_BOLD
+                => array('tahoma.ttf', 'tahomabd.ttf'),
+	    	FS_ITALIC
+                => array('tahoma.ttf', 'tahomabd.ttf'),
+	    	FS_BOLDITALIC
+                => array('tahoma.ttf', 'tahomabd.ttf'),
+        ),
 	    FF_USERFONT2 => array(
 	    	FS_NORMAL =>'',
 	    	FS_BOLD =>'',
 	    	FS_ITALIC =>'',
 	    	FS_BOLDITALIC =>'' ),
+            
 
 	    FF_USERFONT3 => array(
+	    	FS_NORMAL =>'',
+	    	FS_BOLD =>'',
+	    	FS_ITALIC =>'',
+	    	FS_BOLDITALIC =>'' ),
+
+        FF_USERFONT3 => array(
 	    	FS_NORMAL =>'',
 	    	FS_BOLD =>'',
 	    	FS_ITALIC =>'',

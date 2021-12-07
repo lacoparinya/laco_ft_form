@@ -30,8 +30,8 @@
                                     <tr>
                                         <th>#</th>
                                         <th>วันที่</th>
-                                        <th>เดือน</th>
-                                        <th>ปี</th>
+                                        <th>เดือน/ปี</th>
+                                        <th>Data</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
@@ -41,8 +41,12 @@
                                     <tr>
                                         <td>{{ $loop->iteration or $item->id }}</td>
                                         <td>{{ $item->enter_date }}</td>
-                                        <td>{{ $item->month }}</td>
-                                        <td>{{ $item->year or ''}}</td>
+                                        <td>{{ $item->month }}/{{ $item->year or ''}}</td>
+                                        <td>
+                                            @foreach ($item->planrptds as $subitem)
+                                                {{$subitem->plangroup->name}} {{ $subitem->num_delivery_plan }}/ {{ $subitem->num_confirm }}/ {{ $subitem->num_packed }}<br> 
+                                            @endforeach
+                                        </td>
                                         <td>{{ $item->status}}</td>
                                         <td>
                                             <a href="{{ url('/plan-rpt/' . $item->id) }}" title="View Planning"><button class="btn btn-info btn-sm"><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i> View</button></a>

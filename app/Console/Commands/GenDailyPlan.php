@@ -138,8 +138,7 @@ class GenDailyPlan extends Command
         }
 
        // dd($data);
-
-        $data1x = array('Delivery plan','B','ค้างบรรจุ', 'สินค้าบรรจุเสร็จรอส่งมอบ');
+        $data1x = array('Delivery plan','บรรจุได้', "ค้างบรรจุ", "สินค้าบรรจุเสร็จรอส่งมอบ" );
 
         $dataprev = array($data['prev']['num_delivery_plan'], $data['prev']['num_confirm'], $data['prev']['num_delivery_plan'] - $data['prev']['num_confirm'], $data['prev']['num_wait']);
         $datacurrent = array($data['current']['num_delivery_plan'], $data['current']['num_confirm'], $data['current']['num_delivery_plan'] - $data['current']['num_confirm'], $data['current']['num_wait']);
@@ -149,6 +148,7 @@ class GenDailyPlan extends Command
 
         $theme_class = new \UniversalTheme;
         $graph->SetTheme($theme_class);
+        $graph->xaxis->SetFont(FF_ANGSA, FS_BOLD, 18);
 
         //$graph->yaxis->SetTickPositions(array(0, 30, 60, 90, 120, 150), array(15, 45, 75, 105, 135));
         $graph->SetBox(false);
@@ -156,7 +156,7 @@ class GenDailyPlan extends Command
         $graph->ygrid->SetFill(false);
         $graph->xaxis->SetTickLabels($data1x);
         $graph->xaxis->SetLabelAlign('left', 'center');
-        $graph->xaxis->title->SetFont(FF_CORDIA, FS_BOLD, 14);
+        $graph->xaxis->title->SetFont(FF_BROWA, FS_BOLD, 14);
         $graph->yaxis->SetColor("#000000");
         $graph->yaxis->HideLine(true);
         $graph->yaxis->HideTicks(false, false);
@@ -172,17 +172,18 @@ class GenDailyPlan extends Command
 
 
         $b1plot->SetColor("white");
-        $b1plot->SetFillColor("#cc1111");
+        $b1plot->SetFillColor("#4169E1");
         $b1plot->SetLegend($monthlist[$prevmonth]. ' '. $prevyear);
         $b1plot->value->SetFormat('%d');
         $b1plot->value->SetColor("#000000");
         $b1plot->value->Show();
 
         $b2plot->SetColor("white");
-        $b2plot->SetFillColor("#11cccc");
+        $b2plot->SetFillColor("#ff6347");
         $b2plot->SetLegend($monthlist[date('m')] . ' ' . date('Y'));
         $b2plot->value->SetFormat('%d');
         $b2plot->value->SetColor("#000000");
+        
         $b2plot->value->Show();
 
         $graph->ygrid->Show(false);
@@ -213,14 +214,16 @@ class GenDailyPlan extends Command
 
         $theme_class = new \UniversalTheme;
         $graph2->SetTheme($theme_class);
+        
 
         //$graph->yaxis->SetTickPositions(array(0, 30, 60, 90, 120, 150), array(15, 45, 75, 105, 135));
         $graph2->SetBox(false);
 
         $graph2->ygrid->SetFill(false);
         $graph2->xaxis->SetTickLabels($data2x);
+        $graph2->xaxis->SetFont(FF_ANGSA, FS_BOLD, 18);
         $graph2->xaxis->SetLabelAlign('left', 'center');
-        $graph2->xaxis->title->SetFont(FF_CORDIA, FS_BOLD, 14);
+        $graph2->xaxis->title->SetFont(FF_ANGSA, FS_BOLD, 14);
         $graph2->yaxis->SetColor("#000000");
         $graph2->yaxis->HideLine(true);
         $graph2->yaxis->HideTicks(false, false);
@@ -234,16 +237,15 @@ class GenDailyPlan extends Command
         // ...and add it to the graPH
         $graph2->Add($gbplot2);
 
-
         $b1plot2->SetColor("white");
-        $b1plot2->SetFillColor("#cc1111");
+        $b1plot2->SetFillColor("#4169E1");
         $b1plot2->SetLegend($monthlist[$prevmonth] . ' ' . $prevyear);
         $b1plot2->value->SetFormat('%d');
         $b1plot2->value->SetColor("#000000");
         $b1plot2->value->Show();
 
         $b2plot2->SetColor("white");
-        $b2plot2->SetFillColor("#11cccc");
+        $b2plot2->SetFillColor("#ff6347");
         $b2plot2->SetLegend($monthlist[date('m')] . ' ' . date('Y'));
         $b2plot2->value->SetFormat('%d');
         $b2plot2->value->SetColor("#000000");
@@ -266,9 +268,47 @@ class GenDailyPlan extends Command
 
         $ftStaff = config('myconfig.emaillist');
 
+        $maindata['prev'] = $dataprev;
+        $maindata['current'] = $datacurrent;
+        $maindata['rawprev'] = $prev;
+        $maindata['rawcurrent'] = $current;
+
         $mailObj['graph'] = $filename;
+        $mailObj['data'] = $maindata;
         $mailObj['subject'] = " Update จำนวน Shipment ประจำวันที่  " . date('d/M/Y');
 
         Mail::to('parinya.k@lannaagro.com')->send(new DeliveryPlanMail($mailObj));
+    }
+
+    function tis620_to_utf8($in) {
+    $out = "";
+        for ($i = 0; $i < strlen($in); $i++)
+        {
+            if (ord($in[$i])) {
+                $out .= $in[$i];
+            }else{
+                $out .= "&#" . (ord($in[$i]) - 161 + 3585) . ";";
+            }
+            
+        }
+    return $out;
+    }
+
+    function utf8_to_tis620($string)
+    {
+        $str = $string;
+        $res = "";
+        for ($i = 0; $i < strlen($str); $i++) {
+            if (ord($str[$i]) == 224) {
+                $unicode = ord($str[$i + 2]) & 0x3F;
+                $unicode |= (ord($str[$i + 1]) & 0x3F) << 6;
+                $unicode |= (ord($str[$i]) & 0x0F) << 12;
+                $res .= chr($unicode - 0x0E00 + 0xA0);
+                $i += 2;
+            } else {
+                $res .= $str[$i];
+            }
+        }
+        return $res;
     }
 }

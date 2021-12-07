@@ -53,7 +53,9 @@
                             <li>
                                 <a href="{{ route('jobs.index') }}">Job</a>
                             </li>
-                            <li><hr></li>                            
+                            <li>
+                                <hr>
+                            </li>
                             <li>
                                 <a href="{{ route('products.index') }}">Product</a>
                             </li>
@@ -384,43 +386,65 @@
                                         </li>
                                     </ul>
                                 @else
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li>
-                                            <a href="{{ url('/main') }}">Main</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ route('log-select-ms.index') }}">FT Select Logs</a>
-                                        </li>
-
-                                        <li>
-                                            <a href="{{ route('seed-drop-selects.index') }}">ถั่วตกไลน์คัด</a>
-                                        </li>
-                                        <li>
-                                            <hr />
-                                        </li>
-                                        <li>
-                                            <a href="{{ route('reports.dailypst') }}">PST Daily Report</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ route('reports.rangepst') }}">PST Range Report</a>
-                                        </li>
-
-                                        <li>
-                                            <a href="{{ url('/reports/rangseeddropselect') }}">Report
-                                                ถั่วตกไลน์คัด</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ route('logout') }}" onclick="event.preventDefault();
+                                    @if (App\User::find(Auth::user()->id)->group->name == 'user_planner')
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li>
+                                                <a href="{{ route('plan-rpt.index') }}">Plan Logs</a>
+                                            </li>
+                                            <li>
+                                                <hr />
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('logout') }}" onclick="event.preventDefault();
                                                         document.getElementById('logout-form').submit();">
-                                                Logout
-                                            </a>
+                                                    Logout
+                                                </a>
 
-                                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                                style="display: none;">
-                                                {{ csrf_field() }}
-                                            </form>
-                                        </li>
-                                    </ul>
+                                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                                    style="display: none;">
+                                                    {{ csrf_field() }}
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    @else
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li>
+                                                <a href="{{ url('/main') }}">Main</a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('log-select-ms.index') }}">FT Select Logs</a>
+                                            </li>
+
+                                            <li>
+                                                <a href="{{ route('seed-drop-selects.index') }}">ถั่วตกไลน์คัด</a>
+                                            </li>
+                                            <li>
+                                                <hr />
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('reports.dailypst') }}">PST Daily Report</a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('reports.rangepst') }}">PST Range Report</a>
+                                            </li>
+
+                                            <li>
+                                                <a href="{{ url('/reports/rangseeddropselect') }}">Report
+                                                    ถั่วตกไลน์คัด</a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                        document.getElementById('logout-form').submit();">
+                                                    Logout
+                                                </a>
+
+                                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                                    style="display: none;">
+                                                    {{ csrf_field() }}
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    @endif
                                 @endif
                             @endif
                         @endif

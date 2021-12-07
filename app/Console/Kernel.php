@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
         Commands\GenDailyPack2Report::class,
         Commands\GenDailyStampReport::class,
         Commands\SyncCheckWeight::class,
+        Commands\GenDailyPlan::class,
     ];
 
     /**
