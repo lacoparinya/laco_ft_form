@@ -168,6 +168,9 @@
                         <li>
                             <a href="{{ route('seed-drop-packs.index') }}">ถั่วตกไลน์แพ๊ค</a>
                         </li>
+                        <li>
+                                                <a href="{{ route('plan-rpt.index') }}">Plan Logs</a>
+                                            </li>
                     </ul>
                 </li>
                 <li class="dropdown">

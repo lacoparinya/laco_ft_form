@@ -40,5 +40,5 @@
     </div>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="http://localhost/ft_form/js/ftplanrpt.js"></script>
+    <script src="{{ asset('js/ftplanrpt.js') }}"></script>
 @endsection

@@ -53,8 +53,10 @@ class PlanRptController extends Controller
             ->first();
         $prevplanrptds = array();
         // /dd($prevplanrptm);
-        foreach ($prevplanrptm->planrptds as $planrptdObj) {
-            $prevplanrptds[$planrptdObj->plan_group_id] = $planrptdObj;
+        if (!empty($prevplanrptm)) {
+            foreach ($prevplanrptm->planrptds as $planrptdObj) {
+                $prevplanrptds[$planrptdObj->plan_group_id] = $planrptdObj;
+            }
         }
         return view(
             'plan-rpt.create',

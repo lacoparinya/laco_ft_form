@@ -88,9 +88,9 @@ class GenDailyPlan extends Command
         $datacurrent2 = array();
         $allshipments = 0;
         foreach ($current->planrptds as $planrptdObj) {
-            $data2x[] = "Delivery plan (".$planrptdObj->plangroup->name.")";
-            $datacurrent2[]  = $planrptdObj->num_delivery_plan;
-            $allshipments += $planrptdObj->num_delivery_plan;
+            $data2x[] = "บรรจุได้ (".$planrptdObj->plangroup->name.")";
+            $datacurrent2[]  = $planrptdObj->num_packed;
+            $allshipments += $planrptdObj->num_packed;
             if(isset($data['current']['num_delivery_plan'])){
                 $data['current']['num_delivery_plan'] +=  $planrptdObj->num_delivery_plan;
             }else{
@@ -114,7 +114,7 @@ class GenDailyPlan extends Command
         }
         foreach ($prev->planrptds as $planrptdObj) {
             //$data2['prev'][$planrptdObj->plangroup->name] = $planrptdObj->num_delivery_plan;
-            $dataprev2[]  = $planrptdObj->num_delivery_plan;
+            $dataprev2[]  = $planrptdObj->num_packed;
             if (isset($data['prev']['num_delivery_plan'])) {
                 $data['prev']['num_delivery_plan'] +=  $planrptdObj->num_delivery_plan;
             } else {
@@ -140,8 +140,8 @@ class GenDailyPlan extends Command
        // dd($data);
         $data1x = array('Delivery plan','บรรจุได้', "ค้างบรรจุ", "สินค้าบรรจุเสร็จรอส่งมอบ" );
 
-        $dataprev = array($data['prev']['num_delivery_plan'], $data['prev']['num_confirm'], $data['prev']['num_delivery_plan'] - $data['prev']['num_confirm'], $data['prev']['num_wait']);
-        $datacurrent = array($data['current']['num_delivery_plan'], $data['current']['num_confirm'], $data['current']['num_delivery_plan'] - $data['current']['num_confirm'], $data['current']['num_wait']);
+        $dataprev = array($data['prev']['num_delivery_plan'], $data['prev']['num_packed'], $data['prev']['num_delivery_plan'] - $data['prev']['num_packed'], $data['prev']['num_wait']);
+        $datacurrent = array($data['current']['num_delivery_plan'], $data['current']['num_packed'], $data['current']['num_delivery_plan'] - $data['current']['num_packed'], $data['current']['num_wait']);
         
         $graph = new \Graph(900, 400);
         $graph->SetScale("intlin");
@@ -277,38 +277,13 @@ class GenDailyPlan extends Command
         $mailObj['data'] = $maindata;
         $mailObj['subject'] = " Update จำนวน Shipment ประจำวันที่  " . date('d/M/Y');
 
-        Mail::to('parinya.k@lannaagro.com')->send(new DeliveryPlanMail($mailObj));
-    }
+        $testemail = array(
+            'WT' => 'Wichchan@Lannaagro.com',
+            'PC' => 'Pimchanok@Lannaagro.com',
+            'JPT' => 'Jittranuch@Lannaagro.com',
+            'PKP' => 'parinya.k@lannaagro.com',
+        );
 
-    function tis620_to_utf8($in) {
-    $out = "";
-        for ($i = 0; $i < strlen($in); $i++)
-        {
-            if (ord($in[$i])) {
-                $out .= $in[$i];
-            }else{
-                $out .= "&#" . (ord($in[$i]) - 161 + 3585) . ";";
-            }
-            
-        }
-    return $out;
-    }
-
-    function utf8_to_tis620($string)
-    {
-        $str = $string;
-        $res = "";
-        for ($i = 0; $i < strlen($str); $i++) {
-            if (ord($str[$i]) == 224) {
-                $unicode = ord($str[$i + 2]) & 0x3F;
-                $unicode |= (ord($str[$i + 1]) & 0x3F) << 6;
-                $unicode |= (ord($str[$i]) & 0x0F) << 12;
-                $res .= chr($unicode - 0x0E00 + 0xA0);
-                $i += 2;
-            } else {
-                $res .= $str[$i];
-            }
-        }
-        return $res;
+        Mail::to($testemail)->send(new DeliveryPlanMail($mailObj));
     }
 }
