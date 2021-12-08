@@ -107,7 +107,7 @@ class GenDailyPlan extends Command
                 $data['current']['num_packed'] =  $planrptdObj->num_packed;
             }
             if (isset($data['current']['num_wait'])) {
-                $data['current']['num_wait'] +=  $planrptdObj->num_packed;
+                $data['current']['num_wait'] +=  $planrptdObj->num_wait;
             } else {
                 $data['current']['num_wait'] =  $planrptdObj->num_wait;
             }
@@ -131,7 +131,7 @@ class GenDailyPlan extends Command
                 $data['prev']['num_packed'] =  $planrptdObj->num_packed;
             }
             if (isset($data['prev']['num_wait'])) {
-                $data['prev']['num_wait'] +=  $planrptdObj->num_packed;
+                $data['prev']['num_wait'] +=  $planrptdObj->num_wait;
             } else {
                 $data['prev']['num_wait'] =  $planrptdObj->num_wait;
             }
@@ -272,6 +272,7 @@ class GenDailyPlan extends Command
         $maindata['current'] = $datacurrent;
         $maindata['rawprev'] = $prev;
         $maindata['rawcurrent'] = $current;
+        $maindata['all'] = $data;
 
         $mailObj['graph'] = $filename;
         $mailObj['data'] = $maindata;

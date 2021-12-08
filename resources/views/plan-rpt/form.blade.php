@@ -119,6 +119,11 @@
 </div> 
 </div>
 @endforeach
+<div class="form-group col-md-12 {{ $errors->has('note') ? 'has-error' : ''}}">
+    <label for="note" class="control-label">{{ 'Note' }}</label>
+    <textarea class="form-control" rows="5" name="note" type="textarea" id="note" >{{ $planrptm->note or ''}}</textarea>
+    {!! $errors->first('note', '<p class="help-block">:message</p>') !!}
+</div>
 <div class="form-group col-md-12">
     <input class="btn btn-primary" type="submit" value="{{ $formMode === 'edit' ? 'Update' : 'Save' }}">
 </div>

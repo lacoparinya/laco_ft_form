@@ -147,6 +147,8 @@ class PlanRptController extends Controller
     {
         $requestData = $request->all();
         $planrptm = PlanRptM::findOrFail($id);
+
+        $planrptm->note = $requestData['note'];
         foreach ($planrptm->planrptds as $planrptdObj) {
             if(isset($requestData['num_delivery_plan-'. $planrptdObj->plan_group_id])){
                 $planrptdObj->num_delivery_plan = $requestData['num_delivery_plan-' . $planrptdObj->plan_group_id];
@@ -166,6 +168,7 @@ class PlanRptController extends Controller
             $planrptdObj->update();
             
         }
+        $planrptm->update();
         return redirect('plan-rpt')->with('flash_message', ' Edited!');
     }
 

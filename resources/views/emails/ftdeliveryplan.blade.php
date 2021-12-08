@@ -50,14 +50,14 @@
             </tr>
             <tr>
                 <th>{{ $monthlist[$dataset['data']['rawprev']->month] }} {{ $dataset['data']['rawprev']->year }}</th>
-                <th>{{ $dataset['data']['prev'][1] }}</th>
-                <th>{{ $dataset['data']['prev'][0] - $dataset['data']['prev'][1] }}</th>
+                <th>{{ $dataset['all']['prev']['num_confirm'] }}</th>
+                <th>{{ $dataset['data']['prev'][0] - $dataset['all']['prev']['num_confirm'] }}</th>
                 <th>{{ $dataset['data']['prev'][0]}}</th>
             </tr>
             <tr>
                 <th>{{ $monthlist[$dataset['data']['rawcurrent']->month] }} {{ $dataset['data']['rawcurrent']->year }}</th>
-                <th>{{ $dataset['data']['current'][1] }}</th>
-                <th>{{ $dataset['data']['current'][0] - $dataset['data']['current'][1] }}</th>
+                <th>{{ $dataset['all']['current']['num_confirm'] }}</th>
+                <th>{{ $dataset['data']['current'][0] - $dataset['all']['current']['num_confirm'] }}</th>
                 <th>{{ $dataset['data']['current'][0]}}</th>
             </tr>
         </thead>
