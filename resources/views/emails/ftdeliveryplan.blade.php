@@ -50,14 +50,14 @@
             </tr>
             <tr>
                 <th>{{ $monthlist[$dataset['data']['rawprev']->month] }} {{ $dataset['data']['rawprev']->year }}</th>
-                <th>{{ $dataset['all']['prev']['num_confirm'] }}</th>
-                <th>{{ $dataset['data']['prev'][0] - $dataset['all']['prev']['num_confirm'] }}</th>
+                <th>{{ $dataset['data']['all']['prev']['num_confirm'] }}</th>
+                <th>{{ $dataset['data']['prev'][0] - $dataset['data']['all']['prev']['num_confirm'] }}</th>
                 <th>{{ $dataset['data']['prev'][0]}}</th>
             </tr>
             <tr>
                 <th>{{ $monthlist[$dataset['data']['rawcurrent']->month] }} {{ $dataset['data']['rawcurrent']->year }}</th>
-                <th>{{ $dataset['all']['current']['num_confirm'] }}</th>
-                <th>{{ $dataset['data']['current'][0] - $dataset['all']['current']['num_confirm'] }}</th>
+                <th>{{ $dataset['data']['all']['current']['num_confirm'] }}</th>
+                <th>{{ $dataset['data']['current'][0] - $dataset['data']['all']['current']['num_confirm'] }}</th>
                 <th>{{ $dataset['data']['current'][0]}}</th>
             </tr>
         </thead>
@@ -67,6 +67,6 @@
     <p><img src="{{ url('/') }}/ft_form/{{ $dataset['graph']['all']['link'] }}" alt=""></p><br/>
     <p>หมายเหตุ : {{$dataset['data']['rawcurrent']->note}}</p>
     <p>จึงเรียนมาเพื่อทราบ</p>
-    <p>FT Fotm Alert</p>
+    <p>FT Form Alert</p>
 </body>
 </html>

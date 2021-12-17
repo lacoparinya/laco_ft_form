@@ -258,7 +258,8 @@ class GenDailyPlan extends Command
         $graph2->legend->SetColor('#4E4E4E', '#00A78A');
         $graph2->legend->SetPos(0.8, 0.05, 'center', 'top');
 
-        $graph2->title->Set($allshipments." Shipments");
+        $graph2->title->SetFont(FF_ANGSA, FS_BOLD, 18);
+        $graph2->title->Set("จำนวน Shipment ที่บรรจุได้ตาม Delivery plan\n" . $allshipments . " Shipments");
         $graph2->SetMargin(30, 10, 40, 20);
 
         $filename['region']['link'] = "graph/" . date('Y') . "/" . date('m') . "/dplan/ft_plan_rpt_rg_" .  $date . ".jpg";
@@ -285,6 +286,8 @@ class GenDailyPlan extends Command
             'PKP' => 'parinya.k@lannaagro.com',
         );
 
-        Mail::to($testemail)->send(new DeliveryPlanMail($mailObj));
+        $allemail = config('myconfig.emailalllist');
+
+        Mail::to($allemail)->send(new DeliveryPlanMail($mailObj));
     }
 }
