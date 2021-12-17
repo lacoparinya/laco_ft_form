@@ -65,7 +65,11 @@
     </p>
     <p><img src="{{ url('/') }}/ft_form/{{ $dataset['graph']['region']['link'] }}" alt=""></p><br/>
     <p><img src="{{ url('/') }}/ft_form/{{ $dataset['graph']['all']['link'] }}" alt=""></p><br/>
-    <p>หมายเหตุ : {{$dataset['data']['rawcurrent']->note}}</p>
+    <p>หมายเหตุ : 
+        @php
+            echo nl2br($dataset['data']['rawcurrent']->note)
+        @endphp
+        </p>
     <p>จึงเรียนมาเพื่อทราบ</p>
     <p>FT Form Alert</p>
 </body>
