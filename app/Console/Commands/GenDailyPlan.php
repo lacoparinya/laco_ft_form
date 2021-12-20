@@ -277,7 +277,9 @@ class GenDailyPlan extends Command
 
         $mailObj['graph'] = $filename;
         $mailObj['data'] = $maindata;
-        $mailObj['subject'] = " Update จำนวน Shipment ประจำวันที่  " . date('d/M/Y');
+        $mailObj['subject'] = "Update จำนวน Shipment ประจำวันที่  " . date('d/M/Y');
+        $mailObj['fromemail'] = "noreply@lannaagro.com";
+        $mailObj['fromname'] = "Shipment Report ";
 
         $testemail = array(
             'WT' => 'Wichchan@Lannaagro.com',
@@ -288,6 +290,6 @@ class GenDailyPlan extends Command
 
         $allemail = config('myconfig.emailalllist');
 
-        Mail::to($allemail)->send(new DeliveryPlanMail($mailObj));
+        Mail::to($testemail)->send(new DeliveryPlanMail($mailObj));
     }
 }

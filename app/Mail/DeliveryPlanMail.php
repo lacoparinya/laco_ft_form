@@ -30,6 +30,6 @@ class DeliveryPlanMail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.ftdeliveryplan', ['dataset' => $this->dataset])->subject($this->dataset['subject']);
+        return $this->from($this->dataset['fromemail'], $this->dataset['fromname'])->view('emails.ftdeliveryplan', ['dataset' => $this->dataset])->subject($this->dataset['subject']);
     }
 }
