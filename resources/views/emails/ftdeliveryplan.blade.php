@@ -66,6 +66,11 @@
     <p><img src="{{ url('/') }}/ft_form/{{ $dataset['graph']['region']['link'] }}" alt=""></p><br/>
     <p><img src="{{ url('/') }}/ft_form/{{ $dataset['graph']['all']['link'] }}" alt=""></p><br/>
     <p>หมายเหตุ : 
+        <br/>
+        @php
+            echo nl2br($dataset['data']['rawprev']->note)
+        @endphp
+        <br/>
         @php
             echo nl2br($dataset['data']['rawcurrent']->note)
         @endphp

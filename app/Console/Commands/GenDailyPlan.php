@@ -63,6 +63,14 @@ class GenDailyPlan extends Command
             ->where('year', date('Y'))
             ->where('status', 'Active')
             ->first();
+
+        $nextmonth = date('m')+1;
+        $nextyear = date('Y');
+        if ($nextmonth == 13) {
+            $nextmonth = 1;
+            $nextyear = date('Y') + 1;
+        }
+        
         $prevmonth = date('m')-1;
         $prevyear = date('Y');
         if(date('m') == 1){
@@ -75,22 +83,46 @@ class GenDailyPlan extends Command
             ->where('status', 'Active')
             ->first();
 
+        $next = PlanRptM::where('month', $nextmonth)
+            ->where('year', $nextyear)
+            ->where('status', 'Active')
+            ->first();
+        $currentmonth = date('m');
+        $currentyear = date('Y');
+        if(!empty($next)){
+            $prev = $current;
+            $prevmonth = $currentmonth;
+            $prevyear = $currentyear;
+            $current = $next;
+            $currentmonth = $nextmonth;
+            $currentyear = $nextyear; 
+        }
+
         require_once app_path() . '/jpgraph/jpgraph.php';
         require_once app_path() . '/jpgraph/jpgraph_bar.php';
-
 
         $plangrouplist = PlanGroup::where('status', 'Active')->pluck('name', 'id');
 
         $data = array();
-        $data2 = array();
+        
+        $data2x1 = array();
+        $data2x2 = array();
+       // $datacurrent21 = array();
+       //// $datacurrent22 = array();
+       // $allshipments1 = 0;
+       // $allshipments2 = 0;
+
         $data2x = array();
         $dataprev2 = array();
         $datacurrent2 = array();
         $allshipments = 0;
         foreach ($current->planrptds as $planrptdObj) {
-            $data2x[] = "บรรจุได้ (".$planrptdObj->plangroup->name.")";
+
             $datacurrent2[]  = $planrptdObj->num_packed;
+
+            $data2x1[] = "บรรจุได้ (" . $planrptdObj->plangroup->name . ")";
             $allshipments += $planrptdObj->num_packed;
+
             if(isset($data['current']['num_delivery_plan'])){
                 $data['current']['num_delivery_plan'] +=  $planrptdObj->num_delivery_plan;
             }else{
@@ -113,7 +145,10 @@ class GenDailyPlan extends Command
             }
         }
         foreach ($prev->planrptds as $planrptdObj) {
-            //$data2['prev'][$planrptdObj->plangroup->name] = $planrptdObj->num_delivery_plan;
+            
+            $data2x2[] = "บรรจุได้ (" . $planrptdObj->plangroup->name . ")";
+            $allshipments += $planrptdObj->num_packed;
+
             $dataprev2[]  = $planrptdObj->num_packed;
             if (isset($data['prev']['num_delivery_plan'])) {
                 $data['prev']['num_delivery_plan'] +=  $planrptdObj->num_delivery_plan;
@@ -135,6 +170,12 @@ class GenDailyPlan extends Command
             } else {
                 $data['prev']['num_wait'] =  $planrptdObj->num_wait;
             }
+        }
+
+        if (!empty($next)) {
+            $data2x = $data2x2;
+        }else{
+            $data2x = $data2x1;
         }
 
        // dd($data);
@@ -180,7 +221,7 @@ class GenDailyPlan extends Command
 
         $b2plot->SetColor("white");
         $b2plot->SetFillColor("#ff6347");
-        $b2plot->SetLegend($monthlist[date('m')] . ' ' . date('Y'));
+        $b2plot->SetLegend($monthlist[$currentmonth] . ' ' . $currentyear);
         $b2plot->value->SetFormat('%d');
         $b2plot->value->SetColor("#000000");
         
@@ -246,7 +287,7 @@ class GenDailyPlan extends Command
 
         $b2plot2->SetColor("white");
         $b2plot2->SetFillColor("#ff6347");
-        $b2plot2->SetLegend($monthlist[date('m')] . ' ' . date('Y'));
+        $b2plot2->SetLegend($monthlist[$currentmonth] . ' ' . $currentyear);
         $b2plot2->value->SetFormat('%d');
         $b2plot2->value->SetColor("#000000");
         $b2plot2->value->Show();
@@ -290,6 +331,6 @@ class GenDailyPlan extends Command
 
         $allemail = config('myconfig.emailalllist');
 
-        Mail::to($testemail)->send(new DeliveryPlanMail($mailObj));
+        Mail::to($allemail)->send(new DeliveryPlanMail($mailObj));
     }
 }
