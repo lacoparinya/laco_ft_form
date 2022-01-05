@@ -221,7 +221,7 @@ class GenDailyPlan extends Command
 
         $b2plot->SetColor("white");
         $b2plot->SetFillColor("#ff6347");
-        $b2plot->SetLegend($monthlist[$currentmonth] . ' ' . $currentyear);
+        $b2plot->SetLegend($monthlist[intval($currentmonth)] . ' ' . $currentyear);
         $b2plot->value->SetFormat('%d');
         $b2plot->value->SetColor("#000000");
         
@@ -280,14 +280,14 @@ class GenDailyPlan extends Command
 
         $b1plot2->SetColor("white");
         $b1plot2->SetFillColor("#4169E1");
-        $b1plot2->SetLegend($monthlist[$prevmonth] . ' ' . $prevyear);
+        $b1plot2->SetLegend($monthlist[intval($prevmonth)] . ' ' . $prevyear);
         $b1plot2->value->SetFormat('%d');
         $b1plot2->value->SetColor("#000000");
         $b1plot2->value->Show();
 
         $b2plot2->SetColor("white");
         $b2plot2->SetFillColor("#ff6347");
-        $b2plot2->SetLegend($monthlist[$currentmonth] . ' ' . $currentyear);
+        $b2plot2->SetLegend($monthlist[intval($currentmonth)] . ' ' . $currentyear);
         $b2plot2->value->SetFormat('%d');
         $b2plot2->value->SetColor("#000000");
         $b2plot2->value->Show();
