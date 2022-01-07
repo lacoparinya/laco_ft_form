@@ -214,7 +214,7 @@ class GenDailyPlan extends Command
 
         $b1plot->SetColor("white");
         $b1plot->SetFillColor("#4169E1");
-        $b1plot->SetLegend($monthlist[$prevmonth]. ' '. $prevyear);
+        $b1plot->SetLegend($monthlist[intval($prevmonth)]. ' '. $prevyear);
         $b1plot->value->SetFormat('%d');
         $b1plot->value->SetColor("#000000");
         $b1plot->value->Show();
@@ -323,14 +323,14 @@ class GenDailyPlan extends Command
         $mailObj['fromname'] = "Shipment Report ";
 
         $testemail = array(
-            'WT' => 'Wichchan@Lannaagro.com',
-            'PC' => 'Pimchanok@Lannaagro.com',
-            'JPT' => 'Jittranuch@Lannaagro.com',
+          //  'WT' => 'Wichchan@Lannaagro.com',
+          ////  'PC' => 'Pimchanok@Lannaagro.com',
+          //  'JPT' => 'Jittranuch@Lannaagro.com',
             'PKP' => 'parinya.k@lannaagro.com',
         );
 
         $allemail = config('myconfig.emailalllist');
 
-        Mail::to($allemail)->send(new DeliveryPlanMail($mailObj));
+        Mail::to($testemail)->send(new DeliveryPlanMail($mailObj));
     }
 }

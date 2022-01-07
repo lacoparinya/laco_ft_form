@@ -38,7 +38,7 @@
 <body>
     <p><strong>TO..ALL</strong></p>
     <p><strong>{{ $dataset['subject'] }}</strong></p>
-    <p>บรรจุได้ {{ $dataset['data']['current'][1] }} Shipment  สำหรับ  order   ส่งมอบเดือน {{ $monthlist[$dataset['data']['rawcurrent']->month] }} {{ $dataset['data']['rawcurrent']->year }}</p>
+    <p>บรรจุได้ {{ $dataset['data']['prev'][1] }} Shipment  สำหรับ  order   ส่งมอบเดือน {{ $monthlist[$dataset['data']['rawprev']->month] }} {{ $dataset['data']['rawprev']->year }}<br/>บรรจุได้ {{ $dataset['data']['current'][1] }} Shipment  สำหรับ  order   ส่งมอบเดือน {{ $monthlist[$dataset['data']['rawcurrent']->month] }} {{ $dataset['data']['rawcurrent']->year }}</p>
     <p>
     <table>
         <thead>
