@@ -58,6 +58,8 @@ Route::resource('stamp-ms', 'StampMsController');
 Route::resource('crops', 'CropsController');
 Route::resource('seed-drop-packs', 'SeedDropPacksController');
 Route::resource('seed-drop-selects', 'SeedDropSelectsController');
+Route::resource('plan-rpt', 'PlanRptController');
+//
 
 Route::get('/import', 'AutoImportController@test');
 Route::get('/reports/daily', 'ReportsController@daily')->name('reports.daily');
@@ -205,4 +207,25 @@ Route::post('/reports/checkweightreportaction', 'ReportsController@checkweightre
 
 Route::get('/mains/realtimechart', 'MainsController@realtimechart');
 Route::get('/mains/realsummarytimechart', 'MainsController@realsummarytimechart');
+
+Route::get('/planrpt/getprevdata/{month}/{year}', 'PlanRptController@getprevdata');
+
+Route::get('/pack_papers', 'PackPapersController@index');
+Route::get('/pack_papers/view/{id}', 'PackPapersController@view');
+Route::get('/pack_papers/generateOrder/{id}/{set}/{lot}', 'PackPapersController@generateOrder');
+Route::post('/pack_papers/generateOrderAction/{id}/{set}/{lot}', 'PackPapersController@generateOrderAction');
+
+Route::get('/packagings/clone/{id}', 'PackagingsController@clone');
+Route::get('/packagings/showfile/{id}', 'PackagingsController@showfile');
+Route::get('/packagings/downloadfile/{id}/{key}', 'PackagingsController@downloadfile');
+Route::get('/packagings/createwithadd', 'PackagingsController@createwithadd');
+Route::post('/packagings/createwithaddAction', 'PackagingsController@createwithaddAction');
+Route::get('/packagings/editwithadd/{id}', 'PackagingsController@editwithadd');
+Route::post('/packagings/editwithaddAction/{id}', 'PackagingsController@editwithaddAction');
+Route::get('/packagings/deletepackage/{packaging_id}/{package_type_id}/{package_id}', 'PackagingsController@deletepackage');
+Route::get('/packagings/exportdoc/{id}', 'PackagingsController@exportdoc');
+Route::get('/packagings/exportexcel/{id}', 'PackagingsController@exportexcel');
+
+Route::resource('packagings', 'PackagingsController');
+
 

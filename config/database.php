@@ -99,6 +99,17 @@ return [
             'prefix' => '',
         ],
 
+        'sqlpackagesrv' => [
+            'driver' => 'sqlsrv',
+            'host' => env('DB_PACK_HOST', 'localhost'),
+            'port' => env('DB_PACK_PORT', '1433'),
+            'database' => env('DB_PACK_DATABASE', 'forge'),
+            'username' => env('DB_PACK_USERNAME', 'forge'),
+            'password' => env('DB_PACK_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+        ],
+
     ],
 
     /*

@@ -83,7 +83,13 @@
                         <td>{{ round($item->hold_kg,0) }}</td>
                         <td>{{ $item->sum_kg }}</td>
                         <td>{{ $datasub->stdprocess->std_rate }}</td>
-                        <td>{{ round(($item->output_kg/$item->num_classify)/$item->workhours,2)  }}</td>
+                        <td>
+                            @if ($item->num_classify > 0 && $item->workhours > 0)
+                                {{ round(($item->output_kg/$item->num_classify)/$item->workhours,2)  }}
+                            @else
+                                0
+                            @endif
+                        </td>
                         <td>{{ $item->yeild_percent }}</td>
                         <td>{{ $item->num_pk }}</td>
                         <td>{{ $item->num_pf }}</td>

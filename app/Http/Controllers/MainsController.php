@@ -315,7 +315,7 @@ class MainsController extends Controller
             $data2[$dataObj->mcheckweight_id][$dataObj->datetimevalue][$dataObj->prod_name] = $dataObj->value;
         }
 
-        //dd($data);
+        //dd($rawdata);
         return view('mains.chartweight2', compact('data', 'mlist', 'data2'));
 
     }
