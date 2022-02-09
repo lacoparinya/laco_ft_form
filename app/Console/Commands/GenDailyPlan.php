@@ -323,9 +323,9 @@ class GenDailyPlan extends Command
         $mailObj['fromname'] = "Shipment Report ";
 
         $testemail = array(
-          //  'WT' => 'Wichchan@Lannaagro.com',
-          ////  'PC' => 'Pimchanok@Lannaagro.com',
-          //  'JPT' => 'Jittranuch@Lannaagro.com',
+            'WT' => 'Wichchan@Lannaagro.com',
+            'PC' => 'Pimchanok@Lannaagro.com',
+           'JPT' => 'Jittranuch@Lannaagro.com',
             'PKP' => 'parinya.k@lannaagro.com',
         );
 
