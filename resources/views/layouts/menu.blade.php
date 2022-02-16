@@ -169,8 +169,15 @@
                             <a href="{{ route('seed-drop-packs.index') }}">ถั่วตกไลน์แพ๊ค</a>
                         </li>
                         <li>
-                                                <a href="{{ route('plan-rpt.index') }}">Plan Logs</a>
-                                            </li>
+                            <a href="{{ route('plan-rpt.index') }}">Plan Logs</a>
+                        </li>
+
+                        <li>
+                            <a href="{{ route('packagings.index') }}">packagings</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('pack_papers.index') }}">ใบแจ้งบรรจุ</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -393,6 +400,12 @@
                                         <ul class="dropdown-menu" role="menu">
                                             <li>
                                                 <a href="{{ route('plan-rpt.index') }}">Plan Logs</a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('packagings.index') }}">packagings</a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('pack_papers.index') }}">ใบแจ้งบรรจุ</a>
                                             </li>
                                             <li>
                                                 <hr />
