@@ -183,7 +183,7 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
 
         ConsoleTVs\Charts\ChartsServiceProvider::class,
-
+        
     ],
 
     /*

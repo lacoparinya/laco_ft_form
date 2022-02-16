@@ -38,7 +38,7 @@
                                         <td>{{ number_format($item->inner_weight_g,2,".",",") }} / {{ $item->number_per_pack }} / {{ number_format($item->outer_weight_kg,3,".",",") }}</td>
                                         <td>
                                             <a href="{{ url('/packagings/' . $item->id) }}" title="View Packaging" class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</a>
-                                            <a href="{{ url('/pack_papers/generateOrder/'.$item->id.'/1/1' ) }}" title="สร้างใบแจ้งบรรจุ" class="btn btn-info btn-sm"><i class="fa fa-file-text-o" aria-hidden="true"></i> ใบแจ้งบรรจุ</a>
+                                            <a href="{{ url('/pack_papers/generateOrder/'.$item->id.'/1/1') }}" title="สร้างใบแจ้งบรรจุ" class="btn btn-info btn-sm"><i class="fa fa-file-text-o" aria-hidden="true"></i> ใบแจ้งบรรจุ</a>
                                         </td>
                                     </tr>
                                 @endforeach

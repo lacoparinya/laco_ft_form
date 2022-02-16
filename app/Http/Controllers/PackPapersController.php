@@ -11,6 +11,7 @@ use App\PackPaperPackage;
 use App\PackageInfo;
 use App\ProductInfo;
 
+use Maatwebsite\Excel\Facades\Excel;
 
 class PackPapersController extends Controller
 {
@@ -236,7 +237,8 @@ class PackPapersController extends Controller
     public function view($id){
         $packpaper = PackPaper::findOrFail($id);
 
-        return view('pack_papers.view', compact('packpaper'));
+        // return view('pack_papers.view', compact('packpaper'));
+        return view('pack_papers.generateorder_pdf', compact('packpaper'));
     }
-
+    
 }
