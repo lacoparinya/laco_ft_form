@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class WeightReport extends Model
 {
@@ -17,4 +18,15 @@ class WeightReport extends Model
         'code2_st', 'code2_read', 'code2_check', 
         'overall_status'
     ];
+
+    public function canConnect(){
+        //$pdo = DB::connection($this->connection)->table(DB::raw('DUAL'))->first([DB::raw(1)]);
+       // var_dump($pdo);
+
+        if (DB::connection($this->connection)->table(DB::raw('DUAL'))->first([DB::raw(1)])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
