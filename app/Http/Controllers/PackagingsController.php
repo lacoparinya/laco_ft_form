@@ -40,6 +40,7 @@ class PackagingsController extends Controller
         $perPage = 25;
 
         $packagingObj = new Packaging(); 
+        $packagingObj = $packagingObj->where('packagings.status','Active');
 
         
 
