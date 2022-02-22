@@ -942,7 +942,7 @@
 
    <br>
 
-   @if($count_pack<4)
+   @if($count_pack==3)
       <div style="page-break-after: always"></div>
    @endif
 
@@ -987,10 +987,10 @@
          <td colspan="4">&nbsp;</td>
       </tr>
       <tr>
-         <td style="width: 2%"></td>
-         <td style="width: 48">จัดทำโดย…………….……………………………...หัวหน้าแผนกขึ้นไป</td>   
-         <td style="width: 2%"></td>     
-         <td style="width: 48">ตรวจสอบโดย….….....……………….……………. ผู้ช่วยผู้จัดการแผนกคัดและบรรจุ/แผนกผลิตแช่แข็งขึ้นไป</td>
+         <td style="width: 1%"></td>
+         <td style="width: 49">จัดทำโดย…………….……………………………...หัวหน้าแผนกขึ้นไป</td>   
+         <td style="width: 1%"></td>     
+         <td style="width: 49">ตรวจสอบโดย….….....……………….……………. ผู้ช่วยผู้จัดการแผนกคัดและบรรจุ/แผนกผลิตแช่แข็งขึ้นไป</td>
       </tr>
       <tr>
          <td colspan="4">&nbsp;</td>
@@ -1014,7 +1014,7 @@
 
    <br>
 
-   @if($count_pack>3)
+   @if($count_pack>3 || $count_pack==2)
       <div style="page-break-after: always"></div>
    @endif
    {{-- <div style="page-break-after: always"></div> --}}

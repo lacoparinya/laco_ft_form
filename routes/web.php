@@ -212,8 +212,12 @@ Route::get('/planrpt/getprevdata/{month}/{year}', 'PlanRptController@getprevdata
 
 Route::get('/pack_papers', 'PackPapersController@index')->name('pack_papers.index');
 Route::get('/pack_papers/view/{id}', 'PackPapersController@view');
-Route::get('/pack_papers/generateOrder/{id}/{set}/{lot}', 'PackPapersController@generateOrder');
-Route::post('/pack_papers/generateOrderAction/{id}/{set}/{lot}', 'PackPapersController@generateOrderAction');
+// Route::get('/pack_papers/generateOrder/{id}/{set}/{lot}', 'PackPapersController@generateOrder');
+// Route::post('/pack_papers/generateOrderAction/{id}/{set}/{lot}', 'PackPapersController@generateOrderAction');
+Route::get('/pack_papers/generateOrder/{id}/{lot}', 'PackPapersController@generateOrder');
+Route::post('/pack_papers/generateOrderAction/{id}/{lot}', 'PackPapersController@generateOrderAction');
+Route::get('/pack_papers/edit_genOrder/{id}/{lot}', 'PackPapersController@edit_genOrder');
+Route::post('/pack_papers/update_genOrder/{id}/{lot}', 'PackPapersController@update_genOrder');
 
 Route::get('/packagings/clone/{id}', 'PackagingsController@clone');
 Route::get('/packagings/showfile/{id}', 'PackagingsController@showfile');

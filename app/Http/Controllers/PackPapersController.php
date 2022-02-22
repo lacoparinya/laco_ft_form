@@ -21,7 +21,7 @@ class PackPapersController extends Controller
         return view('pack_papers.index', compact('paperpacks'));
     }
 
-    public function generateOrder($id,$set=1,$lot=1){
+    public function generateOrder($id,$lot){
         $packaging = Packaging::findOrFail($id);
 
         $productinfo = ProductInfo::where('packaging_id',$id)->first();
@@ -59,13 +59,12 @@ class PackPapersController extends Controller
     {
         $requestData = $request->all();
 
-        //dd($requestData);  
+        // dd($requestData);  
 
         $packaging = Packaging::findOrFail($id);
 
         // dd($packaging->product_id);
         $pd = Product::findOrFail($packaging->product_id);
-        // dd($pd);
         $tmppd['weight_with_bag'] = $requestData['weight_with_bag'];
         $ck = $pd->update($tmppd);
         // if($ck) dd('T');
@@ -159,19 +158,19 @@ class PackPapersController extends Controller
         //     PackPaperD::create($tmppaperpackd);
         // }
 
-        // for ($lotloop=1; $lotloop <= $lot; $lotloop++) {
-        //     $tmppaperpackd = array();
-        //     $tmppaperpackd['pack_paper_id'] = $packpaperObj->id; 
-        //     $tmppaperpackd['pack_date'] = $requestData['packdate'. $lotloop]; 
-        //     $tmppaperpackd['exp_date'] = $requestData['expdate' . $lotloop]; 
-        //     $all_bpack = $requestData['tbox' . $lotloop]-$requestData['fbox' . $lotloop];
-        //     $all_weight = $packaging->outer_weight_kg * $all_bpack;
-        //     $tmppaperpackd['all_weight'] = $all_weight; 
-        //     $tmppaperpackd['all_bpack'] = $all_bpack; 
-        //     $tmppaperpackd['cablecover'] = $requestData['cablecover' . $lotloop];
+        for ($lotloop=1; $lotloop <= $lot; $lotloop++) {
+            $tmppaperpackd = array();
+            $tmppaperpackd['pack_paper_id'] = $packpaperObj->id; 
+            $tmppaperpackd['pack_date'] = $requestData['packdate'. $lotloop]; 
+            $tmppaperpackd['exp_date'] = $requestData['expdate' . $lotloop]; 
+            $all_bpack = $requestData['tbox' . $lotloop]-$requestData['fbox' . $lotloop];
+            $all_weight = $packaging->outer_weight_kg * $all_bpack;
+            $tmppaperpackd['all_weight'] = $all_weight; 
+            $tmppaperpackd['all_bpack'] = $all_bpack; 
+            $tmppaperpackd['cablecover'] = $requestData['cablecover' . $lotloop];
 
-        //     PackPaperD::create($tmppaperpackd);
-        // }
+            PackPaperD::create($tmppaperpackd);
+        }
 
         for ($lotloop = 1; $lotloop <= $lot; $lotloop++) {
             $tmppaperpacklot = array();
@@ -322,18 +321,6 @@ class PackPapersController extends Controller
         $pd = Product::findOrFail($packaging->product_id);
         $tmppd['weight_with_bag'] = $requestData['weight_with_bag'];
         $pd->update($tmppd);
-
-        // $productinfo = ProductInfo::where('packaging_id', $id)->first();
-        // foreach ($packaging->package as $packageObj) {
-        //     $packagelist[] = $packageObj->id;
-        // }
-
-        // $packageinforw = PackageInfo::whereIn('packaging_id', $packagelist)->get();
-
-        // $packageinfos = array();
-        // foreach ($packageinforw as $packageinfoObj) {
-        //     $packageinfos[$packageinfoObj->packaging_id] = $packageinfoObj;
-        // }
         
         $tmppaperpack = array();
         // $tmppaperpack['packaging_id'] = $id;
@@ -396,19 +383,20 @@ class PackPapersController extends Controller
         $productinfo = ProductInfo::where('packaging_id', $packaging_id)->first();
         $productinfo->update($tmpproductinfo);
 
-        // for ($lotloop=1; $lotloop <= $lot; $lotloop++) {
-        //     $tmppaperpackd = array();
-        //     $tmppaperpackd['pack_paper_id'] = $packpaperObj->id; 
-        //     $tmppaperpackd['pack_date'] = $requestData['packdate'. $lotloop]; 
-        //     $tmppaperpackd['exp_date'] = $requestData['expdate' . $lotloop]; 
-        //     $all_bpack = $requestData['tbox' . $lotloop]-$requestData['fbox' . $lotloop];
-        //     $all_weight = $packaging->outer_weight_kg * $all_bpack;
-        //     $tmppaperpackd['all_weight'] = $all_weight; 
-        //     $tmppaperpackd['all_bpack'] = $all_bpack; 
-        //     $tmppaperpackd['cablecover'] = $requestData['cablecover' . $lotloop];
+        PackPaperD::where('pack_paper_id', $id)->delete();
+        for ($lotloop=1; $lotloop < $lot; $lotloop++) {
+            $tmppaperpackd = array();
+            $tmppaperpackd['pack_paper_id'] = $id; 
+            $tmppaperpackd['pack_date'] = $requestData['packdate'. $lotloop]; 
+            $tmppaperpackd['exp_date'] = $requestData['expdate' . $lotloop]; 
+            $all_bpack = $requestData['tbox' . $lotloop]-$requestData['fbox' . $lotloop];
+            $all_weight = $packaging->outer_weight_kg * $all_bpack;
+            $tmppaperpackd['all_weight'] = $all_weight; 
+            $tmppaperpackd['all_bpack'] = $all_bpack; 
+            $tmppaperpackd['cablecover'] = $requestData['cablecover' . $lotloop];
 
-        //     PackPaperD::create($tmppaperpackd);
-        // }
+            PackPaperD::create($tmppaperpackd);
+        }
 
         PackPaperLot::where('pack_paper_id', $id)->delete();
         for ($lotloop = 0; $lotloop < $lot; $lotloop++) {
@@ -421,11 +409,11 @@ class PackPapersController extends Controller
             $tmppaperpacklot['tobox'] = $requestData['tbox' . $lotloop];
             $tmppaperpacklot['nbox'] = $requestData['nbox' . $lotloop];
             $tmppaperpacklot['nbag'] = $requestData['nbag' . $lotloop];
-            $tmppaperpacklot['pweight'] = $requestData['pweight' . $lotloop];
-            $tmppaperpacklot['fweight'] = $requestData['fweight' . $lotloop];
+            $tmppaperpacklot['pweight'] = str_replace(',', '', $requestData['pweight' . $lotloop]);
+            $tmppaperpacklot['fweight'] = str_replace(',', '',$requestData['fweight' . $lotloop]);
             $tmppaperpacklot['pallet'] = $requestData['pallet' . $lotloop];
             $tmppaperpacklot['pbag'] = $requestData['pbag' . $lotloop];
-            $tmppaperpacklot['note'] = $requestData['note' . $lotloop]; 
+            if(!empty($requestData['note' . $lotloop]))     $tmppaperpacklot['note'] = $requestData['note' . $lotloop]; 
             $tmppaperpacklot['cablecover'] = $requestData['cablecover' . $lotloop];
             // dd($tmppaperpacklot);
             PackPaperLot::create($tmppaperpacklot);

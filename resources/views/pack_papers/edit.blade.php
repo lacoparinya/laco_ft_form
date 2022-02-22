@@ -13,7 +13,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h2>สร้างใบแจ้งการบรรจุผลิตภัณฑ์แช่แข็งสำเร็จรูป สินค้า {{ $packpaper->packaging->product->name }}</h2>
+                        <h2>แก้ไข ใบแจ้งการบรรจุผลิตภัณฑ์แช่แข็งสำเร็จรูป สินค้า {{ $packpaper->packaging->product->name }}</h2>
                     </div>
                     <div class="card-body">
                         
