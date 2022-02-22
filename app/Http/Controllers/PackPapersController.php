@@ -10,6 +10,7 @@ use App\PackPaperLot;
 use App\PackPaperPackage;
 use App\PackageInfo;
 use App\ProductInfo;
+use App\Models\Product;
 
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -25,7 +26,7 @@ class PackPapersController extends Controller
 
         $productinfo = ProductInfo::where('packaging_id',$id)->first();
 
-   // dd($productinfo);
+        // dd($productinfo);
 
         $packageexp = array();
         $packagelist = array();
@@ -54,13 +55,23 @@ class PackPapersController extends Controller
         return view('pack_papers.generateorder', compact('packaging', 'packageexp', 'set', 'lot', 'packageinfos','productinfo', 'cablecoverlist'));
     }
 
-    public function generateOrderAction(Request $request, $id,$set,$lot)
+    public function generateOrderAction(Request $request, $id,$lot)
     {
         $requestData = $request->all();
 
-        //dd($requestData);
+        //dd($requestData);  
 
         $packaging = Packaging::findOrFail($id);
+
+        // dd($packaging->product_id);
+        $pd = Product::findOrFail($packaging->product_id);
+        // dd($pd);
+        $tmppd['weight_with_bag'] = $requestData['weight_with_bag'];
+        $ck = $pd->update($tmppd);
+        // if($ck) dd('T');
+        // else dd('F');
+
+
         $productinfo = ProductInfo::where('packaging_id', $id)->first();
         foreach ($packaging->package as $packageObj) {
             $packagelist[] = $packageObj->id;
@@ -136,17 +147,31 @@ class PackPapersController extends Controller
             $productinfo->update($tmpproductinfo);
         }
 
-        for ($setloop=1; $setloop <= $set; $setloop++) {
-            $tmppaperpackd = array();
-            $tmppaperpackd['pack_paper_id'] = $packpaperObj->id; 
-            $tmppaperpackd['pack_date'] = $requestData['pack_date'. $setloop]; 
-            $tmppaperpackd['exp_date'] = $requestData['exp_date' . $setloop]; 
-            $tmppaperpackd['all_weight'] = $requestData['all_weight' . $setloop]; 
-            $tmppaperpackd['all_bpack'] = $requestData['all_bpack' . $setloop]; 
-            $tmppaperpackd['cablecover'] = $requestData['cablecover' . $setloop];
+        // for ($setloop=1; $setloop <= $set; $setloop++) {
+        //     $tmppaperpackd = array();
+        //     $tmppaperpackd['pack_paper_id'] = $packpaperObj->id; 
+        //     $tmppaperpackd['pack_date'] = $requestData['pack_date'. $setloop]; 
+        //     $tmppaperpackd['exp_date'] = $requestData['exp_date' . $setloop]; 
+        //     $tmppaperpackd['all_weight'] = $requestData['all_weight' . $setloop]; 
+        //     $tmppaperpackd['all_bpack'] = $requestData['all_bpack' . $setloop]; 
+        //     $tmppaperpackd['cablecover'] = $requestData['cablecover' . $setloop];
 
-            PackPaperD::create($tmppaperpackd);
-        }
+        //     PackPaperD::create($tmppaperpackd);
+        // }
+
+        // for ($lotloop=1; $lotloop <= $lot; $lotloop++) {
+        //     $tmppaperpackd = array();
+        //     $tmppaperpackd['pack_paper_id'] = $packpaperObj->id; 
+        //     $tmppaperpackd['pack_date'] = $requestData['packdate'. $lotloop]; 
+        //     $tmppaperpackd['exp_date'] = $requestData['expdate' . $lotloop]; 
+        //     $all_bpack = $requestData['tbox' . $lotloop]-$requestData['fbox' . $lotloop];
+        //     $all_weight = $packaging->outer_weight_kg * $all_bpack;
+        //     $tmppaperpackd['all_weight'] = $all_weight; 
+        //     $tmppaperpackd['all_bpack'] = $all_bpack; 
+        //     $tmppaperpackd['cablecover'] = $requestData['cablecover' . $lotloop];
+
+        //     PackPaperD::create($tmppaperpackd);
+        // }
 
         for ($lotloop = 1; $lotloop <= $lot; $lotloop++) {
             $tmppaperpacklot = array();
@@ -162,7 +187,8 @@ class PackPapersController extends Controller
             $tmppaperpacklot['fweight'] = $requestData['fweight' . $lotloop];
             $tmppaperpacklot['pallet'] = $requestData['pallet' . $lotloop];
             $tmppaperpacklot['pbag'] = $requestData['pbag' . $lotloop];
-            $tmppaperpacklot['note'] = $requestData['note' . $lotloop]; 
+            $tmppaperpacklot['note'] = $requestData['note' . $lotloop];             
+            $tmppaperpacklot['cablecover'] = $requestData['cablecover' . $lotloop];
 
             PackPaperLot::create($tmppaperpacklot);
         }
@@ -241,4 +267,217 @@ class PackPapersController extends Controller
         return view('pack_papers.generateorder_pdf', compact('packpaper'));
     }
     
+    public function edit_genOrder($id,$lot){
+        $packpaper = PackPaper::findOrFail($id);
+
+        $productinfo = ProductInfo::where('packaging_id',$packpaper->packaging_id)->first();
+        $packageexp = array();
+        $packagelist = array();
+        foreach ($packpaper->packaging->packagestamptxt as $packagestampObj) {           
+            $packageexp[$packagestampObj->package_id] = $packagestampObj->stamp_type;
+        }
+
+        $package_lot = array();
+        foreach($packpaper->packpaperdlots as $packageObj){
+            $package_lot[] = $packageObj;
+        }
+        
+        $cablecoverlist = array(
+            'ไม่รัดสาย' => 'ไม่รัดสาย',
+            'สายรัดสีแดง' => 'สายรัดสีแดง',
+            'สายรัดสีน้ำเงิน' => 'สายรัดสีน้ำเงิน',
+            'สายรัดสีบรอนซ์' => 'สายรัดสีบรอนซ์'
+        );
+        
+        return view('pack_papers.edit', compact('lot','packpaper','cablecoverlist','package_lot','packageexp'));
+    }
+
+    public function update_genOrder(Request $request, $id, $lot){
+        $requestData = $request->all();
+
+        // dd($requestData);  
+        $packpaper = PackPaper::findOrFail($id);
+        $packaging_id = $packpaper->packaging_id;
+        $packaging = Packaging::findOrFail($packaging_id);
+
+        // แก้ไขแล้วให้มีผลต่อการเพิ่มในครั้งหน้า
+        //น้ำหนักชั่งรวมถุง
+        $pd = Product::findOrFail($packaging->product_id);
+        $tmppd['weight_with_bag'] = $requestData['weight_with_bag'];
+        $pd->update($tmppd);
+
+        // $productinfo = ProductInfo::where('packaging_id', $id)->first();
+        // foreach ($packaging->package as $packageObj) {
+        //     $packagelist[] = $packageObj->id;
+        // }
+
+        // $packageinforw = PackageInfo::whereIn('packaging_id', $packagelist)->get();
+
+        // $packageinfos = array();
+        // foreach ($packageinforw as $packageinfoObj) {
+        //     $packageinfos[$packageinfoObj->packaging_id] = $packageinfoObj;
+        // }
+        
+        $tmppaperpack = array();
+        // $tmppaperpack['packaging_id'] = $id;
+        $tmppaperpack['order_no'] = $requestData['order_no'];
+        $tmppaperpack['exp_month'] = $requestData['exp_month'];
+        $tmppaperpack['weight_with_bag'] = $requestData['weight_with_bag'];
+        $tmppaperpack['loading_date'] = $requestData['loading_date'];
+        $tmppaperpack['product_fac'] = $requestData['product_fac'];
+        // $tmppaperpack['status'] = 'Active';
+        
+        //แก้ไขแล้วให้มีผลต่อการเพิ่มในครั้งหน้า
+        //ProductInfo update img
+        $tmpproductinfo = array();
+        // $tmpproductinfo['packaging_id'] = $id;
+
+
+
+        if ($request->hasFile('cable_file')) {
+            $image = $request->file('cable_file');
+            $name = "cb_" . md5($image->getClientOriginalName() . time()) . '.' . $image->getClientOriginalExtension();
+            $destinationPath = public_path('images/packaging/' . $id);
+            $image->move($destinationPath, $name);
+
+            $tmpproductinfo['cable_img'] = 'images/packaging/' . $id  . "/" . $name;
+            $tmppaperpack['cable_img'] = 'images/packaging/' . $id  . "/" . $name;
+        // }else{
+        //     if(isset($productinfo->cable_img)){
+        //         $tmppaperpack['cable_img'] = $productinfo->cable_img;
+        //     }
+        }   
+        if ($request->hasFile('inbox_file')) {
+            $image = $request->file('inbox_file');
+            $name = "ib_" . md5($image->getClientOriginalName() . time()) . '.' . $image->getClientOriginalExtension();
+            $destinationPath = public_path('images/packaging/' . $id);
+            $image->move($destinationPath, $name);
+
+            $tmpproductinfo['inbox_img'] = 'images/packaging/' . $id  . "/" . $name;
+            $tmppaperpack['inbox_img'] = 'images/packaging/' . $id  . "/" . $name;
+        // }else{
+        //     if (isset($productinfo->inbox_img)) {
+        //         $tmppaperpack['inbox_img'] = $productinfo->inbox_img;
+        //     }
+        }
+        if ($request->hasFile('pallet_file')) {
+            $image = $request->file('pallet_file');
+            $name = "pl_" . md5($image->getClientOriginalName() . time()) . '.' . $image->getClientOriginalExtension();
+            $destinationPath = public_path('images/packaging/' . $id);
+            $image->move($destinationPath, $name);
+
+            $tmpproductinfo['pallet_img'] = 'images/packaging/' . $id  . "/" . $name;
+            $tmppaperpack['pallet_img'] = 'images/packaging/' . $id  . "/" . $name;
+        // }else{
+        //     if (isset($productinfo->pallet_img)) {
+        //         $tmppaperpack['pallet_img'] = $productinfo->pallet_img;
+        //     }
+        }
+
+        $packpaper->update($tmppaperpack);
+
+        $productinfo = ProductInfo::where('packaging_id', $packaging_id)->first();
+        $productinfo->update($tmpproductinfo);
+
+        // for ($lotloop=1; $lotloop <= $lot; $lotloop++) {
+        //     $tmppaperpackd = array();
+        //     $tmppaperpackd['pack_paper_id'] = $packpaperObj->id; 
+        //     $tmppaperpackd['pack_date'] = $requestData['packdate'. $lotloop]; 
+        //     $tmppaperpackd['exp_date'] = $requestData['expdate' . $lotloop]; 
+        //     $all_bpack = $requestData['tbox' . $lotloop]-$requestData['fbox' . $lotloop];
+        //     $all_weight = $packaging->outer_weight_kg * $all_bpack;
+        //     $tmppaperpackd['all_weight'] = $all_weight; 
+        //     $tmppaperpackd['all_bpack'] = $all_bpack; 
+        //     $tmppaperpackd['cablecover'] = $requestData['cablecover' . $lotloop];
+
+        //     PackPaperD::create($tmppaperpackd);
+        // }
+
+        $del_pack_paper_lot = PackPaperLot::where('pack_paper_id', $id)->delete();
+        if($del_pack_paper_lot){
+            for ($lotloop = 1; $lotloop <= $lot; $lotloop++) {
+                $tmppaperpacklot = array();
+                // $tmppaperpacklot['pack_paper_id'] = $packpaperObj->id;
+                $tmppaperpacklot['pack_date'] = $requestData['packdate' . $lotloop];
+                $tmppaperpacklot['exp_date'] = $requestData['expdate' . $lotloop];
+                $tmppaperpacklot['lot'] = $requestData['lot' . $lotloop];
+                $tmppaperpacklot['frombox'] = $requestData['fbox' . $lotloop];
+                $tmppaperpacklot['tobox'] = $requestData['tbox' . $lotloop];
+                $tmppaperpacklot['nbox'] = $requestData['nbox' . $lotloop];
+                $tmppaperpacklot['nbag'] = $requestData['nbag' . $lotloop];
+                $tmppaperpacklot['pweight'] = $requestData['pweight' . $lotloop];
+                $tmppaperpacklot['fweight'] = $requestData['fweight' . $lotloop];
+                $tmppaperpacklot['pallet'] = $requestData['pallet' . $lotloop];
+                $tmppaperpacklot['pbag'] = $requestData['pbag' . $lotloop];
+                $tmppaperpacklot['note'] = $requestData['note' . $lotloop]; 
+                $tmppaperpacklot['cablecover'] = $requestData['cablecover' . $lotloop];
+
+                PackPaperLot::create($tmppaperpacklot);
+            }
+        }
+        
+        foreach ($packpaper->packpaperpackages as $packageObj){
+            $tmppackpaperpackage = array();
+            // $tmppackpaperpackage['pack_paper_id'] = $packpaperObj->id;
+            // $tmppackpaperpackage['packaging_id'] = $packageObj->id;
+            $tmppackpaperpackage['lot'] = $requestData['lottxt' . $packageObj->id];
+            
+            $tmppackageinfo = array();
+
+            $tmppackageinfo['packaging_id'] = $packageObj->id;
+            $tmppackageinfo['pack_date_format'] = $requestData['starttxtpack' . $packageObj->id];
+            $tmppackageinfo['exp_date_format'] = $requestData['exptxtpack' . $packageObj->id];
+            $tmppackageinfo['extra_stamp'] = $requestData['extrastamp' . $packageObj->id];
+
+            $tmppackpaperpackage['pack_date_format'] = $requestData['starttxtpack' . $packageObj->id];
+            $tmppackpaperpackage['exp_date_format'] = $requestData['exptxtpack' . $packageObj->id];
+            $tmppackpaperpackage['extra_stamp'] = $requestData['extrastamp' . $packageObj->id];
+
+            if ($request->hasFile('front_img' . $packageObj->id)) {
+                $image = $request->file('front_img' . $packageObj->id);
+                $name = "fr_" . md5($image->getClientOriginalName() . time()) . '.' . $image->getClientOriginalExtension();
+                $destinationPath = public_path('images/package/'. $packageObj->id);
+                $image->move($destinationPath, $name);
+
+                $tmppackageinfo['front_img'] = 'images/package/' . $packageObj->id  . "/" . $name;
+            //     $tmppackpaperpackage['front_img'] = 'images/package/' . $packageObj->id  . "/" . $name;
+            // }else{
+            //     if(isset($packageinfos[$packageObj->id]->front_img)){
+            //         $tmppackpaperpackage['front_img'] = $packageinfos[$packageObj->id]->front_img;
+            //     }
+            }
+
+            if ($request->hasFile('back_img' . $packageObj->id)) {
+                $image = $request->file('back_img' . $packageObj->id);
+                $name = "bk_".md5($image->getClientOriginalName() . time()) . '.' . $image->getClientOriginalExtension();
+                $destinationPath = public_path('images/package/' . $packageObj->id);
+                $image->move($destinationPath, $name);
+
+                $tmppackageinfo['back_img'] = 'images/package/' . $packageObj->id  . "/" . $name;
+                $tmppackpaperpackage['back_img'] = 'images/package/' . $packageObj->id  . "/" . $name;
+            // } else {
+            //     if (isset($packageinfos[$packageObj->id]->back_img)) {
+            //         $tmppackpaperpackage['back_img'] = $packageinfos[$packageObj->id]->back_img;
+            //     }
+            }
+
+            $tmppackpaperpackage['front_stamp'] = $requestData['front_stamp' . $packageObj->id];
+            $tmppackpaperpackage['front_locstamp'] = $requestData['front_locstamp' . $packageObj->id];
+            $tmppackpaperpackage['back_stamp'] = $requestData['back_stamp' . $packageObj->id];
+            $tmppackpaperpackage['back_locstamp'] = $requestData['back_locstamp' . $packageObj->id];
+            
+            $tmppackageinfo['front_stamp'] = $requestData['front_stamp' . $packageObj->id];
+            $tmppackageinfo['front_locstamp'] = $requestData['front_locstamp' . $packageObj->id];
+            $tmppackageinfo['back_stamp'] = $requestData['back_stamp' . $packageObj->id];
+            $tmppackageinfo['back_locstamp'] = $requestData['back_locstamp' . $packageObj->id];
+
+            $packageinfo = PackageInfo::where('packaging_id', $packageObj->id)->first();
+            $packageinfo->update($tmppackageinfo);
+
+            // PackPaperPackage::create($tmppackpaperpackage);
+            $pack_paper_package = PackPaperPackage::where('id', $packageObj->id)->first();
+            $pack_paper_package->update($tmppackpaperpackage);
+        }
+        return redirect('/pack_papers');
+    }
 }

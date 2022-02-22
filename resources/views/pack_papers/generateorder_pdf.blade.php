@@ -100,8 +100,13 @@
         $count_pack = $packpaper->packpaperpackages()->count();
         $count_col = 9 + $count_pack;
         $i=0; $p=0;
+        $count_pack_d = $packpaper->packpaperds()->count();
+        foreach ($packpaper->packpaperds()->get() as $packpaperd){
+            $pack_d[] = $packpaperd;
+        }
    @endphp
    
+   {{-- หัวตาราง --}}
    <table style="width: 99%" class="myFont">
       <tr>
          <th style="text-align: left;width: 5%">LACO</th>
@@ -124,6 +129,7 @@
 
    <br>
 
+   {{-- ตาราง 1 --}}
    @if($count_pack>2)
       <table class="myFont" style="width: 99%">
          <tr>
@@ -157,22 +163,22 @@
                <td class="tcenterb" style="background-color: #DCDCDC"></td>
             @endfor
          </tr>
-         @foreach ($packpaper->packpaperds()->get() as $packpaperd)
+         <tr>
+            <td class="tleft" rowspan="{{ $count_pack_d }}"></td>
+            <td class="tcenterb" rowspan="{{ $count_pack_d }}">{{ $packpaper->packaging->product->name }}</td>
+            <td class="tcenterb" rowspan="{{ $count_pack_d }}">{{ $packpaper->packaging->product->customer->name }}</td>
+            <td class="tcenterb">{{ date("d", strtotime($pack_d[0]->pack_date)) }}/{{ date("m", strtotime($pack_d[0]->pack_date)) }}/{{ substr((date("Y", strtotime($pack_d[0]->pack_date))+543),2,2) }}</td>
+            <td class="tcenterb" rowspan="{{ $count_pack_d }}">{{ $packpaper->order_no }}</td>
+            @foreach ($packpaper->packpaperpackages()->get() as $packageObj)
+               <td class="tcenterb" rowspan="{{ $count_pack_d }}">{{ $packageObj->packaging->name }}</td>
+            @endforeach            
+         </tr>
+         
+         @for($i=1;$i<$count_pack_d;$i++)
             <tr>
-               <td class="tleft"></td>
-               <td class="tcenterb" rowspan="2">{{ $packpaper->packaging->product->name }}</td>
-               <td class="tcenterb" rowspan="2">{{ $packpaper->packaging->product->customer->name }}</td>
-               <td class="tcenterb">{{ date("d", strtotime($packpaperd->pack_date)) }}/{{ date("m", strtotime($packpaperd->pack_date)) }}/{{ substr((date("Y", strtotime($packpaperd->pack_date))+543),2,2) }}</td>
-               <td class="tcenterb" rowspan="2">{{ $packpaper->order_no }}</td>
-               @foreach ($packpaper->packpaperpackages()->get() as $packageObj)
-                  <td class="tcenterb" rowspan="2">{{ $packageObj->packaging->name }}</td>
-               @endforeach            
+               <td class="tcenterb">{{ date("d", strtotime($pack_d[$i]->pack_date)) }}/{{ date("m", strtotime($pack_d[$i]->pack_date)) }}/{{ substr((date("Y", strtotime($pack_d[$i]->pack_date))+543),2,2) }}</td>               
             </tr>
-            <tr>
-               <td class="tleft"></td>
-               <td class="tcenterb">{{ date("d", strtotime($packpaperd->exp_date)) }}/{{ date("m", strtotime($packpaperd->exp_date)) }}/{{ substr((date("Y", strtotime($packpaperd->exp_date))+543),2,2) }}</td>              
-            </tr>
-         @endforeach
+         @endfor
       </table>
       <br>
       <table class="myFont" style="width: 99%">
@@ -214,23 +220,22 @@
             <td class="tcenterb" style="background-color: #DCDCDC"></td>
             <td class="tcenterb" style="background-color: #DCDCDC"></td>
          </tr>
-         @foreach ($packpaper->packpaperds()->get() as $packpaperd)
+         <tr>
+            <td class="tleft" rowspan="{{ $count_pack_d }}"></td>
+            <td class="tcenterb" rowspan="{{ $count_pack_d }}">{{ $packpaper->packaging->product->name }}</td>
+            <td class="tcenterb" rowspan="{{ $count_pack_d }}">{{ $packpaper->packaging->product->customer->name }}</td>
+            <td class="tcenterb">{{ date("d", strtotime($pack_d[0]->pack_date)) }}/{{ date("m", strtotime($pack_d[0]->pack_date)) }}/{{ substr((date("Y", strtotime($pack_d[0]->pack_date))+543),2,2) }}</td>
+            <td class="tcenterb" rowspan="{{ $count_pack_d }}">{{ $packpaper->order_no }}</td>           
+            <td class="tcenterb" rowspan="{{ $count_pack_d }}">{{ $packpaper->weight_with_bag  }}</td>
+            <td class="tcenterb" rowspan="{{ $count_pack_d }}">{{ $packpaper->packaging->number_per_pack }} แพ็ค</td>
+            <td class="tcenterb" rowspan="{{ $count_pack_d }}">{{ number_format($packpaper->packaging->outer_weight_kg, 3, '.', ',') }} กก.</td>
+            <td class="tcenterb" rowspan="{{ $count_pack_d }}">{{ $packpaperd->cablecover  }}</td>
+         </tr>
+         @for($i=1;$i<$count_pack_d;$i++)
             <tr>
-               <td class="tleft"></td>
-               <td class="tcenterb" rowspan="2">{{ $packpaper->packaging->product->name }}</td>
-               <td class="tcenterb" rowspan="2">{{ $packpaper->packaging->product->customer->name }}</td>
-               <td class="tcenterb">{{ date("d", strtotime($packpaperd->pack_date)) }}/{{ date("m", strtotime($packpaperd->pack_date)) }}/{{ substr((date("Y", strtotime($packpaperd->pack_date))+543),2,2) }}</td>
-               <td class="tcenterb" rowspan="2">{{ $packpaper->order_no }}</td>           
-               <td class="tcenterb" rowspan="2">{{ $packpaper->weight_with_bag  }}</td>
-               <td class="tcenterb" rowspan="2">{{ $packpaper->packaging->number_per_pack }} แพ็ค</td>
-               <td class="tcenterb" rowspan="2">{{ number_format($packpaper->packaging->outer_weight_kg, 3, '.', ',') }} กก.</td>
-               <td class="tcenterb" rowspan="2">{{ $packpaperd->cablecover  }}</td>
+               <td class="tcenterb">{{ date("d", strtotime($pack_d[$i]->pack_date)) }}/{{ date("m", strtotime($pack_d[$i]->pack_date)) }}/{{ substr((date("Y", strtotime($pack_d[$i]->pack_date))+543),2,2) }}</td>               
             </tr>
-            <tr>
-               <td class="tleft"></td>
-               <td class="tcenterb">{{ date("d", strtotime($packpaperd->exp_date)) }}/{{ date("m", strtotime($packpaperd->exp_date)) }}/{{ substr((date("Y", strtotime($packpaperd->exp_date))+543),2,2) }}</td>              
-            </tr>
-         @endforeach
+         @endfor
       </table>
    @else
       <table class="myFont" style="width: 99%">
@@ -278,40 +283,37 @@
             <td class="tcenterb" style="background-color: #DCDCDC"></td>
             <td class="tcenterb" style="background-color: #DCDCDC"></td>
          </tr>
-         @foreach ($packpaper->packpaperds()->get() as $packpaperd)
+         <tr>
+            <td class="tleft" rowspan="{{ $count_pack_d }}"></td>
+            <td class="tcenterb" rowspan="{{ $count_pack_d }}">{{ $packpaper->packaging->product->name }}</td>
+            <td class="tcenterb" rowspan="{{ $count_pack_d }}">{{ $packpaper->packaging->product->customer->name }}</td> 
+            <td class="tcenterb">{{ date("d", strtotime($pack_d[0]->pack_date)) }}/{{ date("m", strtotime($pack_d[0]->pack_date)) }}/{{ substr((date("Y", strtotime($pack_d[0]->pack_date))+543),2,2) }}</td>  
+            <td class="tcenterb" rowspan="{{ $count_pack_d }}">{{ $packpaper->order_no }}</td>
+            @foreach ($packpaper->packpaperpackages()->get() as $packageObj)
+               <td class="tcenterb" rowspan="{{ $count_pack_d }}">{{ $packageObj->packaging->name }}</td>
+            @endforeach            
+            <td class="tcenterb" rowspan="{{ $count_pack_d }}">{{ $packpaper->weight_with_bag  }}</td>
+            <td class="tcenterb" rowspan="{{ $count_pack_d }}">{{ $packpaper->packaging->number_per_pack }} แพ็ค</td>
+            <td class="tcenterb" rowspan="{{ $count_pack_d }}">{{ number_format($packpaper->packaging->outer_weight_kg, 3, '.', ',') }} กก.</td>
+            <td class="tcenterb" rowspan="{{ $count_pack_d }}">{{ $packpaperd->cablecover  }}</td>
+         </tr>
+         @for($i=1;$i<$count_pack_d;$i++)
             <tr>
-               <td class="tleft"></td>
-               <td class="tcenterb" rowspan="2">{{ $packpaper->packaging->product->name }}</td>
-               <td class="tcenterb" rowspan="2">{{ $packpaper->packaging->product->customer->name }}</td>
-               <td class="tcenterb">{{ date("d", strtotime($packpaperd->pack_date)) }}/{{ date("m", strtotime($packpaperd->pack_date)) }}/{{ substr((date("Y", strtotime($packpaperd->pack_date))+543),2,2) }}</td>
-               <td class="tcenterb" rowspan="2">{{ $packpaper->order_no }}</td>
-               @foreach ($packpaper->packpaperpackages()->get() as $packageObj)
-                  <td class="tcenterb" rowspan="2">{{ $packageObj->packaging->name }}</td>
-               @endforeach            
-               <td class="tcenterb" rowspan="2">{{ $packpaper->weight_with_bag  }}</td>
-               <td class="tcenterb" rowspan="2">{{ $packpaper->packaging->number_per_pack }} แพ็ค</td>
-               <td class="tcenterb" rowspan="2">{{ number_format($packpaper->packaging->outer_weight_kg, 3, '.', ',') }} กก.</td>
-               <td class="tcenterb" rowspan="2">{{ $packpaperd->cablecover  }}</td>
+               <td class="tcenterb">{{ date("d", strtotime($pack_d[$i]->pack_date)) }}/{{ date("m", strtotime($pack_d[$i]->pack_date)) }}/{{ substr((date("Y", strtotime($pack_d[$i]->pack_date))+543),2,2) }}</td>               
             </tr>
-            <tr>
-               <td class="tleft"></td>
-               <td class="tcenterb">{{ date("d", strtotime($packpaperd->exp_date)) }}/{{ date("m", strtotime($packpaperd->exp_date)) }}/{{ substr((date("Y", strtotime($packpaperd->exp_date))+543),2,2) }}</td>              
-            </tr>
-         @endforeach
+         @endfor
       </table>
    @endif
 
    <br>
 
+   {{-- ตาราง 2 --}}
    @if($count_pack>2)
       @php
          $arr_pack = array();
          foreach($packpaper->packpaperpackages()->get() as $packageObj){
             $arr_pack[] = $packageObj;
          }
-         // for($i=0;$i<$count_pack;$i){
-         //    echo $arr_pack[$i]."</br></br>";
-         // }
       @endphp
       @for($p=0;$p<($count_pack-1);$p++)
          <table class="myFont" style="width: 99%">
@@ -322,7 +324,7 @@
                <th rowspan="2" class="tcenterb" style="width: 7.5%">วันที่หมดอายุ</th>
                @for($i=0; $i<2;$i++)  
                   @php
-                     if($i==0 && $p<>0) $p++;   
+                     if($i==0 && $p<>0 && $p<($count_pack-2)) $p++;   
                   @endphp          
                   <th class="tcenterb" rowspan="2" style="width: 12%">วันที่ผลิต บน {{ $arr_pack[($i+$p)]->packaging->packagetype->name }}</th>
                   <th class="tcenterb" rowspan="2" style="width: 14%">วันที่หมดอายุ บน {{ $arr_pack[($i+$p)]->packaging->packagetype->name }}</th>
@@ -490,7 +492,7 @@
                         @php
                            $phpformat =  str_replace('LOT','' ,str_replace('DD','d' ,str_replace('MM','m' ,str_replace('YYYY','Y' ,$packageObj->exp_date_format))));
                            $lotSymbol = strpos($packageObj->exp_date_format,"LOT");
-                           $noSymbol = strpos($packageObj->exp_date_format,"No");
+                           $noSymbol = strpos($packageObj->exp_date_format,"No");   //หาคำใน No ในตัวแปรที่ระบุ
                         @endphp
                         {{ date($phpformat,strtotime($packpaperd->exp_date)) }} 
                         @if ($lotSymbol > 0)
@@ -515,8 +517,7 @@
       <br>
    @endif
 
-   <div style="page-break-after: always"></div>
-
+   {{-- ตาราง 3 --}}
    @if($count_pack>3)
       <table class="myFont" style="width: 99%">
          <thead>
@@ -579,7 +580,13 @@
             
          </tbody>
       </table>
+      
       <br>
+      @if($count_pack>2)
+         <div style="page-break-after: always"></div>         
+      @endif
+
+
       <table class="myFont" style="width: 99%">
          <thead>
             <tr>
@@ -603,7 +610,7 @@
             @foreach ($packpaper->packpaperdlots()->get() as $item)
                <tr>       
                   <td class="tcenterb">{{ $item->lot }}</td>
-                  <td class="tcenterb">{{ number_format($item->frombox,0,'.',',') }} - {{ number_format($item->tobox,0,'.',',') }}</td>
+                  <td class="tcenterb">{{ $item->frombox }} - {{ $item->tobox }}</td>
                   <td class="tcenterb">{{ number_format($item->nbox,0,'.',',') }}</td>
                   <td class="tcenterb">{{ number_format($item->nbag,0,'.',',') }}</td>
                   <td class="tcenterb">{{ number_format($item->pweight,2,'.',',')}}</td>
@@ -649,6 +656,10 @@
                   $sumkg = 0;
             @endphp
             @foreach ($packpaper->packpaperdlots()->get() as $item)
+                  @php
+                     $sumqty += $item->nbox;
+                     $sumkg += $item->fweight;
+                  @endphp
                <tr>                  
                   @foreach ($packpaper->packpaperpackages()->get() as $packageObj)
                      @php
@@ -659,25 +670,26 @@
                         $lotSymbole = strpos($packageObj->exp_date_format,"LOT");
                         $noSymbole = strpos($packageObj->exp_date_format,"No");
 
-                        $sumqty += $item->nbox;
-                        $sumkg += $item->fweight;
+                        // $sumqty += $item->nbox;
+                        // $sumkg += $item->fweight;
                      @endphp
-                  <td class="tcenterb">
-                     @if (empty($packageObj->pack_date_format))
-                        ไม่ระบุ
-                     @else
-                        {{ date($phpformatc,strtotime($item->pack_date)) }}
-                     @endif
-                  </td>
-                  <td class="tcenterb">
-                     @if (empty($packageObj->exp_date_format))
-                        ไม่ระบุ
-                     @else
-                        {{ date($phpformate,strtotime($item->exp_date)) }}
-                     @endif</td>
+                     <td class="tcenterb">
+                        @if (empty($packageObj->pack_date_format))
+                           ไม่ระบุ
+                        @else
+                           {{ date($phpformatc,strtotime($item->pack_date)) }}
+                        @endif
+                     </td>
+                     <td class="tcenterb">
+                        @if (empty($packageObj->exp_date_format))
+                           ไม่ระบุ
+                        @else
+                           {{ date($phpformate,strtotime($item->exp_date)) }}
+                        @endif
+                     </td>
                   @endforeach
                   <td class="tcenterb">{{ $item->lot }}</td>
-                  <td class="tcenterb">{{ number_format($item->frombox,0,'.',',') }} - {{ number_format($item->tobox,0,'.',',') }}</td>
+                  <td class="tcenterb">{{ $item->frombox }} - {{ $item->tobox }}</td>
                   <td class="tcenterb">{{ number_format($item->nbox,0,'.',',') }}</td>
                   <td class="tcenterb">{{ number_format($item->nbag,0,'.',',') }}</td>
                   <td class="tcenterb">{{ number_format($item->pweight,2,'.',',')}}</td>
@@ -698,6 +710,7 @@
 
    <br>
 
+   {{-- ตาราง 4 --}}
    <table class="myFont" style="width: 99%">
       <thead>
           <tr>
@@ -732,6 +745,7 @@
 
    <br>
 
+   {{-- เซ็นต์ชื่อ --}}
    <table class="myFont" style="width: 99%;">      
       <tr>
          <td colspan="4">&nbsp;</td>
@@ -766,6 +780,7 @@
 
    <div style="page-break-after: always"></div>
 
+   {{-- ตาราง 5 --}}
    @if($count_pack>3)
       <table class="myFont" style="width: 99%;">      
          <tr>

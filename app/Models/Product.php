@@ -9,7 +9,7 @@ class Product extends Model
 {
     protected $connection = 'sqlpackagesrv';
     
-    protected $fillable = ['customer_id', 'product_group_id', 'name', 'desc', 'SAP', 'shelf_life', 'status'];
+    protected $fillable = ['customer_id', 'product_group_id', 'name', 'desc', 'SAP', 'shelf_life', 'status','weight_with_bag'];
 
     public function customer()
     {
