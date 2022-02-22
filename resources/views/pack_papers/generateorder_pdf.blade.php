@@ -308,7 +308,7 @@
    <br>
 
    {{-- ตาราง 2 --}}
-   @if($count_pack>2)
+   {{-- @if($count_pack>2)
       @php
          $arr_pack = array();
          foreach($packpaper->packpaperpackages()->get() as $packageObj){
@@ -515,7 +515,239 @@
          @endforeach
       </table>
       <br>
+   @endif --}}
+   @if($count_pack>2)
+      @php
+         $arr_pack = array();
+         foreach($packpaper->packpaperpackages()->get() as $packageObj){
+            $arr_pack[] = $packageObj;
+         }
+         // dd($arr_pack);
+      @endphp
+      @for($p=0;$p<($count_pack-1);$p++)
+         @php
+            if($p<>0 && $p<($count_pack-1)){
+               $p++;               
+            }  
+         @endphp
+         <table class="myFont" style="width: 99%">
+            <tr>
+               <td style="width: 5%"></td>
+               <th colspan="2" class="tcenterb">ปริมาณ</th>
+               <th class="tcenterbnb" style="width: 9%">ระยะเวลาที่หมด</th>
+               <th rowspan="2" class="tcenterb" style="width: 7.5%">วันที่หมดอายุ</th>
+               @for($i=0; $i<2;$i++) 
+                  @if($i+$p<$count_pack)          
+                     <th class="tcenterb" rowspan="2" style="width: 12%">วันที่ผลิต บน {{ $arr_pack[($i+$p)]->packaging->packagetype->name }}</th>
+                     <th class="tcenterb" rowspan="2" style="width: 14%">วันที่หมดอายุ บน {{ $arr_pack[($i+$p)]->packaging->packagetype->name }}</th>
+                     <th class="tcenterb" rowspan="2" style="width: 9%">Lot บน {{ $arr_pack[($i+$p)]->packaging->packagetype->name }}</th>                  
+                     {{-- @php
+                        if($i==1 && $p<($count_pack-1)){
+                           $p++;               
+                        }  
+                     @endphp  --}}
+                  @endif
+               @endfor 
+            </tr>
+            <tr>
+               <td></td>
+               <th class="tcenterb" style="width: 5%">กก.</th>
+               <th class="tcenterb" style="width: 3.5%">กล่อง</th>
+               <th class="tcenterbnt">อายุ (เดือน)</th>            
+            </tr>
+            <tr>
+               <td class="tleft">std.</td>
+               <td class="tcenterb">-</td>
+               <td class="tcenterb">-</td>
+               <td class="tcenterb">{{ $packpaper->exp_month }}</td>
+               <td class="tcenterb">ว/ด/ป</td>
+               @for($i=0; $i<2;$i++) 
+                  @if($i+$p<$count_pack) 
+                     <td class="tcenterb">
+                        @if (empty($arr_pack[($i+$p)]->pack_date_format))
+                           ไม่ระบุ
+                        @else
+                           {{ $arr_pack[($i+$p)]->pack_date_format }}
+                        @endif
+                     </td>
+                     <td class="tcenterb">
+                        @if (empty($arr_pack[($i+$p)]->exp_date_format))
+                           ไม่ระบุ
+                        @else
+                           {{ $arr_pack[($i+$p)]->exp_date_format }}
+                        @endif
+                     </td>
+                     <td class="tcenterb">
+                        @if (empty($arr_pack[($i+$p)]->lot))
+                           ไม่ระบุ
+                        @else
+                           {{ $arr_pack[($i+$p)]->lot }}
+                        @endif
+                     </td>
+                  @endif
+               @endfor
+            </tr>
+            @foreach ($tbl_2 as $kfdate=>$vfdate)
+               @foreach ($vfdate as $ktdate=>$vtdate)
+                  <tr>
+                     <td class="tleft"></td>
+                     <td class="tcenterb">{{ number_format(($tbl_2[$kfdate][$ktdate]['num_box'] * $packpaper->packaging->outer_weight_kg),2) }}</td>
+                     <td class="tcenterb">{{ number_format($tbl_2[$kfdate][$ktdate]['num_box']) }}</td>
+                     <td class="tcenterb">{{ $packpaper->exp_month  }}</td>
+                     <td class="tcenterb">{{ date("d", strtotime($ktdate)) }}/{{ date("m", strtotime($ktdate)) }}/{{ substr((date("Y", strtotime($ktdate))+543),2,2) }}</td>
+                     @for($i=0; $i<2;$i++)
+                        @if($i+$p<$count_pack)
+                           <td class="tcenterb">
+                              @if (empty($arr_pack[($i+$p)]->pack_date_format))
+                                 ไม่ระบุ
+                              @else
+                                 @php
+                                    $phpformat =  str_replace('LOT','' ,str_replace('DD','d' ,str_replace('MM','m' ,str_replace('YYYY','Y' ,$arr_pack[($i+$p)]->pack_date_format))));
+                                 @endphp
+                                 {{ date($phpformat,strtotime($kfdate)) }}
+                              @endif
+                           </td>
+                           <td class="tcenterb">
+                              @if (empty($arr_pack[($i+$p)]->exp_date_format))
+                                 ไม่ระบุ
+                              @else
+                                 @php
+                                    $phpformat =  str_replace('LOT','' ,str_replace('DD','d' ,str_replace('MM','m' ,str_replace('YYYY','Y' ,$arr_pack[($i+$p)]->exp_date_format))));
+                                    $lotSymbol = strpos($arr_pack[($i+$p)]->exp_date_format,"LOT");
+                                    $noSymbol = strpos($arr_pack[($i+$p)]->exp_date_format,"No");
+                                 @endphp
+                                 {{ date($phpformat,strtotime($ktdate)) }} 
+                                 @if ($lotSymbol > 0)
+                                    A
+                                 @endif
+                                 {{-- @if ($noSymbol > 0)
+                                    1
+                                 @endif --}}
+                              @endif
+                           </td>
+                           <td class="tcenterb">
+                              @if (empty($arr_pack[($i+$p)]->lot))
+                                 ไม่ระบุ
+                              @else
+                                 {{ $tbl_2[$kfdate][$ktdate]['lot'] }}
+                              @endif
+                           </td>
+                        @endif
+                     @endfor
+                  </tr>
+               @endforeach      
+            @endforeach
+            @php
+               if($i==1 && $p<($count_pack-1)){
+                  $p++;               
+               }  
+            @endphp
+         </table>
+         <br>
+      @endfor
+   @else
+      <table class="myFont" style="width: 99%">
+         <tr>
+            <td style="width: 5%"></td>
+            <th colspan="2" class="tcenterb">ปริมาณ</th>
+            <th class="tcenterbnb" style="width: 9%">ระยะเวลาที่หมด</th>
+            <th rowspan="2" class="tcenterb" style="width: 7.5%">วันที่หมดอายุ</th>
+            @foreach ($packpaper->packpaperpackages()->get() as $packageObj)
+               <th class="tcenterb" rowspan="2" style="width: 12%">วันที่ผลิต บน {{ $packageObj->packaging->packagetype->name }}</th>
+               <th class="tcenterb" rowspan="2" style="width: 14%">วันที่หมดอายุ บน {{ $packageObj->packaging->packagetype->name }}</th>
+               <th class="tcenterb" rowspan="2" style="width: 9%">Lot บน {{ $packageObj->packaging->packagetype->name }}</th>
+            @endforeach  
+         </tr>
+         <tr>
+            <td></td>
+            <th class="tcenterb" style="width: 5%">กก.</th>
+            <th class="tcenterb" style="width: 3.5%">กล่อง</th>
+            <th class="tcenterbnt">อายุ (เดือน)</th>            
+         </tr>
+         <tr>
+            <td class="tleft">std.</td>
+            <td class="tcenterb">-</td>
+            <td class="tcenterb">-</td>
+            <td class="tcenterb">{{ $packpaper->exp_month }}</td>
+            <td class="tcenterb">ว/ด/ป</td>
+            @foreach ($packpaper->packpaperpackages()->get() as $packageObj)                                             
+               <td class="tcenterb">
+                  @if (empty($packageObj->pack_date_format))
+                     ไม่ระบุ
+                  @else
+                     {{ $packageObj->pack_date_format }}
+                  @endif
+               </td>
+               <td class="tcenterb">
+                  @if (empty($packageObj->exp_date_format))
+                     ไม่ระบุ
+                  @else
+                     {{ $packageObj->exp_date_format }}
+                  @endif
+               </td>
+               <td class="tcenterb">
+                  @if (empty($packageObj->lot))
+                     ไม่ระบุ
+                  @else
+                     {{ $packageObj->lot }}
+                  @endif
+               </td>
+            @endforeach
+         </tr>
+         @foreach ($tbl_2 as $kfdate=>$vfdate)
+               @foreach ($vfdate as $ktdate=>$vtdate)
+               <tr>
+                  <td class="tleft"></td>
+                  <td class="tcenterb">{{ number_format(($tbl_2[$kfdate][$ktdate]['num_box'] * $packpaper->packaging->outer_weight_kg),2) }}</td>
+                  <td class="tcenterb">{{ number_format($tbl_2[$kfdate][$ktdate]['num_box']) }}</td>
+                  <td class="tcenterb">{{ $packpaper->exp_month  }}</td>
+                  <td class="tcenterb">{{ date("d", strtotime($ktdate)) }}/{{ date("m", strtotime($ktdate)) }}/{{ substr((date("Y", strtotime($ktdate))+543),2,2) }}</td>
+                  @foreach ($packpaper->packpaperpackages()->get() as $packageObj)                                             
+                     <td class="tcenterb">
+                        @if (empty($packageObj->pack_date_format))
+                           ไม่ระบุ
+                        @else
+                           @php
+                              $phpformat =  str_replace('LOT','' ,str_replace('DD','d' ,str_replace('MM','m' ,str_replace('YYYY','Y' ,$packageObj->pack_date_format))));
+                              // $lotSymbol = strpos($packageObj->exp_date_format,"LOT");
+                              // $noSymbol = strpos($packageObj->exp_date_format,"No");
+                           @endphp
+                           {{ date($phpformat,strtotime($kfdate)) }}
+                        @endif
+                     </td>
+                     <td class="tcenterb">
+                        @if (empty($packageObj->exp_date_format))
+                           ไม่ระบุ
+                        @else
+                           @php
+                              $phpformat =  str_replace('LOT','' ,str_replace('DD','d' ,str_replace('MM','m' ,str_replace('YYYY','Y' ,$packageObj->exp_date_format))));
+                              $lotSymbol = strpos($packageObj->exp_date_format,"LOT");
+                              $noSymbol = strpos($packageObj->exp_date_format,"No");   //หาคำใน No ในตัวแปรที่ระบุ
+                           @endphp
+                           {{ date($phpformat,strtotime($ktdate)) }} 
+                           @if ($lotSymbol > 0)
+                              A
+                           @endif
+                           {{-- @if ($noSymbol > 0)
+                              1
+                           @endif --}}
+                        @endif
+                     </td>
+                     <td class="tcenterb">
+                        @if (empty($packageObj->lot))
+                           ไม่ระบุ
+                        @else
+                           {{ $tbl_2[$kfdate][$ktdate]['lot'] }}
+                        @endif
+                     </td>
+                  @endforeach
+               </tr>  
+            @endforeach  
+         @endforeach
+      </table>
+      <br>
    @endif
+
 
    {{-- ตาราง 3 --}}
    @if($count_pack>3)
@@ -706,9 +938,13 @@
       <div class="col-md-1">
           <h5>หมายเหตุ : </h5>
       </div>
-  </div>
+   </div>
 
    <br>
+
+   @if($count_pack<4)
+      <div style="page-break-after: always"></div>
+   @endif
 
    {{-- ตาราง 4 --}}
    <table class="myFont" style="width: 99%">
@@ -778,7 +1014,10 @@
 
    <br>
 
-   <div style="page-break-after: always"></div>
+   @if($count_pack>3)
+      <div style="page-break-after: always"></div>
+   @endif
+   {{-- <div style="page-break-after: always"></div> --}}
 
    {{-- ตาราง 5 --}}
    @if($count_pack>3)

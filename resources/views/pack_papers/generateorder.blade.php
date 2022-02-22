@@ -270,10 +270,10 @@
         <div class="row">
         </div>
         <br /> --}}
-        จัดการ LOT <a href="{{ url('/pack_papers/generateOrder/' . $packaging->id . '/' . $set . '/' . ($lot + 1)) }}"><i
+        จัดการ LOT <a href="{{ url('/pack_papers/generateOrder/' . $packaging->id  . '/' . ($lot + 1)) }}"><i
                 class="fa fa-plus-circle" aria-hidden="true"></i></a>
         @if ($lot > 1)
-            <a href="{{ url('/pack_papers/generateOrder/' . $packaging->id . '/' . $set . '/' . ($lot - 1)) }}"><i
+            <a href="{{ url('/pack_papers/generateOrder/' . $packaging->id . '/' . ($lot - 1)) }}"><i
                     class="fa fa-minus-circle" aria-hidden="true"></i></a>
         @endif
         <div class="row">
@@ -281,7 +281,7 @@
                 <thead>
                     <tr>
                         <th>วันแพ็ค<br />/วันหมดอายุ</th>
-                        <th>LOT</th>
+                        <th>LOT--{{ $lot }}</th>
                         <th>จากกล่อง<br />/ถึงกล่อง</th>
                         <th>จำนวนกล่อง<br />/จำนวนถุง</th>
                         <th>น้ำหนัก/P<br />/น้ำหนัก/F</th>
