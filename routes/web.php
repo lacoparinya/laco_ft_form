@@ -218,6 +218,7 @@ Route::get('/pack_papers/generateOrder/{id}/{lot}', 'PackPapersController@genera
 Route::post('/pack_papers/generateOrderAction/{id}/{lot}', 'PackPapersController@generateOrderAction');
 Route::get('/pack_papers/edit_genOrder/{id}/{lot}', 'PackPapersController@edit_genOrder');
 Route::post('/pack_papers/update_genOrder/{id}/{lot}', 'PackPapersController@update_genOrder');
+Route::get('/pack_papers/delete/{id}', 'PackPapersController@delete_genOrder');
 
 Route::get('/packagings/clone/{id}', 'PackagingsController@clone');
 Route::get('/packagings/showfile/{id}', 'PackagingsController@showfile');

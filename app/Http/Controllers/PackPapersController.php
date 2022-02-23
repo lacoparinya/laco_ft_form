@@ -262,6 +262,8 @@ class PackPapersController extends Controller
     public function view($id){
         $packpaper = PackPaper::findOrFail($id);
         $weight_per_box = $packpaper->packaging->outer_weight_kg;
+        $p_date = array();
+        $paked = array();
         // $packpaper->exp_month;
         foreach($packpaper->packpaperdlots as $pack_lot){
             if(empty($tbl_2[$pack_lot->pack_date][$pack_lot->exp_date]['num_box']))
@@ -274,13 +276,17 @@ class PackPapersController extends Controller
             else
                 $tbl_2[$pack_lot->pack_date][$pack_lot->exp_date]['lot'] .= ','.$pack_lot->lot;
             
-            // $date_form[$pack_lot->pack_date] = $pack_lot->pack_date;
-            // $date_to[$pack_lot->exp_date] = $pack_lot->exp_date;
-        }        
-        // dd($tbl_2);
+            array_push($paked,$pack_lot->pack_date);
+        }   
+        $paked = array_unique($paked); 
+        // dd($p_date);
+        foreach($paked as $packd){
+            $p_date[] = $packd;
+        }    
+        // dd($p_date);
 
         // return view('pack_papers.view', compact('packpaper'));
-        return view('pack_papers.generateorder_pdf', compact('packpaper', 'tbl_2'));
+        return view('pack_papers.generateorder_pdf', compact('packpaper', 'tbl_2','p_date'));
     }
     
     public function edit_genOrder($id,$lot){
@@ -384,7 +390,7 @@ class PackPapersController extends Controller
         $productinfo->update($tmpproductinfo);
 
         PackPaperD::where('pack_paper_id', $id)->delete();
-        for ($lotloop=1; $lotloop < $lot; $lotloop++) {
+        for ($lotloop=0; $lotloop < $lot; $lotloop++) {
             $tmppaperpackd = array();
             $tmppaperpackd['pack_paper_id'] = $id; 
             $tmppaperpackd['pack_date'] = $requestData['packdate'. $lotloop]; 
@@ -481,5 +487,14 @@ class PackPapersController extends Controller
             $pack_paper_package->update($tmppackpaperpackage);
         }
         return redirect('/pack_papers');
+    }
+    
+    public function delete_genOrder($id){
+        $packpaper = PackPaperD::where('pack_paper_id',$id)->delete();
+        $packpaper = PackPaperLot::where('pack_paper_id',$id)->delete();     
+        $packpaper = PackPaperPackage::where('pack_paper_id',$id)->delete();
+        $packpaper = PackPaper::where('id',$id)->delete();
+
+        return redirect('/pack_papers')->with('flash_message', ' deleted!');
     }
 }

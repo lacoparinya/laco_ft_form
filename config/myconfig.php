@@ -210,4 +210,9 @@ return [
         'Patcharamanee' => 'Patcharamanee@lannaagro.com',
         'HRmanager' => 'HRmanager@lannaagro.com',
     ],
+    
+    'head_column' => [
+        'Bag' => 'ถุง',
+        'Carton' => 'กล่อง',
+    ],
 ];
