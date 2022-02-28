@@ -40,7 +40,7 @@
                                             <td>{{ $packageObj->name }}</td>
                                         @endforeach
                                         <td rowspan="2">{{ number_format($packpaper->packaging->inner_weight_g, 2, '.', ',') }} กรัม</td>
-                                        <td rowspan="2">{{ $packpaper->packaging->number_per_pack }} แพ็ค</td>
+                                        <td rowspan="2">{{ $packpaper->packaging->number_per_pack }} ถุง</td>
                                         <td rowspan="2">{{ number_format($packpaper->packaging->outer_weight_kg, 3, '.', ',') }} กก.
                                         </td>
                                     </tr>
@@ -67,7 +67,7 @@
                                             </td>
                                         @endforeach
                                         <td>
-                                            <label for="weight_with_bag" class="control-label">{{ 'น้ำหนักชั่งรวมถุง' }}</label>
+                                            <label for="weight_with_bag" class="control-label">{{ 'น้ำหนักชั่งรวมถุง (กรัม)' }}</label>
                                         </td>
                                         <td colspan="2">
                                             <input class="form-control" name="weight_with_bag" type="text" id="weight_with_bag" required
@@ -158,10 +158,10 @@
                                                     @endif
                                             </td>
                                         @endforeach
-                                        <td><label for="inbox_img"
+                                        <td><label for="inbox_file"
                                                 class="control-label">{{ 'การเรียงสินค้าในกล่อง' }}</label></td>
-                                        <td colspan="2"><input class="form-control" name="inbox_img"
-                                                type="file" id="inbox_img" >
+                                        <td colspan="2"><input class="form-control" name="inbox_file"
+                                                type="file" id="inbox_file" >
                                             @if (isset($packpaper->inbox_img))
                                              <img  
                                                      src="{{ url($packpaper->inbox_img) }}"  height='100px'/>

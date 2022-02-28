@@ -216,7 +216,7 @@
             <td class="tcenterb">ว/ด/ป</td>
             <td class="tcenterb">ตามใบแจ้งโหลด</td>        
             <td class="tcenterb">{{ number_format($packpaper->packaging->inner_weight_g, 2, '.', ',') }} กรัม</td>
-            <td class="tcenterb">{{ $packpaper->packaging->number_per_pack }} แพ็ค</td>
+            <td class="tcenterb">{{ $packpaper->packaging->number_per_pack }} ถุง</td>
             <td class="tcenterb">{{ number_format($packpaper->packaging->outer_weight_kg, 3, '.', ',') }} กก.</td>
             <td class="tcenterb">ไม่มีการรัดสาย</td>
          </tr>
@@ -237,8 +237,8 @@
             <td class="tcenterb" rowspan="{{ count($p_date) }}">{{ $packpaper->packaging->product->customer->name }}</td>
             <td class="tcenterb">{{ date("d", strtotime($p_date[0])) }}/{{ date("m", strtotime($p_date[0])) }}/{{ substr((date("Y", strtotime($p_date[0]))+543),2,2) }}</td>
             <td class="tcenterb" rowspan="{{ count($p_date) }}">{{ $packpaper->order_no }}</td>           
-            <td class="tcenterb" rowspan="{{ count($p_date) }}">{{ $packpaper->weight_with_bag  }}</td>
-            <td class="tcenterb" rowspan="{{ count($p_date) }}">{{ $packpaper->packaging->number_per_pack }} แพ็ค</td>
+            <td class="tcenterb" rowspan="{{ count($p_date) }}">{{ $packpaper->weight_with_bag  }} กรัม</td>
+            <td class="tcenterb" rowspan="{{ count($p_date) }}">{{ $packpaper->packaging->number_per_pack }} ถุง</td>
             <td class="tcenterb" rowspan="{{ count($p_date) }}">{{ number_format($packpaper->packaging->outer_weight_kg, 3, '.', ',') }} กก.</td>
             <td class="tcenterb" rowspan="{{ count($p_date) }}">{{ $packpaperd->cablecover  }}</td>
          </tr>
@@ -284,7 +284,7 @@
                <td class="tcenterb">{{ $packageObj->packaging->name }}</td>
             @endforeach            
             <td class="tcenterb">{{ number_format($packpaper->packaging->inner_weight_g, 2, '.', ',') }} กรัม</td>
-            <td class="tcenterb">{{ $packpaper->packaging->number_per_pack }} แพ็ค</td>
+            <td class="tcenterb">{{ $packpaper->packaging->number_per_pack }} ถุง</td>
             <td class="tcenterb">{{ number_format($packpaper->packaging->outer_weight_kg, 3, '.', ',') }} กก.</td>
             <td class="tcenterb">ไม่มีการรัดสาย</td>
          </tr>
@@ -307,8 +307,8 @@
             @foreach ($packpaper->packpaperpackages()->get() as $packageObj)
                <td class="tcenterb" rowspan="{{ count($p_date) }}">{{ $packageObj->packaging->name }}</td>
             @endforeach            
-            <td class="tcenterb" rowspan="{{ count($p_date) }}">{{ $packpaper->weight_with_bag  }}</td>
-            <td class="tcenterb" rowspan="{{ count($p_date) }}">{{ $packpaper->packaging->number_per_pack }} แพ็ค</td>
+            <td class="tcenterb" rowspan="{{ count($p_date) }}">{{ number_format($packpaper->weight_with_bag,2)  }} กรัม</td>
+            <td class="tcenterb" rowspan="{{ count($p_date) }}">{{ $packpaper->packaging->number_per_pack }} ถุง</td>
             <td class="tcenterb" rowspan="{{ count($p_date) }}">{{ number_format($packpaper->packaging->outer_weight_kg, 3, '.', ',') }} กก.</td>
             <td class="tcenterb" rowspan="{{ count($p_date) }}">{{ $packpaperd->cablecover  }}</td>
          </tr>

@@ -37,7 +37,7 @@
                                             <td>{{ $packageObj->name }}</td>
                                         @endforeach
                                         <td rowspan="2">{{ number_format($packaging->inner_weight_g, 2, '.', ',') }} กรัม</td>
-                                        <td rowspan="2">{{ $packaging->number_per_pack }} แพ็ค</td>
+                                        <td rowspan="2">{{ $packaging->number_per_pack }} ถุง</td>
                                         <td rowspan="2">{{ number_format($packaging->outer_weight_kg, 3, '.', ',') }} กก.
                                         </td>
                                     </tr>
@@ -64,7 +64,7 @@
                                             </td>
                                         @endforeach
                                         <td>
-                                            <label for="weight_with_bag" class="control-label">{{ 'น้ำหนักชั่งรวมถุง' }}</label>
+                                            <label for="weight_with_bag" class="control-label">{{ 'น้ำหนักชั่งรวมถุง (กรัม)' }}</label>
                                         </td>
                                         <td colspan="2">
                                             <input class="form-control" name="weight_with_bag" type="text" id="weight_with_bag" required

@@ -137,6 +137,8 @@ class PackPapersController extends Controller
             }
         }
 
+        // dd($tmppaperpack);
+
         $packpaperObj = PackPaper::create($tmppaperpack);
 
         $productinfo = ProductInfo::where('packaging_id', $id)->first();
@@ -210,6 +212,7 @@ class PackPapersController extends Controller
             $tmppackpaperpackage['extra_stamp'] = $requestData['extrastamp' . $packageObj->id];
 
             if ($request->hasFile('front_img' . $packageObj->id)) {
+                // echo 'front_img';
                 $image = $request->file('front_img' . $packageObj->id);
                 $name = "fr_" . md5($image->getClientOriginalName() . time()) . '.' . $image->getClientOriginalExtension();
                 $destinationPath = public_path('images/package/'. $packageObj->id);
@@ -218,6 +221,7 @@ class PackPapersController extends Controller
                 $tmppackageinfo['front_img'] = 'images/package/' . $packageObj->id  . "/" . $name;
                 $tmppackpaperpackage['front_img'] = 'images/package/' . $packageObj->id  . "/" . $name;
             }else{
+                // echo 'no front_img';
                 if(isset($packageinfos[$packageObj->id]->front_img)){
                     $tmppackpaperpackage['front_img'] = $packageinfos[$packageObj->id]->front_img;
                 }
@@ -247,6 +251,7 @@ class PackPapersController extends Controller
             $tmppackageinfo['back_stamp'] = $requestData['back_stamp' . $packageObj->id];
             $tmppackageinfo['back_locstamp'] = $requestData['back_locstamp' . $packageObj->id];
 
+            // dd($tmppackpaperpackage);
             $packageinfo = PackageInfo::where('packaging_id', $packageObj->id)->first();
             if(empty($packageinfo)){
                 PackageInfo::create($tmppackageinfo);
@@ -341,7 +346,7 @@ class PackPapersController extends Controller
         //ProductInfo update img
         $tmpproductinfo = array();
         // $tmpproductinfo['packaging_id'] = $id;
-
+        $productinfo = ProductInfo::where('packaging_id', $packaging_id)->first();
 
 
         if ($request->hasFile('cable_file')) {
@@ -352,10 +357,10 @@ class PackPapersController extends Controller
 
             $tmpproductinfo['cable_img'] = 'images/packaging/' . $id  . "/" . $name;
             $tmppaperpack['cable_img'] = 'images/packaging/' . $id  . "/" . $name;
-        // }else{
-        //     if(isset($productinfo->cable_img)){
-        //         $tmppaperpack['cable_img'] = $productinfo->cable_img;
-        //     }
+        }else{
+            if(isset($productinfo->cable_img)){
+                $tmppaperpack['cable_img'] = $productinfo->cable_img;
+            }
         }   
         if ($request->hasFile('inbox_file')) {
             $image = $request->file('inbox_file');
@@ -365,10 +370,10 @@ class PackPapersController extends Controller
 
             $tmpproductinfo['inbox_img'] = 'images/packaging/' . $id  . "/" . $name;
             $tmppaperpack['inbox_img'] = 'images/packaging/' . $id  . "/" . $name;
-        // }else{
-        //     if (isset($productinfo->inbox_img)) {
-        //         $tmppaperpack['inbox_img'] = $productinfo->inbox_img;
-        //     }
+        }else{
+            if (isset($productinfo->inbox_img)) {
+                $tmppaperpack['inbox_img'] = $productinfo->inbox_img;
+            }
         }
         if ($request->hasFile('pallet_file')) {
             $image = $request->file('pallet_file');
@@ -378,15 +383,15 @@ class PackPapersController extends Controller
 
             $tmpproductinfo['pallet_img'] = 'images/packaging/' . $id  . "/" . $name;
             $tmppaperpack['pallet_img'] = 'images/packaging/' . $id  . "/" . $name;
-        // }else{
-        //     if (isset($productinfo->pallet_img)) {
-        //         $tmppaperpack['pallet_img'] = $productinfo->pallet_img;
-        //     }
+        }else{
+            if (isset($productinfo->pallet_img)) {
+                $tmppaperpack['pallet_img'] = $productinfo->pallet_img;
+            }
         }
 
         $packpaper->update($tmppaperpack);
 
-        $productinfo = ProductInfo::where('packaging_id', $packaging_id)->first();
+        // $productinfo = ProductInfo::where('packaging_id', $packaging_id)->first();
         $productinfo->update($tmpproductinfo);
 
         PackPaperD::where('pack_paper_id', $id)->delete();
@@ -443,17 +448,19 @@ class PackPapersController extends Controller
             $tmppackpaperpackage['extra_stamp'] = $requestData['extrastamp' . $packageObj->id];
 
             if ($request->hasFile('front_img' . $packageObj->id)) {
+                // echo 'front_img';
                 $image = $request->file('front_img' . $packageObj->id);
                 $name = "fr_" . md5($image->getClientOriginalName() . time()) . '.' . $image->getClientOriginalExtension();
                 $destinationPath = public_path('images/package/'. $packageObj->id);
                 $image->move($destinationPath, $name);
 
                 $tmppackageinfo['front_img'] = 'images/package/' . $packageObj->id  . "/" . $name;
-            //     $tmppackpaperpackage['front_img'] = 'images/package/' . $packageObj->id  . "/" . $name;
-            // }else{
-            //     if(isset($packageinfos[$packageObj->id]->front_img)){
-            //         $tmppackpaperpackage['front_img'] = $packageinfos[$packageObj->id]->front_img;
-            //     }
+                $tmppackpaperpackage['front_img'] = 'images/package/' . $packageObj->id  . "/" . $name;
+            }else{
+                // echo 'no front_img';
+                if(isset($packageinfos[$packageObj->id]->front_img)){
+                    $tmppackpaperpackage['front_img'] = $packageinfos[$packageObj->id]->front_img;
+                }
             }
 
             if ($request->hasFile('back_img' . $packageObj->id)) {
@@ -464,10 +471,10 @@ class PackPapersController extends Controller
 
                 $tmppackageinfo['back_img'] = 'images/package/' . $packageObj->id  . "/" . $name;
                 $tmppackpaperpackage['back_img'] = 'images/package/' . $packageObj->id  . "/" . $name;
-            // } else {
-            //     if (isset($packageinfos[$packageObj->id]->back_img)) {
-            //         $tmppackpaperpackage['back_img'] = $packageinfos[$packageObj->id]->back_img;
-            //     }
+            } else {
+                if (isset($packageinfos[$packageObj->id]->back_img)) {
+                    $tmppackpaperpackage['back_img'] = $packageinfos[$packageObj->id]->back_img;
+                }
             }
 
             $tmppackpaperpackage['front_stamp'] = $requestData['front_stamp' . $packageObj->id];
@@ -480,6 +487,7 @@ class PackPapersController extends Controller
             $tmppackageinfo['back_stamp'] = $requestData['back_stamp' . $packageObj->id];
             $tmppackageinfo['back_locstamp'] = $requestData['back_locstamp' . $packageObj->id];
 
+            // dd($tmppackpaperpackage);
             $packageinfo = PackageInfo::where('packaging_id', $packageObj->packaging_id)->first();
             $packageinfo->update($tmppackageinfo);
             // PackPaperPackage::create($tmppackpaperpackage);
