@@ -307,7 +307,7 @@
             @foreach ($packpaper->packpaperpackages()->get() as $packageObj)
                <td class="tcenterb" rowspan="{{ count($p_date) }}">{{ $packageObj->packaging->name }}</td>
             @endforeach            
-            <td class="tcenterb" rowspan="{{ count($p_date) }}">{{ number_format($packpaper->weight_with_bag,2)  }} กรัม</td>
+            <td class="tcenterb" rowspan="{{ count($p_date) }}">{{ $packpaper->weight_with_bag  }} กรัม</td>
             <td class="tcenterb" rowspan="{{ count($p_date) }}">{{ $packpaper->packaging->number_per_pack }} ถุง</td>
             <td class="tcenterb" rowspan="{{ count($p_date) }}">{{ number_format($packpaper->packaging->outer_weight_kg, 3, '.', ',') }} กก.</td>
             <td class="tcenterb" rowspan="{{ count($p_date) }}">{{ $packpaperd->cablecover  }}</td>
