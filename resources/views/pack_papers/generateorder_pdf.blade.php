@@ -801,9 +801,9 @@
       </tr>
       <tr>
          <td style="width: 1%"></td>
-         <td style="width: 49">จัดทำโดย…………….……………………………...หัวหน้าแผนกขึ้นไป</td>   
+         <td style="width: 49%">จัดทำโดย…………….……………………………...พนักงานแผนกขึ้นไป</td>   
          <td style="width: 1%"></td>     
-         <td style="width: 49">ตรวจสอบโดย….….....……………….……………. ผู้ช่วยผู้จัดการแผนกคัดและบรรจุ/แผนกผลิตแช่แข็งขึ้นไป</td>
+         <td style="width: 49%">ตรวจสอบโดย….….....……………….……………. หัวหน้าแผนกคัดและบรรจุ/แผนกผลิตแช่แข็งขึ้นไป</td>
       </tr>
       <tr>
          <td colspan="4">&nbsp;</td>
@@ -856,16 +856,16 @@
             @foreach ($packpaper->packpaperpackages()->get() as $packageObj)
                <td class="tcenterb">
                   @if (isset($packageObj->front_img))
-                     <img src="{{ url($packageObj->front_img) }}"  height='150px'/></td>
+                     <img src="{{ url($packageObj->front_img) }}"  height='200px'/></td>
                   @else 
-                     <img src="{{ url('/images/noimg.png') }}"  height='150px'/>
+                     <img src="{{ url('/images/noimg.png') }}"  height='200px'/>
                   @endif
                </td>
                <td class="tcenterb">
                   @if (isset($packageObj->back_img))
-                     <img src="{{ url($packageObj->back_img) }}"  height='150px'/>
+                     <img src="{{ url($packageObj->back_img) }}"  height='200px'/>
                   @else 
-                     <img src="{{ url('/images/noimg.png') }}"  height='150px'/>
+                     <img src="{{ url('/images/noimg.png') }}"  height='200px'/>
                   @endif
                </td>
             @endforeach
@@ -900,7 +900,7 @@
          </tr>
       </table> 
       <br>
-      <table class="myFont" style="width: 40%;">      
+      <table class="myFont" style="width: 99%;">      
          <tr>
             <td colspan="3" class="tcenterb">ตำแหน่งการ Stamp ถุงและกล่อง  </td>
          </tr>
@@ -912,27 +912,27 @@
          <tr>            
             <td class="tcenterb">
                @if (isset($packpaper->cable_img))
-                  <img src="{{ url($packpaper->cable_img) }}"  height='150px'/>
+                  <img src="{{ url($packpaper->cable_img) }}"  height='200px'/>
                   @else 
-                     <img src="{{ url('/images/noimg.png') }}"  height='150px'/>
+                     <img src="{{ url('/images/noimg.png') }}"  height='200px'/>
                @endif
             </td>
             <td class="tcenterb">
                @if (isset($packpaper->inbox_img))
-                  <img src="{{ url($packpaper->inbox_img) }}"  height='150px'/>
+                  <img src="{{ url($packpaper->inbox_img) }}"  height='200px'/>
                @else 
-                  <img src="{{ url('/images/noimg.png') }}"  height='150px'/>
+                  <img src="{{ url('/images/noimg.png') }}"  height='200px'/>
                @endif
             </td>
             <td class="tcenterb">
                @if (isset($packpaper->pallet_img))
-                  <img src="{{ url($packpaper->pallet_img) }}"  height='150px'/>
+                  <img src="{{ url($packpaper->pallet_img) }}"  height='200px'/>
                @else 
-                  <img src="{{ url('/images/noimg.png') }}"  height='150px'/>
+                  <img src="{{ url('/images/noimg.png') }}"  height='200px'/>
                @endif
             </td>
          </tr>
-      </table>
+      </table>      
    @else
       @for($p=0;$p<($count_pack-1);$p++)
          @php
@@ -972,16 +972,16 @@
                {{-- @foreach ($packpaper->packpaperpackages()->get() as $packageObj) --}}
                      <td class="tcenterb">
                         @if (isset($arr_pack[($i+$p)]->front_img))
-                           <img src="{{ url($arr_pack[($i+$p)]->front_img) }}"  height='150px'/></td>
+                           <img src="{{ url($arr_pack[($i+$p)]->front_img) }}"  height='200px'/></td>
                         @else 
-                           <img src="{{ url('/images/noimg.png') }}"  height='150px'/>
+                           <img src="{{ url('/images/noimg.png') }}"  height='200px'/>
                         @endif
                      </td>
                      <td class="tcenterb">
                         @if (isset($arr_pack[($i+$p)]->back_img))
-                           <img src="{{ url($arr_pack[($i+$p)]->back_img) }}"  height='150px'/>
+                           <img src="{{ url($arr_pack[($i+$p)]->back_img) }}"  height='200px'/>
                         @else 
-                           <img src="{{ url('/images/noimg.png') }}"  height='150px'/>
+                           <img src="{{ url('/images/noimg.png') }}"  height='200px'/>
                         @endif
                      </td>
                {{-- @endforeach --}}
@@ -1024,11 +1024,15 @@
                   @endif
                @endfor
             </tr>
-         </table> 
+         </table>
          <br>
-          
+         
+         @if($p % 2==0 && $p<>0)
+            <div style="page-break-after: always"></div>
+         @endif
+         
       @endfor
-      <table class="myFont" style="width: 40%;">      
+      <table class="myFont" style="width: 99%;">      
          <tr>
             <td colspan="3" class="tcenterb">ตำแหน่งการ Stamp ถุงและกล่อง  </td>
          </tr>
@@ -1040,34 +1044,49 @@
          <tr>            
             <td class="tcenterb">
                @if (isset($packpaper->cable_img))
-                  <img src="{{ url($packpaper->cable_img) }}"  height='150px'/>
+                  <img src="{{ url($packpaper->cable_img) }}"  height='200px'/>
                   @else 
-                     <img src="{{ url('/images/noimg.png') }}"  height='150px'/>
+                     <img src="{{ url('/images/noimg.png') }}"  height='200px'/>
                @endif
             </td>
             <td class="tcenterb">
                @if (isset($packpaper->inbox_img))
-                  <img src="{{ url($packpaper->inbox_img) }}"  height='150px'/>
+                  <img src="{{ url($packpaper->inbox_img) }}"  height='200px'/>
                @else 
-                  <img src="{{ url('/images/noimg.png') }}"  height='150px'/>
+                  <img src="{{ url('/images/noimg.png') }}"  height='200px'/>
                @endif
             </td>
             <td class="tcenterb">
                @if (isset($packpaper->pallet_img))
-                  <img src="{{ url($packpaper->pallet_img) }}"  height='150px'/>
+                  <img src="{{ url($packpaper->pallet_img) }}"  height='200px'/>
                @else 
-                  <img src="{{ url('/images/noimg.png') }}"  height='150px'/>
+                  <img src="{{ url('/images/noimg.png') }}"  height='200px'/>
                @endif
             </td>
          </tr>
       </table> 
    @endif 
+
+   <table class="myFont" style="width: 40%;" align="left">      
+      <tr>
+         <th style="width: 2%"></th>
+         <td colspan="3" style="text-align: left">จัดเรียงบนพาเลท</td>
+      </tr>
+      <tr>
+         <th style="width: 2%"></th>
+         <td class="tcenterb" style="width: 32.66%; height:2cm">ฐานจัดเรียง {{ $packpaper->pallet_base }} กล่อง</td>
+         <td class="tcenterb" style="width: 32.66%">จัดเรียง {{ $packpaper->pallet_low }} รวม {{ $packpaper->pallet_base*$packpaper->pallet_low }} กล่อง</td>          
+         <td class="tcenterb" style="width: 32.66%">จัดเรียง {{ $packpaper->pallet_height }} รวม {{ $packpaper->pallet_base*$packpaper->pallet_height }} กล่อง</td>
+      </tr>     
+   </table>
+   <div style="clear: both"></div>
    <div class="row">
       <div class="col-md-1">
           <h5>หมายเหตุ : </h5>
       </div>
    </div>
    <br>
+
    <br>
 
 @endsection

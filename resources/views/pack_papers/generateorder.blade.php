@@ -108,7 +108,7 @@
                                                 class="control-label">{{ 'ระยะเวลาที่หมดอายุ (เดือน)' }}</label></td>
                                         <td colspan="2"><input class="form-control calexpdateall" name="exp_month"
                                                 type="number" id="exp_month"  
-                                                value="{{ $packaging->product->shelf_life }}"></td>
+                                                value="{{ $packaging->product->shelf_life }}" required></td>
                                     </tr>
                                     <tr>
                                         <td>LOT</td>
@@ -123,16 +123,25 @@
                                                 </select>  
                                             </td>
                                         @endforeach
-                                        <td><label for="cable_file"
-                                                class="control-label">{{ 'รูปแบบการรัดสาย' }}</label></td>
-                                        <td colspan="2"><input class="form-control" name="cable_file"
-                                                type="file" id="cable_file" >
-                                            
+                                        <td>
+                                            <label for="cable_file" class="control-label">{{ 'รูปแบบการรัดสาย' }}</label>
+                                        </td>
+                                        <td colspan="2">
+                                            <input class="form-control" name="cable_file" type="file" id="cable_file" >                                            
                                             @if (isset($productinfo->cable_img))
-                                             <img  
-                                                     src="{{ url($productinfo->cable_img) }}"  height='100px'/>
-                                                @endif
-                                            </td>
+                                                <div class="alert">
+                                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                    <img  src="{{ url($productinfo->cable_img) }}"  height='100px'/>
+                                                    <input type="hidden" name="img_cable" id="img_cable" value="1" />
+                                                </div>
+                                              {{-- <img  src="{{ url($productinfo->cable_img) }}"  height='100px'/> --}}
+                                            @endif
+                                            {{-- <div>
+                                                <input type="radio" name="chk_user" id="chk_user" value="Use" checked>ใช้รูป
+                                                &nbsp;&nbsp;
+                                                <input type="radio" name="chk_user" id="chk_user" value="No">ไม่ใช้รูป
+                                            </div> --}}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>ด้านหน้า</td>
@@ -209,67 +218,34 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6"><label for="product_fac" class="control-label">{{ 'Product Fac' }}</label>
-                <input class="form-control" name="product_fac" type="text" id="product_fac"
-                                                value=""></div>
-            <div class="col-md-6"><label for="loading_date" class="control-label">{{ 'LOADING' }}</label>
-        <input class="form-control" name="loading_date" type="date"
-                        id="loading_date" required value=""></div>
+            <div class="col-md-6">
+                <label for="product_fac" class="control-label">{{ 'Product Fac' }}</label>
+                <input class="form-control" name="product_fac" type="text" id="product_fac" required value="@if (isset($productinfo->product_fac)){{ $productinfo->product_fac }}@endif">
+            </div>
+            <div class="col-md-6">
+                <label for="loading_date" class="control-label">{{ 'LOADING' }}</label>
+                <input class="form-control" name="loading_date" type="date" id="loading_date" required value="">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label for="pallet_base" class="control-label">{{ 'ฐานจัดเรียง (กล่อง)' }}</label>
+                <input class="form-control" name="pallet_base" data-ref="{{ $lot }}" type="number" id="pallet_base" required value="@if (isset($productinfo->pallet_base)){{ $productinfo->pallet_base }}@endif">
+            </div>
+            <div class="col-md-4">
+                <label for="pallet_low" class="control-label">{{ 'จัดเรียงแบบที่ 1 (ชั้น)' }}</label>
+                <input class="form-control" name="pallet_low" type="number" id="pallet_low" required value="@if (isset($productinfo->pallet_low)){{ $productinfo->pallet_low }}@endif">
+            </div>
+            <div class="col-md-4">
+                <label for="pallet_height" class="control-label">{{ 'จัดเรียงแบบที่ 2 (ชั้น)' }}</label>
+                <input class="form-control" name="pallet_height" type="number" id="pallet_height" required value="@if (isset($productinfo->pallet_height)){{ $productinfo->pallet_height }}@endif">
+            </div>
         </div>
         
         <br/>
         <input type="hidden" name="number_per_pack" id="number_per_pack" value="{{ $packaging->number_per_pack }}" />
         <input type="hidden" name="outer_weight_kg" id="outer_weight_kg" value="{{ $packaging->outer_weight_kg }}" />
-        {{-- จัดการบรรจุ <a href="{{ url('/pack_papers/generateOrder/' . $packaging->id . '/' . ($set + 1) . '/' . $lot) }}"><i
-                class="fa fa-plus-circle" aria-hidden="true"></i></a>
-        @if ($set > 1)
-            <a href="{{ url('/pack_papers/generateOrder/' . $packaging->id . '/' . ($set - 1) . '/' . $lot) }}"><i
-                    class="fa fa-minus-circle" aria-hidden="true"></i></a>
-        @endif
-        @for ($iset = 1; $iset <= $set; $iset++)
-            <div class="row">
-                <div class="col-md-2 {{ $errors->has('pack_date' . $iset) ? 'has-error' : '' }}">
-                    <label for="pack_date{{ $iset }}" class="control-label">{{ 'วันที่บรรจุ' }}</label>
-                    <input class="form-control calexpdate" name="pack_date{{ $iset }}"
-                        data-ref="{{ $iset }}" type="date" id="pack_date{{ $iset }}"
-                        value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
-                    {!! $errors->first('pack_date' . $iset, '<p class="help-block">:message</p>') !!}
-                </div>
-                <div class="col-md-2 {{ $errors->has('exp_date' . $iset) ? 'has-error' : '' }}">
-                    <label for="exp_date{{ $iset }}" class="control-label">{{ 'วันที่หมดอายุ' }}</label>
-                    <input class="form-control" name="exp_date{{ $iset }}" type="date"
-                        id="exp_date{{ $iset }}" required value="">
-                    {!! $errors->first('exp_date' . $iset, '<p class="help-block">:message</p>') !!}
-                </div>
-                <div class="col-md-2 {{ $errors->has('all_weight' . $iset) ? 'has-error' : '' }}">
-                    <label for="all_weight{{ $iset }}" class="control-label">{{ 'ปริมาณ กก.' }}</label>
-                    <input class="form-control" name="all_weight{{ $iset }}" type="number"
-                        id="all_weight{{ $iset }}" readonly value="">
-                    {!! $errors->first('all_weight' . $iset, '<p class="help-block">:message</p>') !!}
-                </div>
-                <div class="col-md-2 {{ $errors->has('all_bpack' . $iset) ? 'has-error' : '' }}">
-                    <label for="all_bpack{{ $iset }}" class="control-label">{{ 'ปริมาณ กล่อง' }}</label>
-                    <input class="form-control recalweight" data-ref="{{ $iset }}"  name="all_bpack{{ $iset }}" type="number"
-                        id="all_bpack{{ $iset }}" required value="">
-                    {!! $errors->first('all_bpack' . $iset, '<p class="help-block">:message</p>') !!}
-                </div>
-                <div class="col-md-2 {{ $errors->has('cablecover' . $iset) ? 'has-error' : '' }}">
-                    <label for="cablecover{{ $iset }}" class="control-label">{{ 'สายรัด' }}</label>
-                    
-                        <select name="cablecover{{ $iset }}" class="form-control" id="cablecover{{ $iset }}" required>
-                            <option value="">-</option>
-                        @foreach ($cablecoverlist as $optionKey => $optionValue)
-                            <option value="{{ $optionKey }}" {{ (isset($matpackrate->mat_pack_id) && $matpackrate->mat_pack_id == $optionKey) ? 'selected' : ''}}>{{ $optionValue }}</option>
-                        @endforeach
-                    </select>
-                    {!! $errors->first('all_bpack' . $iset, '<p class="help-block">:message</p>') !!}
-                </div>
-            </div>
-        @endfor
-        <br />
-        <div class="row">
-        </div>
-        <br /> --}}
+        
         จัดการ LOT <a href="{{ url('/pack_papers/generateOrder/' . $packaging->id  . '/' . ($lot + 1)) }}"><i
                 class="fa fa-plus-circle" aria-hidden="true"></i></a>
         @if ($lot > 1)
@@ -299,25 +275,30 @@
                                     id="expdate{{ $i }}" value="">
                             </td>
                             <td><input class="form-control" name="lot{{ $i }}" type="text"
-                                    id="lot{{ $i }}" value=""></td>
+                                    id="lot{{ $i }}" value="" required><br />
+                                <select name="pattern_pallet{{ $i }}" class="form-control col w-75 pattern_format" id="pattern_pallet{{ $i }}" required>
+                                    <option value="1">จัดเรียงแบบที่ 1</option>
+                                    <option value="2">จัดเรียงแบบที่ 2</option>
+                                </select>
+                            </td>
                             <td><input class="form-control calbox" name="fbox{{ $i }}"
-                                    data-ref="{{ $i }}" type="number" id="fbox{{ $i }}" value="0">
+                                    data-ref="{{ $i }}" type="number" id="fbox{{ $i }}" value="" readonly>
                                 <br /><input class="form-control calbox" name="tbox{{ $i }}"
-                                    data-ref="{{ $i }}" type="number" id="tbox{{ $i }}" value="0">
+                                    data-ref="{{ $i }}" type="number" id="tbox{{ $i }}" value="" readonly>
                             </td>
                             <td><input class="form-control" name="nbox{{ $i }}" type="text"
-                                    id="nbox{{ $i }}" value="">
+                                    id="nbox{{ $i }}" value="" readonly>
                                 <br /><input class="form-control" name="nbag{{ $i }}" type="text"
-                                    id="nbag{{ $i }}" value="">
+                                    id="nbag{{ $i }}" value="" readonly>
                             </td>
                             <td><input class="form-control" name="pweight{{ $i }}" type="text"
-                                    id="pweight{{ $i }}" value="">
+                                    id="pweight{{ $i }}" value="" readonly>
                                 <br /><input class="form-control" name="fweight{{ $i }}" type="text"
-                                    id="fweight{{ $i }}" value="">
+                                    id="fweight{{ $i }}" value="" readonly>
                             </td>
-                            <td><input class="form-control" name="pallet{{ $i }}" type="text"
-                                    id="pallet{{ $i }}" value="">
-                                <br /><input class="form-control" name="pbag{{ $i }}" type="text"
+                            <td><input class="form-control npallet" name="pallet{{ $i }}" type="text"
+                                    id="pallet{{ $i }}" value="" required>
+                                <br /><input class="form-control npbag" name="pbag{{ $i }}" type="text"
                                     id="pbag{{ $i }}" value="">
                             </td>
                             <td><input class="form-control" name="note{{ $i }}" type="text"

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PackPaper extends Model
 {
     protected $fillable = ['packaging_id','order_no','exp_month','cable_img',
-    'inbox_img','pallet_img','status', 'weight_with_bag', 'loading_date', 'product_fac'];
+    'inbox_img','pallet_img','status', 'weight_with_bag', 'loading_date', 'product_fac','pallet_base','pallet_low','pallet_height'];
 
     public function packaging()
     {

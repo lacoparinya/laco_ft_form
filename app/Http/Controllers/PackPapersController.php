@@ -58,8 +58,7 @@ class PackPapersController extends Controller
     public function generateOrderAction(Request $request, $id,$lot)
     {
         $requestData = $request->all();
-
-        // dd($requestData);  
+        // dd($requestData);          
 
         $packaging = Packaging::findOrFail($id);
 
@@ -90,10 +89,17 @@ class PackPapersController extends Controller
         $tmppaperpack['weight_with_bag'] = $requestData['weight_with_bag'];
         $tmppaperpack['loading_date'] = $requestData['loading_date'];
         $tmppaperpack['product_fac'] = $requestData['product_fac'];
+        $tmppaperpack['pallet_base'] = $requestData['pallet_base'];
+        $tmppaperpack['pallet_low'] = $requestData['pallet_low'];
+        $tmppaperpack['pallet_height'] = $requestData['pallet_height'];
         $tmppaperpack['status'] = 'Active';
         
         $tmpproductinfo = array();
         $tmpproductinfo['packaging_id'] = $id;
+        $tmpproductinfo['product_fac'] = $requestData['product_fac'];
+        $tmpproductinfo['pallet_base'] = $requestData['pallet_base'];
+        $tmpproductinfo['pallet_low'] = $requestData['pallet_low'];
+        $tmpproductinfo['pallet_height'] = $requestData['pallet_height'];
 
 
 
@@ -107,9 +113,13 @@ class PackPapersController extends Controller
             $tmppaperpack['cable_img'] = 'images/packaging/' . $id  . "/" . $name;
         }else{
             if(isset($productinfo->cable_img)){
-                $tmppaperpack['cable_img'] = $productinfo->cable_img;
+                if(isset($requestData['img_cable'])){
+                    // dd('save img');
+                    $tmppaperpack['cable_img'] = $productinfo->cable_img;
+                
+                }
             }
-        }   
+        } 
         if ($request->hasFile('inbox_file')) {
             $image = $request->file('inbox_file');
             $name = "ib_" . md5($image->getClientOriginalName() . time()) . '.' . $image->getClientOriginalExtension();
@@ -179,7 +189,8 @@ class PackPapersController extends Controller
             $tmppaperpacklot['pack_paper_id'] = $packpaperObj->id;
             $tmppaperpacklot['pack_date'] = $requestData['packdate' . $lotloop];
             $tmppaperpacklot['exp_date'] = $requestData['expdate' . $lotloop];
-            $tmppaperpacklot['lot'] = $requestData['lot' . $lotloop];
+            $tmppaperpacklot['lot'] = $requestData['lot' . $lotloop];            
+            $tmppaperpacklot['pattern_pallet'] = $requestData['pattern_pallet' . $lotloop];
             $tmppaperpacklot['frombox'] = $requestData['fbox' . $lotloop];
             $tmppaperpacklot['tobox'] = $requestData['tbox' . $lotloop];
             $tmppaperpacklot['nbox'] = $requestData['nbox' . $lotloop];
@@ -339,16 +350,24 @@ class PackPapersController extends Controller
         $tmppaperpack['exp_month'] = $requestData['exp_month'];
         $tmppaperpack['weight_with_bag'] = $requestData['weight_with_bag'];
         $tmppaperpack['loading_date'] = $requestData['loading_date'];
-        $tmppaperpack['product_fac'] = $requestData['product_fac'];
+        $tmppaperpack['product_fac'] = $requestData['product_fac'];         
+        $tmppaperpack['pallet_base'] = $requestData['pallet_base'];
+        $tmppaperpack['pallet_low'] = $requestData['pallet_low'];
+        $tmppaperpack['pallet_height'] = $requestData['pallet_height'];    
         // $tmppaperpack['status'] = 'Active';
         
         //แก้ไขแล้วให้มีผลต่อการเพิ่มในครั้งหน้า
         //ProductInfo update img
         $tmpproductinfo = array();
-        // $tmpproductinfo['packaging_id'] = $id;
+        // $tmpproductinfo['packaging_id'] = $id;   
+        $tmpproductinfo['product_fac'] = $requestData['product_fac'];
+        $tmpproductinfo['pallet_base'] = $requestData['pallet_base'];
+        $tmpproductinfo['pallet_low'] = $requestData['pallet_low'];
+        $tmpproductinfo['pallet_height'] = $requestData['pallet_height'];  
         $productinfo = ProductInfo::where('packaging_id', $packaging_id)->first();
 
 
+        
         if ($request->hasFile('cable_file')) {
             $image = $request->file('cable_file');
             $name = "cb_" . md5($image->getClientOriginalName() . time()) . '.' . $image->getClientOriginalExtension();
@@ -359,9 +378,14 @@ class PackPapersController extends Controller
             $tmppaperpack['cable_img'] = 'images/packaging/' . $id  . "/" . $name;
         }else{
             if(isset($productinfo->cable_img)){
-                $tmppaperpack['cable_img'] = $productinfo->cable_img;
+                if(isset($requestData['img_cable'])){
+                    // dd('save img');
+                    $tmppaperpack['cable_img'] = $productinfo->cable_img;
+                }else{
+                    $tmppaperpack['cable_img'] = null;
+                }
             }
-        }   
+        } 
         if ($request->hasFile('inbox_file')) {
             $image = $request->file('inbox_file');
             $name = "ib_" . md5($image->getClientOriginalName() . time()) . '.' . $image->getClientOriginalExtension();
@@ -416,6 +440,7 @@ class PackPapersController extends Controller
             $tmppaperpacklot['pack_date'] = $requestData['packdate' . $lotloop];
             $tmppaperpacklot['exp_date'] = $requestData['expdate' . $lotloop];
             $tmppaperpacklot['lot'] = $requestData['lot' . $lotloop];
+            $tmppaperpacklot['pattern_pallet'] = $requestData['pattern_pallet' . $lotloop];
             $tmppaperpacklot['frombox'] = $requestData['fbox' . $lotloop];
             $tmppaperpacklot['tobox'] = $requestData['tbox' . $lotloop];
             $tmppaperpacklot['nbox'] = $requestData['nbox' . $lotloop];

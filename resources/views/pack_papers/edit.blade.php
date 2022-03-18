@@ -111,7 +111,7 @@
                                                 class="control-label">{{ 'ระยะเวลาที่หมดอายุ (เดือน)' }}</label></td>
                                         <td colspan="2"><input class="form-control calexpdateall" name="exp_month"
                                                 type="number" id="exp_month"  
-                                                value="{{ $packpaper->exp_month }}"></td>
+                                                value="{{ $packpaper->exp_month }}" required></td>
                                     </tr>
                                     <tr>
                                         <td>LOT</td>
@@ -123,16 +123,25 @@
                                                 </select>  
                                             </td>
                                         @endforeach
-                                        <td><label for="cable_file"
-                                                class="control-label">{{ 'รูปแบบการรัดสาย' }}</label></td>
-                                        <td colspan="2"><input class="form-control" name="cable_file"
-                                                type="file" id="cable_file" >
-
+                                        <td>
+                                            <label for="cable_file" class="control-label">{{ 'รูปแบบการรัดสาย' }}</label>
+                                        </td>
+                                        <td colspan="2">
+                                            <input class="form-control" name="cable_file" type="file" id="cable_file" >
                                             @if (isset($packpaper->cable_img))
-                                             <img  
-                                                     src="{{ url($packpaper->cable_img) }}"  height='100px'/>
-                                                @endif
-                                            </td>
+                                                <div class="alert">
+                                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                    <img  src="{{ url($packpaper->cable_img) }}"  height='100px'/>
+                                                    <input type="hidden" name="img_cable" id="img_cable" value="1" />
+                                                </div>
+                                              {{-- <img  src="{{ url($productinfo->cable_img) }}"  height='100px'/> --}}
+                                            @endif
+                                            {{-- <div>
+                                                <input type="radio" name="chk_user" id="chk_user" value="Use" checked>ใช้รูป
+                                                &nbsp;&nbsp;
+                                                <input type="radio" name="chk_user" id="chk_user" value="No">ไม่ใช้รูป
+                                            </div> --}}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>ด้านหน้า</td>
@@ -216,6 +225,20 @@
         <input class="form-control" name="loading_date" type="date"
                         id="loading_date" required value="{{ $packpaper->loading_date }}"></div>
         </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label for="pallet_base" class="control-label">{{ 'ฐานจัดเรียง (กล่อง)' }}</label>
+                <input class="form-control" name="pallet_base" data-ref="{{ $lot }}" type="number" id="pallet_base" required value="{{ $packpaper->pallet_base }}">
+            </div>
+            <div class="col-md-4">
+                <label for="pallet_low" class="control-label">{{ 'จัดเรียงแบบที่ 1 (ชั้น)' }}</label>
+                <input class="form-control" name="pallet_low" type="number" id="pallet_low" required value="{{ $packpaper->pallet_low }}">
+            </div>
+            <div class="col-md-4">
+                <label for="pallet_height" class="control-label">{{ 'จัดเรียงแบบที่ 2 (ชั้น)' }}</label>
+                <input class="form-control" name="pallet_height" type="number" id="pallet_height" required value="{{ $packpaper->pallet_height }}">
+            </div>
+        </div>
         
         <br/>
         <input type="hidden" name="number_per_pack" id="number_per_pack" value="{{ $packpaper->packaging->number_per_pack }}" />
@@ -251,25 +274,31 @@
                                     id="expdate{{ $i }}" value="@if(!empty($package_lot[$i]->exp_date)){{ $package_lot[$i]->exp_date }}@endif">
                             </td>
                             <td><input class="form-control" name="lot{{ $i }}" type="text"
-                                    id="lot{{ $i }}" value="@if(!empty($package_lot[$i]->lot)) {{ $package_lot[$i]->lot }} @endif"></td>
+                                    id="lot{{ $i }}" value="@if(!empty($package_lot[$i]->lot)) {{ $package_lot[$i]->lot }} @endif" required>
+                                <br />
+                                <select name="pattern_pallet{{ $i }}" class="form-control col w-75 pattern_format" id="pattern_pallet{{ $i }}" required>
+                                    <option value="1"@if($package_lot[$i]->pattern_pallet==1) selected @endif>จัดเรียงแบบที่ 1</option>
+                                    <option value="2"@if($package_lot[$i]->pattern_pallet==2) selected @endif>จัดเรียงแบบที่ 2</option>
+                                </select>
+                            </td>
                             <td><input class="form-control calbox" name="fbox{{ $i }}"
-                                    data-ref="{{ $i }}" type="number" id="fbox{{ $i }}" value="@if(!empty($package_lot[$i]->frombox)){{ $package_lot[$i]->frombox }}@endif">
+                                    data-ref="{{ $i }}" type="number" id="fbox{{ $i }}" value="@if(!empty($package_lot[$i]->frombox)){{ $package_lot[$i]->frombox }}@endif" readonly>
                                 <br /><input class="form-control calbox" name="tbox{{ $i }}"
-                                    data-ref="{{ $i }}" type="number" id="tbox{{ $i }}" value="@if(!empty($package_lot[$i]->tobox)){{ $package_lot[$i]->tobox }}@endif">
+                                    data-ref="{{ $i }}" type="number" id="tbox{{ $i }}" value="@if(!empty($package_lot[$i]->tobox)){{ $package_lot[$i]->tobox }}@endif" readonly>
                             </td>
                             <td><input class="form-control" name="nbox{{ $i }}" type="text"
-                                    id="nbox{{ $i }}" value="@if(!empty($package_lot[$i]->nbox)) {{ $package_lot[$i]->nbox }} @endif">
+                                    id="nbox{{ $i }}" value="@if(!empty($package_lot[$i]->nbox)) {{ $package_lot[$i]->nbox }} @endif" readonly>
                                 <br /><input class="form-control" name="nbag{{ $i }}" type="text"
-                                    id="nbag{{ $i }}" value="@if(!empty($package_lot[$i]->nbag)) {{ $package_lot[$i]->nbag }} @endif">
+                                    id="nbag{{ $i }}" value="@if(!empty($package_lot[$i]->nbag)) {{ $package_lot[$i]->nbag }} @endif" readonly>
                             </td>
                             <td><input class="form-control" name="pweight{{ $i }}" type="text"
-                                    id="pweight{{ $i }}" value="@if(!empty($package_lot[$i]->pweight)) {{ number_format($package_lot[$i]->pweight,2) }} @endif">
+                                    id="pweight{{ $i }}" value="@if(!empty($package_lot[$i]->pweight)) {{ number_format($package_lot[$i]->pweight,2) }} @endif" readonly>
                                 <br /><input class="form-control" name="fweight{{ $i }}" type="text"
-                                    id="fweight{{ $i }}" value="@if(!empty($package_lot[$i]->fweight)) {{ number_format($package_lot[$i]->fweight,2) }} @endif">
+                                    id="fweight{{ $i }}" value="@if(!empty($package_lot[$i]->fweight)) {{ number_format($package_lot[$i]->fweight,2) }} @endif" readonly>
                             </td>
-                            <td><input class="form-control" name="pallet{{ $i }}" type="text"
-                                    id="pallet{{ $i }}" value="@if(!empty($package_lot[$i]->pallet)) {{ $package_lot[$i]->pallet }} @endif">
-                                <br /><input class="form-control" name="pbag{{ $i }}" type="text"
+                            <td><input class="form-control npallet" name="pallet{{ $i }}" type="text"
+                                    id="pallet{{ $i }}" value="@if(!empty($package_lot[$i]->pallet)) {{ $package_lot[$i]->pallet }} @endif" required>
+                                <br /><input class="form-control npbag" name="pbag{{ $i }}" type="text"
                                     id="pbag{{ $i }}" value="@if(!empty($package_lot[$i]->pbag)) {{ $package_lot[$i]->pbag }} @endif">
                             </td>
                             <td><input class="form-control" name="note{{ $i }}" type="text"

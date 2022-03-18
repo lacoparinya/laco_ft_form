@@ -36,6 +36,33 @@ $(document).ready(function () {
       recalweight(selectset2);
     });
 
+
+
+    $('#pallet_base').change(function () {
+      caltobox();
+    });
+
+    $('#pallet_low').change(function () {      
+      caltobox();
+    });
+
+    $('#pallet_height').change(function () {
+      caltobox();
+    });
+
+    $(".npallet").change(function () {
+      caltobox();
+    });
+
+    $(".npbag").change(function () {
+      caltobox();
+    });
+
+    $(".pattern_format").change(function () {
+      console.log('chang pattern');
+      caltobox();
+    });
+
 });
 
 function recalbox(selectset) {
@@ -134,4 +161,46 @@ function recalweight(selectset){
   var outerweightkg = $("#outer_weight_kg").val();
   var totalweight = parseInt(numbox) * outerweightkg;
   $("#all_weight" + selectset).val(parseFloat(totalweight).toFixed(2));
+}
+
+function caltobox(){
+  var to_loop = $("#pallet_base").attr("data-ref");
+  var box_base = $("#pallet_base").val();
+  var box_row1 = $("#pallet_low").val();
+  var box_row2 = $("#pallet_height").val();
+  var use_box1 = 0;
+  var use_box2 = 0;
+  use_box1 = box_base*box_row1;
+  use_box2 = box_base*box_row2;
+  if(use_box1>0 || use_box2>0){
+    var sum_box = 0;
+    for (let i = 0; i <= to_loop; i++) {
+      if($("#tbox"+(i)).val()!== undefined){
+        var pp = $("#pattern_pallet"+i).val();
+        var use_box = 0;
+        if(pp==1){
+          use_box = use_box1;
+        }else{
+          use_box = use_box2;
+        }
+        var np = parseInt($("#pallet"+i).val());
+        var nb = parseInt($("#pbag"+i).val());
+        if(np>0 && use_box>0){    
+          if($("#tbox"+(i-1)).val()=== undefined){
+            document.getElementById("fbox"+i).value = 1;
+          }else{            
+            document.getElementById("fbox"+i).value = parseInt($("#tbox"+(i-1)).val())+1;
+          }
+          if(nb>0){
+            sum_box += (use_box*(np-1))+nb;
+          }else{
+            sum_box += use_box*np;
+          }
+          console.log(sum_box);
+          document.getElementById("tbox"+i).value = sum_box;
+          recalbox(i);
+        }
+      }      
+    }
+  }
 }
