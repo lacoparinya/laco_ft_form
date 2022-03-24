@@ -38,7 +38,7 @@
                                         <td>
                                             <a href="{{ url('/pack_papers/view/' . $item->id) }}" title="View Job"><button class="btn btn-info btn-sm"><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i> View</button></a>
                                             <a href="{{ url('/pack_papers/edit_genOrder/' . $item->id . '/' . $item->packpaperdlots->count()) }}" title="Edit Job"><button class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-pencil" aria-hidden="true"></i> Edit</button></a>
-                                            <a href="{{ url('/pack_papers/delete/' . $item->id) }}" title="Delete"><button class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-trash" aria-hidden="true"></i> Delete</button></a>
+                                            <a href="{{ url('/pack_papers/delete/' . $item->id) }}" title="Delete"><button class="btn btn-danger btn-sm" onclick="return confirm('คุณต้องการลบรายการ {{ $item->packaging->product->name }} Order ที่ {{ $item->order_no }} ใช่มั้ย ?')"><i class="glyphicon glyphicon-trash" aria-hidden="true"></i> Delete</button></a>
                                             {{-- <form method="POST" action="{{ url('/pack_papers/delete/' . $item->id) }}" accept-charset="UTF-8" style="display:inline">
                                                 {{ method_field('DELETE') }}
                                                 {{ csrf_field() }}

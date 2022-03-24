@@ -52,7 +52,8 @@
                                         @endforeach
                                     </tr>
                                     <tr>
-                                        <td>Stamp วันที่ผลิต</td>
+                                        <td>Stamp วันที่ผลิต<br>
+                                            <input type="checkbox" name="pack_thai_year" id="pack_thai_year" value="Use" @if(isset($productinfo->pack_thai_year)) checked @endif> ใช้ปี พ.ศ.</td>
                                         @foreach ($packaging->package as $packageObj)
                                             <td>
                                                 <input class="form-control" name="starttxtpack{{ $packageObj->id }}"

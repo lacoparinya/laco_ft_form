@@ -92,6 +92,11 @@ class PackPapersController extends Controller
         $tmppaperpack['pallet_base'] = $requestData['pallet_base'];
         $tmppaperpack['pallet_low'] = $requestData['pallet_low'];
         $tmppaperpack['pallet_height'] = $requestData['pallet_height'];
+        if(isset($requestData['pack_thai_year'])){
+            $tmppaperpack['pack_thai_year'] = $requestData['pack_thai_year'];
+        }else{
+            $tmppaperpack['pack_thai_year'] = null;
+        }
         $tmppaperpack['status'] = 'Active';
         
         $tmpproductinfo = array();
@@ -100,6 +105,11 @@ class PackPapersController extends Controller
         $tmpproductinfo['pallet_base'] = $requestData['pallet_base'];
         $tmpproductinfo['pallet_low'] = $requestData['pallet_low'];
         $tmpproductinfo['pallet_height'] = $requestData['pallet_height'];
+        if(isset($requestData['pack_thai_year'])){
+            $tmpproductinfo['pack_thai_year'] = $requestData['pack_thai_year'];
+        }else{
+            $tmpproductinfo['pack_thai_year'] = null;
+        }
 
 
 
@@ -298,8 +308,7 @@ class PackPapersController extends Controller
         // dd($p_date);
         foreach($paked as $packd){
             $p_date[] = $packd;
-        }    
-        // dd($p_date);
+        }   
 
         // return view('pack_papers.view', compact('packpaper'));
         return view('pack_papers.generateorder_pdf', compact('packpaper', 'tbl_2','p_date'));
@@ -353,7 +362,12 @@ class PackPapersController extends Controller
         $tmppaperpack['product_fac'] = $requestData['product_fac'];         
         $tmppaperpack['pallet_base'] = $requestData['pallet_base'];
         $tmppaperpack['pallet_low'] = $requestData['pallet_low'];
-        $tmppaperpack['pallet_height'] = $requestData['pallet_height'];    
+        $tmppaperpack['pallet_height'] = $requestData['pallet_height'];            
+        if(isset($requestData['pack_thai_year'])){
+            $tmppaperpack['pack_thai_year'] = $requestData['pack_thai_year'];
+        }else{
+            $tmppaperpack['pack_thai_year'] = null;
+        }
         // $tmppaperpack['status'] = 'Active';
         
         //แก้ไขแล้วให้มีผลต่อการเพิ่มในครั้งหน้า
@@ -363,7 +377,12 @@ class PackPapersController extends Controller
         $tmpproductinfo['product_fac'] = $requestData['product_fac'];
         $tmpproductinfo['pallet_base'] = $requestData['pallet_base'];
         $tmpproductinfo['pallet_low'] = $requestData['pallet_low'];
-        $tmpproductinfo['pallet_height'] = $requestData['pallet_height'];  
+        $tmpproductinfo['pallet_height'] = $requestData['pallet_height'];         
+        if(isset($requestData['pack_thai_year'])){
+            $tmpproductinfo['pack_thai_year'] = $requestData['pack_thai_year'];
+        }else{
+            $tmpproductinfo['pack_thai_year'] = null;
+        }  
         $productinfo = ProductInfo::where('packaging_id', $packaging_id)->first();
 
 

@@ -136,7 +136,7 @@
    <br>
 
    {{-- ตาราง 1 --}}
-   @if($count_pack>2)
+   {{-- @if($count_pack>2)
       <table class="myFont" style="width: 99%">
          <tr>
             <th style="width: 5%"></th>
@@ -152,9 +152,7 @@
             @foreach ($packpaper->packpaperpackages()->get() as $packageObj)
                @php
                   $pt = $packageObj->packaging->packagetype->name;
-               @endphp
-               {{-- <th class="tcenterb" style="width: {{ 62.5/$count_pack }}%">{{ $packageObj->packaging->packagetype->name }}</th> --}}
-               {{-- <th class="tcenterb" style="width: {{ 62.5/$count_pack }}%">@if($packageObj->packaging->packagetype->name=='Bag'){{ 'ถุง' }}@elseif($packageObj->packaging->packagetype->name=='Carton'){{ 'กล่อง' }}@else{{ $packageObj->packaging->packagetype->name }}@endif</th> --}}
+               @endphp               
                <th class="tcenterb" style="width: {{ 62.5/$count_pack }}%">@if(!empty(config('myconfig.head_column.'.$pt))){{ config('myconfig.head_column.'.$pt) }}@else{{ $pt }}@endif</th>
             @endforeach    
          </tr>
@@ -248,10 +246,10 @@
             </tr>
          @endfor
       </table>
-   @else
+   @else --}}
       <table class="myFont" style="width: 99%">
          <tr>
-            <th style="width: 5%"></th>
+            <th style="width: 3%"></th>
             <th rowspan="2" class="tcenterb" style="width: 14.5%">ผลิตภัณฑ์</th>
             <th rowspan="2" class="tcenterb" style="width: 3.5%">ลูกค้า</th>
             <th rowspan="2" class="tcenterb" style="width: 5.5%">วันที่บรรจุ</th>
@@ -318,7 +316,7 @@
             </tr>
          @endfor
       </table>
-   @endif
+   {{-- @endif --}}
 
    <br>
 
@@ -332,7 +330,7 @@
          @endphp
          <table class="myFont" style="width: 99%">
             <tr>
-               <td style="width: 5%"></td>
+               <td style="width: 3%"></td>
                <th colspan="2" class="tcenterb">ปริมาณ</th>
                <th class="tcenterbnb" style="width: 9%">ระยะเวลาที่หมด</th>
                <th rowspan="2" class="tcenterb" style="width: 7.5%">วันที่หมดอายุ</th>
@@ -345,7 +343,7 @@
                      <th class="tcenterb" rowspan="2" style="width: 14%">วันที่หมดอายุ บน {{ $arr_pack[($i+$p)]->packaging->packagetype->name }}</th>
                      <th class="tcenterb" rowspan="2" style="width: 9%">Lot บน {{ $arr_pack[($i+$p)]->packaging->packagetype->name }}</th>                   --}}
                      <th class="tcenterb" rowspan="2" style="width: 12%">วันที่ผลิต บน @if(!empty(config('myconfig.head_column.'.$pt))){{ config('myconfig.head_column.'.$pt) }}@else{{ $pt }}@endif</th>
-                     <th class="tcenterb" rowspan="2" style="width: 14%">วันที่หมดอายุ บน @if(!empty(config('myconfig.head_column.'.$pt))){{ config('myconfig.head_column.'.$pt) }}@else{{ $pt }}@endif</th>
+                     <th class="tcenterb" rowspan="2" style="width: 15%">วันที่หมดอายุ บน @if(!empty(config('myconfig.head_column.'.$pt))){{ config('myconfig.head_column.'.$pt) }}@else{{ $pt }}@endif</th>
                      <th class="tcenterb" rowspan="2" style="width: 9%">Lot บน @if(!empty(config('myconfig.head_column.'.$pt))){{ config('myconfig.head_column.'.$pt) }}@else{{ $pt }}@endif</th> 
                   @endif
                @endfor 
@@ -402,10 +400,43 @@
                               @if (empty($arr_pack[($i+$p)]->pack_date_format))
                                  ไม่ระบุ
                               @else
-                                 @php
-                                    $phpformat =  str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD','d' ,str_replace('MM','m' ,str_replace('YYYY','Y' ,$arr_pack[($i+$p)]->pack_date_format)))));
+                                 @php                                 
+                                    // $phpformat =  str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD','d' ,str_replace('MM','m' ,str_replace('YYYY','Y' ,$arr_pack[($i+$p)]->pack_date_format)))));
+                                   
+                                    $replace = str_replace('LOT','' ,$arr_pack[($i+$p)]->pack_date_format);
+                                    $replace1 = str_replace('LOT','' ,str_replace('DD','*', str_replace('MM','*', str_replace('YY','*' ,$arr_pack[($i+$p)]->pack_date_format))));                                    
+                                    $first_d = strpos($replace1,'*');
+                                    $last_d = strrpos($replace1,'*');
+
+                                    $replace2 = explode('*',$replace1); //ถ้าเป็น YYYY จะเป็น * 2 ตัว
+                                    $first_text = substr($replace1,0,$first_d);
+                                    $last_text = substr($replace1,($last_d+1),strlen($replace1));
+                                    $point_len = strlen($replace)-(strlen($first_text)+strlen($last_text));
+                                    $date_text = substr($replace,strlen($first_text),$point_len);   
+                                    // $date_text = 'MM.DD.YY'; 
+                                    $replace_d = date("d", strtotime($kfdate));
+                                    $replace_m = date("m", strtotime($kfdate));
+                                    $ex_y = explode('Y',$date_text);
+                                    if(count($ex_y)==5){
+                                       if(empty($packpaper->pack_thai_year)){
+                                          $replace_y = date("Y", strtotime($kfdate));
+                                       }else{
+                                          $replace_y = date("Y", strtotime($kfdate))+543;
+                                       }
+                                       $phpformat = str_replace('LOT','' ,str_replace('DD',$replace_d ,str_replace('MM',$replace_m ,str_replace('YYYY',$replace_y ,$arr_pack[($i+$p)]->pack_date_format))));
+                                    }elseif(count($ex_y)==3){
+                                       if(empty($packpaper->pack_thai_year)){
+                                          $replace_y = substr(date("Y", strtotime($kfdate)),2,2);
+                                       }else{
+                                          $replace_y = substr((date("Y", strtotime($kfdate))+543),2,2);
+                                       }
+                                       $phpformat = str_replace('LOT','' ,str_replace('DD',$replace_d ,str_replace('MM',$replace_m ,str_replace('YY',$replace_y ,$arr_pack[($i+$p)]->pack_date_format))));
+                                    }else{
+                                       $phpformat = 'รูปแบบไม่ถูกต้อง';  //วันแทนด้วย DD, เดือนแทนด้วย MM, ปี แทนด้วย YYYY หรือ YY
+                                    } 
                                  @endphp
-                                 {{ date($phpformat,strtotime($kfdate)) }}
+                                 {{-- {{ date($phpformat,strtotime($kfdate)) }} --}}
+                                 {{ $phpformat }}
                               @endif
                            </td>
                            <td class="tcenterb">
@@ -413,17 +444,46 @@
                                  ไม่ระบุ
                               @else
                                  @php
-                                    $phpformat =  str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD','d' ,str_replace('MM','m' ,str_replace('YYYY','Y' ,$arr_pack[($i+$p)]->exp_date_format)))));
+                                    // $phpformat =  str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD','d' ,str_replace('MM','m' ,str_replace('YYYY','Y' ,$arr_pack[($i+$p)]->exp_date_format)))));
                                     $lotSymbol = strpos($arr_pack[($i+$p)]->exp_date_format,"LOT");
                                     $noSymbol = strpos($arr_pack[($i+$p)]->exp_date_format,"No");
+                                           
+                                    $replace = str_replace('No.','' ,str_replace('LOT','' ,$arr_pack[($i+$p)]->exp_date_format));
+                                    $replace1 = str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD','*', str_replace('MM','*', str_replace('YY','*' ,$arr_pack[($i+$p)]->exp_date_format)))));                                    
+                                    $first_d = strpos($replace1,'*');
+                                    $last_d = strrpos($replace1,'*');
+
+                                    $replace2 = explode('*',$replace1); //ถ้าเป็น YYYY จะเป็น * 2 ตัว
+                                    $first_text = substr($replace1,0,$first_d);
+                                    $last_text = substr($replace1,($last_d+1),strlen($replace1));
+                                    $point_len = strlen($replace)-(strlen($first_text)+strlen($last_text));
+                                    $date_text = substr($replace,strlen($first_text),$point_len);   
+                                    // $date_text = 'MM.DD.YY'; 
+                                    $replace_d = date("d", strtotime($ktdate));
+                                    $replace_m = date("m", strtotime($ktdate));
+                                    $ex_y = explode('Y',$date_text);
+                                    if(count($ex_y)==5){
+                                       $replace_y = date("Y", strtotime($ktdate));
+                                       $phpformat = str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD',$replace_d ,str_replace('MM',$replace_m ,str_replace('YYYY',$replace_y ,$arr_pack[($i+$p)]->exp_date_format)))));
+                                    }elseif(count($ex_y)==3){
+                                       $replace_y = substr(date("Y", strtotime($ktdate)),2,2);
+                                       $phpformat = str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD',$replace_d ,str_replace('MM',$replace_m ,str_replace('YY',$replace_y ,$arr_pack[($i+$p)]->exp_date_format)))));
+                                    }else{
+                                       $phpformat = 'รูปแบบไม่ถูกต้อง';  //วันแทนด้วย DD, เดือนแทนด้วย MM, ปี แทนด้วย YYYY หรือ YY
+                                    } 
+                                                         
                                  @endphp
-                                 {{ date($phpformat,strtotime($ktdate)) }} 
+                                 {{-- {{ date($phpformat,strtotime($ktdate)) }} --}}
+                                 {{ $phpformat }}
                                  @if ($lotSymbol > 0)
                                     A
                                  @endif
                                  {{-- @if ($noSymbol > 0)
                                     1
                                  @endif --}}
+                                 {{-- @foreach($replace2 as $key => $value)
+                                    **{{ $key }}->{{ $value }}
+                                 @endforeach --}}
                               @endif
                            </td>
                            <td class="tcenterb">
@@ -449,7 +509,7 @@
    @else
       <table class="myFont" style="width: 99%">
          <tr>
-            <td style="width: 5%"></td>
+            <td style="width: 3%"></td>
             <th colspan="2" class="tcenterb">ปริมาณ</th>
             <th class="tcenterbnb" style="width: 9%">ระยะเวลาที่หมด</th>
             <th rowspan="2" class="tcenterb" style="width: 7.5%">วันที่หมดอายุ</th>
@@ -515,11 +575,44 @@
                            ไม่ระบุ
                         @else
                            @php
-                              $phpformat =  str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD','d' ,str_replace('MM','m' ,str_replace('YYYY','Y' ,$packageObj->pack_date_format)))));
+                              // $phpformat =  str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD','d' ,str_replace('MM','m' ,str_replace('YYYY','Y' ,$packageObj->pack_date_format)))));
                               // $lotSymbol = strpos($packageObj->exp_date_format,"LOT");
                               // $noSymbol = strpos($packageObj->exp_date_format,"No");
+
+                              $replace = str_replace('LOT','' ,$packageObj->pack_date_format);
+                              $replace1 = str_replace('LOT','' ,str_replace('DD','*', str_replace('MM','*', str_replace('YY','*' ,$packageObj->pack_date_format))));                                    
+                              $first_d = strpos($replace1,'*');
+                              $last_d = strrpos($replace1,'*');
+
+                              $replace2 = explode('*',$replace1); //ถ้าเป็น YYYY จะเป็น * 2 ตัว
+                              $first_text = substr($replace1,0,$first_d);
+                              $last_text = substr($replace1,($last_d+1),strlen($replace1));
+                              $point_len = strlen($replace)-(strlen($first_text)+strlen($last_text));
+                              $date_text = substr($replace,strlen($first_text),$point_len);   
+                              // $date_text = 'MM.DD.YY'; 
+                              $replace_d = date("d", strtotime($kfdate));
+                              $replace_m = date("m", strtotime($kfdate));
+                              $ex_y = explode('Y',$date_text);
+                              if(count($ex_y)==5){
+                                 if(empty($packpaper->pack_thai_year)){
+                                    $replace_y = date("Y", strtotime($kfdate));
+                                 }else{
+                                    $replace_y = date("Y", strtotime($kfdate))+543;
+                                 }
+                                 $phpformat = str_replace('LOT','' ,str_replace('DD',$replace_d ,str_replace('MM',$replace_m ,str_replace('YYYY',$replace_y,$packageObj->pack_date_format))));
+                              }elseif(count($ex_y)==3){
+                                 if(empty($packpaper->pack_thai_year)){
+                                    $replace_y = substr(date("Y", strtotime($kfdate)),2,2);
+                                 }else{
+                                    $replace_y = substr((date("Y", strtotime($kfdate))+543),2,2);
+                                 }
+                                 $phpformat = str_replace('LOT','' ,str_replace('DD',$replace_d ,str_replace('MM',$replace_m ,str_replace('YY',$replace_y,$packageObj->pack_date_format))));
+                              }else{
+                                 $phpformat = 'รูปแบบไม่ถูกต้อง';  //วันแทนด้วย DD, เดือนแทนด้วย MM, ปี แทนด้วย YYYY หรือ YY
+                              } 
                            @endphp
-                           {{ date($phpformat,strtotime($kfdate)) }}
+                           {{-- {{ date($phpformat,strtotime($kfdate)) }} --}}
+                           {{ $phpformat }}
                         @endif
                      </td>
                      <td class="tcenterb">
@@ -527,11 +620,36 @@
                            ไม่ระบุ
                         @else
                            @php
-                              $phpformat =  str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD','d' ,str_replace('MM','m' ,str_replace('YYYY','Y' ,$packageObj->exp_date_format)))));
+                              // $phpformat =  str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD','d' ,str_replace('MM','m' ,str_replace('YYYY','Y' ,$packageObj->exp_date_format)))));
                               $lotSymbol = strpos($packageObj->exp_date_format,"LOT");
                               $noSymbol = strpos($packageObj->exp_date_format,"No");   //หาคำใน No ในตัวแปรที่ระบุ
+
+                              $replace = str_replace('No.','' ,str_replace('LOT','' ,$packageObj->exp_date_format));
+                              $replace1 = str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD','*', str_replace('MM','*', str_replace('YY','*' ,$packageObj->exp_date_format)))));                                    
+                              $first_d = strpos($replace1,'*');
+                              $last_d = strrpos($replace1,'*');
+
+                              $replace2 = explode('*',$replace1); //ถ้าเป็น YYYY จะเป็น * 2 ตัว
+                              $first_text = substr($replace1,0,$first_d);
+                              $last_text = substr($replace1,($last_d+1),strlen($replace1));
+                              $point_len = strlen($replace)-(strlen($first_text)+strlen($last_text));
+                              $date_text = substr($replace,strlen($first_text),$point_len);   
+                              // $date_text = 'MM.DD.YY'; 
+                              $replace_d = date("d", strtotime($ktdate));
+                              $replace_m = date("m", strtotime($ktdate));
+                              $ex_y = explode('Y',$date_text);
+                              if(count($ex_y)==5){
+                                 $replace_y = date("Y", strtotime($ktdate));
+                                 $phpformat = str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD',$replace_d ,str_replace('MM',$replace_m ,str_replace('YYYY',$replace_y,$packageObj->exp_date_format)))));
+                              }elseif(count($ex_y)==3){
+                                 $replace_y = substr(date("Y", strtotime($ktdate)),2,2);
+                                 $phpformat = str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD',$replace_d ,str_replace('MM',$replace_m ,str_replace('YY',$replace_y,$packageObj->exp_date_format)))));
+                              }else{
+                                 $phpformat = 'รูปแบบไม่ถูกต้อง';  //วันแทนด้วย DD, เดือนแทนด้วย MM, ปี แทนด้วย YYYY หรือ YY
+                              } 
                            @endphp
-                           {{ date($phpformat,strtotime($ktdate)) }} 
+                           {{-- {{ date($phpformat,strtotime($ktdate)) }}  --}}
+                           {{ $phpformat }}
                            @if ($lotSymbol > 0)
                               A
                            @endif
@@ -591,12 +709,67 @@
                <tr>                  
                   @foreach ($packpaper->packpaperpackages()->get() as $packageObj)
                      @php
-                        $phpformatc =  str_replace('LOT','' ,str_replace('DD','d' ,str_replace('MM','m' ,str_replace('YYYY','Y' ,$packageObj->pack_date_format))));
+                        // $phpformatc =  str_replace('LOT','' ,str_replace('DD','d' ,str_replace('MM','m' ,str_replace('YYYY','Y' ,$packageObj->pack_date_format))));
                         // $lotSymbolc = strpos($packageObj->pack_date_format,"LOT");
                         // $noSymbolc = strpos($packageObj->pack_date_format,"No");
-                        $phpformate =  str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD','d' ,str_replace('MM','m' ,str_replace('YYYY','Y' ,$packageObj->exp_date_format)))));
+                        $replace = str_replace('LOT','' ,$packageObj->pack_date_format);
+                        $replace1 = str_replace('LOT','' ,str_replace('DD','*', str_replace('MM','*', str_replace('YY','*' ,$packageObj->pack_date_format))));                                    
+                        $first_d = strpos($replace1,'*');
+                        $last_d = strrpos($replace1,'*');
+
+                        $replace2 = explode('*',$replace1); //ถ้าเป็น YYYY จะเป็น * 2 ตัว
+                        $first_text = substr($replace1,0,$first_d);
+                        $last_text = substr($replace1,($last_d+1),strlen($replace1));
+                        $point_len = strlen($replace)-(strlen($first_text)+strlen($last_text));
+                        $date_text = substr($replace,strlen($first_text),$point_len);   
+                        // $date_text = 'MM.DD.YY'; 
+                        $replace_d = date("d", strtotime($item->pack_date));
+                        $replace_m = date("m", strtotime($item->pack_date));
+                        $ex_y = explode('Y',$date_text);
+                        if(count($ex_y)==5){
+                           if(empty($packpaper->pack_thai_year)){
+                              $replace_y = date("Y", strtotime($item->pack_date));
+                           }else{
+                              $replace_y = date("Y", strtotime($item->pack_date))+543;
+                           }
+                           $phpformatc = str_replace('LOT','' ,str_replace('DD',$replace_d ,str_replace('MM',$replace_m ,str_replace('YYYY',$replace_y,$packageObj->pack_date_format))));
+                        }elseif(count($ex_y)==3){
+                           if(empty($packpaper->pack_thai_year)){
+                              $replace_y = substr(date("Y", strtotime($item->pack_date)),2,2);
+                           }else{
+                              $replace_y = substr((date("Y", strtotime($item->pack_date))+543),2,2);
+                           }
+                           $phpformatc = str_replace('LOT','' ,str_replace('DD',$replace_d ,str_replace('MM',$replace_m ,str_replace('YY',$replace_y,$packageObj->pack_date_format))));
+                        }else{
+                           $phpformatc = 'รูปแบบไม่ถูกต้อง';  //วันแทนด้วย DD, เดือนแทนด้วย MM, ปี แทนด้วย YYYY หรือ YY
+                        } 
+
+                        // $phpformate =  str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD','d' ,str_replace('MM','m' ,str_replace('YYYY','Y' ,$packageObj->exp_date_format)))));
                         // $lotSymbole = strpos($packageObj->exp_date_format,"LOT");
                         // $noSymbole = strpos($packageObj->exp_date_format,"No");
+                        $replace = str_replace('No.','' ,str_replace('LOT','' ,$packageObj->exp_date_format));
+                        $replace1 = str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD','*', str_replace('MM','*', str_replace('YY','*' ,$packageObj->exp_date_format)))));                                    
+                        $first_d = strpos($replace1,'*');
+                        $last_d = strrpos($replace1,'*');
+
+                        $replace2 = explode('*',$replace1); //ถ้าเป็น YYYY จะเป็น * 2 ตัว
+                        $first_text = substr($replace1,0,$first_d);
+                        $last_text = substr($replace1,($last_d+1),strlen($replace1));
+                        $point_len = strlen($replace)-(strlen($first_text)+strlen($last_text));
+                        $date_text = substr($replace,strlen($first_text),$point_len);   
+                        // $date_text = 'MM.DD.YY'; 
+                        $replace_d = date("d", strtotime($item->exp_date));
+                        $replace_m = date("m", strtotime($item->exp_date));
+                        $ex_y = explode('Y',$date_text);
+                        if(count($ex_y)==5){
+                           $replace_y = date("Y", strtotime($item->exp_date));
+                           $phpformate =  str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD',$replace_d ,str_replace('MM',$replace_m ,str_replace('YYYY',$replace_y,$packageObj->exp_date_format)))));
+                        }elseif(count($ex_y)==3){
+                           $replace_y = substr(date("Y", strtotime($item->exp_date)),2,2);
+                           $phpformate =  str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD',$replace_d ,str_replace('MM',$replace_m ,str_replace('YY',$replace_y,$packageObj->exp_date_format)))));
+                        }else{
+                           $phpformate = 'รูปแบบไม่ถูกต้อง';  //วันแทนด้วย DD, เดือนแทนด้วย MM, ปี แทนด้วย YYYY หรือ YY
+                        }
 
                         $sumqty += $item->nbox;
                         $sumkg += $item->fweight;
@@ -605,14 +778,16 @@
                         @if (empty($packageObj->pack_date_format))
                            ไม่ระบุ
                         @else
-                           {{ date($phpformatc,strtotime($item->pack_date)) }}
+                           {{-- {{ date($phpformatc,strtotime($item->pack_date)) }} --}}
+                           {{ $phpformatc }}
                         @endif
                      </td>
                      <td class="tcenterb">
                         @if (empty($packageObj->exp_date_format))
                            ไม่ระบุ
                         @else
-                           {{ date($phpformate,strtotime($item->exp_date)) }}
+                           {{-- {{ date($phpformate,strtotime($item->exp_date)) }} --}}
+                           {{ $phpformate }}
                         @endif
                      </td>
                   @endforeach
@@ -708,12 +883,67 @@
                <tr>                  
                   @foreach ($packpaper->packpaperpackages()->get() as $packageObj)
                      @php
-                        $phpformatc =  str_replace('LOT','' ,str_replace('DD','d' ,str_replace('MM','m' ,str_replace('YYYY','Y' ,$packageObj->pack_date_format))));
-                        $lotSymbolc = strpos($packageObj->pack_date_format,"LOT");
-                        $noSymbolc = strpos($packageObj->pack_date_format,"No");
-                        $phpformate =  str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD','d' ,str_replace('MM','m' ,str_replace('YYYY','Y' ,$packageObj->exp_date_format)))));
-                        $lotSymbole = strpos($packageObj->exp_date_format,"LOT");
-                        $noSymbole = strpos($packageObj->exp_date_format,"No");
+                        // $phpformatc =  str_replace('LOT','' ,str_replace('DD','d' ,str_replace('MM','m' ,str_replace('YYYY','Y' ,$packageObj->pack_date_format))));
+                        // $lotSymbolc = strpos($packageObj->pack_date_format,"LOT");
+                        // $noSymbolc = strpos($packageObj->pack_date_format,"No");
+                        $replace = str_replace('LOT','' ,$packageObj->pack_date_format);
+                        $replace1 = str_replace('LOT','' ,str_replace('DD','*', str_replace('MM','*', str_replace('YY','*' ,$packageObj->pack_date_format))));                                    
+                        $first_d = strpos($replace1,'*');
+                        $last_d = strrpos($replace1,'*');
+
+                        $replace2 = explode('*',$replace1); //ถ้าเป็น YYYY จะเป็น * 2 ตัว
+                        $first_text = substr($replace1,0,$first_d);
+                        $last_text = substr($replace1,($last_d+1),strlen($replace1));
+                        $point_len = strlen($replace)-(strlen($first_text)+strlen($last_text));
+                        $date_text = substr($replace,strlen($first_text),$point_len);   
+                        // $date_text = 'MM.DD.YY'; 
+                        $replace_d = date("d", strtotime($item->pack_date));
+                        $replace_m = date("m", strtotime($item->pack_date));
+                        $ex_y = explode('Y',$date_text);
+                        if(count($ex_y)==5){
+                           if(empty($packpaper->pack_thai_year)){
+                              $replace_y = date("Y", strtotime($item->pack_date));
+                           }else{
+                              $replace_y = date("Y", strtotime($item->pack_date))+543;
+                           }
+                           $phpformatc = str_replace('LOT','' ,str_replace('DD',$replace_d ,str_replace('MM',$replace_m ,str_replace('YYYY',$replace_y ,$packageObj->pack_date_format))));
+                        }elseif(count($ex_y)==3){
+                           if(empty($packpaper->pack_thai_year)){
+                              $replace_y = substr(date("Y", strtotime($item->pack_date)),2,2);
+                           }else{
+                              $replace_y = substr((date("Y", strtotime($item->pack_date))+543),2,2);
+                           }
+                           $phpformatc = str_replace('LOT','' ,str_replace('DD',$replace_d ,str_replace('MM',$replace_m ,str_replace('YY',$replace_y ,$packageObj->pack_date_format))));
+                        }else{
+                           $phpformatc = 'รูปแบบไม่ถูกต้อง';  //วันแทนด้วย DD, เดือนแทนด้วย MM, ปี แทนด้วย YYYY หรือ YY
+                        } 
+                        
+                        // $phpformate =  str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD','d' ,str_replace('MM','m' ,str_replace('YYYY','Y' ,$packageObj->exp_date_format)))));
+                        // $lotSymbole = strpos($packageObj->exp_date_format,"LOT");
+                        // $noSymbole = strpos($packageObj->exp_date_format,"No");
+                        $replace = str_replace('No.','' ,str_replace('LOT','' ,$packageObj->exp_date_format));
+                        $replace1 = str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD','*', str_replace('MM','*', str_replace('YY','*' ,$packageObj->exp_date_format)))));                                    
+                        $first_d = strpos($replace1,'*');
+                        $last_d = strrpos($replace1,'*');
+
+                        $replace2 = explode('*',$replace1); //ถ้าเป็น YYYY จะเป็น * 2 ตัว
+                        $first_text = substr($replace1,0,$first_d);
+                        $last_text = substr($replace1,($last_d+1),strlen($replace1));
+                        $point_len = strlen($replace)-(strlen($first_text)+strlen($last_text));
+                        $date_text = substr($replace,strlen($first_text),$point_len);   
+                        // $date_text = 'MM.DD.YY'; 
+                        $replace_d = date("d", strtotime($item->exp_date));
+                        $replace_m = date("m", strtotime($item->exp_date));
+                        $ex_y = explode('Y',$date_text);
+                        if(count($ex_y)==5){
+                           $replace_y = date("Y", strtotime($item->exp_date));
+                           $phpformate =  str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD',$replace_d ,str_replace('MM',$replace_m ,str_replace('YYYY',$replace_y,$packageObj->exp_date_format)))));
+                        }elseif(count($ex_y)==3){
+                           $replace_y = substr(date("Y", strtotime($item->exp_date)),2,2);
+                           $phpformate =  str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD',$replace_d ,str_replace('MM',$replace_m ,str_replace('YY',$replace_y,$packageObj->exp_date_format)))));
+                        }else{
+                           $phpformate = 'รูปแบบไม่ถูกต้อง';  //วันแทนด้วย DD, เดือนแทนด้วย MM, ปี แทนด้วย YYYY หรือ YY
+                        }
 
                         // $sumqty += $item->nbox;
                         // $sumkg += $item->fweight;
@@ -722,14 +952,16 @@
                         @if (empty($packageObj->pack_date_format))
                            ไม่ระบุ
                         @else
-                           {{ date($phpformatc,strtotime($item->pack_date)) }}
+                           {{-- {{ date($phpformatc,strtotime($item->pack_date)) }} --}}
+                           {{ $phpformatc }}
                         @endif
                      </td>
                      <td class="tcenterb">
                         @if (empty($packageObj->exp_date_format))
                            ไม่ระบุ
                         @else
-                           {{ date($phpformate,strtotime($item->exp_date)) }}
+                           {{-- {{ date($phpformate,strtotime($item->exp_date)) }} --}}
+                           {{ $phpformate }}
                         @endif
                      </td>
                   @endforeach
