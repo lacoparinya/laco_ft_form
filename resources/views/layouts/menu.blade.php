@@ -418,7 +418,7 @@
                                                 <a href="{{ route('packagings.index') }}">packagings</a>
                                             </li>
                                             <li>
-                                                <a href="{{ route('pack_papers.index') }}">ใบแจ้งบรรจุ</a>
+                                                <a href="{{ url('pack_papers') }}">ใบแจ้งบรรจุ</a>
                                             </li>
                                             <li>
                                                 <hr />
