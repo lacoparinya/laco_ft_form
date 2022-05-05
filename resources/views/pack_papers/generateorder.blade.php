@@ -52,7 +52,8 @@
                                         @endforeach
                                     </tr>
                                     <tr>
-                                        <td>Stamp วันที่ผลิต<br>
+                                        <td>Stamp วันที่ผลิต<br>                                            
+                                            {{-- <input type="hidden" name="pack_version" id="pack_version" value="1"> --}}
                                             <input type="checkbox" name="pack_thai_year" id="pack_thai_year" value="Use" @if(isset($productinfo->pack_thai_year)) checked @endif> ใช้ปี พ.ศ.</td>
                                         @foreach ($packaging->package as $packageObj)
                                             <td>
@@ -202,15 +203,29 @@
                                                     @endif
                                             </td>
                                         @endforeach
-                                        <td><label for="pallet_file"
-                                                class="control-label">{{ 'การเรียงสินค้าในพาเลท' }}</label></td>
-                                        <td colspan="2"><input class="form-control" name="pallet_file"
-                                                type="file" id="pallet_file" > 
-                                                @if (isset($productinfo->pallet_img))
-                                             <img  
-                                                     src="{{ url($productinfo->pallet_img) }}"  height='100px'/>
-                                                @endif
-                                            </td></td>
+                                        <td>
+                                            <label for="pallet_file" class="control-label">{{ 'การเรียงสินค้าในพาเลท' }}</label>
+                                        </td>
+                                        <td colspan="2">
+                                            <input class="form-control" name="pallet_file" type="file" id="pallet_file" > 
+                                            @if (isset($productinfo->pallet_img))
+                                                <img src="{{ url($productinfo->pallet_img) }}"  height='100px'/>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Art Work ถุง, กล่อง</td>                                        
+                                        <td>
+                                            <input class="form-control" name="artwork_file" type="file" id="artwork_file" >                                           
+                                        </td>
+                                        <td>
+                                            @if (isset($packpaper->artwork_file))
+                                                <img src="{{ url($packpaper->artwork_file) }}"  height='100px'/>
+                                            @endif                                            
+                                        </td>
+                                        @for($i = 0; $i < $packaging->package->count()+1; $i++)
+                                            <td></td>
+                                        @endfor
                                     </tr>
                                 </tbody>
                             </table>

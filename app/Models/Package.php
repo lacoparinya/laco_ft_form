@@ -8,7 +8,7 @@ class Package extends Model
 {
     protected $connection = 'sqlpackagesrv';
     
-    protected $fillable = ['package_type_id', 'name', 'desc', 'size', 'image', 'relate_id',  'stamp_format',  'status'];
+    protected $fillable = ['package_type_id', 'name', 'desc', 'size', 'image', 'relate_id',  'stamp_format',  'status', 'sapnote', 'note2'];
 
     public function packagetype()
     {

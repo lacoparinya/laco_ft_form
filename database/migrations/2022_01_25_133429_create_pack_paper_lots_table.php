@@ -27,6 +27,8 @@ class CreatePackPaperLotsTable extends Migration
             $table->float('fweight')->nullable();
             $table->integer('pallet')->nullable();
             $table->integer('pbag')->nullable();
+            $table->string('cablecover',100)->nullable();
+            $table->integer('pattern_pallet')->nullable();
             $table->string('note')->nullable();
             $table->timestamps();
         });

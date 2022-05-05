@@ -214,5 +214,6 @@ return [
     'head_column' => [
         'Bag' => 'ถุง',
         'Carton' => 'กล่อง',
+        'Roll Film' => 'ถุง',
     ],
 ];

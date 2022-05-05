@@ -210,7 +210,7 @@ Route::get('/mains/realsummarytimechart', 'MainsController@realsummarytimechart'
 
 Route::get('/planrpt/getprevdata/{month}/{year}', 'PlanRptController@getprevdata');
 
-Route::get('/pack_papers', 'PackPapersController@index')->name('pack_papers.index');
+Route::get('/pack_papers', 'PackPapersController@index');
 Route::get('/pack_papers/view/{id}', 'PackPapersController@view');
 // Route::get('/pack_papers/generateOrder/{id}/{set}/{lot}', 'PackPapersController@generateOrder');
 // Route::post('/pack_papers/generateOrderAction/{id}/{set}/{lot}', 'PackPapersController@generateOrderAction');

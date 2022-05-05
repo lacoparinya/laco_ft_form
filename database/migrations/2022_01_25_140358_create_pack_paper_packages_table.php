@@ -17,9 +17,16 @@ class CreatePackPaperPackagesTable extends Migration
             $table->increments('id');
             $table->integer('pack_paper_id');
             $table->integer('packaging_id');
+            $table->string('lot', 50)->nullable();
             $table->string('pack_date_format', 50)->nullable();
             $table->string('exp_date_format', 50)->nullable();
-            $table->string('lot', 50)->nullable();
+            $table->string('extra_stamp', 100)->nullable();
+            $table->string('front_img')->nullable();
+            $table->string('back_img')->nullable();
+            $table->string('front_stamp')->nullable();
+            $table->string('front_locstamp')->nullable();
+            $table->string('back_stamp')->nullable();
+            $table->string('back_locstamp')->nullable();
 
             $table->timestamps();
         });

@@ -11,14 +11,38 @@ use App\PackPaperPackage;
 use App\PackageInfo;
 use App\ProductInfo;
 use App\Models\Product;
+use App\Models\Package;
 
 use Maatwebsite\Excel\Facades\Excel;
 
 class PackPapersController extends Controller
 {
-    public function index(){
-        $paperpacks = PackPaper::paginate(25);
-        return view('pack_papers.index', compact('paperpacks'));
+    public function index(Request $request){
+        // dd($request->get('search'));
+        $search = "";
+        $paperpacks = new PackPaper;
+        $paperpacks = $paperpacks->join('package_db.dbo.packagings', 'pack_papers.packaging_id', '=', 'package_db.dbo.packagings.id');
+        $paperpacks = $paperpacks->join('package_db.dbo.products', 'package_db.dbo.packagings.product_id', '=', 'package_db.dbo.products.id');
+        $paperpacks = $paperpacks->where('pack_papers.status','Active');
+        if(!empty($request->get('search'))){
+            $search = $request->get('search');
+            $paperpacks = $paperpacks->where('pack_papers.packaging_id', '=', $request->get('search'));
+        }
+        $paperpacks = $paperpacks->select('pack_papers.id', 'package_db.dbo.products.name', 'pack_papers.order_no', 'pack_papers.pack_version', 'pack_papers.created_at');
+        $paperpacks = $paperpacks->groupBy('pack_papers.id', 'package_db.dbo.products.name', 'pack_papers.order_no', 'pack_papers.pack_version', 'pack_papers.created_at');
+        $paperpacks = $paperpacks->orderBy('pack_papers.created_at', 'DESC');
+        $paperpacks = $paperpacks->paginate(25);
+
+        $to_search = new PackPaper;
+        $to_search = $to_search->join('package_db.dbo.packagings', 'pack_papers.packaging_id', '=', 'package_db.dbo.packagings.id');
+        $to_search = $to_search->join('package_db.dbo.products', 'package_db.dbo.packagings.product_id', '=', 'package_db.dbo.products.id');
+        $to_search = $to_search->where('pack_papers.status','Active');
+        $to_search = $to_search->select('pack_papers.packaging_id', 'package_db.dbo.products.name');
+        $to_search = $to_search->groupBy('pack_papers.packaging_id', 'package_db.dbo.products.name');
+        $to_search = $to_search->get();
+        // dd($to_search);        
+
+        return view('pack_papers.index', compact('paperpacks', 'to_search','search'));
     }
 
     public function generateOrder($id,$lot){
@@ -97,7 +121,8 @@ class PackPapersController extends Controller
         }else{
             $tmppaperpack['pack_thai_year'] = null;
         }
-        $tmppaperpack['status'] = 'Active';
+        $tmppaperpack['pack_version'] = 1;
+        $tmppaperpack['status'] = 'Active';        
         
         $tmpproductinfo = array();
         $tmpproductinfo['packaging_id'] = $id;
@@ -112,7 +137,6 @@ class PackPapersController extends Controller
         }
 
 
-
         if ($request->hasFile('cable_file')) {
             $image = $request->file('cable_file');
             $name = "cb_" . md5($image->getClientOriginalName() . time()) . '.' . $image->getClientOriginalExtension();
@@ -125,8 +149,7 @@ class PackPapersController extends Controller
             if(isset($productinfo->cable_img)){
                 if(isset($requestData['img_cable'])){
                     // dd('save img');
-                    $tmppaperpack['cable_img'] = $productinfo->cable_img;
-                
+                    $tmppaperpack['cable_img'] = $productinfo->cable_img;                
                 }
             }
         } 
@@ -154,6 +177,19 @@ class PackPapersController extends Controller
         }else{
             if (isset($productinfo->pallet_img)) {
                 $tmppaperpack['pallet_img'] = $productinfo->pallet_img;
+            }
+        }
+        if ($request->hasFile('artwork_file')) {
+            $image = $request->file('artwork_file');
+            $name = "aw_" . md5($image->getClientOriginalName() . time()) . '.' . $image->getClientOriginalExtension();
+            $destinationPath = public_path('images/packaging/' . $id);
+            $image->move($destinationPath, $name);
+
+            $tmpproductinfo['artwork_img'] = 'images/packaging/' . $id  . "/" . $name;
+            $tmppaperpack['artwork_img'] = 'images/packaging/' . $id  . "/" . $name;
+        }else{
+            if (isset($productinfo->artwork_img)) {
+                $tmppaperpack['artwork_img'] = $productinfo->artwork_img;
             }
         }
 
@@ -287,6 +323,7 @@ class PackPapersController extends Controller
 
     public function view($id){
         $packpaper = PackPaper::findOrFail($id);
+        // dd($packpaper);
         $weight_per_box = $packpaper->packaging->outer_weight_kg;
         $p_date = array();
         $paked = array();
@@ -317,7 +354,8 @@ class PackPapersController extends Controller
     public function edit_genOrder($id,$lot){
         $packpaper = PackPaper::findOrFail($id);
 
-        $productinfo = ProductInfo::where('packaging_id',$packpaper->packaging_id)->first();
+        // $productinfo = ProductInfo::where('packaging_id',$packpaper->packaging_id)->first();
+        $productinfo = ProductInfo::where('packaging_id',$packpaper->id)->first();
         $packageexp = array();
         $packagelist = array();
         foreach ($packpaper->packaging->packagestamptxt as $packagestampObj) {           
@@ -335,8 +373,11 @@ class PackPapersController extends Controller
             'สายรัดสีน้ำเงิน' => 'สายรัดสีน้ำเงิน',
             'สายรัดสีบรอนซ์' => 'สายรัดสีบรอนซ์'
         );
-        
-        return view('pack_papers.edit', compact('lot','packpaper','cablecoverlist','package_lot','packageexp'));
+        $relate_id = array();
+        if(!empty($packpaper->relation_id)){
+            $relate_id = PackPaper::WhereNotIn('id',[$id])->where('relation_id',$packpaper->relation_id)->orWhere('id',$packpaper->relation_id)->orderBy('pack_version','DESC')->get();
+        }
+        return view('pack_papers.edit', compact('lot','packpaper','cablecoverlist','package_lot','packageexp','relate_id'));
     }
 
     public function update_genOrder(Request $request, $id, $lot){
@@ -344,6 +385,9 @@ class PackPapersController extends Controller
 
         // dd($requestData);  
         $packpaper = PackPaper::findOrFail($id);
+        $tmpstatus['status'] = 'Inactive';
+        $packpaper->update($tmpstatus);
+
         $packaging_id = $packpaper->packaging_id;
         $packaging = Packaging::findOrFail($packaging_id);
 
@@ -352,9 +396,9 @@ class PackPapersController extends Controller
         $pd = Product::findOrFail($packaging->product_id);
         $tmppd['weight_with_bag'] = $requestData['weight_with_bag'];
         $pd->update($tmppd);
-        
+        // dd($packaging_id);
         $tmppaperpack = array();
-        // $tmppaperpack['packaging_id'] = $id;
+        $tmppaperpack['packaging_id'] = $packaging_id;
         $tmppaperpack['order_no'] = $requestData['order_no'];
         $tmppaperpack['exp_month'] = $requestData['exp_month'];
         $tmppaperpack['weight_with_bag'] = $requestData['weight_with_bag'];
@@ -368,7 +412,14 @@ class PackPapersController extends Controller
         }else{
             $tmppaperpack['pack_thai_year'] = null;
         }
-        // $tmppaperpack['status'] = 'Active';
+        // dd($requestData['pack_version']);
+        if(!empty($packpaper->relation_id)){
+            $tmppaperpack['relation_id'] = $packpaper->relation_id;
+        }else{
+            $tmppaperpack['relation_id'] = $id;
+        }        
+        $tmppaperpack['pack_version'] = $requestData['pack_version'];
+        $tmppaperpack['status'] = 'Active';
         
         //แก้ไขแล้วให้มีผลต่อการเพิ่มในครั้งหน้า
         //ProductInfo update img
@@ -382,7 +433,7 @@ class PackPapersController extends Controller
             $tmpproductinfo['pack_thai_year'] = $requestData['pack_thai_year'];
         }else{
             $tmpproductinfo['pack_thai_year'] = null;
-        }  
+        }          
         $productinfo = ProductInfo::where('packaging_id', $packaging_id)->first();
 
 
@@ -431,16 +482,30 @@ class PackPapersController extends Controller
                 $tmppaperpack['pallet_img'] = $productinfo->pallet_img;
             }
         }
+        if ($request->hasFile('artwork_file')) {
+            $image = $request->file('artwork_file');
+            $name = "aw_" . md5($image->getClientOriginalName() . time()) . '.' . $image->getClientOriginalExtension();
+            $destinationPath = public_path('images/packaging/' . $id);
+            $image->move($destinationPath, $name);
 
-        $packpaper->update($tmppaperpack);
-
+            $tmpproductinfo['artwork_img'] = 'images/packaging/' . $id  . "/" . $name;
+            $tmppaperpack['artwork_img'] = 'images/packaging/' . $id  . "/" . $name;
+        }else{
+            if (isset($productinfo->artwork_img)) {
+                $tmppaperpack['artwork_img'] = $productinfo->artwork_img;
+            }
+        }
+        // dd($tmppaperpack);
+        $new_id = PackPaper::create($tmppaperpack)->id;
+        // $packpaper->update($tmppaperpack);
+        // dd($new_id);
         // $productinfo = ProductInfo::where('packaging_id', $packaging_id)->first();
         $productinfo->update($tmpproductinfo);
 
-        PackPaperD::where('pack_paper_id', $id)->delete();
+        // PackPaperD::where('pack_paper_id', $id)->delete();
         for ($lotloop=0; $lotloop < $lot; $lotloop++) {
             $tmppaperpackd = array();
-            $tmppaperpackd['pack_paper_id'] = $id; 
+            $tmppaperpackd['pack_paper_id'] = $new_id; 
             $tmppaperpackd['pack_date'] = $requestData['packdate'. $lotloop]; 
             $tmppaperpackd['exp_date'] = $requestData['expdate' . $lotloop]; 
             $all_bpack = $requestData['tbox' . $lotloop]-$requestData['fbox' . $lotloop];
@@ -452,10 +517,10 @@ class PackPapersController extends Controller
             PackPaperD::create($tmppaperpackd);
         }
 
-        PackPaperLot::where('pack_paper_id', $id)->delete();
+        // PackPaperLot::where('pack_paper_id', $id)->delete();
         for ($lotloop = 0; $lotloop < $lot; $lotloop++) {
             $tmppaperpacklot = array();
-            $tmppaperpacklot['pack_paper_id'] = $id;
+            $tmppaperpacklot['pack_paper_id'] = $new_id;
             $tmppaperpacklot['pack_date'] = $requestData['packdate' . $lotloop];
             $tmppaperpacklot['exp_date'] = $requestData['expdate' . $lotloop];
             $tmppaperpacklot['lot'] = $requestData['lot' . $lotloop];
@@ -476,8 +541,9 @@ class PackPapersController extends Controller
         
         foreach ($packpaper->packpaperpackages as $packageObj){            
             $tmppackpaperpackage = array();
-            // $tmppackpaperpackage['pack_paper_id'] = $packpaperObj->id;
-            // $tmppackpaperpackage['packaging_id'] = $packageObj->id;
+            $tmppackpaperpackage['pack_paper_id'] = $new_id;
+            $tmppackpaperpackage['packaging_id'] = $packageObj->packaging_id;
+            // dd($packageObj->front_img);
             $tmppackpaperpackage['lot'] = $requestData['lottxt' . $packageObj->id];
             
             $tmppackageinfo = array();
@@ -502,8 +568,9 @@ class PackPapersController extends Controller
                 $tmppackpaperpackage['front_img'] = 'images/package/' . $packageObj->id  . "/" . $name;
             }else{
                 // echo 'no front_img';
-                if(isset($packageinfos[$packageObj->id]->front_img)){
-                    $tmppackpaperpackage['front_img'] = $packageinfos[$packageObj->id]->front_img;
+                // if(isset($packageinfos[$packageObj->id]->front_img)){
+                if(isset($packageObj->front_img)){
+                    $tmppackpaperpackage['front_img'] = $packageObj->front_img;
                 }
             }
 
@@ -516,8 +583,9 @@ class PackPapersController extends Controller
                 $tmppackageinfo['back_img'] = 'images/package/' . $packageObj->id  . "/" . $name;
                 $tmppackpaperpackage['back_img'] = 'images/package/' . $packageObj->id  . "/" . $name;
             } else {
-                if (isset($packageinfos[$packageObj->id]->back_img)) {
-                    $tmppackpaperpackage['back_img'] = $packageinfos[$packageObj->id]->back_img;
+                // if (isset($packageinfos[$packageObj->id]->back_img)) {
+                if (isset($packageObj->back_img)) {
+                    $tmppackpaperpackage['back_img'] = $packageObj->back_img;
                 }
             }
 
@@ -535,18 +603,95 @@ class PackPapersController extends Controller
             $packageinfo = PackageInfo::where('packaging_id', $packageObj->packaging_id)->first();
             $packageinfo->update($tmppackageinfo);
             // PackPaperPackage::create($tmppackpaperpackage);
-            $pack_paper_package = PackPaperPackage::where('id', $packageObj->id)->first();
-            $pack_paper_package->update($tmppackpaperpackage);
+            // $pack_paper_package = PackPaperPackage::where('id', $packageObj->id)->first();
+            // $pack_paper_package->update($tmppackpaperpackage);
+            PackPaperPackage::create($tmppackpaperpackage);
         }
         return redirect('/pack_papers');
     }
     
-    public function delete_genOrder($id){
-        $packpaper = PackPaperD::where('pack_paper_id',$id)->delete();
-        $packpaper = PackPaperLot::where('pack_paper_id',$id)->delete();     
-        $packpaper = PackPaperPackage::where('pack_paper_id',$id)->delete();
-        $packpaper = PackPaper::where('id',$id)->delete();
+    public function delete_genOrder($id){        
+        // $packpaper = PackPaperD::where('pack_paper_id',$id)->delete();
+        // $packpaper = PackPaperLot::where('pack_paper_id',$id)->delete();     
+        // $packpaper = PackPaperPackage::where('pack_paper_id',$id)->delete();
+        // $packpaper = PackPaper::where('id',$id)->delete();
+        
+        $packpaper = PackPaper::where('id',$id);
+        $tmpstatus['status'] = 'Inactive';
+        $packpaper->update($tmpstatus);
 
         return redirect('/pack_papers')->with('flash_message', ' deleted!');
+    }
+
+    public static function extract_int($str){   //ต้องมี static ถึงจะเรียกใช้ได้
+        $to_s = "";
+        // $str = $packageObj->pack_date_format;
+        // // // echo $str.'--';
+        $patt = '/[^0-9]*([0-9]+)[^0-9]*/';
+        $a = preg_match($patt,$str,$regs);
+        // // // $a = trim(str_replace(range(0,9),'',$arr_pack[($i+$p)]->pack_date_format)); //ได้แต่ตัวอักษร
+        // // // echo $regs[1].'--'; //ได้แต่ตัวเลขข้างหน้าเท่านั้น
+        // // // print_r($regs);   //0=$str, 1=ตัวเลขข้างหน้า
+        if(!empty($regs[1])){
+            $reg_len = strlen($regs[1]);
+            $b = substr($str, $reg_len, strlen($str));
+            // echo $b.'--';
+            // for($i=0; $i<$reg_len; $i++){
+            //     $to_s .='X';
+            // }
+            $to_s = 'X'.$b;
+        }else{
+            $to_s = $str;
+        }
+        // preg_match('/[^0-9]*([0-9]+)[^0-9]*/', $str, $regs);
+        return $to_s;
+    }
+
+    public static function format_date($fdate,$date,$ythai){   //ต้องมี static ถึงจะเรียกใช้ได้
+        // dd($fdate.', '.$date.', '.$ythai.'--');
+        // $replace = str_replace('No.','' ,str_replace('LOT','' ,$fdate));
+        // $replace1 = str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD','*', str_replace('MM','*', str_replace('YY','*' ,$fdate)))));   
+
+        $replace = str_replace('No.','' ,str_replace('LOT','' ,$fdate));
+        $replace1 = str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD','*', str_replace('MM','*', str_replace('YY','*' ,$fdate)))));
+
+        $first_d = strpos($replace1,'*');
+        $last_d = strrpos($replace1,'*');
+        $replace2 = explode('*',$replace1); //ถ้าเป็น YYYY จะเป็น * 2 ตัว
+        $first_text = substr($replace1,0,$first_d);
+        $last_text = substr($replace1,($last_d+1),strlen($replace1));
+        $point_len = strlen($replace)-(strlen($first_text)+strlen($last_text));
+        $date_text = substr($replace,strlen($first_text),$point_len); 
+        // $date_text = 'MM.DD.YY'; 
+        $replace_d = date("d", strtotime($date));
+        $replace_m = date("m", strtotime($date));
+        $ex_y = explode('Y',$date_text);
+        if(count($ex_y)==5){
+            if(empty($ythai)){
+                $replace_y = date("Y", strtotime($date));
+            }else{
+                $replace_y = date("Y", strtotime($date))+543;
+            }
+            $phpformat = str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD',$replace_d ,str_replace('MM',$replace_m ,str_replace('YYYY',$replace_y ,$fdate)))));
+        }elseif(count($ex_y)==3){
+            if(empty($ythai)){
+                $replace_y = substr(date("Y", strtotime($date)),2,2);
+            }else{
+                $replace_y = substr((date("Y", strtotime($date))+543),2,2);
+            }
+            $phpformat = str_replace('No.','' ,str_replace('LOT','' ,str_replace('DD',$replace_d ,str_replace('MM',$replace_m ,str_replace('YY',$replace_y ,$fdate)))));
+        }else{
+            $phpformat = 'รูปแบบไม่ถูกต้อง';  //วันแทนด้วย DD, เดือนแทนด้วย MM, ปี แทนด้วย YYYY หรือ YY
+        }
+        return $phpformat;
+    }
+
+    public static function check_null($chk){   //ต้องมี static ถึงจะเรียกใช้ได้
+        if(empty($chk)){
+            $check_val = '';
+        }else{
+            $check_val = $chk;
+        }
+        return $check_val;
     }
 }

@@ -13,7 +13,16 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h2>แก้ไข ใบแจ้งการบรรจุผลิตภัณฑ์แช่แข็งสำเร็จรูป สินค้า {{ $packpaper->packaging->product->name }}</h2>
+                        <h2>แก้ไข ใบแจ้งการบรรจุผลิตภัณฑ์แช่แข็งสำเร็จรูป สินค้า {{ $packpaper->packaging->product->name }} @if(!empty($packpaper->pack_version)) @if($packpaper->pack_version>1) (V. {{ $packpaper->pack_version }}) @endif @endif</h2>
+                        @if(!empty($packpaper->pack_version))
+                            @if($packpaper->pack_version>1)
+                                <h5>Old version 
+                                    @foreach($relate_id as $key) 
+                                        <a href="{{ url('/pack_papers/view/' . $key->id) }}" target="_blank">{{ "V.".$key->pack_version.' ' }}</a>                           
+                                    @endforeach
+                                </h5>
+                            @endif
+                        @endif
                     </div>
                     <div class="card-body">
                         
@@ -56,7 +65,8 @@
                                     </tr>
                                     <tr>
                                         <td>Stamp วันที่ผลิต<br>
-                                            <input type="checkbox" name="pack_thai_year" id="pack_thai_year" value="Use" @if(isset($packpaper->pack_thai_year)) checked @endif> ใช้ปี พ.ศ.</td>
+                                            <input type="checkbox" name="pack_thai_year" id="pack_thai_year" value="Use" @if(isset($packpaper->pack_thai_year)) checked @endif> ใช้ปี พ.ศ.
+                                            <input type="hidden" name="pack_version" id="pack_version" value="@if(empty($packpaper->pack_version)) {{ 2 }} @else {{ $packpaper->pack_version+1 }}@endif">
                                         </td>
                                         @foreach ($packpaper->packpaperpackages as $packageObj)
                                             <td>
@@ -203,15 +213,46 @@
                                                     @endif
                                             </td>
                                         @endforeach
-                                        <td><label for="pallet_file"
-                                                class="control-label">{{ 'การเรียงสินค้าในพาเลท' }}</label></td>
-                                        <td colspan="2"><input class="form-control" name="pallet_file"
-                                                type="file" id="pallet_file" > 
-                                                @if (isset($packpaper->pallet_img))
-                                             <img  
-                                                     src="{{ url($packpaper->pallet_img) }}"  height='100px'/>
-                                                @endif
-                                            </td></td>
+                                        <td>
+                                            {{-- <div class="position-relative">
+                                                <div class="position-absolute top-0 start-0"> --}}
+                                                    <label for="pallet_file"class="control-label">{{ 'การเรียงสินค้าในพาเลท' }}</label>
+                                                {{-- </div>
+                                                <div class="position-absolute bottom-0 start-0">
+                                                    <label for="artwork_file" class="control-label">{{ 'Art Work ถุง, กล่อง' }}</label>
+                                                </div> --}}
+                                            </div>
+                                        </td>
+                                        <td colspan="2">
+                                            {{-- <div class="position-relative">
+                                                <div class="position-absolute top-0 start-0"> --}}
+                                                    <input class="form-control" name="pallet_file" type="file" id="pallet_file" > 
+                                                    @if (isset($packpaper->pallet_img))
+                                                        <img src="{{ url($packpaper->pallet_img) }}"  height='100px'/>
+                                                    @endif
+                                                {{-- </div>
+                                                <div class="position-absolute top-0 start-0">
+                                                    <input class="form-control" name="artwork_file" type="file" id="artwork_file" > 
+                                                    @if (isset($packpaper->artwork_file))
+                                                        <img src="{{ url($packpaper->artwork_file) }}"  height='100px'/>
+                                                    @endif
+                                                </div> --}}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Art Work ถุง, กล่อง</td>                                        
+                                        <td>
+                                            <input class="form-control" name="artwork_file" type="file" id="artwork_file" >                                           
+                                        </td>
+                                        <td>
+                                            @if (isset($packpaper->artwork_img))
+                                                <img src="{{ url($packpaper->artwork_img) }}"  height='100px'/>
+                                            @endif                                            
+                                        </td>
+                                        @for($i = 0; $i < $packpaper->packpaperpackages->count()+1; $i++)
+                                            <td></td>
+                                        @endfor
                                     </tr>
                                 </tbody>
                             </table>

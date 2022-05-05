@@ -20,7 +20,11 @@ class CreatePackageInfosTable extends Migration
             $table->string('exp_date_format', 100)->nullable();
             $table->string('extra_stamp', 100)->nullable();
             $table->string('front_img')->nullable();
-            $table->string('back_img')->nullable();
+            $table->string('back_img')->nullable();            
+            $table->string('front_stamp')->nullable();
+            $table->string('front_locstamp')->nullable();
+            $table->string('back_stamp')->nullable();
+            $table->string('back_locstamp')->nullable();
             $table->timestamps();
         });
     }

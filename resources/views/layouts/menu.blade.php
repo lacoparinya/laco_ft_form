@@ -172,11 +172,24 @@
                             <a href="{{ route('plan-rpt.index') }}">Plan Logs</a>
                         </li>
 
-                        <li>
+                        {{-- <li>
                             <a href="{{ route('packagings.index') }}">packagings</a>
                         </li>
                         <li>
                             <a href="{{ route('pack_papers.index') }}">ใบแจ้งบรรจุ</a>
+                        </li> --}}
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        ใบแจ้งบรรจุ <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">  
+                        <li>
+                            <a href="{{ route('packagings.index') }}">packagings</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('pack_papers') }}">ใบแจ้งบรรจุ</a>
                         </li>
                     </ul>
                 </li>
