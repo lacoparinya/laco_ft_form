@@ -331,6 +331,6 @@ class GenDailyPlan extends Command
 
         $allemail = config('myconfig.emailalllist');
 
-        Mail::to($testemail)->send(new DeliveryPlanMail($mailObj));
+        Mail::to($allemail)->send(new DeliveryPlanMail($mailObj));
     }
 }
