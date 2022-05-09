@@ -28,8 +28,8 @@ class PackPapersController extends Controller
             $search = $request->get('search');
             $paperpacks = $paperpacks->where('pack_papers.packaging_id', '=', $request->get('search'));
         }
-        $paperpacks = $paperpacks->select('pack_papers.id', 'package_db.dbo.products.name', 'pack_papers.order_no', 'pack_papers.pack_version', 'pack_papers.created_at');
-        $paperpacks = $paperpacks->groupBy('pack_papers.id', 'package_db.dbo.products.name', 'pack_papers.order_no', 'pack_papers.pack_version', 'pack_papers.created_at');
+        $paperpacks = $paperpacks->select('pack_papers.id', 'package_db.dbo.products.name', 'pack_papers.order_no', 'pack_papers.revise_version', 'pack_papers.created_at');
+        $paperpacks = $paperpacks->groupBy('pack_papers.id', 'package_db.dbo.products.name', 'pack_papers.order_no', 'pack_papers.revise_version', 'pack_papers.created_at');
         $paperpacks = $paperpacks->orderBy('pack_papers.created_at', 'DESC');
         $paperpacks = $paperpacks->paginate(25);
 
@@ -121,7 +121,8 @@ class PackPapersController extends Controller
         }else{
             $tmppaperpack['pack_thai_year'] = null;
         }
-        $tmppaperpack['pack_version'] = 1;
+        $tmppaperpack['plan_version'] = $requestData['plan_version'];
+        $tmppaperpack['revise_version'] = 0;
         $tmppaperpack['status'] = 'Active';        
         
         $tmpproductinfo = array();
@@ -375,7 +376,7 @@ class PackPapersController extends Controller
         );
         $relate_id = array();
         if(!empty($packpaper->relation_id)){
-            $relate_id = PackPaper::WhereNotIn('id',[$id])->where('relation_id',$packpaper->relation_id)->orWhere('id',$packpaper->relation_id)->orderBy('pack_version','DESC')->get();
+            $relate_id = PackPaper::WhereNotIn('id',[$id])->where('relation_id',$packpaper->relation_id)->orWhere('id',$packpaper->relation_id)->orderBy('revise_version','DESC')->get();
         }
         return view('pack_papers.edit', compact('lot','packpaper','cablecoverlist','package_lot','packageexp','relate_id'));
     }
@@ -412,13 +413,14 @@ class PackPapersController extends Controller
         }else{
             $tmppaperpack['pack_thai_year'] = null;
         }
-        // dd($requestData['pack_version']);
+        // dd($requestData['revise_version']);
         if(!empty($packpaper->relation_id)){
             $tmppaperpack['relation_id'] = $packpaper->relation_id;
         }else{
             $tmppaperpack['relation_id'] = $id;
         }        
-        $tmppaperpack['pack_version'] = $requestData['pack_version'];
+        $tmppaperpack['revise_version'] = $requestData['revise_version'];        
+        $tmppaperpack['plan_version'] = $requestData['plan_version'];  
         $tmppaperpack['status'] = 'Active';
         
         //แก้ไขแล้วให้มีผลต่อการเพิ่มในครั้งหน้า

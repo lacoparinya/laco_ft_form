@@ -188,7 +188,7 @@
       <tr>
          <th style="text-align: left">วันที่</th>
          <th style="text-align: left">{{ date('d',strtotime($packpaper->created_at)) }}/{{ date('m',strtotime($packpaper->created_at)) }}/{{ substr((date('Y',strtotime($packpaper->created_at))+543), 2, 2) }}</th>
-         <th style="text-align:right">plan version : {{ $packpaper->pack_version }}</th>
+         <th style="text-align:right">plan version : {{ $packpaper->plan_version }}</th>
       </tr>
    </table>
 

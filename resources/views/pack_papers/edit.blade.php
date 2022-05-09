@@ -13,15 +13,13 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h2>แก้ไข ใบแจ้งการบรรจุผลิตภัณฑ์แช่แข็งสำเร็จรูป สินค้า {{ $packpaper->packaging->product->name }} @if(!empty($packpaper->pack_version)) @if($packpaper->pack_version>1) (V. {{ $packpaper->pack_version }}) @endif @endif</h2>
-                        @if(!empty($packpaper->pack_version))
-                            @if($packpaper->pack_version>1)
-                                <h5>Old version 
-                                    @foreach($relate_id as $key) 
-                                        <a href="{{ url('/pack_papers/view/' . $key->id) }}" target="_blank">{{ "V.".$key->pack_version.' ' }}</a>                           
-                                    @endforeach
-                                </h5>
-                            @endif
+                        <h2>แก้ไข ใบแจ้งการบรรจุผลิตภัณฑ์แช่แข็งสำเร็จรูป สินค้า {{ $packpaper->packaging->product->name }} @if($packpaper->revise_version>0) (V. {{ $packpaper->revise_version }}) @endif</h2>                        
+                        @if($packpaper->revise_version>0)
+                            <h5>Old version 
+                                @foreach($relate_id as $key) 
+                                    <a href="{{ url('/pack_papers/view/' . $key->id) }}" target="_blank">@if($key->revise_version==""){{ "V.0 " }}@else{{ "V.".$key->revise_version.' ' }}@endif</a>                           
+                                @endforeach
+                            </h5>
                         @endif
                     </div>
                     <div class="card-body">
@@ -66,7 +64,7 @@
                                     <tr>
                                         <td>Stamp วันที่ผลิต<br>
                                             <input type="checkbox" name="pack_thai_year" id="pack_thai_year" value="Use" @if(isset($packpaper->pack_thai_year)) checked @endif> ใช้ปี พ.ศ.
-                                            <input type="hidden" name="pack_version" id="pack_version" value="@if(empty($packpaper->pack_version)) {{ 2 }} @else {{ $packpaper->pack_version+1 }}@endif">
+                                            <input type="hidden" name="revise_version" id="revise_version" value="@if(empty($packpaper->revise_version)) {{ 1 }} @else {{ $packpaper->revise_version+1 }}@endif">
                                         </td>
                                         @foreach ($packpaper->packpaperpackages as $packageObj)
                                             <td>
@@ -261,11 +259,14 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6"><label for="product_fac" class="control-label">{{ 'Product Fac' }}</label>
+            <div class="col-md-4"><label for="product_fac" class="control-label">{{ 'Product Fac' }}</label>
                 <input class="form-control" name="product_fac" type="text" id="product_fac"
                                                 value="{{ $packpaper->product_fac }}"></div>
-            <div class="col-md-6"><label for="loading_date" class="control-label">{{ 'LOADING' }}</label>
-        <input class="form-control" name="loading_date" type="date"
+            <div class="col-md-4"><label for="plan_version" class="control-label">{{ 'Plan version' }}</label>
+                <input class="form-control" name="plan_version" type="text" id="plan_version"
+                                                value="{{ $packpaper->plan_version }}"></div>
+            <div class="col-md-4"><label for="loading_date" class="control-label">{{ 'LOADING' }}</label>
+                <input class="form-control" name="loading_date" type="date"
                         id="loading_date" required value="{{ $packpaper->loading_date }}"></div>
         </div>
         <div class="row">

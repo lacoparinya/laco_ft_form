@@ -29,9 +29,10 @@ class CreatePackPapersTable extends Migration
             $table->integer('pallet_low')->nullable();
             $table->integer('pallet_height')->nullable();
             $table->string('pack_thai_year',10)->nullable();
-            $table->integer('pack_version')->nullable();
+            $table->integer('revise_version')->nullable();
             $table->integer('relation_id')->nullable();
             $table->string('status', 50)->default('Active');
+            $table->string('plan_version', 100);
             $table->timestamps();
         });
     }

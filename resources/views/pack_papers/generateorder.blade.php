@@ -219,8 +219,8 @@
                                             <input class="form-control" name="artwork_file" type="file" id="artwork_file" >                                           
                                         </td>
                                         <td>
-                                            @if (isset($packpaper->artwork_file))
-                                                <img src="{{ url($packpaper->artwork_file) }}"  height='100px'/>
+                                            @if (isset($productinfo->artwork_img))
+                                                <img src="{{ url($productinfo->artwork_img) }}"  height='100px'/>
                                             @endif                                            
                                         </td>
                                         @for($i = 0; $i < $packaging->package->count()+1; $i++)
@@ -234,11 +234,16 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <label for="product_fac" class="control-label">{{ 'Product Fac' }}</label>
                 <input class="form-control" name="product_fac" type="text" id="product_fac" required value="@if (isset($productinfo->product_fac)){{ $productinfo->product_fac }}@endif">
             </div>
-            <div class="col-md-6">
+            
+            <div class="col-md-4">
+                <label for="plan_version" class="control-label">{{ 'Plan version' }}</label>
+                <input class="form-control" name="plan_version" type="text" id="plan_version" required value="">
+            </div>
+            <div class="col-md-4">
                 <label for="loading_date" class="control-label">{{ 'LOADING' }}</label>
                 <input class="form-control" name="loading_date" type="date" id="loading_date" required value="">
             </div>
